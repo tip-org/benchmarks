@@ -1,0 +1,30 @@
+module A
+  use HighOrd
+  type nat = S nat | Z
+  type list 'a = Nil | Cons 'a (list 'a)
+  function lt (ds : nat) (ds1 : nat) : bool =
+    match ds1 with
+    | S ipv ->
+        match ds with
+        | S x -> lt x ipv
+        | Z -> True
+        end
+    | Z -> False
+    end
+  function ins (n : nat) (ds2 : list nat) : list nat =
+    match ds2 with
+    | Nil -> Cons n Nil
+    | Cons x2 xs ->
+        match lt n x2 with
+        | False -> Cons x2 (ins n xs)
+        | True -> Cons n (Cons x2 xs)
+        end
+    end
+  function len (ds3 : list 'a2) : nat =
+    match ds3 with
+    | Nil -> Z
+    | Cons ds12 xs2 -> S (len xs2)
+    end
+  goal prop_15 :
+    forall x3 : nat, xs3 : list nat . len (ins x3 xs3) = S (len xs3)
+end

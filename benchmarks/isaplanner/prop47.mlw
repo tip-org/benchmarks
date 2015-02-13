@@ -1,0 +1,26 @@
+module A
+  use HighOrd
+  type nat = S nat | Z
+  type tree 'a = Leaf | Node (tree 'a) 'a (tree 'a)
+  function max (ds : nat) (y : nat) : nat =
+    match ds with
+    | S ipv ->
+        match y with
+        | S ipv1 -> S (max ipv ipv1)
+        | Z -> S ipv
+        end
+    | Z -> y
+    end
+  function height (ds2 : tree 'a2) : nat =
+    match ds2 with
+    | Leaf -> Z
+    | Node l x r -> S (max (height l) (height r))
+    end
+  function mirror (ds3 : tree 'a6) : tree 'a6 =
+    match ds3 with
+    | Leaf -> Leaf
+    | Node l2 x2 r2 -> Node (mirror r2) x2 (mirror l2)
+    end
+  goal prop_47 :
+    forall a9 : tree 'a8 . height (mirror a9) = height a9
+end

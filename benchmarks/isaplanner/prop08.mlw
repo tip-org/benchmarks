@@ -1,0 +1,21 @@
+module A
+  use HighOrd
+  type nat = S nat | Z
+  function plus (ds : nat) (y : nat) : nat =
+    match ds with
+    | S x -> S (plus x y)
+    | Z -> y
+    end
+  function minus (ds2 : nat) (ds1 : nat) : nat =
+    match ds2 with
+    | S ipv ->
+        match ds1 with
+        | S ipv1 -> minus ipv ipv1
+        | Z -> S ipv
+        end
+    | Z -> Z
+    end
+  goal prop_08 :
+    forall k : nat, m : nat, n : nat .
+      minus (plus k m) (plus k n) = minus m n
+end

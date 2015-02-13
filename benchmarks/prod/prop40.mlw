@@ -1,0 +1,48 @@
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type list 'a = Nil | Cons 'a (list 'a)
+  function equal2 (ds : nat) (ds1 : nat) : bool =
+    match ds with
+    | Z ->
+        match ds1 with
+        | Z -> True
+        | S ipv -> False
+        end
+    | S ds2 ->
+        match ds1 with
+        | Z -> False
+        | S y -> equal2 ds2 y
+        end
+    end
+  function elem (ds3 : nat) (ds12 : list nat) : bool =
+    match ds12 with
+    | Nil -> False
+    | Cons x xs ->
+        match equal2 ds3 x with
+        | False -> elem ds3 xs
+        | True -> True
+        end
+    end
+  function subset (ds4 : list nat) (ys : list nat) : bool =
+    match ds4 with
+    | Nil -> True
+    | Cons x2 xs2 ->
+        match elem x2 ys with
+        | False -> False
+        | True -> subset xs2 ys
+        end
+    end
+  function union (ds5 : list nat) (ys2 : list nat) : list nat =
+    match ds5 with
+    | Nil -> ys2
+    | Cons x3 xs3 ->
+        match elem x3 ys2 with
+        | False -> Cons x3 (union xs3 ys2)
+        | True -> union xs3 ys2
+        end
+    end
+  goal prop_T40 :
+    forall x4 : list nat, y2 : list nat .
+      subset x4 y2 = True -> union x4 y2 = y2
+end

@@ -1,0 +1,21 @@
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type list 'a = Nil | Cons 'a (list 'a)
+  function append (ds : list 'a2) (ys : list 'a2) : list 'a2 =
+    match ds with
+    | Nil -> ys
+    | Cons x xs -> Cons x (append xs ys)
+    end
+  function length (ds2 : list 'a4) : nat =
+    match ds2 with
+    | Nil -> Z
+    | Cons ds1 xs2 -> S (length xs2)
+    end
+  function rev (ds3 : list 'a6) : list 'a6 =
+    match ds3 with
+    | Nil -> Nil
+    | Cons x2 xs3 -> append (rev xs3) (Cons x2 Nil)
+    end
+  goal prop_T05 : forall x3 : list 'a8 . length (rev x3) = length x3
+end

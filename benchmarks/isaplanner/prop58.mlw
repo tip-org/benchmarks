@@ -1,0 +1,28 @@
+module A
+  use HighOrd
+  type nat = S nat | Z
+  type tup 'a 'b = Tup 'a 'b
+  type list 'a = Nil | Cons 'a (list 'a)
+  function drop (ds : nat) (xs : list 'a2) : list 'a2 =
+    match ds with
+    | S ipv ->
+        match xs with
+        | Nil -> Nil
+        | Cons ipv1 ipv2 -> drop ipv ipv2
+        end
+    | Z -> xs
+    end
+  function zip
+    (ds2 : list 'a4) (ds1 : list 'b2) : list (tup 'a4 'b2) =
+    match ds2 with
+    | Nil -> Nil
+    | Cons ipv3 ipv12 ->
+        match ds1 with
+        | Nil -> Nil
+        | Cons ipv22 ipv32 -> Cons (Tup ipv3 ipv22) (zip ipv12 ipv32)
+        end
+    end
+  goal prop_58 :
+    forall n : nat, xs2 : list 'a6, ys : list 'b4 .
+      drop n (zip xs2 ys) = zip (drop n xs2) (drop n ys)
+end

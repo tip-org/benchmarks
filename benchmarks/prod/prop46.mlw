@@ -1,0 +1,48 @@
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type list 'a = Nil | Cons 'a (list 'a)
+  function le (ds : nat) (ds1 : nat) : bool =
+    match ds with
+    | Z -> True
+    | S ipv ->
+        match ds1 with
+        | Z -> False
+        | S ipv1 -> le ipv ipv1
+        end
+    end
+  function equal2 (ds2 : nat) (ds12 : nat) : bool =
+    match ds2 with
+    | Z ->
+        match ds12 with
+        | Z -> True
+        | S ipv2 -> False
+        end
+    | S ds22 ->
+        match ds12 with
+        | Z -> False
+        | S y -> equal2 ds22 y
+        end
+    end
+  function elem (ds3 : nat) (ds13 : list nat) : bool =
+    match ds13 with
+    | Nil -> False
+    | Cons x xs ->
+        match equal2 ds3 x with
+        | False -> elem ds3 xs
+        | True -> True
+        end
+    end
+  function insert (n : nat) (ds4 : list nat) : list nat =
+    match ds4 with
+    | Nil -> Cons n Nil
+    | Cons x2 xs2 ->
+        match le n x2 with
+        | False -> Cons x2 (insert n xs2)
+        | True -> Cons n (Cons x2 xs2)
+        end
+    end
+  goal prop_T46 :
+    forall x3 : nat, y2 : nat, z : list nat .
+      x3 = y2 -> elem x3 (insert y2 z) = True
+end

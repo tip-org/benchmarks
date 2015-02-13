@@ -1,0 +1,19 @@
+module A
+  use HighOrd
+  type nat = S nat | Z
+  function plus (ds : nat) (y : nat) : nat =
+    match ds with
+    | S x -> S (plus x y)
+    | Z -> y
+    end
+  function le (ds2 : nat) (ds1 : nat) : bool =
+    match ds2 with
+    | S ipv ->
+        match ds1 with
+        | S ipv1 -> le ipv ipv1
+        | Z -> False
+        end
+    | Z -> True
+    end
+  goal prop_21 : forall n : nat, m : nat . le n (plus n m) = True
+end

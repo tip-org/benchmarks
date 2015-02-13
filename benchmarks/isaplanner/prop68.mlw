@@ -1,0 +1,44 @@
+module A
+  use HighOrd
+  type nat = S nat | Z
+  type list 'a = Nil | Cons 'a (list 'a)
+  function le (ds : nat) (ds1 : nat) : bool =
+    match ds with
+    | S ipv ->
+        match ds1 with
+        | S ipv1 -> le ipv ipv1
+        | Z -> False
+        end
+    | Z -> True
+    end
+  function equal2 (ds2 : nat) (ds12 : nat) : bool =
+    match ds2 with
+    | S ds22 ->
+        match ds12 with
+        | S y -> equal2 ds22 y
+        | Z -> False
+        end
+    | Z ->
+        match ds12 with
+        | S ipv2 -> False
+        | Z -> True
+        end
+    end
+  function delete (ds3 : nat) (ds13 : list nat) : list nat =
+    match ds13 with
+    | Nil -> Nil
+    | Cons x xs ->
+        match equal2 ds3 x with
+        | False -> Cons x (delete ds3 xs)
+        | True -> delete ds3 xs
+        end
+    end
+  function len (ds4 : list 'a2) : nat =
+    match ds4 with
+    | Nil -> Z
+    | Cons ds14 xs2 -> S (len xs2)
+    end
+  goal prop_68 :
+    forall n : nat, xs3 : list nat .
+      le (len (delete n xs3)) (len xs3) = True
+end

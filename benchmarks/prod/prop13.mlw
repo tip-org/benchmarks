@@ -1,0 +1,19 @@
+module A
+  use HighOrd
+  type nat = Z | S nat
+  function plus (ds : nat) (y : nat) : nat =
+    match ds with
+    | Z -> y
+    | S x -> S (plus x y)
+    end
+  function half (ds2 : nat) : nat =
+    match ds2 with
+    | Z -> Z
+    | S ds1 ->
+        match ds1 with
+        | Z -> Z
+        | S x2 -> S (half x2)
+        end
+    end
+  goal prop_T13 : forall x3 : nat . half (plus x3 x3) = x3
+end

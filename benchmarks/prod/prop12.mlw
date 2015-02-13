@@ -1,0 +1,21 @@
+module A
+  use HighOrd
+  type list 'a = Nil | Cons 'a (list 'a)
+  function append (ds : list 'a2) (ys : list 'a2) : list 'a2 =
+    match ds with
+    | Nil -> ys
+    | Cons x xs -> Cons x (append xs ys)
+    end
+  function qrev (ds2 : list 'a4) (acc : list 'a4) : list 'a4 =
+    match ds2 with
+    | Nil -> acc
+    | Cons x2 xs2 -> qrev xs2 (Cons x2 acc)
+    end
+  function rev (ds3 : list 'a6) : list 'a6 =
+    match ds3 with
+    | Nil -> Nil
+    | Cons x3 xs3 -> append (rev xs3) (Cons x3 Nil)
+    end
+  goal prop_T12 :
+    forall x4 : list 'a8, y : list 'a8 . qrev x4 y = append (rev x4) y
+end

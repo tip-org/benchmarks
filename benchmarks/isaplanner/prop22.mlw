@@ -1,0 +1,16 @@
+module A
+  use HighOrd
+  type nat = S nat | Z
+  function max (ds : nat) (y : nat) : nat =
+    match ds with
+    | S ipv ->
+        match y with
+        | S ipv1 -> S (max ipv ipv1)
+        | Z -> S ipv
+        end
+    | Z -> y
+    end
+  goal prop_22 :
+    forall a : nat, b : nat, c : nat .
+      max (max a b) c = max a (max b c)
+end

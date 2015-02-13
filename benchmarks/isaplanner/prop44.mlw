@@ -1,0 +1,25 @@
+module A
+  use HighOrd
+  type tup 'a 'b = Tup 'a 'b
+  type list 'a = Nil | Cons 'a (list 'a)
+  function zip
+    (ds : list 'a2) (ds1 : list 'b2) : list (tup 'a2 'b2) =
+    match ds with
+    | Nil -> Nil
+    | Cons ipv ipv1 ->
+        match ds1 with
+        | Nil -> Nil
+        | Cons ipv2 ipv3 -> Cons (Tup ipv ipv2) (zip ipv1 ipv3)
+        end
+    end
+  function zipConcat
+    (ds2 : 'a4) (ds12 : list 'a4) (ds22 : list 'b4)
+      : list (tup 'a4 'b4) =
+    match ds22 with
+    | Nil -> Nil
+    | Cons y ys -> Cons (Tup ds2 y) (zip ds12 ys)
+    end
+  goal prop_44 :
+    forall x : 'a5, xs : list 'a5, ys2 : list 'b5 .
+      zip (Cons x xs) ys2 = zipConcat x xs ys2
+end

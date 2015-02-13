@@ -1,0 +1,15 @@
+module A
+  use HighOrd
+  type nat = S nat | Z
+  function le (ds : nat) (ds1 : nat) : bool =
+    match ds with
+    | S ipv ->
+        match ds1 with
+        | S ipv1 -> le ipv ipv1
+        | Z -> False
+        end
+    | Z -> True
+    end
+  goal prop_70 :
+    forall m : nat, n : nat . le m n = True -> le m (S n) = True
+end
