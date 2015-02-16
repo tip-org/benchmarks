@@ -8,7 +8,7 @@ module A
     | Nil -> Nil
     | Cons x xs ->
         match ds2 x with
-        | False -> Cons x xs
+        | False -> ds1
         | True -> dropWhile ds2 xs
         end
     end

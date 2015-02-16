@@ -12,14 +12,14 @@ module A
     | Cons x2 ds1 ->
         match ds1 with
         | Nil -> Nil
-        | Cons ipv ipv1 -> Cons x2 (butlast (Cons ipv ipv1))
+        | Cons ipv ipv1 -> Cons x2 (butlast ds1)
         end
     end
   function butlastConcat
     (xs2 : list 'a6) (ds3 : list 'a6) : list 'a6 =
     match ds3 with
     | Nil -> butlast xs2
-    | Cons ipv2 ipv12 -> append xs2 (butlast (Cons ipv2 ipv12))
+    | Cons ipv2 ipv12 -> append xs2 (butlast ds3)
     end
   goal prop_49 :
     forall xs3 : list 'a7, ys2 : list 'a7 .

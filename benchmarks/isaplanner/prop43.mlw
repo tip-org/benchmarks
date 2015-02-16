@@ -12,7 +12,7 @@ module A
     | Nil -> Nil
     | Cons x2 xs2 ->
         match ds2 x2 with
-        | False -> Cons x2 xs2
+        | False -> ds1
         | True -> dropWhile ds2 xs2
         end
     end

@@ -6,7 +6,7 @@ module A
     | Z -> y
     | S ipv ->
         match y with
-        | Z -> S ipv
+        | Z -> ds
         | S ipv1 -> S (max ipv ipv1)
         end
     end

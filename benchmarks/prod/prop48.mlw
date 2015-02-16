@@ -17,7 +17,7 @@ module A
     | Cons x xs ->
         match le n x with
         | False -> Cons x (insert n xs)
-        | True -> Cons n (Cons x xs)
+        | True -> Cons n ds2
         end
     end
   function isort (ds3 : list nat) : list nat =

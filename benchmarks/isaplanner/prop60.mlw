@@ -13,7 +13,7 @@ module A
     | Cons x2 ds1 ->
         match ds1 with
         | Nil -> x2
-        | Cons ipv ipv1 -> last (Cons ipv ipv1)
+        | Cons ipv ipv1 -> last ds1
         end
     end
   function not2 (ds3 : bool) : bool =

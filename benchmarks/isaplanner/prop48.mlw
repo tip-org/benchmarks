@@ -13,7 +13,7 @@ module A
     | Cons x2 ds1 ->
         match ds1 with
         | Nil -> Nil
-        | Cons ipv ipv1 -> Cons x2 (butlast (Cons ipv ipv1))
+        | Cons ipv ipv1 -> Cons x2 (butlast ds1)
         end
     end
   function last (ds3 : list nat) : nat =
@@ -22,7 +22,7 @@ module A
     | Cons x3 ds12 ->
         match ds12 with
         | Nil -> x3
-        | Cons ipv2 ipv12 -> last (Cons ipv2 ipv12)
+        | Cons ipv2 ipv12 -> last ds12
         end
     end
   function not2 (ds4 : bool) : bool =

@@ -8,7 +8,7 @@ module A
     | Cons x ds1 ->
         match ds1 with
         | Nil -> x
-        | Cons ipv ipv1 -> last (Cons ipv ipv1)
+        | Cons ipv ipv1 -> last ds1
         end
     end
   goal prop_16 :

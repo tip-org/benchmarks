@@ -26,7 +26,7 @@ module A
     | Cons x2 ds12 ->
         match ds12 with
         | Nil -> x2
-        | Cons ipv3 ipv12 -> last (Cons ipv3 ipv12)
+        | Cons ipv3 ipv12 -> last ds12
         end
     end
   function len (ds4 : list 'a4) : nat =

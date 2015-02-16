@@ -12,7 +12,7 @@ module A
     | Cons x2 ds1 ->
         match ds1 with
         | Nil -> Nil
-        | Cons ipv ipv1 -> Cons x2 (butlast (Cons ipv ipv1))
+        | Cons ipv ipv1 -> Cons x2 (butlast ds1)
         end
     end
   goal prop_51 :

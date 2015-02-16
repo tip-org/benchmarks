@@ -6,7 +6,7 @@ module A
     | Z -> Z
     | S ipv ->
         match ds1 with
-        | Z -> S ipv
+        | Z -> ds
         | S ipv1 -> minus ipv ipv1
         end
     end

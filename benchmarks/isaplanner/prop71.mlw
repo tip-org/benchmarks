@@ -39,7 +39,7 @@ module A
     | Cons x3 xs2 ->
         match lt n x3 with
         | False -> Cons x3 (ins n xs2)
-        | True -> Cons n (Cons x3 xs2)
+        | True -> Cons n ds4
         end
     end
   goal prop_71 :

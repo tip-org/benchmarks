@@ -13,13 +13,13 @@ module A
     | Cons x2 ds1 ->
         match ds1 with
         | Nil -> x2
-        | Cons ipv ipv1 -> last (Cons ipv ipv1)
+        | Cons ipv ipv1 -> last ds1
         end
     end
   function lastOfTwo (xs2 : list nat) (ds3 : list nat) : nat =
     match ds3 with
     | Nil -> last xs2
-    | Cons ipv2 ipv12 -> last (Cons ipv2 ipv12)
+    | Cons ipv2 ipv12 -> last ds3
     end
   goal prop_61 :
     forall xs3 : list nat, ys2 : list nat .

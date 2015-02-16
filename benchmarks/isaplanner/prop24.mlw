@@ -28,7 +28,7 @@ module A
     | Z -> y2
     | S ipv3 ->
         match y2 with
-        | Z -> S ipv3
+        | Z -> ds3
         | S ipv12 -> S (max ipv3 ipv12)
         end
     end

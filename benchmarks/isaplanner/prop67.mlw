@@ -7,7 +7,7 @@ module A
     | Z -> Z
     | S ipv ->
         match ds1 with
-        | Z -> S ipv
+        | Z -> ds
         | S ipv1 -> minus ipv ipv1
         end
     end
@@ -17,7 +17,7 @@ module A
     | Cons x ds12 ->
         match ds12 with
         | Nil -> Nil
-        | Cons ipv2 ipv12 -> Cons x (butlast (Cons ipv2 ipv12))
+        | Cons ipv2 ipv12 -> Cons x (butlast ds12)
         end
     end
   function len (ds3 : list 'a4) : nat =

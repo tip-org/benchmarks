@@ -39,7 +39,7 @@ module A
     | Cons x2 xs2 ->
         match le n x2 with
         | False -> Cons x2 (insert n xs2)
-        | True -> Cons n (Cons x2 xs2)
+        | True -> Cons n ds4
         end
     end
   goal prop_T46 :
