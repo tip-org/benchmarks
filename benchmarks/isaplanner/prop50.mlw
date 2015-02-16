@@ -1,15 +1,15 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type list 'a = Nil | Cons 'a (list 'a)
   function minus (ds : nat) (ds1 : nat) : nat =
     match ds with
+    | Z -> Z
     | S ipv ->
         match ds1 with
-        | S ipv1 -> minus ipv ipv1
         | Z -> S ipv
+        | S ipv1 -> minus ipv ipv1
         end
-    | Z -> Z
     end
   function butlast (ds2 : list 'a2) : list 'a2 =
     match ds2 with
@@ -27,12 +27,12 @@ module A
     end
   function take (ds4 : nat) (ds14 : list 'a6) : list 'a6 =
     match ds4 with
+    | Z -> Nil
     | S ipv3 ->
         match ds14 with
         | Nil -> Nil
         | Cons ipv13 ipv22 -> Cons ipv13 (take ipv3 ipv22)
         end
-    | Z -> Nil
     end
   goal prop_50 :
     forall xs2 : list 'a8 .

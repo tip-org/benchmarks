@@ -1,33 +1,33 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type list 'a = Nil | Cons 'a (list 'a)
   function minus (ds : nat) (ds1 : nat) : nat =
     match ds with
+    | Z -> Z
     | S ipv ->
         match ds1 with
-        | S ipv1 -> minus ipv ipv1
         | Z -> S ipv
+        | S ipv1 -> minus ipv ipv1
         end
-    | Z -> Z
     end
   function drop (ds2 : nat) (xs : list 'a2) : list 'a2 =
     match ds2 with
+    | Z -> xs
     | S ipv2 ->
         match xs with
         | Nil -> Nil
         | Cons ipv12 ipv22 -> drop ipv2 ipv22
         end
-    | Z -> xs
     end
   function take (ds3 : nat) (ds12 : list 'a4) : list 'a4 =
     match ds3 with
+    | Z -> Nil
     | S ipv3 ->
         match ds12 with
         | Nil -> Nil
         | Cons ipv13 ipv23 -> Cons ipv13 (take ipv3 ipv23)
         end
-    | Z -> Nil
     end
   goal prop_57 :
     forall n : nat, m : nat, xs2 : list 'a6 .

@@ -1,15 +1,15 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type tree 'a = Leaf | Node (tree 'a) 'a (tree 'a)
   function max (ds : nat) (y : nat) : nat =
     match ds with
+    | Z -> y
     | S ipv ->
         match y with
-        | S ipv1 -> S (max ipv ipv1)
         | Z -> S ipv
+        | S ipv1 -> S (max ipv ipv1)
         end
-    | Z -> y
     end
   function height (ds2 : tree 'a2) : nat =
     match ds2 with

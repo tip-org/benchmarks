@@ -1,14 +1,14 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   function minus (ds : nat) (ds1 : nat) : nat =
     match ds with
+    | Z -> Z
     | S ipv ->
         match ds1 with
-        | S ipv1 -> minus ipv ipv1
         | Z -> S ipv
+        | S ipv1 -> minus ipv ipv1
         end
-    | Z -> Z
     end
   goal prop_79 :
     forall m : nat, n : nat, k : nat .

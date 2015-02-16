@@ -1,16 +1,16 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type tup 'a 'b = Tup 'a 'b
   type list 'a = Nil | Cons 'a (list 'a)
   function take (ds : nat) (ds1 : list 'a2) : list 'a2 =
     match ds with
+    | Z -> Nil
     | S ipv ->
         match ds1 with
         | Nil -> Nil
         | Cons ipv1 ipv2 -> Cons ipv1 (take ipv ipv2)
         end
-    | Z -> Nil
     end
   function zip
     (ds2 : list 'a4) (ds12 : list 'b2) : list (tup 'a4 'b2) =

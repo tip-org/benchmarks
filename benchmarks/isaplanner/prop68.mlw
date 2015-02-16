@@ -1,27 +1,27 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type list 'a = Nil | Cons 'a (list 'a)
   function le (ds : nat) (ds1 : nat) : bool =
     match ds with
+    | Z -> True
     | S ipv ->
         match ds1 with
-        | S ipv1 -> le ipv ipv1
         | Z -> False
+        | S ipv1 -> le ipv ipv1
         end
-    | Z -> True
     end
   function equal2 (ds2 : nat) (ds12 : nat) : bool =
     match ds2 with
-    | S ds22 ->
-        match ds12 with
-        | S y -> equal2 ds22 y
-        | Z -> False
-        end
     | Z ->
         match ds12 with
-        | S ipv2 -> False
         | Z -> True
+        | S ipv2 -> False
+        end
+    | S ds22 ->
+        match ds12 with
+        | Z -> False
+        | S y -> equal2 ds22 y
         end
     end
   function delete (ds3 : nat) (ds13 : list nat) : list nat =

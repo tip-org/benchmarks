@@ -7,7 +7,7 @@ import QuickSpec hiding (S,ins)
 import QuickSpec.Signature
 import QuickSpec.Type
 
-data Nat = S Nat | Z
+data Nat = Z | S Nat
   deriving (Eq,Show,Typeable,Ord)
 
 instance Arbitrary Nat where

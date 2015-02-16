@@ -1,19 +1,19 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   function plus (ds : nat) (y : nat) : nat =
     match ds with
-    | S x -> S (plus x y)
     | Z -> y
+    | S x -> S (plus x y)
     end
   function lt (ds2 : nat) (ds1 : nat) : bool =
     match ds1 with
+    | Z -> False
     | S ipv ->
         match ds2 with
-        | S x2 -> lt x2 ipv
         | Z -> True
+        | S x2 -> lt x2 ipv
         end
-    | Z -> False
     end
   goal prop_65 : forall i : nat, m : nat . lt i (S (plus m i)) = True
 end

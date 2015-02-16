@@ -1,6 +1,6 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type list 'a = Nil | Cons 'a (list 'a)
   function map (f : ('a2 -> 'b)) (ds : list 'a2) : list 'b =
     match ds with
@@ -9,12 +9,12 @@ module A
     end
   function take (ds2 : nat) (ds1 : list 'a4) : list 'a4 =
     match ds2 with
+    | Z -> Nil
     | S ipv ->
         match ds1 with
         | Nil -> Nil
         | Cons ipv1 ipv2 -> Cons ipv1 (take ipv ipv2)
         end
-    | Z -> Nil
     end
   goal prop_41 :
     forall n : nat, f2 : ('a1 -> 'a6), xs2 : list 'a1 .

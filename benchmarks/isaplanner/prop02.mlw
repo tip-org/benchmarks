@@ -1,11 +1,11 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type list 'a = Nil | Cons 'a (list 'a)
   function plus (ds : nat) (y : nat) : nat =
     match ds with
-    | S x -> S (plus x y)
     | Z -> y
+    | S x -> S (plus x y)
     end
   function append (ds2 : list 'a2) (ys : list 'a2) : list 'a2 =
     match ds2 with
@@ -14,15 +14,15 @@ module A
     end
   function equal2 (ds3 : nat) (ds1 : nat) : bool =
     match ds3 with
-    | S ds22 ->
-        match ds1 with
-        | S y2 -> equal2 ds22 y2
-        | Z -> False
-        end
     | Z ->
         match ds1 with
-        | S ipv -> False
         | Z -> True
+        | S ipv -> False
+        end
+    | S ds22 ->
+        match ds1 with
+        | Z -> False
+        | S y2 -> equal2 ds22 y2
         end
     end
   function count (x3 : nat) (ds4 : list nat) : nat =

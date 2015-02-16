@@ -1,14 +1,14 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   function min (ds : nat) (y : nat) : nat =
     match ds with
+    | Z -> Z
     | S x ->
         match y with
-        | S y1 -> S (min x y1)
         | Z -> Z
+        | S y1 -> S (min x y1)
         end
-    | Z -> Z
     end
   goal prop_31 :
     forall a : nat, b : nat, c : nat .

@@ -1,6 +1,6 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type list 'a = Nil | Cons 'a (list 'a)
   function append (ds : list 'a2) (ys : list 'a2) : list 'a2 =
     match ds with
@@ -9,24 +9,24 @@ module A
     end
   function le (ds2 : nat) (ds1 : nat) : bool =
     match ds2 with
+    | Z -> True
     | S ipv ->
         match ds1 with
-        | S ipv1 -> le ipv ipv1
         | Z -> False
+        | S ipv1 -> le ipv ipv1
         end
-    | Z -> True
     end
   function equal2 (ds3 : nat) (ds12 : nat) : bool =
     match ds3 with
-    | S ds22 ->
-        match ds12 with
-        | S y -> equal2 ds22 y
-        | Z -> False
-        end
     | Z ->
         match ds12 with
-        | S ipv2 -> False
         | Z -> True
+        | S ipv2 -> False
+        end
+    | S ds22 ->
+        match ds12 with
+        | Z -> False
+        | S y -> equal2 ds22 y
         end
     end
   function count (x2 : nat) (ds4 : list nat) : nat =

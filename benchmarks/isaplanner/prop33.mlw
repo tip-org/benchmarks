@@ -1,36 +1,36 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   function le (ds : nat) (ds1 : nat) : bool =
     match ds with
+    | Z -> True
     | S ipv ->
         match ds1 with
-        | S ipv1 -> le ipv ipv1
         | Z -> False
+        | S ipv1 -> le ipv ipv1
         end
-    | Z -> True
     end
   function equal2 (ds2 : nat) (ds12 : nat) : bool =
     match ds2 with
-    | S ds22 ->
-        match ds12 with
-        | S y -> equal2 ds22 y
-        | Z -> False
-        end
     | Z ->
         match ds12 with
-        | S ipv2 -> False
         | Z -> True
+        | S ipv2 -> False
+        end
+    | S ds22 ->
+        match ds12 with
+        | Z -> False
+        | S y -> equal2 ds22 y
         end
     end
   function min (ds3 : nat) (y2 : nat) : nat =
     match ds3 with
+    | Z -> Z
     | S x ->
         match y2 with
-        | S y1 -> S (min x y1)
         | Z -> Z
+        | S y1 -> S (min x y1)
         end
-    | Z -> Z
     end
   goal prop_33 :
     forall a : nat, b : nat . equal2 (min a b) a = le a b

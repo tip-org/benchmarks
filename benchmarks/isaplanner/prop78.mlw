@@ -1,15 +1,15 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type list 'a = Nil | Cons 'a (list 'a)
   function le (ds : nat) (ds1 : nat) : bool =
     match ds with
+    | Z -> True
     | S ipv ->
         match ds1 with
-        | S ipv1 -> le ipv ipv1
         | Z -> False
+        | S ipv1 -> le ipv ipv1
         end
-    | Z -> True
     end
   function insort (n : nat) (ds2 : list nat) : list nat =
     match ds2 with

@@ -1,18 +1,18 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type list 'a = Nil | Cons 'a (list 'a)
   function equal2 (ds : nat) (ds1 : nat) : bool =
     match ds with
-    | S ds2 ->
-        match ds1 with
-        | S y -> equal2 ds2 y
-        | Z -> False
-        end
     | Z ->
         match ds1 with
-        | S ipv -> False
         | Z -> True
+        | S ipv -> False
+        end
+    | S ds2 ->
+        match ds1 with
+        | Z -> False
+        | S y -> equal2 ds2 y
         end
     end
   function delete (ds3 : nat) (ds12 : list nat) : list nat =

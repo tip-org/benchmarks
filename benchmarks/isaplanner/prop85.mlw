@@ -1,6 +1,6 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type tup 'a 'b = Tup 'a 'b
   type list 'a = Nil | Cons 'a (list 'a)
   function append (ds : list 'a2) (ys : list 'a2) : list 'a2 =

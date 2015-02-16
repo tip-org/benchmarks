@@ -1,29 +1,29 @@
 module A
   use HighOrd
-  type nat = S nat | Z
+  type nat = Z | S nat
   type list 'a = Nil | Cons 'a (list 'a)
   function plus (ds : nat) (y : nat) : nat =
     match ds with
-    | S x -> S (plus x y)
     | Z -> y
+    | S x -> S (plus x y)
     end
   function drop (ds2 : nat) (xs : list 'a2) : list 'a2 =
     match ds2 with
+    | Z -> xs
     | S ipv ->
         match xs with
         | Nil -> Nil
         | Cons ipv1 ipv2 -> drop ipv ipv2
         end
-    | Z -> xs
     end
   function take (ds3 : nat) (ds1 : list 'a4) : list 'a4 =
     match ds3 with
+    | Z -> Nil
     | S ipv3 ->
         match ds1 with
         | Nil -> Nil
         | Cons ipv12 ipv22 -> Cons ipv12 (take ipv3 ipv22)
         end
-    | Z -> Nil
     end
   goal prop_81 :
     forall n : nat, m : nat, xs2 : list 'a6 .
