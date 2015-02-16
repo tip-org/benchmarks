@@ -23,10 +23,10 @@ module A
     end
   function take (ds4 : nat) (ds13 : list 'a6) : list 'a6 =
     match ds4 with
-    | Z -> Nil
+    | Z -> (Nil : list 'a6)
     | S ipv2 ->
         match ds13 with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a6)
         | Cons ipv12 ipv22 -> Cons ipv12 (take ipv2 ipv22)
         end
     end

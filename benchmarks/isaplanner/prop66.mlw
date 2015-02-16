@@ -14,7 +14,7 @@ module A
   function filter
     (ds2 : ('a2 -> bool)) (ds12 : list 'a2) : list 'a2 =
     match ds12 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a2)
     | Cons x xs ->
         match ds2 x with
         | False -> filter ds2 xs

@@ -13,7 +13,7 @@ module A
     | Z -> xs2
     | S ipv ->
         match xs2 with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a4)
         | Cons ipv1 ipv2 -> drop ipv ipv2
         end
     end
@@ -24,20 +24,20 @@ module A
     end
   function take (ds4 : nat) (ds12 : list 'a8) : list 'a8 =
     match ds4 with
-    | Z -> Nil
+    | Z -> (Nil : list 'a8)
     | S ipv3 ->
         match ds12 with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a8)
         | Cons ipv12 ipv22 -> Cons ipv12 (take ipv3 ipv22)
         end
     end
   function zip
     (ds5 : list 'a10) (ds13 : list 'b2) : list (tup 'a10 'b2) =
     match ds5 with
-    | Nil -> Nil
+    | Nil -> (Nil : list (tup 'a10 'b2))
     | Cons ipv4 ipv13 ->
         match ds13 with
-        | Nil -> Nil
+        | Nil -> (Nil : list (tup 'a10 'b2))
         | Cons ipv23 ipv32 -> Cons (Tup ipv4 ipv23) (zip ipv13 ipv32)
         end
     end

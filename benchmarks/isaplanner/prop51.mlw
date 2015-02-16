@@ -8,10 +8,10 @@ module A
     end
   function butlast (ds2 : list 'a4) : list 'a4 =
     match ds2 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a4)
     | Cons x2 ds1 ->
         match ds1 with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a4)
         | Cons ipv ipv1 -> Cons x2 (butlast ds1)
         end
     end

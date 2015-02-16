@@ -15,16 +15,16 @@ module A
     end
   function rev (ds3 : list 'a6) : list 'a6 =
     match ds3 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a6)
     | Cons x2 xs3 -> append (rev xs3) (Cons x2 Nil)
     end
   function zip
     (ds4 : list 'a8) (ds12 : list 'b2) : list (tup 'a8 'b2) =
     match ds4 with
-    | Nil -> Nil
+    | Nil -> (Nil : list (tup 'a8 'b2))
     | Cons ipv ipv1 ->
         match ds12 with
-        | Nil -> Nil
+        | Nil -> (Nil : list (tup 'a8 'b2))
         | Cons ipv2 ipv3 -> Cons (Tup ipv ipv2) (zip ipv1 ipv3)
         end
     end

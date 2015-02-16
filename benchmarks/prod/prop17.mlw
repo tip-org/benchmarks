@@ -8,7 +8,7 @@ module A
     end
   function rev (ds2 : list 'a4) : list 'a4 =
     match ds2 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a4)
     | Cons x2 xs2 -> append (rev xs2) (Cons x2 Nil)
     end
   goal prop_T17 :

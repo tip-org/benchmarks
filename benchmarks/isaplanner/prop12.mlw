@@ -7,13 +7,13 @@ module A
     | Z -> xs
     | S ipv ->
         match xs with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a2)
         | Cons ipv1 ipv2 -> drop ipv ipv2
         end
     end
   function map (f : ('a4 -> 'b)) (ds2 : list 'a4) : list 'b =
     match ds2 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'b)
     | Cons x xs2 -> Cons (f x) (map f xs2)
     end
   goal prop_12 :

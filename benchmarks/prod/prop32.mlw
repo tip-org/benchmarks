@@ -17,7 +17,7 @@ module A
     | Z -> xs3
     | S ipv ->
         match xs3 with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a6)
         | Cons ipv1 ipv2 -> rotate ipv (append ipv2 (Cons ipv1 Nil))
         end
     end

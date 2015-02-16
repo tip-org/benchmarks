@@ -8,7 +8,7 @@ module A
     end
   function filter (ds2 : ('a4 -> bool)) (ds1 : list 'a4) : list 'a4 =
     match ds1 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a4)
     | Cons x2 xs2 ->
         match ds2 x2 with
         | False -> filter ds2 xs2
@@ -17,7 +17,7 @@ module A
     end
   function rev (ds3 : list 'a6) : list 'a6 =
     match ds3 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a6)
     | Cons x3 xs3 -> append (rev xs3) (Cons x3 Nil)
     end
   goal prop_73 :

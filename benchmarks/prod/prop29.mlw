@@ -13,7 +13,7 @@ module A
     end
   function rev (ds3 : list 'a6) : list 'a6 =
     match ds3 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a6)
     | Cons x3 xs3 -> append (rev xs3) (Cons x3 Nil)
     end
   goal prop_T29 : forall x4 : list 'a8 . rev (qrev x4 Nil) = x4

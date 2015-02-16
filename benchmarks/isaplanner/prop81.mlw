@@ -12,16 +12,16 @@ module A
     | Z -> xs
     | S ipv ->
         match xs with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a2)
         | Cons ipv1 ipv2 -> drop ipv ipv2
         end
     end
   function take (ds3 : nat) (ds1 : list 'a4) : list 'a4 =
     match ds3 with
-    | Z -> Nil
+    | Z -> (Nil : list 'a4)
     | S ipv3 ->
         match ds1 with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a4)
         | Cons ipv12 ipv22 -> Cons ipv12 (take ipv3 ipv22)
         end
     end

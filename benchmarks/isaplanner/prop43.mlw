@@ -9,7 +9,7 @@ module A
   function dropWhile
     (ds2 : ('a4 -> bool)) (ds1 : list 'a4) : list 'a4 =
     match ds1 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a4)
     | Cons x2 xs2 ->
         match ds2 x2 with
         | False -> ds1
@@ -19,10 +19,10 @@ module A
   function takeWhile
     (ds3 : ('a6 -> bool)) (ds12 : list 'a6) : list 'a6 =
     match ds12 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a6)
     | Cons x3 xs3 ->
         match ds3 x3 with
-        | False -> Nil
+        | False -> (Nil : list 'a6)
         | True -> Cons x3 (takeWhile ds3 xs3)
         end
     end

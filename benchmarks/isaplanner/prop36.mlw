@@ -5,10 +5,10 @@ module A
   function takeWhile
     (ds2 : ('a2 -> bool)) (ds1 : list 'a2) : list 'a2 =
     match ds1 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a2)
     | Cons x xs ->
         match ds2 x with
-        | False -> Nil
+        | False -> (Nil : list 'a2)
         | True -> Cons x (takeWhile ds2 xs)
         end
     end

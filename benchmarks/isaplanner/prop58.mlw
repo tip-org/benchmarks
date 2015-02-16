@@ -8,17 +8,17 @@ module A
     | Z -> xs
     | S ipv ->
         match xs with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a2)
         | Cons ipv1 ipv2 -> drop ipv ipv2
         end
     end
   function zip
     (ds2 : list 'a4) (ds1 : list 'b2) : list (tup 'a4 'b2) =
     match ds2 with
-    | Nil -> Nil
+    | Nil -> (Nil : list (tup 'a4 'b2))
     | Cons ipv3 ipv12 ->
         match ds1 with
-        | Nil -> Nil
+        | Nil -> (Nil : list (tup 'a4 'b2))
         | Cons ipv22 ipv32 -> Cons (Tup ipv3 ipv22) (zip ipv12 ipv32)
         end
     end

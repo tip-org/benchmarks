@@ -8,7 +8,7 @@ module A
     end
   function rev (ds2 : list 'a4) : list 'a4 =
     match ds2 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a4)
     | Cons x2 xs2 -> append (rev xs2) (Cons x2 Nil)
     end
   function qrevflat
@@ -19,7 +19,7 @@ module A
     end
   function revflat (ds4 : list (list 'a8)) : list 'a8 =
     match ds4 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a8)
     | Cons xs4 xss2 -> append (revflat xss2) xs4
     end
   goal prop_T28 :

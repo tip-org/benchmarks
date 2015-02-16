@@ -7,7 +7,7 @@ module A
     | Z -> xs
     | S ipv ->
         match xs with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a2)
         | Cons ipv1 ipv2 -> drop ipv ipv2
         end
     end

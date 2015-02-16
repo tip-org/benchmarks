@@ -14,7 +14,7 @@ module A
     end
   function rev (ds3 : list 'a6) : list 'a6 =
     match ds3 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a6)
     | Cons x2 xs3 -> append (rev xs3) (Cons x2 Nil)
     end
   goal prop_T05 : forall x3 : list 'a8 . length (rev x3) = length x3

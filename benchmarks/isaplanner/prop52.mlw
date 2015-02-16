@@ -31,7 +31,7 @@ module A
     end
   function rev (ds4 : list 'a4) : list 'a4 =
     match ds4 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a4)
     | Cons x3 xs2 -> append (rev xs2) (Cons x3 Nil)
     end
   goal prop_52 :

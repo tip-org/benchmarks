@@ -13,10 +13,10 @@ module A
     end
   function butlast (ds2 : list 'a2) : list 'a2 =
     match ds2 with
-    | Nil -> Nil
+    | Nil -> (Nil : list 'a2)
     | Cons x ds12 ->
         match ds12 with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a2)
         | Cons ipv2 ipv12 -> Cons x (butlast ds12)
         end
     end

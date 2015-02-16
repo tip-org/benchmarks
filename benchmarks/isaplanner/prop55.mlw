@@ -21,7 +21,7 @@ module A
     | Z -> xs2
     | S ipv2 ->
         match xs2 with
-        | Nil -> Nil
+        | Nil -> (Nil : list 'a4)
         | Cons ipv12 ipv22 -> drop ipv2 ipv22
         end
     end
