@@ -87,20 +87,20 @@ timesSigns :: Sign -> Sign -> Sign
 Pos `timesSigns` x = x
 Neg `timesSigns` x = opposite x
 
-prop_sign_assoc :: Sign -> Sign -> Sign -> Prop Sign
-prop_sign_assoc s t u = (s `timesSigns` (t `timesSigns` u)) =:= ((s `timesSigns` t) `timesSigns` u)
-
-prop_sign_ident_left :: Sign -> Prop Sign
-prop_sign_ident_left s = s `timesSigns` Pos =:= s
-
-prop_sign_ident_right :: Sign -> Prop Sign
-prop_sign_ident_right s = Pos `timesSigns` s =:= s
-
-prop_sign_opposite_involutive :: Sign -> Prop Sign
-prop_sign_opposite_involutive s = opposite (opposite s) =:= s
-
-prop_sign_triple :: Sign -> Prop Sign
-prop_sign_triple s = s `timesSigns` (s `timesSigns` s) =:= s
+-- prop_sign_assoc :: Sign -> Sign -> Sign -> Prop Sign
+-- prop_sign_assoc s t u = (s `timesSigns` (t `timesSigns` u)) =:= ((s `timesSigns` t) `timesSigns` u)
+--
+-- prop_sign_ident_left :: Sign -> Prop Sign
+-- prop_sign_ident_left s = s `timesSigns` Pos =:= s
+--
+-- prop_sign_ident_right :: Sign -> Prop Sign
+-- prop_sign_ident_right s = Pos `timesSigns` s =:= s
+--
+-- prop_sign_opposite_involutive :: Sign -> Prop Sign
+-- prop_sign_opposite_involutive s = opposite (opposite s) =:= s
+--
+-- prop_sign_triple :: Sign -> Prop Sign
+-- prop_sign_triple s = s `timesSigns` (s `timesSigns` s) =:= s
 
 sign :: Z -> Sign
 sign (P _) = Pos
