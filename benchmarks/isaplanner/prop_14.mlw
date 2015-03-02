@@ -1,0 +1,22 @@
+(* Source: IsaPlanner test suite *)
+module A
+  use HighOrd
+  type list 'a = Nil | Cons 'a (list 'a)
+  function append (ds : list 'a2) (ys : list 'a2) : list 'a2 =
+    match ds with
+    | Nil -> ys
+    | Cons x xs -> Cons x (append xs ys)
+    end
+  function filter (ds2 : ('a4 -> bool)) (ds1 : list 'a4) : list 'a4 =
+    match ds1 with
+    | Nil -> (Nil : list 'a4)
+    | Cons x2 xs2 ->
+        match ds2 x2 with
+        | False -> filter ds2 xs2
+        | True -> Cons x2 (filter ds2 xs2)
+        end
+    end
+  goal prop_14 :
+    forall p : ('a6 -> bool), xs3 : list 'a6, ys2 : list 'a6 .
+      filter p (append xs3 ys2) = append (filter p xs3) (filter p ys2)
+end

@@ -29,8 +29,8 @@ neg (P (S n)) = N n
 neg (P Z)     = P Z
 neg (N n)     = P (S n)
 
-prop_1 :: Z -> Prop Z
-prop_1 x = x =:= neg (neg x)
+prop_neg_involutive :: Z -> Prop Z
+prop_neg_involutive x = x =:= neg (neg x)
 
 -- Integer addition
 plus :: Z -> Z -> Z
@@ -42,23 +42,23 @@ P m `plus` P n = P (m + n)
 zero :: Z
 zero = P Z
 
-prop_2 :: Z -> Prop Z
-prop_2 x = x =:= zero `plus` x
+prop_add_ident_left :: Z -> Prop Z
+prop_add_ident_left x = x =:= zero `plus` x
 
-prop_3 :: Z -> Prop Z
-prop_3 x = x =:= x `plus` zero
+prop_add_ident_right :: Z -> Prop Z
+prop_add_ident_right x = x =:= x `plus` zero
 
-prop_4 :: Z -> Z -> Z -> Prop Z
-prop_4 x y z = (x `plus` (y `plus` z)) =:= ((x `plus` y) `plus` z)
+prop_add_assoc :: Z -> Z -> Z -> Prop Z
+prop_add_assoc x y z = (x `plus` (y `plus` z)) =:= ((x `plus` y) `plus` z)
 
-prop_5 :: Z -> Z -> Prop Z
-prop_5 x y = (x `plus` y) =:= (y `plus` x)
+prop_add_comm :: Z -> Z -> Prop Z
+prop_add_comm x y = (x `plus` y) =:= (y `plus` x)
 
-prop_6 :: Z -> Prop Z
-prop_6 x = neg x `plus` x =:= zero
+prop_add_inv_left :: Z -> Prop Z
+prop_add_inv_left x = neg x `plus` x =:= zero
 
-prop_7 :: Z -> Prop Z
-prop_7 x = x `plus` neg x =:= zero
+prop_add_inv_right :: Z -> Prop Z
+prop_add_inv_right x = x `plus` neg x =:= zero
 
 -- Integer subtraction
 (-.) :: Z -> Z -> Z
@@ -87,20 +87,20 @@ timesSigns :: Sign -> Sign -> Sign
 Pos `timesSigns` x = x
 Neg `timesSigns` x = opposite x
 
-prop_8 :: Sign -> Sign -> Sign -> Prop Sign
-prop_8 s t u = (s `timesSigns` (t `timesSigns` u)) =:= ((s `timesSigns` t) `timesSigns` u)
+prop_sign_assoc :: Sign -> Sign -> Sign -> Prop Sign
+prop_sign_assoc s t u = (s `timesSigns` (t `timesSigns` u)) =:= ((s `timesSigns` t) `timesSigns` u)
 
-prop_9 :: Sign -> Prop Sign
-prop_9 s = s `timesSigns` Pos =:= s
+prop_sign_ident_left :: Sign -> Prop Sign
+prop_sign_ident_left s = s `timesSigns` Pos =:= s
 
-prop_10 :: Sign -> Prop Sign
-prop_10 s = Pos `timesSigns` s =:= s
+prop_sign_ident_right :: Sign -> Prop Sign
+prop_sign_ident_right s = Pos `timesSigns` s =:= s
 
-prop_11 :: Sign -> Prop Sign
-prop_11 s = opposite (opposite s) =:= s
+prop_sign_opposite_involutive :: Sign -> Prop Sign
+prop_sign_opposite_involutive s = opposite (opposite s) =:= s
 
-prop_12 :: Sign -> Prop Sign
-prop_12 s = s `timesSigns` (s `timesSigns` s) =:= s
+prop_sign_triple :: Sign -> Prop Sign
+prop_sign_triple s = s `timesSigns` (s `timesSigns` s) =:= s
 
 sign :: Z -> Sign
 sign (P _) = Pos
@@ -118,23 +118,23 @@ i `times` j = (sign i `timesSigns` sign j) `toInteger` (abs' i * abs' j)
 one :: Z
 one = P (S Z)
 
-prop_13 :: Z -> Prop Z
-prop_13 x = x =:= one `times` x
+prop_mul_ident_left :: Z -> Prop Z
+prop_mul_ident_left x = x =:= one `times` x
 
-prop_14 :: Z -> Prop Z
-prop_14 x = x =:= x `times` one
+prop_mul_ident_right :: Z -> Prop Z
+prop_mul_ident_right x = x =:= x `times` one
 
-prop_15 :: Z -> Z -> Z -> Prop Z
-prop_15 x y z = (x `times` (y `times` z)) =:= ((x `times` y) `times` z)
+prop_mul_assoc :: Z -> Z -> Z -> Prop Z
+prop_mul_assoc x y z = (x `times` (y `times` z)) =:= ((x `times` y) `times` z)
 
-prop_16 :: Z -> Z -> Prop Z
-prop_16 x y = (x `times` y) =:= (y `times` x)
+prop_mul_comm :: Z -> Z -> Prop Z
+prop_mul_comm x y = (x `times` y) =:= (y `times` x)
 
-prop_17 :: Z -> Z -> Z -> Prop Z
-prop_17 x y z = x `times` (y `plus` z) =:= (x `times` y) `plus` (x `times` z)
+prop_left_distrib :: Z -> Z -> Z -> Prop Z
+prop_left_distrib x y z = x `times` (y `plus` z) =:= (x `times` y) `plus` (x `times` z)
 
-prop_18 :: Z -> Z -> Z -> Prop Z
-prop_18 x y z = (x `plus` y) `times` z =:= (x `times` z) `plus` (y `times` z)
+prop_right_distrib :: Z -> Z -> Z -> Prop Z
+prop_right_distrib x y z = (x `plus` y) `times` z =:= (x `times` z) `plus` (y `times` z)
 
 {-
 sig =

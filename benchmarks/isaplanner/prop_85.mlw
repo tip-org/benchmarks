@@ -1,0 +1,35 @@
+(* Source: IsaPlanner test suite *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type tup 'a 'b = Tup 'a 'b
+  type list 'a = Nil | Cons 'a (list 'a)
+  function append (ds : list 'a2) (ys : list 'a2) : list 'a2 =
+    match ds with
+    | Nil -> ys
+    | Cons x xs -> Cons x (append xs ys)
+    end
+  function len (ds2 : list 'a4) : nat =
+    match ds2 with
+    | Nil -> Z
+    | Cons ds1 xs2 -> S (len xs2)
+    end
+  function rev (ds3 : list 'a6) : list 'a6 =
+    match ds3 with
+    | Nil -> (Nil : list 'a6)
+    | Cons x2 xs3 -> append (rev xs3) (Cons x2 Nil)
+    end
+  function zip
+    (ds4 : list 'a8) (ds12 : list 'b2) : list (tup 'a8 'b2) =
+    match ds4 with
+    | Nil -> (Nil : list (tup 'a8 'b2))
+    | Cons ipv ipv1 ->
+        match ds12 with
+        | Nil -> (Nil : list (tup 'a8 'b2))
+        | Cons ipv2 ipv3 -> Cons (Tup ipv ipv2) (zip ipv1 ipv3)
+        end
+    end
+  goal prop_85 :
+    forall xs4 : list 'a10, ys2 : list 'b4 .
+      len xs4 = len ys2 -> zip (rev xs4) (rev ys2) = rev (zip xs4 ys2)
+end

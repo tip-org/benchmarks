@@ -1,0 +1,54 @@
+(* Source: Productive use of failure *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type list 'a = Nil | Cons 'a (list 'a)
+  function le (ds : nat) (ds1 : nat) : bool =
+    match ds with
+    | Z -> True
+    | S ipv ->
+        match ds1 with
+        | Z -> False
+        | S ipv1 -> le ipv ipv1
+        end
+    end
+  function equal2 (ds2 : nat) (ds12 : nat) : bool =
+    match ds2 with
+    | Z ->
+        match ds12 with
+        | Z -> True
+        | S ipv2 -> False
+        end
+    | S ds22 ->
+        match ds12 with
+        | Z -> False
+        | S y -> equal2 ds22 y
+        end
+    end
+  function unequal (x : nat) (y2 : nat) : bool =
+    match equal2 x y2 with
+    | False -> True
+    | True -> False
+    end
+  function elem (ds3 : nat) (ds13 : list nat) : bool =
+    match ds13 with
+    | Nil -> False
+    | Cons x2 xs ->
+        match equal2 ds3 x2 with
+        | False -> elem ds3 xs
+        | True -> True
+        end
+    end
+  function insert (n : nat) (ds4 : list nat) : list nat =
+    match ds4 with
+    | Nil -> Cons n Nil
+    | Cons x3 xs2 ->
+        match le n x3 with
+        | False -> Cons x3 (insert n xs2)
+        | True -> Cons n ds4
+        end
+    end
+  goal prop_T47 :
+    forall x4 : nat, y3 : nat, z : list nat .
+      unequal x4 y3 = True -> elem x4 (insert y3 z) = elem x4 z
+end

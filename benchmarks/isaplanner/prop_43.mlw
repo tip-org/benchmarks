@@ -1,0 +1,33 @@
+(* Source: IsaPlanner test suite *)
+module A
+  use HighOrd
+  type list 'a = Nil | Cons 'a (list 'a)
+  function append (ds : list 'a2) (ys : list 'a2) : list 'a2 =
+    match ds with
+    | Nil -> ys
+    | Cons x xs -> Cons x (append xs ys)
+    end
+  function dropWhile
+    (ds2 : ('a4 -> bool)) (ds1 : list 'a4) : list 'a4 =
+    match ds1 with
+    | Nil -> (Nil : list 'a4)
+    | Cons x2 xs2 ->
+        match ds2 x2 with
+        | False -> ds1
+        | True -> dropWhile ds2 xs2
+        end
+    end
+  function takeWhile
+    (ds3 : ('a6 -> bool)) (ds12 : list 'a6) : list 'a6 =
+    match ds12 with
+    | Nil -> (Nil : list 'a6)
+    | Cons x3 xs3 ->
+        match ds3 x3 with
+        | False -> (Nil : list 'a6)
+        | True -> Cons x3 (takeWhile ds3 xs3)
+        end
+    end
+  goal prop_43 :
+    forall p : ('a8 -> bool), xs4 : list 'a8 .
+      append (takeWhile p xs4) (dropWhile p xs4) = xs4
+end

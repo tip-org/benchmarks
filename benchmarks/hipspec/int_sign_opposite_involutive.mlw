@@ -1,0 +1,12 @@
+(* Integers implemented using natural numbers *)
+module A
+  use HighOrd
+  type sign = Pos | Neg
+  function opposite (ds : sign) : sign =
+    match ds with
+    | Pos -> Neg
+    | Neg -> Pos
+    end
+  goal prop_sign_opposite_involutive :
+    forall s : sign . opposite (opposite s) = s
+end

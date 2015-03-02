@@ -1,0 +1,48 @@
+(* Integers implemented using natural numbers *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type z = P nat | N nat
+  function minus (ds : nat) (ds2 : nat) : z =
+    match ds with
+    | Z ->
+        match ds2 with
+        | Z -> P Z
+        | S n -> N n
+        end
+    | S m ->
+        match ds2 with
+        | Z -> P ds
+        | S n2 -> minus m n2
+        end
+    end
+  function neg (ds3 : z) : z =
+    match ds3 with
+    | P ds4 ->
+        match ds4 with
+        | Z -> P Z
+        | S n3 -> N n3
+        end
+    | N n4 -> P (S n4)
+    end
+  function zero : z = P Z
+  function plus (ds5 : nat) (m2 : nat) : nat =
+    match ds5 with
+    | Z -> m2
+    | S n5 -> S (plus n5 m2)
+    end
+  function plus2 (ds6 : z) (ds7 : z) : z =
+    match ds6 with
+    | P m3 ->
+        match ds7 with
+        | P n6 -> P (plus m3 n6)
+        | N n7 -> minus m3 (S n7)
+        end
+    | N m4 ->
+        match ds7 with
+        | P n8 -> minus n8 (S m4)
+        | N n9 -> N (S (plus m4 n9))
+        end
+    end
+  goal prop_add_inv_left : forall x : z . plus2 (neg x) x = zero
+end

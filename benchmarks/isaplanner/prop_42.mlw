@@ -1,0 +1,18 @@
+(* Source: IsaPlanner test suite *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type list 'a = Nil | Cons 'a (list 'a)
+  function take (ds : nat) (ds1 : list 'a2) : list 'a2 =
+    match ds with
+    | Z -> (Nil : list 'a2)
+    | S ipv ->
+        match ds1 with
+        | Nil -> (Nil : list 'a2)
+        | Cons ipv1 ipv2 -> Cons ipv1 (take ipv ipv2)
+        end
+    end
+  goal prop_42 :
+    forall n : nat, x : 'a4, xs : list 'a4 .
+      take (S n) (Cons x xs) = Cons x (take n xs)
+end

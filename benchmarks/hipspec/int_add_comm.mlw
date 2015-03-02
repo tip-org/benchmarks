@@ -1,0 +1,38 @@
+(* Integers implemented using natural numbers *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type z = P nat | N nat
+  function minus (ds : nat) (ds2 : nat) : z =
+    match ds with
+    | Z ->
+        match ds2 with
+        | Z -> P Z
+        | S n -> N n
+        end
+    | S m ->
+        match ds2 with
+        | Z -> P ds
+        | S n2 -> minus m n2
+        end
+    end
+  function plus (ds3 : nat) (m2 : nat) : nat =
+    match ds3 with
+    | Z -> m2
+    | S n3 -> S (plus n3 m2)
+    end
+  function plus2 (ds4 : z) (ds5 : z) : z =
+    match ds4 with
+    | P m3 ->
+        match ds5 with
+        | P n4 -> P (plus m3 n4)
+        | N n5 -> minus m3 (S n5)
+        end
+    | N m4 ->
+        match ds5 with
+        | P n6 -> minus n6 (S m4)
+        | N n7 -> N (S (plus m4 n7))
+        end
+    end
+  goal prop_add_comm : forall x : z, y : z . plus2 x y = plus2 y x
+end

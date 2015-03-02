@@ -1,0 +1,31 @@
+(* Source: IsaPlanner test suite *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type list 'a = Nil | Cons 'a (list 'a)
+  function minus (ds : nat) (ds1 : nat) : nat =
+    match ds with
+    | Z -> Z
+    | S ipv ->
+        match ds1 with
+        | Z -> ds
+        | S ipv1 -> minus ipv ipv1
+        end
+    end
+  function butlast (ds2 : list 'a2) : list 'a2 =
+    match ds2 with
+    | Nil -> (Nil : list 'a2)
+    | Cons x ds12 ->
+        match ds12 with
+        | Nil -> (Nil : list 'a2)
+        | Cons ipv2 ipv12 -> Cons x (butlast ds12)
+        end
+    end
+  function len (ds3 : list 'a4) : nat =
+    match ds3 with
+    | Nil -> Z
+    | Cons ds13 xs -> S (len xs)
+    end
+  goal prop_67 :
+    forall xs2 : list 'a6 . len (butlast xs2) = minus (len xs2) (S Z)
+end

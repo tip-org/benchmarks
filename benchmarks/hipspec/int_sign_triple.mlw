@@ -1,0 +1,17 @@
+(* Integers implemented using natural numbers *)
+module A
+  use HighOrd
+  type sign = Pos | Neg
+  function opposite (ds : sign) : sign =
+    match ds with
+    | Pos -> Neg
+    | Neg -> Pos
+    end
+  function timesSigns (ds2 : sign) (x : sign) : sign =
+    match ds2 with
+    | Pos -> x
+    | Neg -> opposite x
+    end
+  goal prop_sign_triple :
+    forall s : sign . timesSigns s (timesSigns s s) = s
+end
