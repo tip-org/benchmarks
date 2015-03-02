@@ -1,0 +1,56 @@
+(* Tree sort *)
+module A
+  use HighOrd
+  type tree 'a = Node (tree 'a) 'a (tree 'a) | Nil
+  type nat = Z | S nat
+  type list 'a2 = Nil2 | Cons 'a2 (list 'a2)
+  function le (ds : nat) (ds2 : nat) : bool =
+    match ds with
+    | Z -> True
+    | S d ->
+        match ds2 with
+        | Z -> False
+        | S d2 -> le d d2
+        end
+    end
+  function equal2 (ds3 : nat) (ds4 : nat) : bool =
+    match ds3 with
+    | Z ->
+        match ds4 with
+        | Z -> True
+        | S d3 -> False
+        end
+    | S x ->
+        match ds4 with
+        | Z -> False
+        | S y -> equal2 x y
+        end
+    end
+  function add (x2 : nat) (ds5 : tree nat) : tree nat =
+    match ds5 with
+    | Node p y2 q ->
+        match le x2 y2 with
+        | False -> Node p y2 (add x2 q)
+        | True -> Node (add x2 p) y2 q
+        end
+    | Nil -> Node Nil x2 Nil
+    end
+  function count (x3 : nat) (ds6 : list nat) : nat =
+    match ds6 with
+    | Nil2 -> Z
+    | Cons y3 xs ->
+        match equal2 x3 y3 with
+        | False -> count x3 xs
+        | True -> S (count x3 xs)
+        end
+    end
+  function flatten (ds7 : tree 'a3) (ys : list 'a3) : list 'a3 =
+    match ds7 with
+    | Node p2 x4 q2 -> flatten p2 (Cons x4 (flatten q2 ys))
+    | Nil -> ys
+    end
+  goal prop_AddDifferent :
+    forall x5 : nat, y4 : nat, t : tree nat .
+      equal2 x5 y4 = False ->
+      count y4 (flatten (add x5 t) Nil2) = count y4 (flatten t Nil2)
+end
