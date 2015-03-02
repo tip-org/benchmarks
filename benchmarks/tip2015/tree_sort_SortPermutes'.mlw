@@ -1,0 +1,86 @@
+(* Tree sort *)
+module A
+  use HighOrd
+  type tree 'a = Node (tree 'a) 'a (tree 'a) | Nil
+  type nat = Z | S nat
+  type list 'a2 = Nil2 | Cons 'a2 (list 'a2)
+  function le (ds : nat) (ds2 : nat) : bool =
+    match ds with
+    | Z -> True
+    | S d ->
+        match ds2 with
+        | Z -> False
+        | S d2 -> le d d2
+        end
+    end
+  function equal2 (ds3 : nat) (ds4 : nat) : bool =
+    match ds3 with
+    | Z ->
+        match ds4 with
+        | Z -> True
+        | S d3 -> False
+        end
+    | S x ->
+        match ds4 with
+        | Z -> False
+        | S y -> equal2 x y
+        end
+    end
+  function add (x2 : nat) (ds5 : tree nat) : tree nat =
+    match ds5 with
+    | Node p y2 q ->
+        match le x2 y2 with
+        | False -> Node p y2 (add x2 q)
+        | True -> Node (add x2 p) y2 q
+        end
+    | Nil -> Node Nil x2 Nil
+    end
+  function delete (ds6 : nat) (ds7 : list nat) : list nat =
+    match ds7 with
+    | Nil2 -> Nil2
+    | Cons y3 ys ->
+        match equal2 ds6 y3 with
+        | False -> Cons y3 (delete ds6 ys)
+        | True -> ys
+        end
+    end
+  function flatten (ds8 : tree 'a3) (ys2 : list 'a3) : list 'a3 =
+    match ds8 with
+    | Node p2 x3 q2 -> flatten p2 (Cons x3 (flatten q2 ys2))
+    | Nil -> ys2
+    end
+  function toTree (ds9 : list nat) : tree nat =
+    match ds9 with
+    | Nil2 -> Nil
+    | Cons x4 xs -> add x4 (toTree xs)
+    end
+  function tsort (t : list nat) : list nat = flatten (toTree t) Nil2
+  function null (ds10 : list 'a5) : bool =
+    match ds10 with
+    | Nil2 -> True
+    | Cons ds1 ds22 -> False
+    end
+  function and2 (ds11 : bool) (x5 : bool) : bool =
+    match ds11 with
+    | False -> False
+    | True -> x5
+    end
+  function or2 (ds12 : bool) (ds13 : bool) : bool =
+    match ds12 with
+    | False -> ds13
+    | True -> True
+    end
+  function elem (x6 : nat) (ds14 : list nat) : bool =
+    match ds14 with
+    | Nil2 -> False
+    | Cons y4 ys3 -> or2 (equal2 x6 y4) (elem x6 ys3)
+    end
+  function isPermutation (ds15 : list nat) (ys4 : list nat) : bool =
+    match ds15 with
+    | Nil2 -> null ys4
+    | Cons x7 xs2 ->
+        and2 (elem x7 ys4) (isPermutation xs2 (delete x7 ys4))
+    end
+  goal prop_SortPermutes' :
+    forall ds16 : list nat . isPermutation (tsort ds16) ds16 = True
+end
