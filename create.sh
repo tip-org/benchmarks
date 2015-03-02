@@ -26,3 +26,8 @@ create() {
   cd original/isaplanner
   create prop_ 85 Properties.hs ../../benchmarks/isaplanner/prop
 )
+(
+  mkdir -p benchmarks/hipspec
+  cd original/hipspec
+  create prop_ 18 Integers.hs ../../benchmarks/hipspec/int
+)
