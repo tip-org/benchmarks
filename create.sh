@@ -28,18 +28,22 @@ create() {
 
     (
     cd original/$KIND
-    PROPS=$(grep "^$PROP.* ::" $FILE|sed "s/^$PROP\(.*\) ::.*/\\1/")
+    PROPS=$(grep "^$PROP[^ ]* [^:]" $FILE|sed "s/^$PROP\([^ ]*\) .*/\\1/")
     create1 $PROP $FILE ../../$DEST "$COMMENT" $PROPS
     )
 }
 
-#create prop_T prod       Properties.hs prop "Source: Productive use of failure"
-#create prop_  isaplanner Properties.hs prop "Source: IsaPlanner test suite"
-#create prop_  hipspec    Integers.hs   int  "Integers implemented using natural numbers"
-#create prop_  hipspec    BinLists.hs   bin  "Binary natural numbers"
-#create prop_  grammars    SimpleExpr1.hs   simp_expr  "Simple expression unambiguity"
-#create prop_  grammars    SimpleExpr2.hs   simp_expr  "Simple expression unambiguity"
-#create prop_  grammars    SimpleExpr3.hs   simp_expr  "Simple expression unambiguity"
-#create prop_  grammars    SimpleExpr4.hs   simp_expr  "Simple expression unambiguity"
-#create prop_  grammars    SimpleExpr5.hs   simp_expr  "Simple expression unambiguity"
-#create prop_  grammars    Packrat.hs       packrat  "An example from Packrat Parsing (ICFP 2002)"
+create prop_T prod       Properties.hs prop "Source: Productive use of failure"
+create prop_  isaplanner Properties.hs prop "Source: IsaPlanner test suite"
+create prop_  hipspec    Integers.hs   int  "Integers implemented using natural numbers"
+create prop_  hipspec    BinLists.hs   bin  "Binary natural numbers"
+create prop_  hipspec   Nichomachus.hs   nicomachus "Nicomachus's theorem"
+create prop_  hipspec    DifficultRotate.hs   difficult  "Difficult examples about rotate"
+create prop_  hipspec    SnocRotate.hs   snoc_rotate  "Rotate expressed using snoc"
+create prop_ hipspec RegExp.hs regexp "Regular expressions"
+create prop_  grammars    SimpleExpr1.hs   simp_expr  "Simple expression unambiguity"
+create prop_  grammars    SimpleExpr2.hs   simp_expr  "Simple expression unambiguity"
+create prop_  grammars    SimpleExpr3.hs   simp_expr  "Simple expression unambiguity"
+create prop_  grammars    SimpleExpr4.hs   simp_expr  "Simple expression unambiguity"
+create prop_  grammars    SimpleExpr5.hs   simp_expr  "Simple expression unambiguity"
+create prop_  grammars    Packrat.hs       packrat  "An example from Packrat Parsing (ICFP 2002)"

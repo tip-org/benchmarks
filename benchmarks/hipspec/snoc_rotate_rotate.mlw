@@ -1,0 +1,27 @@
+(* Rotate expressed using snoc *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type list 'a = Nil | Cons 'a (list 'a)
+  function snoc (x : 'a2) (ds : list 'a2) : list 'a2 =
+    match ds with
+    | Nil -> Cons x Nil
+    | Cons y ys -> Cons y (snoc x ys)
+    end
+  function rotate (ds2 : nat) (xs : list 'a4) : list 'a4 =
+    match ds2 with
+    | Z -> xs
+    | S d ->
+        match xs with
+        | Nil -> (Nil : list 'a4)
+        | Cons d2 d3 -> rotate d (snoc d2 d3)
+        end
+    end
+  function length (ds3 : list 'a6) : nat =
+    match ds3 with
+    | Nil -> Z
+    | Cons ds1 xs2 -> S (length xs2)
+    end
+  goal prop_rotate :
+    forall xs3 : list 'a8 . rotate (length xs3) xs3 = xs3
+end
