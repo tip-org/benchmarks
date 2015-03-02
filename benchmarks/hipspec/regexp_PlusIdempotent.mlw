@@ -1,0 +1,160 @@
+(* Regular expressions *)
+module A
+  use HighOrd
+  type a = X | Y
+  type r = Nil | Eps | Atom a | Plus r r | Seq r r | Star r
+  type list 'a2 = Nil2 | Cons 'a2 (list 'a2)
+  function and2 (ds : bool) (x : bool) : bool =
+    match ds with
+    | False -> False
+    | True -> x
+    end
+  function or2 (ds2 : bool) (ds1 : bool) : bool =
+    match ds2 with
+    | False -> ds1
+    | True -> True
+    end
+  function eps (ds3 : r) : bool =
+    match ds3 with
+    | Nil -> False
+    | Eps -> True
+    | Atom d -> False
+    | Plus p q -> or2 (eps p) (eps q)
+    | Seq p2 q2 -> and2 (eps p2) (eps q2)
+    | Star ds4 -> True
+    end
+  function epsR (p3 : r) : r =
+    match eps p3 with
+    | False -> Nil
+    | True -> Eps
+    end
+  function eqA (ds5 : a) (ds6 : a) : bool =
+    match ds5 with
+    | X -> False
+    | Y ->
+        match ds6 with
+        | X -> False
+        | Y -> True
+        end
+    end
+  function plus (ds7 : r) (q3 : r) : r =
+    match ds7 with
+    | Nil -> q3
+    | Eps ->
+        match q3 with
+        | Nil -> Eps
+        | Eps -> Plus Eps Eps
+        | Atom d2 -> Plus Eps q3
+        | Plus d3 d4 -> Plus Eps q3
+        | Seq d5 d6 -> Plus Eps q3
+        | Star d7 -> Plus Eps q3
+        end
+    | Atom d8 ->
+        match q3 with
+        | Nil -> ds7
+        | Eps -> Plus ds7 Eps
+        | Atom d9 -> Plus ds7 q3
+        | Plus d10 d11 -> Plus ds7 q3
+        | Seq d12 d13 -> Plus ds7 q3
+        | Star d14 -> Plus ds7 q3
+        end
+    | Plus d15 d16 ->
+        match q3 with
+        | Nil -> ds7
+        | Eps -> Plus ds7 Eps
+        | Atom d17 -> Plus ds7 q3
+        | Plus d18 d19 -> Plus ds7 q3
+        | Seq d20 d21 -> Plus ds7 q3
+        | Star d22 -> Plus ds7 q3
+        end
+    | Seq d23 d24 ->
+        match q3 with
+        | Nil -> ds7
+        | Eps -> Plus ds7 Eps
+        | Atom d25 -> Plus ds7 q3
+        | Plus d26 d27 -> Plus ds7 q3
+        | Seq d28 d29 -> Plus ds7 q3
+        | Star d30 -> Plus ds7 q3
+        end
+    | Star d31 ->
+        match q3 with
+        | Nil -> ds7
+        | Eps -> Plus ds7 Eps
+        | Atom d32 -> Plus ds7 q3
+        | Plus d33 d34 -> Plus ds7 q3
+        | Seq d35 d36 -> Plus ds7 q3
+        | Star d37 -> Plus ds7 q3
+        end
+    end
+  function seq (ds8 : r) (q4 : r) : r =
+    match ds8 with
+    | Nil -> Nil
+    | Eps ->
+        match q4 with
+        | Nil -> Nil
+        | Eps -> Eps
+        | Atom d38 -> Atom d38
+        | Plus d39 d40 -> Plus d39 d40
+        | Seq d41 d42 -> Seq d41 d42
+        | Star d43 -> Star d43
+        end
+    | Atom d44 ->
+        match q4 with
+        | Nil -> Nil
+        | Eps -> ds8
+        | Atom d45 -> Seq ds8 q4
+        | Plus d46 d47 -> Seq ds8 q4
+        | Seq d48 d49 -> Seq ds8 q4
+        | Star d50 -> Seq ds8 q4
+        end
+    | Plus d51 d52 ->
+        match q4 with
+        | Nil -> Nil
+        | Eps -> ds8
+        | Atom d53 -> Seq ds8 q4
+        | Plus d54 d55 -> Seq ds8 q4
+        | Seq d56 d57 -> Seq ds8 q4
+        | Star d58 -> Seq ds8 q4
+        end
+    | Seq d59 d60 ->
+        match q4 with
+        | Nil -> Nil
+        | Eps -> ds8
+        | Atom d61 -> Seq ds8 q4
+        | Plus d62 d63 -> Seq ds8 q4
+        | Seq d64 d65 -> Seq ds8 q4
+        | Star d66 -> Seq ds8 q4
+        end
+    | Star d67 ->
+        match q4 with
+        | Nil -> Nil
+        | Eps -> ds8
+        | Atom d68 -> Seq ds8 q4
+        | Plus d69 d70 -> Seq ds8 q4
+        | Seq d71 d72 -> Seq ds8 q4
+        | Star d73 -> Seq ds8 q4
+        end
+    end
+  function step (ds9 : r) (x2 : a) : r =
+    match ds9 with
+    | Nil -> Nil
+    | Eps -> Nil
+    | Atom a3 ->
+        match eqA a3 x2 with
+        | False -> Nil
+        | True -> Eps
+        end
+    | Plus p4 q5 -> plus (step p4 x2) (step q5 x2)
+    | Seq p5 q6 ->
+        plus (seq (step p5 x2) q6) (seq (epsR p5) (step q6 x2))
+    | Star p6 -> seq (step p6 x2) ds9
+    end
+  function recognise (p7 : r) (ds10 : list a) : bool =
+    match ds10 with
+    | Nil2 -> eps p7
+    | Cons x3 xs -> recognise (step p7 x3) xs
+    end
+  goal prop_PlusIdempotent :
+    forall p8 : r, s : list a .
+      recognise (Plus p8 p8) s = recognise p8 s
+end

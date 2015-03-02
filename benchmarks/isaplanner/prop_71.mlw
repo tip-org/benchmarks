@@ -1,0 +1,49 @@
+(* Source: IsaPlanner test suite *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type list 'a = Nil | Cons 'a (list 'a)
+  function lt (ds : nat) (ds1 : nat) : bool =
+    match ds1 with
+    | Z -> False
+    | S ipv ->
+        match ds with
+        | Z -> True
+        | S x -> lt x ipv
+        end
+    end
+  function equal2 (ds2 : nat) (ds12 : nat) : bool =
+    match ds2 with
+    | Z ->
+        match ds12 with
+        | Z -> True
+        | S ipv2 -> False
+        end
+    | S ds22 ->
+        match ds12 with
+        | Z -> False
+        | S y -> equal2 ds22 y
+        end
+    end
+  function elem (ds3 : nat) (ds13 : list nat) : bool =
+    match ds13 with
+    | Nil -> False
+    | Cons x2 xs ->
+        match equal2 ds3 x2 with
+        | False -> elem ds3 xs
+        | True -> True
+        end
+    end
+  function ins (n : nat) (ds4 : list nat) : list nat =
+    match ds4 with
+    | Nil -> Cons n Nil
+    | Cons x3 xs2 ->
+        match lt n x3 with
+        | False -> Cons x3 (ins n xs2)
+        | True -> Cons n ds4
+        end
+    end
+  goal prop_71 :
+    forall x4 : nat, y2 : nat, xs3 : list nat .
+      equal2 x4 y2 = False -> elem x4 (ins y2 xs3) = elem x4 xs3
+end
