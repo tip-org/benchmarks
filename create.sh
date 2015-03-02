@@ -33,6 +33,7 @@ create() {
     )
 }
 
-create prop_T prod       Properties.hs prop "Source: Productive use of failure"
-create prop_  isaplanner Properties.hs prop "Source: IsaPlanner test suite"
-create prop_  hipspec    Integers.hs   int  "Integers implemented using natural numbers"
+#create prop_T prod       Properties.hs prop "Source: Productive use of failure"
+#create prop_  isaplanner Properties.hs prop "Source: IsaPlanner test suite"
+#create prop_  hipspec    Integers.hs   int  "Integers implemented using natural numbers"
+create prop_  hipspec    BinLists.hs   bin  "Binary natural numbers"

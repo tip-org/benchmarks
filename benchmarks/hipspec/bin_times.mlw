@@ -1,0 +1,53 @@
+(* Binary natural numbers *)
+module A
+  use HighOrd
+  type bin = One | ZeroAnd bin | OneAnd bin
+  type nat = Z | S nat
+  function plus (ds : nat) (m : nat) : nat =
+    match ds with
+    | Z -> m
+    | S n -> S (plus n m)
+    end
+  function mult (ds2 : nat) (ds3 : nat) : nat =
+    match ds2 with
+    | Z -> Z
+    | S n2 -> plus ds3 (mult n2 ds3)
+    end
+  function s (ds4 : bin) : bin =
+    match ds4 with
+    | One -> ZeroAnd One
+    | ZeroAnd xs -> OneAnd xs
+    | OneAnd xs2 -> ZeroAnd (s xs2)
+    end
+  function plus2 (ds5 : bin) (xs3 : bin) : bin =
+    match ds5 with
+    | One -> s xs3
+    | ZeroAnd ds6 ->
+        match xs3 with
+        | One -> s ds5
+        | ZeroAnd ys -> ZeroAnd (plus2 ds6 ys)
+        | OneAnd ys2 -> OneAnd (plus2 ds6 ys2)
+        end
+    | OneAnd ds7 ->
+        match xs3 with
+        | One -> s ds5
+        | ZeroAnd ys3 -> OneAnd (plus2 ds7 ys3)
+        | OneAnd ys4 -> ZeroAnd (s (plus2 ds7 ys4))
+        end
+    end
+  function times (ds8 : bin) (xs4 : bin) : bin =
+    match ds8 with
+    | One -> xs4
+    | ZeroAnd xs5 -> ZeroAnd (times xs5 xs4)
+    | OneAnd xs6 -> plus2 (ZeroAnd (times xs6 xs4)) xs4
+    end
+  function toNat (ds9 : bin) : nat =
+    match ds9 with
+    | One -> S Z
+    | ZeroAnd xs7 -> plus (toNat xs7) (toNat xs7)
+    | OneAnd xs8 -> S (plus (toNat xs8) (toNat xs8))
+    end
+  goal prop_times :
+    forall x : bin, y : bin .
+      toNat (times x y) = mult (toNat x) (toNat y)
+end

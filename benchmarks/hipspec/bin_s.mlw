@@ -1,0 +1,24 @@
+(* Binary natural numbers *)
+module A
+  use HighOrd
+  type bin = One | ZeroAnd bin | OneAnd bin
+  type nat = Z | S nat
+  function s (ds : bin) : bin =
+    match ds with
+    | One -> ZeroAnd One
+    | ZeroAnd xs -> OneAnd xs
+    | OneAnd xs2 -> ZeroAnd (s xs2)
+    end
+  function plus (ds2 : nat) (m : nat) : nat =
+    match ds2 with
+    | Z -> m
+    | S n -> S (plus n m)
+    end
+  function toNat (ds3 : bin) : nat =
+    match ds3 with
+    | One -> S Z
+    | ZeroAnd xs3 -> plus (toNat xs3) (toNat xs3)
+    | OneAnd xs4 -> S (plus (toNat xs4) (toNat xs4))
+    end
+  goal prop_s : forall n2 : bin . toNat (s n2) = S (toNat n2)
+end
