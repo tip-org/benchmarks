@@ -48,3 +48,4 @@ create prop_  grammars    SimpleExpr4.hs   simp_expr  "Simple expression unambig
 create prop_  grammars    SimpleExpr5.hs   simp_expr  "Simple expression unambiguity"
 create prop_  grammars    Packrat.hs       packrat  "An example from Packrat Parsing (ICFP 2002)"
 create prop_  hipspec    ListMonad.hs       list        "List monad laws"
+create prop_  hipspec    Sort_HeapSort.hs       heap        "Skew heaps"

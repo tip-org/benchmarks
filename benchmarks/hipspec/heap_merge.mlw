@@ -1,0 +1,65 @@
+(* Skew heaps *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type heap = Node heap nat heap | Nil
+  type list 'a = Nil2 | Cons 'a (list 'a)
+  function le (ds : nat) (ds2 : nat) : bool =
+    match ds with
+    | Z -> True
+    | S d ->
+        match ds2 with
+        | Z -> False
+        | S d2 -> le d d2
+        end
+    end
+  function merge (ds3 : heap) (q : heap) : heap =
+    match ds3 with
+    | Node d3 d4 d5 ->
+        match q with
+        | Node d6 d7 d8 ->
+            match le d4 d7 with
+            | False -> Node (merge ds3 d8) d7 d6
+            | True -> Node (merge d5 q) d4 d3
+            end
+        | Nil -> ds3
+        end
+    | Nil -> q
+    end
+  function mergeLists (ds4 : list nat) (xs : list nat) : list nat =
+    match ds4 with
+    | Nil2 -> xs
+    | Cons d9 d10 ->
+        match xs with
+        | Nil2 -> ds4
+        | Cons d11 d12 ->
+            match le d9 d11 with
+            | False -> Cons d11 (mergeLists ds4 d12)
+            | True -> Cons d9 (mergeLists d10 xs)
+            end
+        end
+    end
+  function toList' (ds5 : nat) (ds6 : heap) : list nat =
+    match ds5 with
+    | Z -> Nil2
+    | S d13 ->
+        match ds6 with
+        | Node d14 d15 d16 -> Cons d15 (toList' d13 (merge d14 d16))
+        | Nil -> Nil2
+        end
+    end
+  function plus (ds7 : nat) (m : nat) : nat =
+    match ds7 with
+    | Z -> m
+    | S n -> S (plus n m)
+    end
+  function heapSize (ds8 : heap) : nat =
+    match ds8 with
+    | Node l ds9 r -> plus (heapSize l) (heapSize r)
+    | Nil -> Z
+    end
+  function toList (h : heap) : list nat = toList' (heapSize h) h
+  goal prop_merge :
+    forall x : heap, y : heap .
+      toList (merge x y) = mergeLists (toList x) (toList y)
+end

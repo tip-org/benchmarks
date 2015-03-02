@@ -1,0 +1,76 @@
+(* Skew heaps *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type heap = Node heap nat heap | Nil
+  type list 'a = Nil2 | Cons 'a (list 'a)
+  function le (ds : nat) (ds2 : nat) : bool =
+    match ds with
+    | Z -> True
+    | S d ->
+        match ds2 with
+        | Z -> False
+        | S d2 -> le d d2
+        end
+    end
+  function merge (ds3 : heap) (q : heap) : heap =
+    match ds3 with
+    | Node d3 d4 d5 ->
+        match q with
+        | Node d6 d7 d8 ->
+            match le d4 d7 with
+            | False -> Node (merge ds3 d8) d7 d6
+            | True -> Node (merge d5 q) d4 d3
+            end
+        | Nil -> ds3
+        end
+    | Nil -> q
+    end
+  function insert (x : nat) (h : heap) : heap =
+    merge (Node Nil x Nil) h
+  function toHeap (ds4 : list nat) : heap =
+    match ds4 with
+    | Nil2 -> Nil
+    | Cons x2 xs -> insert x2 (toHeap xs)
+    end
+  function toList' (ds5 : nat) (ds6 : heap) : list nat =
+    match ds5 with
+    | Z -> Nil2
+    | S d9 ->
+        match ds6 with
+        | Node d10 d11 d12 -> Cons d11 (toList' d9 (merge d10 d12))
+        | Nil -> Nil2
+        end
+    end
+  function and2 (ds7 : bool) (x3 : bool) : bool =
+    match ds7 with
+    | False -> False
+    | True -> x3
+    end
+  function ordered (ds8 : list nat) : bool =
+    match ds8 with
+    | Nil2 -> True
+    | Cons x4 ds9 ->
+        match ds9 with
+        | Nil2 -> True
+        | Cons y xs2 -> and2 (le x4 y) (ordered ds9)
+        end
+    end
+  function dot (f : ('b -> 'c)) (g : ('a2 -> 'b)) (x5 : 'a2) : 'c =
+    f (g x5)
+  function plus (ds10 : nat) (m : nat) : nat =
+    match ds10 with
+    | Z -> m
+    | S n -> S (plus n m)
+    end
+  function heapSize (ds11 : heap) : nat =
+    match ds11 with
+    | Node l ds12 r -> plus (heapSize l) (heapSize r)
+    | Nil -> Z
+    end
+  function toList (h2 : heap) : list nat = toList' (heapSize h2) h2
+  function hsort (lam_hsort : list nat) : list nat =
+    dot toList toHeap lam_hsort
+  goal prop_SortSorts :
+    forall ds13 : list nat . ordered (hsort ds13) = True
+end

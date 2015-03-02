@@ -1,0 +1,62 @@
+(* Skew heaps *)
+module A
+  use HighOrd
+  type maybe 'a = Nothing | Just 'a
+  type nat = Z | S nat
+  type heap = Node heap nat heap | Nil
+  type list 'a2 = Nil2 | Cons 'a2 (list 'a2)
+  function le (ds : nat) (ds2 : nat) : bool =
+    match ds with
+    | Z -> True
+    | S d ->
+        match ds2 with
+        | Z -> False
+        | S d2 -> le d d2
+        end
+    end
+  function listMinimum (ds3 : list nat) : maybe nat =
+    match ds3 with
+    | Nil2 -> Nothing
+    | Cons x ds4 -> Just x
+    end
+  function merge (ds5 : heap) (q : heap) : heap =
+    match ds5 with
+    | Node d3 d4 d5 ->
+        match q with
+        | Node d6 d7 d8 ->
+            match le d4 d7 with
+            | False -> Node (merge ds5 d8) d7 d6
+            | True -> Node (merge d5 q) d4 d3
+            end
+        | Nil -> ds5
+        end
+    | Nil -> q
+    end
+  function minimum (ds6 : heap) : maybe nat =
+    match ds6 with
+    | Node ds7 x2 ds8 -> Just x2
+    | Nil -> Nothing
+    end
+  function toList' (ds9 : nat) (ds10 : heap) : list nat =
+    match ds9 with
+    | Z -> Nil2
+    | S d9 ->
+        match ds10 with
+        | Node d10 d11 d12 -> Cons d11 (toList' d9 (merge d10 d12))
+        | Nil -> Nil2
+        end
+    end
+  function plus (ds11 : nat) (m : nat) : nat =
+    match ds11 with
+    | Z -> m
+    | S n -> S (plus n m)
+    end
+  function heapSize (ds12 : heap) : nat =
+    match ds12 with
+    | Node l ds13 r -> plus (heapSize l) (heapSize r)
+    | Nil -> Z
+    end
+  function toList (h : heap) : list nat = toList' (heapSize h) h
+  goal prop_minimum :
+    forall h2 : heap . listMinimum (toList h2) = minimum h2
+end
