@@ -1,0 +1,19 @@
+(* List monad laws *)
+module A
+  use HighOrd
+  type list 'a = Nil | Cons 'a (list 'a)
+  function append (ds : list 'a2) (ys : list 'a2) : list 'a2 =
+    match ds with
+    | Nil -> ys
+    | Cons x xs -> Cons x (append xs ys)
+    end
+  function bind (ds2 : list 'a4) (f : ('a4 -> list 'b)) : list 'b =
+    match ds2 with
+    | Nil -> (Nil : list 'b)
+    | Cons x2 xs2 -> append (f x2) (bind xs2 f)
+    end
+  function return (x3 : 'a6) : list 'a6 = Cons x3 Nil
+  goal prop_return_1 :
+    forall x4 : 'a7, f2 : ('a7 -> list 'b3) .
+      bind (return x4) f2 = f2 x4
+end
