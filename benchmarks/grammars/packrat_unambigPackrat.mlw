@@ -1,0 +1,32 @@
+(* An example from Packrat Parsing (ICFP 2002) *)
+module A
+  use HighOrd
+  type a = SA a | ZA
+  type b = SB b | ZB
+  type s = A a | B b
+  type tok = X | Y | Z
+  type list 'a2 = Nil | Cons 'a2 (list 'a2)
+  function append (ds : list 'a3) (ys : list 'a3) : list 'a3 =
+    match ds with
+    | Nil -> ys
+    | Cons x xs -> Cons x (append xs ys)
+    end
+  function linA (ds2 : a) : list tok =
+    match ds2 with
+    | SA a5 -> append (append (Cons X Nil) (linA a5)) (Cons Y Nil)
+    | ZA -> Cons X (Cons Z (Cons Y Nil))
+    end
+  function linB (ds3 : b) : list tok =
+    match ds3 with
+    | SB b2 ->
+        append (append (Cons X Nil) (linB b2)) (Cons Y (Cons Y Nil))
+    | ZB -> Cons X (Cons Z (Cons Y (Cons Y Nil)))
+    end
+  function linS (ds4 : s) : list tok =
+    match ds4 with
+    | A a6 -> linA a6
+    | B b3 -> linB b3
+    end
+  goal prop_unambigPackrat :
+    forall u : s, v : s . linS u = linS v -> u = v
+end
