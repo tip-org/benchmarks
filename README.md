@@ -24,7 +24,7 @@ to this git repo.
 
 You are also free to email the maintainers with new problems (or questions):
 
-* Dan Rosén [`danr@chalmers.se`|mailto:danr@chalmers.se]
-* Moa Johansson [`jomoa@chalmers.se`|mailto:danr@chalmers.se]
-* Nick Smallbone [`nicsma@chalmers.se`|mailto:danr@chalmers.se]
+* Dan Rosén [`danr@chalmers.se`](mailto:danr@chalmers.se)
+* Moa Johansson [`jomoa@chalmers.se`](mailto:jomoa@chalmers.se)
+* Nick Smallbone [`nicsma@chalmers.se`](mailto:nicsma@chalmers.se)
 
