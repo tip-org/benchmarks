@@ -1,0 +1,30 @@
+(* Binary natural numbers *)
+module A
+  use HighOrd
+  type bin = One | ZeroAnd bin | OneAnd bin
+  function s (ds : bin) : bin =
+    match ds with
+    | One -> ZeroAnd One
+    | ZeroAnd xs -> OneAnd xs
+    | OneAnd xs2 -> ZeroAnd (s xs2)
+    end
+  function plus (ds2 : bin) (xs3 : bin) : bin =
+    match ds2 with
+    | One -> s xs3
+    | ZeroAnd ds3 ->
+        match xs3 with
+        | One -> s ds2
+        | ZeroAnd ys -> ZeroAnd (plus ds3 ys)
+        | OneAnd ys2 -> OneAnd (plus ds3 ys2)
+        end
+    | OneAnd ds4 ->
+        match xs3 with
+        | One -> s ds2
+        | ZeroAnd ys3 -> OneAnd (plus ds4 ys3)
+        | OneAnd ys4 -> ZeroAnd (s (plus ds4 ys4))
+        end
+    end
+  goal prop_plus_assoc :
+    forall x : bin, y : bin, z : bin .
+      plus x (plus y z) = plus (plus x y) z
+end

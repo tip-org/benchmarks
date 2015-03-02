@@ -1,0 +1,28 @@
+(* Source: Productive use of failure *)
+module A
+  use HighOrd
+  type list 'a = Nil | Cons 'a (list 'a)
+  function append (ds : list 'a2) (ys : list 'a2) : list 'a2 =
+    match ds with
+    | Nil -> ys
+    | Cons x xs -> Cons x (append xs ys)
+    end
+  function rev (ds2 : list 'a4) : list 'a4 =
+    match ds2 with
+    | Nil -> (Nil : list 'a4)
+    | Cons x2 xs2 -> append (rev xs2) (Cons x2 Nil)
+    end
+  function qrevflat
+    (ds3 : list (list 'a6)) (acc : list 'a6) : list 'a6 =
+    match ds3 with
+    | Nil -> acc
+    | Cons xs3 xss -> qrevflat xss (append (rev xs3) acc)
+    end
+  function revflat (ds4 : list (list 'a8)) : list 'a8 =
+    match ds4 with
+    | Nil -> (Nil : list 'a8)
+    | Cons xs4 xss2 -> append (revflat xss2) xs4
+    end
+  goal prop_T28 :
+    forall x3 : list (list 'a10) . revflat x3 = qrevflat x3 Nil
+end

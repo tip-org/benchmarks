@@ -1,0 +1,20 @@
+(* Source: IsaPlanner test suite *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  function plus (ds : nat) (y : nat) : nat =
+    match ds with
+    | Z -> y
+    | S x -> S (plus x y)
+    end
+  function le (ds2 : nat) (ds1 : nat) : bool =
+    match ds2 with
+    | Z -> True
+    | S ipv ->
+        match ds1 with
+        | Z -> False
+        | S ipv1 -> le ipv ipv1
+        end
+    end
+  goal prop_69 : forall n : nat, m : nat . le n (plus m n) = True
+end

@@ -1,0 +1,36 @@
+(* Source: Productive use of failure *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type list 'a = Nil | Cons 'a (list 'a)
+  function le (ds : nat) (ds1 : nat) : bool =
+    match ds with
+    | Z -> True
+    | S ipv ->
+        match ds1 with
+        | Z -> False
+        | S ipv1 -> le ipv ipv1
+        end
+    end
+  function insert (n : nat) (ds2 : list nat) : list nat =
+    match ds2 with
+    | Nil -> Cons n Nil
+    | Cons x xs ->
+        match le n x with
+        | False -> Cons x (insert n xs)
+        | True -> Cons n ds2
+        end
+    end
+  function isort (ds3 : list nat) : list nat =
+    match ds3 with
+    | Nil -> Nil
+    | Cons x2 xs2 -> insert x2 (isort xs2)
+    end
+  function length (ds4 : list 'a2) : nat =
+    match ds4 with
+    | Nil -> Z
+    | Cons ds12 xs3 -> S (length xs3)
+    end
+  goal prop_T48 :
+    forall x3 : list nat . length (isort x3) = length x3
+end

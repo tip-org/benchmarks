@@ -1,0 +1,11 @@
+(* Source: Productive use of failure *)
+module A
+  use HighOrd
+  type list 'a = Nil | Cons 'a (list 'a)
+  function qrev (ds : list 'a2) (acc : list 'a2) : list 'a2 =
+    match ds with
+    | Nil -> acc
+    | Cons x xs -> qrev xs (Cons x acc)
+    end
+  goal prop_T31 : forall x2 : list 'a4 . qrev (qrev x2 Nil) Nil = x2
+end

@@ -1,0 +1,23 @@
+(* Source: Productive use of failure *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  type list 'a = Nil | Cons 'a (list 'a)
+  function append (ds : list 'a2) (ys : list 'a2) : list 'a2 =
+    match ds with
+    | Nil -> ys
+    | Cons x xs -> Cons x (append xs ys)
+    end
+  function double (ds2 : nat) : nat =
+    match ds2 with
+    | Z -> Z
+    | S x2 -> S (S (double x2))
+    end
+  function length (ds3 : list 'a4) : nat =
+    match ds3 with
+    | Nil -> Z
+    | Cons ds1 xs2 -> S (length xs2)
+    end
+  goal prop_T04 :
+    forall x3 : list 'a6 . length (append x3 x3) = double (length x3)
+end
