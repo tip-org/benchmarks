@@ -3,16 +3,16 @@ module A
   use HighOrd
   type bin = One | ZeroAnd bin | OneAnd bin
   type nat = Z | S nat
-  function s (ds : bin) : bin =
+  function plus (ds : nat) (m : nat) : nat =
     match ds with
+    | Z -> m
+    | S n -> S (plus n m)
+    end
+  function s (ds2 : bin) : bin =
+    match ds2 with
     | One -> ZeroAnd One
     | ZeroAnd xs -> OneAnd xs
     | OneAnd xs2 -> ZeroAnd (s xs2)
-    end
-  function plus (ds2 : nat) (m : nat) : nat =
-    match ds2 with
-    | Z -> m
-    | S n -> S (plus n m)
     end
   function toNat (ds3 : bin) : nat =
     match ds3 with

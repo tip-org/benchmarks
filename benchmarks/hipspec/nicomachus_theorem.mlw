@@ -1,0 +1,27 @@
+(* Nicomachus's theorem *)
+module A
+  use HighOrd
+  type nat = Z | S nat
+  function plus (ds : nat) (m : nat) : nat =
+    match ds with
+    | Z -> m
+    | S n -> S (plus n m)
+    end
+  function mult (ds2 : nat) (m2 : nat) : nat =
+    match ds2 with
+    | Z -> Z
+    | S n2 -> plus m2 (mult n2 m2)
+    end
+  function sum (ds3 : nat) : nat =
+    match ds3 with
+    | Z -> Z
+    | S n3 -> plus (sum n3) ds3
+    end
+  function cubes (ds4 : nat) : nat =
+    match ds4 with
+    | Z -> Z
+    | S n4 -> plus (cubes n4) (mult (mult ds4 ds4) ds4)
+    end
+  goal prop_theorem :
+    forall n5 : nat . cubes n5 = mult (sum n5) (sum n5)
+end
