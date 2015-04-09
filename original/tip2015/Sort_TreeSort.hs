@@ -1,14 +1,9 @@
-{-# LANGUAGE ScopedTypeVariables, TemplateHaskell, DeriveDataTypeable #-}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module Sort_TreeSort where
-
-import Test.QuickCheck hiding ((==>))
-import Test.QuickCheck.Poly
-import Test.QuickCheck.All
 
 import Nat
 import Prelude hiding ((++), (==), (<=), minimum, elem, (+))
-import HipSpec
+import Tip.DSL
 
 (==), (<=) :: Nat -> Nat -> Bool
 Z == Z = True
@@ -24,7 +19,7 @@ tsort :: [Nat] -> [Nat]
 tsort t = flatten (toTree t) []
 
 data Tree a = Node (Tree a) a (Tree a) | Nil
- deriving ( Eq, Ord, Show, Typeable )
+ deriving ( Eq, Ord, Show )
 
 toTree :: [Nat] -> Tree Nat
 toTree []     = Nil
@@ -80,12 +75,3 @@ prop_AddSame x t = count x (flatten (add x t) []) =:= S (count x (flatten t []))
 
 prop_AddDifferent x y t = x == y =:= False ==> count y (flatten (add x t) []) =:= count y (flatten t [])
 
---------------------------------------------------------------------------------
-
-return []
-testAll = $(quickCheckAll)
-
---------------------------------------------------------------------------------
-
-instance Arbitrary (Tree Nat) where
-  arbitrary = fmap toTree arbitrary

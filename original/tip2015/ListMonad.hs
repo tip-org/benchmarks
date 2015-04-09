@@ -1,7 +1,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 module ListMonad where
 
-import Prelude hiding ((>>=),(++),fmap,id,(.), return)
+import Prelude hiding ((>>=),(++),fmap,id,(.), return,concat)
 
 import Data.Typeable
 
@@ -17,17 +17,27 @@ import Data.Typeable
 (x:xs) >>= f = f x ++ (xs >>= f)
 []     >>= f = []
 
-join :: [[a]] -> [a]
-join ((x:xs):xss) = x:join (xs:xss)
-join ([]:xss)     = join xss
-join []           = []
+weird_concat :: [[a]] -> [a]
+weird_concat ((x:xs):xss) = x:weird_concat (xs:xss)
+weird_concat ([]:xss)     = weird_concat xss
+weird_concat []           = []
+
+concat :: [[a]] -> [a]
+concat (xs:xss) = xs ++ concat xss
+concat []       = []
 
 fmap :: (a -> b) -> [a] -> [b]
 fmap f []     = []
 fmap f (x:xs) = f x : fmap f xs
 
-prop_join_fmap_bind :: (a -> [b]) -> [a] -> Prop [b]
-prop_join_fmap_bind f xs = join (fmap f xs) =:= xs >>= f
+prop_weird_is_normal :: Prop ([[a]] -> [a])
+prop_weird_is_normal = concat =:= weird_concat
+
+prop_weird_concat_fmap_bind :: (a -> [b]) -> [a] -> Prop [b]
+prop_weird_concat_fmap_bind f xs = weird_concat (fmap f xs) =:= xs >>= f
+
+prop_concat_fmap_bind :: (a -> [b]) -> [a] -> Prop [b]
+prop_concat_fmap_bind f xs = concat (fmap f xs) =:= xs >>= f
 
 prop_assoc :: [a] -> (a -> [b]) -> (b -> [c]) -> Prop [c]
 prop_assoc m f g = ((m >>= f) >>= g) =:= (m >>= (\x -> f x >>= g))
@@ -68,8 +78,8 @@ main = hipSpec $(fileName)
     , fun2 ":"                  ((:)       :: [A] -> [[A]] -> [[A]])
     , fun2 "++"                 ((++)      :: [A]   -> [A]   -> [A])
     , fun2 "++"                 ((++)      :: [[A]] -> [[A]] -> [[A]])
-    , fun1 "join"               (join      :: [[A]] -> [A])
-    , fun1 "join"               (join      :: [[[A]]] -> [[A]])
+    , fun1 "concat"               (concat      :: [[A]] -> [A])
+    , fun1 "concat"               (concat      :: [[[A]]] -> [[A]])
     , fun2 ">>="                ((>>=)     :: [A] -> (A -> [A]) -> [A])
     , fun2 ">>="                ((>>=)     :: [A] -> (A -> [[A]]) -> [[A]])
     , fun2 "fmap"               (fmap      :: (A -> A) -> [A] -> [A])

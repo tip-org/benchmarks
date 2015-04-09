@@ -1,19 +1,13 @@
-{-# LANGUAGE TemplateHaskell, DeriveDataTypeable #-}
 module Escape where
 
-import Data.Typeable
-import Data.Data
-import HipSpec
+import Tip.DSL
 
 import Prelude hiding (all)
-
--- import Test.QuickCheck
--- import Test.QuickCheck.All
 
 --------------------------------------------------------------------------------
 
 data Token = A | B | C | D | ESC | P | Q | R
- deriving ( Eq, Ord, Show, Typeable, Data )
+ deriving ( Eq, Ord, Show )
 
 escape :: [Token] -> [Token]
 escape []                   = []
@@ -52,14 +46,4 @@ prop_Injective xs ys =
 
 prop_NoSpecial xs =
   all ok (escape xs) =:= True
-
---------------------------------------------------------------------------------
-
-instance Arbitrary Token where
-  arbitrary = elements [A,B,C,D,ESC,P,Q,R]
-
--- return []
--- testAll = $(quickCheckAll)
-
---------------------------------------------------------------------------------
 

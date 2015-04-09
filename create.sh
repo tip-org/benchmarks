@@ -7,13 +7,19 @@ create1() {
     COMMENT="$4"
     shift; shift; shift; shift
     for I in $*; do
-        RES=${DEST}_$I.mlw
-        ERR=/tmp/$I-out
-        (echo "(* $COMMENT *)"; hipspec --only=$PROP$I --print-why3 --translate-only $FILE) > $RES
-        why3 prove $RES >/dev/null 2>$ERR
-        ST=$?
-        echo "$RES: ($ST)"
-        [ $ST -eq 0 ] || cat $ERR
+        RES=${DEST}_$I.smt2
+        WHY=${DEST}_$I.mlw
+        ERR1=/tmp/$I-out1
+        ERR2=/tmp/$I-out2
+        (echo "; $COMMENT"; tip-ghc $FILE $PROP$I) > $RES
+        # cat $RES
+        tip-parser $RES why3 >$WHY 2>$ERR1
+        ST1=$?
+        why3 prove $WHY >/dev/null 2>$ERR2
+        ST2=$?
+        echo "$RES: ($ST1, $ST2)"
+        [ $ST1 -eq 0 ] || cat $ERR1
+        [ $ST2 -eq 0 ] || cat $ERR2
     done
 }
 
