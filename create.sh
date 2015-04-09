@@ -1,5 +1,6 @@
 #!/bin/bash
 
+VERSION=0.1
 ROOT=$(pwd)
 
 create1() {
@@ -80,4 +81,8 @@ create prop_  grammars   SimpleExpr3.hs   simp_expr  "Simple expression unambigu
 create prop_  grammars   SimpleExpr4.hs   simp_expr  "Simple expression unambiguity"
 create prop_  grammars   SimpleExpr5.hs   simp_expr  "Simple expression unambiguity"
 create prop_  grammars   Packrat.hs       packrat    "An example from Packrat Parsing (ICFP 2002)"
+
+tar vczf tip-benchmarks-${VERSION}.tar.gz benchmarks/**/*.smt2
+tar vczf tip-benchmarks-${VERSION}-why3.tar.gz benchmarks-why3/**/*.mlw
+tar vczf tip-benchmarks-${VERSION}-cvc4.tar.gz benchmarks-cvc4/**/*.smt2
 
