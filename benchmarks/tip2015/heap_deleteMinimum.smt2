@@ -62,10 +62,9 @@
   ((match x12
      (case (Node l2 ds3 r2) (Just (merge l2 r2)))
      (case Nil (as Nothing (Maybe Heap))))))
-(assert
-  (not
-    (forall
-      ((h Heap))
-      (=
-        (listDeleteMinimum (toList2 h)) (maybeToList (deleteMinimum h))))))
+(assert-not
+  (forall
+    ((h Heap))
+    (=
+      (listDeleteMinimum (toList2 h)) (maybeToList (deleteMinimum h)))))
 (check-sat)

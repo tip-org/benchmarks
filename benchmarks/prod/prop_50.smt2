@@ -43,9 +43,8 @@
      (case
        (cons x8 xs3)
        (ite (equal x6 x8) (S (count x6 xs3)) (count x6 xs3))))))
-(assert
-  (not
-    (forall
-      ((x13 Nat) (y2 (list Nat)))
-      (= (count x13 (isort y2)) (count x13 y2)))))
+(assert-not
+  (forall
+    ((x13 Nat) (y2 (list Nat)))
+    (= (count x13 (isort y2)) (count x13 y2))))
 (check-sat)

@@ -26,10 +26,9 @@
          (case nil x4)
          (case
            (cons ipv6 ipv7) (cons ipv6 (as (take ipv5 ipv7) (list a3)))))))))
-(declare-sort a4 0)
-(declare-sort b3 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a4 b3)
     (forall
       ((n Nat) (xs (list a4)) (ys (list b3)))
       (= (take n (zip xs ys)) (zip (take n xs) (take n ys))))))

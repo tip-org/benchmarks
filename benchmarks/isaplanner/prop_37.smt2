@@ -27,8 +27,7 @@
      (case
        (cons x6 xs2)
        (ite (equal x4 x6) (delete x4 xs2) (cons x6 (delete x4 xs2)))))))
-(assert
-  (not
-    (forall
-      ((x9 Nat) (xs3 (list Nat))) (not (elem x9 (delete x9 xs3))))))
+(assert-not
+  (forall
+    ((x9 Nat) (xs3 (list Nat))) (not (elem x9 (delete x9 xs3)))))
 (check-sat)

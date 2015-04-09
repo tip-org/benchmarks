@@ -81,9 +81,8 @@
   ((match x6
      (case nil (eps x5))
      (case (cons x7 xs) (recognise (step x5 x7) xs)))))
-(assert
-  (not
-    (forall
-      ((p9 R) (s (list A)))
-      (= (recognise (Star p9) s) (recognise (Star (deeps p9)) s)))))
+(assert-not
+  (forall
+    ((p9 R) (s (list A)))
+    (= (recognise (Star p9) s) (recognise (Star (deeps p9)) s))))
 (check-sat)

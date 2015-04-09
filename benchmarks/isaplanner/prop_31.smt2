@@ -9,9 +9,8 @@
        (match x2
          (case Z x2)
          (case (S y) (S (min2 x3 y))))))))
-(assert
-  (not
-    (forall
-      ((a Nat) (b Nat) (c Nat))
-      (= (min2 (min2 a b) c) (min2 a (min2 b c))))))
+(assert-not
+  (forall
+    ((a Nat) (b Nat) (c Nat))
+    (= (min2 (min2 a b) c) (min2 a (min2 b c)))))
 (check-sat)

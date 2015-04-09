@@ -21,9 +21,8 @@
      (case nil Z)
      (case
        (cons y ys) (ite (equal x y) (S (count x ys)) (count x ys))))))
-(assert
-  (not
-    (forall
-      ((n Nat) (xs (list Nat)))
-      (= (S (count n xs)) (count n (cons n xs))))))
+(assert-not
+  (forall
+    ((n Nat) (xs (list Nat)))
+    (= (S (count n xs)) (count n (cons n xs)))))
 (check-sat)

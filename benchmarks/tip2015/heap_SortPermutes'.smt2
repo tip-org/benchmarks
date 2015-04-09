@@ -104,6 +104,6 @@
      (case
        (cons x20 xs2)
        (and2 (elem x20 x19) (isPermutation xs2 (delete x20 x19)))))))
-(assert
-  (not (forall ((ds4 (list Nat))) (isPermutation (hsort ds4) ds4))))
+(assert-not
+  (forall ((ds4 (list Nat))) (isPermutation (hsort ds4) ds4)))
 (check-sat)

@@ -15,9 +15,9 @@
   ((match x4
      (case nil x5)
      (case (cons x6 xs2) (cons x6 (as (append xs2 x5) (list a3)))))))
-(declare-sort a4 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a4)
     (forall
       ((p (=> a4 bool)) (xs3 (list a4)) (ys (list a4)))
       (=

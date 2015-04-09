@@ -25,9 +25,9 @@
        (ite
          (@ x2 x4) (cons x4 (as (filter x2 xs2) (list a3)))
          (as (filter x2 xs2) (list a3)))))))
-(declare-sort a4 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a4)
     (forall
       ((p2 (=> a4 bool)) (xs3 (list a4)))
       (le (len (filter p2 xs3)) (len xs3)))))

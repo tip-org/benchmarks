@@ -42,5 +42,5 @@
        (match x4
          (case (P n4) (minus n4 (S m2)))
          (case (N n5) (N (S (plus m2 n5)))))))))
-(assert (not (forall ((x8 Z2)) (= (plus2 (neg x8) x8) zero))))
+(assert-not (forall ((x8 Z2)) (= (plus2 (neg x8) x8) zero)))
 (check-sat)

@@ -17,10 +17,9 @@
   ((match x4
      (case nil (as nil (list b)))
      (case (cons x5 xs) (cons (@ x3 x5) (as (map2 x3 xs) (list b)))))))
-(declare-sort a4 0)
-(declare-sort a5 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a4 a5)
     (forall
       ((n Nat) (f (=> a4 a5)) (xs2 (list a4)))
       (= (take n (map2 f xs2)) (map2 f (take n xs2))))))

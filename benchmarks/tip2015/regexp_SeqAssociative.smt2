@@ -70,11 +70,10 @@
   ((match x6
      (case nil (eps x5))
      (case (cons x7 xs) (recognise (step x5 x7) xs)))))
-(assert
-  (not
-    (forall
-      ((p6 R) (q5 R) (r R) (s (list A)))
-      (=
-        (recognise (Seq p6 (Seq q5 r)) s)
-        (recognise (Seq (Seq p6 q5) r) s)))))
+(assert-not
+  (forall
+    ((p6 R) (q5 R) (r R) (s (list A)))
+    (=
+      (recognise (Seq p6 (Seq q5 r)) s)
+      (recognise (Seq (Seq p6 q5) r) s))))
 (check-sat)

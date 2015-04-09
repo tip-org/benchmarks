@@ -19,6 +19,5 @@
      (case One (S Z))
      (case (ZeroAnd xs) (plus (toNat xs) (toNat xs)))
      (case (OneAnd xs2) (S (plus (toNat xs2) (toNat xs2)))))))
-(assert
-  (not (forall ((n2 Bin)) (= (toNat (s n2)) (S (toNat n2))))))
+(assert-not (forall ((n2 Bin)) (= (toNat (s n2)) (S (toNat n2)))))
 (check-sat)

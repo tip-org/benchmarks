@@ -42,9 +42,7 @@
      (case nil Z)
      (case
        (cons y ys) (ite (equal x6 y) (S (count x6 ys)) (count x6 ys))))))
-(assert
-  (not
-    (forall
-      ((n Nat) (xs3 (list Nat)))
-      (= (count n xs3) (count n (sort xs3))))))
+(assert-not
+  (forall
+    ((n Nat) (xs3 (list Nat))) (= (count n xs3) (count n (sort xs3)))))
 (check-sat)

@@ -26,9 +26,9 @@
   ((match x
      (case nil (as nil (list a2)))
      (case (cons xs xss) (append (as (revflat xss) (list a2)) xs)))))
-(declare-sort a6 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a6)
     (forall
       ((x9 (list (list a6))))
       (= (revflat x9) (qrevflat x9 (as nil (list a6)))))))

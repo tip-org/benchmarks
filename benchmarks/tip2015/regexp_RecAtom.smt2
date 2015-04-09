@@ -83,10 +83,9 @@
        (match x11
          (case nil false)
          (case (cons y ys) (and2 (eqA x12 y) (eqList xs2 ys))))))))
-(assert
-  (not
-    (forall
-      ((a3 A) (s (list A)))
-      (=
-        (recognise (Atom a3) s) (eqList s (cons a3 (as nil (list A))))))))
+(assert-not
+  (forall
+    ((a3 A) (s (list A)))
+    (=
+      (recognise (Atom a3) s) (eqList s (cons a3 (as nil (list A)))))))
 (check-sat)

@@ -58,9 +58,8 @@
 (define-funs-rec
   ((tsort ((x (list Nat))) (list Nat)))
   ((flatten (toTree x) (as nil (list Nat)))))
-(assert
-  (not
-    (forall
-      ((x16 Nat) (ds (list Nat)))
-      (= (count x16 (tsort ds)) (count x16 ds)))))
+(assert-not
+  (forall
+    ((x16 Nat) (ds (list Nat)))
+    (= (count x16 (tsort ds)) (count x16 ds))))
 (check-sat)

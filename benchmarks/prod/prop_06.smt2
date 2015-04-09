@@ -24,9 +24,9 @@
      (case
        (cons x2 xs)
        (append (as (rev xs) (list a2)) (cons x2 (as nil (list a2))))))))
-(declare-sort a5 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a5)
     (forall
       ((x10 (list a5)) (y (list a5)))
       (= (length (rev (append x10 y))) (plus (length x10) (length y))))))

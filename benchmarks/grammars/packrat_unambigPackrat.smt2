@@ -34,6 +34,6 @@
   ((match x
      (case (A a2) (linA a2))
      (case (B b) (linB b)))))
-(assert
-  (not (forall ((u S) (v S)) (=> (= (linS u) (linS v)) (= u v)))))
+(assert-not
+  (forall ((u S) (v S)) (=> (= (linS u) (linS v)) (= u v))))
 (check-sat)

@@ -32,5 +32,5 @@
   ((match x3
      (case nil x3)
      (case (cons x4 xs) (insort x4 (sort xs))))))
-(assert (not (forall ((xs3 (list Nat))) (sorted (sort xs3)))))
+(assert-not (forall ((xs3 (list Nat))) (sorted (sort xs3))))
 (check-sat)

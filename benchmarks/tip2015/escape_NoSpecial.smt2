@@ -43,9 +43,8 @@
   ((match x8
      (case nil true)
      (case (cons x9 xs2) (and2 (@ x7 x9) (as (all x7 xs2) bool))))))
-(assert
-  (not
-    (forall
-      ((xs3 (list Token)))
-      (all (lambda ((x14 Token)) (ok x14)) (escape xs3)))))
+(assert-not
+  (forall
+    ((xs3 (list Token)))
+    (all (lambda ((x14 Token)) (ok x14)) (escape xs3))))
 (check-sat)

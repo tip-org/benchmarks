@@ -12,9 +12,9 @@
          (@ x x3) (cons x3 (as (takeWhile x xs) (list a2)))
          (as nil (list a2)))))))
 (define-funs-rec ((par (t) (constTrue ((x4 t)) bool))) (true))
-(declare-sort a3 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a3)
     (forall
       ((xs2 (list a3)))
       (= (takeWhile (lambda ((x5 a3)) (constTrue x5)) xs2) xs2))))

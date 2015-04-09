@@ -20,6 +20,6 @@
   ((match x6
      (case Z x6)
      (case (S n4) (plus (cubes n4) (mult (mult x6 x6) x6))))))
-(assert
-  (not (forall ((n5 Nat)) (= (cubes n5) (mult (sum n5) (sum n5))))))
+(assert-not
+  (forall ((n5 Nat)) (= (cubes n5) (mult (sum n5) (sum n5)))))
 (check-sat)

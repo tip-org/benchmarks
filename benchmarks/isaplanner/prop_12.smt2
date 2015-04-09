@@ -16,10 +16,9 @@
        (match x5
          (case nil x5)
          (case (cons ipv2 ipv3) (as (drop ipv ipv3) (list a3))))))))
-(declare-sort a4 0)
-(declare-sort a5 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a4 a5)
     (forall
       ((n Nat) (f (=> a4 a5)) (xs2 (list a4)))
       (= (drop n (map2 f xs2)) (map2 f (drop n xs2))))))

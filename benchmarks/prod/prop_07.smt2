@@ -17,9 +17,9 @@
   ((match x4
      (case nil Z)
      (case (cons ds xs2) (S (as (length xs2) Nat))))))
-(declare-sort a4 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a4)
     (forall
       ((x8 (list a4)) (y (list a4)))
       (= (length (qrev x8 y)) (plus (length x8) (length y))))))

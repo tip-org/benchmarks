@@ -23,10 +23,9 @@
   ((match x4
      (case nil (as nil (list a3)))
      (case (cons xs2 xss) (append xs2 (as (concat2 xss) (list a3)))))))
-(declare-sort a6 0)
-(declare-sort b3 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a6 b3)
     (forall
       ((f (=> a6 (list b3))) (xs5 (list a6)))
       (= (concat2 (fmap f xs5)) (bind xs5 f)))))

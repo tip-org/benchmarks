@@ -23,6 +23,6 @@
        (append
          (append (linTerm a2) (cons Pl (as nil (list Tok)))) (lin b)))
      (case (Term t) (linTerm t)))))
-(assert
-  (not (forall ((u E) (v E)) (=> (= (lin u) (lin v)) (= u v)))))
+(assert-not
+  (forall ((u E) (v E)) (=> (= (lin u) (lin v)) (= u v))))
 (check-sat)

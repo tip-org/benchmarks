@@ -31,6 +31,6 @@
        (match x4
          (case Z false)
          (case (S y) (equal ds y)))))))
-(assert
-  (not (forall ((a Nat) (b Nat)) (= (equal (max2 a b) a) (le b a)))))
+(assert-not
+  (forall ((a Nat) (b Nat)) (= (equal (max2 a b) a) (le b a))))
 (check-sat)

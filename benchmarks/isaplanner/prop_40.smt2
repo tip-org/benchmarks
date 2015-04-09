@@ -12,7 +12,7 @@
          (case nil x2)
          (case
            (cons ipv2 ipv3) (cons ipv2 (as (take ipv ipv3) (list a2)))))))))
-(declare-sort a3 0)
-(assert
-  (not (forall ((xs (list a3))) (= (take Z xs) (as nil (list a3))))))
+(assert-not
+  (par
+    (a3) (forall ((xs (list a3))) (= (take Z xs) (as nil (list a3))))))
 (check-sat)

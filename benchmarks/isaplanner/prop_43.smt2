@@ -24,9 +24,9 @@
   ((match x7
      (case nil x8)
      (case (cons x9 xs3) (cons x9 (as (append xs3 x8) (list a4)))))))
-(declare-sort a5 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a5)
     (forall
       ((p (=> a5 bool)) (xs4 (list a5)))
       (= (append (takeWhile p xs4) (dropWhile p xs4)) xs4))))

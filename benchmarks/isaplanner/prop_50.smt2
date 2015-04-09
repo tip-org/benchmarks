@@ -35,9 +35,9 @@
        (match ds2
          (case nil ds2)
          (case (cons ipv4 ipv5) (cons x5 (as (butlast ds2) (list a4)))))))))
-(declare-sort a5 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a5)
     (forall
       ((xs2 (list a5)))
       (= (butlast xs2) (take (minus (len xs2) (S Z)) xs2)))))

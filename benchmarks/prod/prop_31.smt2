@@ -6,9 +6,9 @@
   ((match x
      (case nil x2)
      (case (cons x3 xs) (as (qrev xs (cons x3 x2)) (list a2))))))
-(declare-sort a3 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a3)
     (forall
       ((x4 (list a3)))
       (= (qrev (qrev x4 (as nil (list a3))) (as nil (list a3))) x4))))

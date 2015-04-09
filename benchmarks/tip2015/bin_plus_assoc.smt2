@@ -23,9 +23,8 @@
          (case One (s x2))
          (case (ZeroAnd ys3) (OneAnd (plus ds2 ys3)))
          (case (OneAnd ys4) (ZeroAnd (s (plus ds2 ys4)))))))))
-(assert
-  (not
-    (forall
-      ((x4 Bin) (y Bin) (z Bin))
-      (= (plus x4 (plus y z)) (plus (plus x4 y) z)))))
+(assert-not
+  (forall
+    ((x4 Bin) (y Bin) (z Bin))
+    (= (plus x4 (plus y z)) (plus (plus x4 y) z))))
 (check-sat)

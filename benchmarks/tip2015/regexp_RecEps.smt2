@@ -75,6 +75,5 @@
   ((match x6
      (case nil (eps x5))
      (case (cons x7 xs) (recognise (step x5 x7) xs)))))
-(assert
-  (not (forall ((s (list A))) (= (recognise Eps s) (null s)))))
+(assert-not (forall ((s (list A))) (= (recognise Eps s) (null s))))
 (check-sat)

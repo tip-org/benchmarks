@@ -16,11 +16,9 @@
   ((match x3
      (case nil x4)
      (case (cons x5 xs) (cons x5 (as (append xs x4) (list a2)))))))
-(assert
-  (not
-    (forall
-      ((xs2 (list Nat)) (ys (list Nat)))
-      (=>
-        (= ys (as nil (list Nat)))
-        (= (last (append xs2 ys)) (last xs2))))))
+(assert-not
+  (forall
+    ((xs2 (list Nat)) (ys (list Nat)))
+    (=>
+      (= ys (as nil (list Nat))) (= (last (append xs2 ys)) (last xs2)))))
 (check-sat)

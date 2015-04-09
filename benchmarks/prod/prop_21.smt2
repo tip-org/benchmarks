@@ -24,9 +24,9 @@
            (cons ipv2 ipv3)
            (as (rotate ipv (append ipv3 (cons ipv2 (as nil (list a2)))))
              (list a2))))))))
-(declare-sort a5 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a5)
     (forall
       ((x7 (list a5)) (y (list a5)))
       (= (rotate (length x7) (append x7 y)) (append y x7)))))

@@ -35,9 +35,8 @@
   ((match x7
      (case nil x8)
      (case (cons x9 xs) (cons x9 (as (append xs x8) (list a2)))))))
-(assert
-  (not
-    (forall
-      ((n Nat) (xs2 (list Nat)) (ys2 (list Nat)))
-      (le (count n xs2) (count n (append xs2 ys2))))))
+(assert-not
+  (forall
+    ((n Nat) (xs2 (list Nat)) (ys2 (list Nat)))
+    (le (count n xs2) (count n (append xs2 ys2)))))
 (check-sat)

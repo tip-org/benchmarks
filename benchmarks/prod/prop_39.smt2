@@ -29,9 +29,8 @@
        (match x5
          (case nil x5)
          (case (cons ipv2 ipv3) (as (drop ipv ipv3) (list a2))))))))
-(assert
-  (not
-    (forall
-      ((x8 Nat) (y2 Nat) (z (list Nat)))
-      (=> (elem x8 (drop y2 z)) (elem x8 z)))))
+(assert-not
+  (forall
+    ((x8 Nat) (y2 Nat) (z (list Nat)))
+    (=> (elem x8 (drop y2 z)) (elem x8 z))))
 (check-sat)

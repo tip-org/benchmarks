@@ -15,10 +15,9 @@
            (cons ipv3 ipv4)
            (cons
              (Pair2 ipv ipv3) (as (zip ipv2 ipv4) (list (Pair a2 b2))))))))))
-(declare-sort b3 0)
-(declare-sort a3 0)
-(assert
-  (not
+(assert-not
+  (par
+    (b3 a3)
     (forall
       ((xs (list b3)))
       (= (zip (as nil (list a3)) xs) (as nil (list (Pair a3 b3)))))))

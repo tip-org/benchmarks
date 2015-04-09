@@ -9,9 +9,8 @@
        (match x2
          (case Z x)
          (case (S ipv2) (S (max2 ipv ipv2))))))))
-(assert
-  (not
-    (forall
-      ((a Nat) (b Nat) (c Nat))
-      (= (max2 (max2 a b) c) (max2 a (max2 b c))))))
+(assert-not
+  (forall
+    ((a Nat) (b Nat) (c Nat))
+    (= (max2 (max2 a b) c) (max2 a (max2 b c)))))
 (check-sat)

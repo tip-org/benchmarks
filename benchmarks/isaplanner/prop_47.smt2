@@ -27,8 +27,8 @@
      (case
        (Node l2 x6 r2)
        (S (max2 (as (height l2) Nat) (as (height r2) Nat)))))))
-(declare-sort a6 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a6)
     (forall ((a7 (Tree a6))) (= (height (mirror a7)) (height a7)))))
 (check-sat)

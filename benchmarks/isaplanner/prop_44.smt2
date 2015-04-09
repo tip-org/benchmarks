@@ -23,10 +23,9 @@
   ((match x3
      (case nil (as nil (list (Pair a2 b2))))
      (case (cons y ys) (cons (Pair2 x y) (zip x2 ys))))))
-(declare-sort a4 0)
-(declare-sort b4 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a4 b4)
     (forall
       ((x6 a4) (xs (list a4)) (ys2 (list b4)))
       (= (zip (cons x6 xs) ys2) (zipConcat x6 xs ys2)))))

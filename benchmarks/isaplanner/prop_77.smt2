@@ -27,9 +27,8 @@
      (case
        (cons x5 xs)
        (ite (le x3 x5) (cons x3 x4) (cons x5 (insort x3 xs)))))))
-(assert
-  (not
-    (forall
-      ((x8 Nat) (xs2 (list Nat)))
-      (=> (sorted xs2) (sorted (insort x8 xs2))))))
+(assert-not
+  (forall
+    ((x8 Nat) (xs2 (list Nat)))
+    (=> (sorted xs2) (sorted (insort x8 xs2)))))
 (check-sat)

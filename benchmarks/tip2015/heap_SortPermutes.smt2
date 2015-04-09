@@ -83,9 +83,8 @@
      (case
        (cons y xs2)
        (ite (equal x19 y) (S (count x19 xs2)) (count x19 xs2))))))
-(assert
-  (not
-    (forall
-      ((x26 Nat) (ds2 (list Nat)))
-      (= (count x26 (hsort ds2)) (count x26 ds2)))))
+(assert-not
+  (forall
+    ((x26 Nat) (ds2 (list Nat)))
+    (= (count x26 (hsort ds2)) (count x26 ds2))))
 (check-sat)

@@ -33,8 +33,7 @@
      (case
        (cons x2 xs)
        (append (as (rev xs) (list a2)) (cons x2 (as nil (list a2))))))))
-(assert
-  (not
-    (forall
-      ((n Nat) (xs3 (list Nat))) (= (count n xs3) (count n (rev xs3))))))
+(assert-not
+  (forall
+    ((n Nat) (xs3 (list Nat))) (= (count n xs3) (count n (rev xs3)))))
 (check-sat)

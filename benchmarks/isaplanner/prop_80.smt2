@@ -31,9 +31,9 @@
   ((match x6
      (case nil x7)
      (case (cons x8 xs2) (cons x8 (as (append xs2 x7) (list a4)))))))
-(declare-sort a5 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a5)
     (forall
       ((n Nat) (xs3 (list a5)) (ys (list a5)))
       (=

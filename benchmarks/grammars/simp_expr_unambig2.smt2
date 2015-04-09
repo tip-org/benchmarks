@@ -22,6 +22,6 @@
          (cons D (as nil (list Tok)))))
      (case EX (cons X (as nil (list Tok))))
      (case EY (cons Y (as nil (list Tok)))))))
-(assert
-  (not (forall ((u E) (v E)) (=> (= (lin u) (lin v)) (= u v)))))
+(assert-not
+  (forall ((u E) (v E)) (=> (= (lin u) (lin v)) (= u v))))
 (check-sat)

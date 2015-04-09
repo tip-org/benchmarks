@@ -26,11 +26,10 @@
   ((match x5
      (case nil x6)
      (case (cons x7 xs) (cons x7 (as (append xs x6) (list a2)))))))
-(assert
-  (not
-    (forall
-      ((n Nat) (xs2 (list Nat)))
-      (=
-        (count n (append xs2 (cons n (as nil (list Nat)))))
-        (S (count n xs2))))))
+(assert-not
+  (forall
+    ((n Nat) (xs2 (list Nat)))
+    (=
+      (count n (append xs2 (cons n (as nil (list Nat)))))
+      (S (count n xs2)))))
 (check-sat)

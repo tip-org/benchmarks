@@ -37,9 +37,8 @@
      (case nil false)
      (case
        (cons x6 xs2) (ite (equal x4 x6) (equal x4 x6) (elem x4 xs2))))))
-(assert
-  (not
-    (forall
-      ((x11 Nat) (y2 Nat) (z (list Nat)))
-      (=> (= x11 y2) (elem x11 (insert2 y2 z))))))
+(assert-not
+  (forall
+    ((x11 Nat) (y2 Nat) (z (list Nat)))
+    (=> (= x11 y2) (elem x11 (insert2 y2 z)))))
 (check-sat)

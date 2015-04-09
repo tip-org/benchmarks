@@ -49,13 +49,12 @@
        (Node p3 y2 q2)
        (ite (le x6 y2) (Node (add x6 p3) y2 q2) (Node p3 y2 (add x6 q2))))
      (case Nil (Node x7 x6 x7)))))
-(assert
-  (not
-    (forall
-      ((x13 Nat) (y4 Nat) (t (Tree Nat)))
-      (=>
-        (not (equal x13 y4))
-        (=
-          (count y4 (flatten (add x13 t) (as nil (list Nat))))
-          (count y4 (flatten t (as nil (list Nat)))))))))
+(assert-not
+  (forall
+    ((x13 Nat) (y4 Nat) (t (Tree Nat)))
+    (=>
+      (not (equal x13 y4))
+      (=
+        (count y4 (flatten (add x13 t) (as nil (list Nat))))
+        (count y4 (flatten t (as nil (list Nat))))))))
 (check-sat)

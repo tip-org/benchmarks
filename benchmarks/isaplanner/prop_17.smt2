@@ -22,5 +22,5 @@
        (match x2
          (case Z false)
          (case (S y) (equal ds y)))))))
-(assert (not (forall ((n Nat)) (= (le n Z) (equal n Z)))))
+(assert-not (forall ((n Nat)) (= (le n Z) (equal n Z))))
 (check-sat)

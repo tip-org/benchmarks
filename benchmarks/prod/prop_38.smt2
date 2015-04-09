@@ -25,9 +25,8 @@
   ((match x6
      (case nil x7)
      (case (cons x8 xs2) (cons x8 (as (append xs2 x7) (list a2)))))))
-(assert
-  (not
-    (forall
-      ((x9 Nat) (y2 (list Nat)) (z (list Nat)))
-      (=> (elem x9 y2) (=> (elem x9 z) (elem x9 (append y2 z)))))))
+(assert-not
+  (forall
+    ((x9 Nat) (y2 (list Nat)) (z (list Nat)))
+    (=> (elem x9 y2) (=> (elem x9 z) (elem x9 (append y2 z))))))
 (check-sat)

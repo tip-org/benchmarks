@@ -29,6 +29,6 @@
      (case One x2)
      (case (ZeroAnd xs) (ZeroAnd (times xs x2)))
      (case (OneAnd xs2) (plus (ZeroAnd (times xs2 x2)) x2)))))
-(assert
-  (not (forall ((x6 Bin) (y Bin)) (= (times x6 y) (times y x6)))))
+(assert-not
+  (forall ((x6 Bin) (y Bin)) (= (times x6 y) (times y x6))))
 (check-sat)

@@ -47,9 +47,9 @@
      (case
        (cons x4 xs)
        (append (as (rev xs) (list a3)) (cons x4 (as nil (list a3))))))))
-(declare-sort a7 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a7)
     (forall
       ((i Nat) (xs4 (list a7)))
       (= (rev (take i xs4)) (drop (minus (len xs4) i) (rev xs4))))))

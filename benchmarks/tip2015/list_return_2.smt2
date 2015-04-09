@@ -16,9 +16,9 @@
      (case nil (as nil (list b)))
      (case
        (cons x4 xs) (append (@ x3 x4) (as (bind xs x3) (list b)))))))
-(declare-sort a5 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a5)
     (forall
       ((xs3 (list a5)))
       (= (bind xs3 (lambda ((x8 a5)) (return x8))) xs3))))

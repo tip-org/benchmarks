@@ -45,9 +45,8 @@
   ((times ((x9 Z2) (x10 Z2)) Z2))
   ((toInteger
      (timesSigns (sign x9) (sign x10)) (mult (abs2 x9) (abs2 x10)))))
-(assert
-  (not
-    (forall
-      ((x14 Z2) (y Z2) (z Z2))
-      (= (times x14 (times y z)) (times (times x14 y) z)))))
+(assert-not
+  (forall
+    ((x14 Z2) (y Z2) (z Z2))
+    (= (times x14 (times y z)) (times (times x14 y) z))))
 (check-sat)

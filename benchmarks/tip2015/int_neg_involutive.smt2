@@ -10,5 +10,5 @@
          (case Z x)
          (case (S n) (N n))))
      (case (N n2) (P (S n2))))))
-(assert (not (forall ((x2 Z2)) (= x2 (neg (neg x2))))))
+(assert-not (forall ((x2 Z2)) (= x2 (neg (neg x2)))))
 (check-sat)

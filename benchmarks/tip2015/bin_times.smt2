@@ -46,9 +46,8 @@
   ((match x9
      (case Z x9)
      (case (S n2) (plus x10 (mult n2 x10))))))
-(assert
-  (not
-    (forall
-      ((x11 Bin) (y Bin))
-      (= (toNat (times x11 y)) (mult (toNat x11) (toNat y))))))
+(assert-not
+  (forall
+    ((x11 Bin) (y Bin))
+    (= (toNat (times x11 y)) (mult (toNat x11) (toNat y)))))
 (check-sat)

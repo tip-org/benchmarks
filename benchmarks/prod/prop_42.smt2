@@ -28,9 +28,8 @@
      (case
        (cons x3 xs)
        (ite (elem x3 x2) (union xs x2) (cons x3 (union xs x2)))))))
-(assert
-  (not
-    (forall
-      ((x9 Nat) (y2 (list Nat)) (z (list Nat)))
-      (=> (elem x9 y2) (elem x9 (union y2 z))))))
+(assert-not
+  (forall
+    ((x9 Nat) (y2 (list Nat)) (z (list Nat)))
+    (=> (elem x9 y2) (elem x9 (union y2 z)))))
 (check-sat)

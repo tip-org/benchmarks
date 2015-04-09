@@ -60,10 +60,9 @@
      (case Nil Z))))
 (define-funs-rec
   ((toList2 ((x5 Heap)) (list Nat))) ((toList (heapSize x5) x5)))
-(assert
-  (not
-    (forall
-      ((x13 Heap) (y Heap))
-      (=
-        (toList2 (merge x13 y)) (mergeLists (toList2 x13) (toList2 y))))))
+(assert-not
+  (forall
+    ((x13 Heap) (y Heap))
+    (=
+      (toList2 (merge x13 y)) (mergeLists (toList2 x13) (toList2 y)))))
 (check-sat)

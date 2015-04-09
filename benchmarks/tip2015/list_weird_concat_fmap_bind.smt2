@@ -30,10 +30,9 @@
      (case nil (as nil (list b2)))
      (case
        (cons x8 xs3) (append (@ x7 x8) (as (bind xs3 x7) (list b2)))))))
-(declare-sort a6 0)
-(declare-sort b3 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a6 b3)
     (forall
       ((f (=> a6 (list b3))) (xs5 (list a6)))
       (= (weird_concat (fmap f xs5)) (bind xs5 f)))))

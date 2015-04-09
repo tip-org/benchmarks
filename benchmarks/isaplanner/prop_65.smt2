@@ -14,5 +14,5 @@
        (match x
          (case Z true)
          (case (S x3) (lt x3 ipv)))))))
-(assert (not (forall ((i Nat) (m Nat)) (lt i (S (plus m i))))))
+(assert-not (forall ((i Nat) (m Nat)) (lt i (S (plus m i)))))
 (check-sat)

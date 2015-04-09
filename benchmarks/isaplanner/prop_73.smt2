@@ -22,9 +22,9 @@
      (case
        (cons x2 xs)
        (append (as (rev xs) (list a2)) (cons x2 (as nil (list a2))))))))
-(declare-sort a5 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a5)
     (forall
       ((p (=> a5 bool)) (xs4 (list a5)))
       (= (rev (filter p xs4)) (filter p (rev xs4))))))

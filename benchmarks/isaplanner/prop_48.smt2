@@ -30,13 +30,12 @@
   ((match x6
      (case nil x7)
      (case (cons x8 xs) (cons x8 (as (append xs x7) (list a4)))))))
-(assert
-  (not
-    (forall
-      ((xs2 (list Nat)))
-      (=>
-        (not (null xs2))
-        (=
-          (append (butlast xs2) (cons (last xs2) (as nil (list Nat))))
-          xs2)))))
+(assert-not
+  (forall
+    ((xs2 (list Nat)))
+    (=>
+      (not (null xs2))
+      (=
+        (append (butlast xs2) (cons (last xs2) (as nil (list Nat))))
+        xs2))))
 (check-sat)

@@ -16,9 +16,8 @@
        (match ds
          (case nil x3)
          (case (cons ipv3 ipv4) (last ds)))))))
-(assert
-  (not
-    (forall
-      ((xs (list Nat)) (x4 Nat))
-      (=> (not (null xs)) (= (last (cons x4 xs)) (last xs))))))
+(assert-not
+  (forall
+    ((xs (list Nat)) (x4 Nat))
+    (=> (not (null xs)) (= (last (cons x4 xs)) (last xs)))))
 (check-sat)

@@ -10,5 +10,5 @@
   ((match x
      (case Z x)
      (case (S x2) (S (S (double x2)))))))
-(assert (not (forall ((x6 Nat)) (= (double x6) (plus x6 x6)))))
+(assert-not (forall ((x6 Nat)) (= (double x6) (plus x6 x6))))
 (check-sat)

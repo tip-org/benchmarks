@@ -79,6 +79,6 @@
 (define-funs-rec
   ((tsort ((x6 (list Nat))) (list Nat)))
   ((flatten (toTree x6) (as nil (list Nat)))))
-(assert
-  (not (forall ((ds3 (list Nat))) (isPermutation (tsort ds3) ds3))))
+(assert-not
+  (forall ((ds3 (list Nat))) (isPermutation (tsort ds3) ds3)))
 (check-sat)

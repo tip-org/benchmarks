@@ -31,6 +31,6 @@
        (match x5
          (case Z false)
          (case (S y2) (equal ds y2)))))))
-(assert
-  (not (forall ((a Nat) (b Nat)) (= (equal (min2 a b) b) (le b a)))))
+(assert-not
+  (forall ((a Nat) (b Nat)) (= (equal (min2 a b) b) (le b a))))
 (check-sat)

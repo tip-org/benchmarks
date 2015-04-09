@@ -3,8 +3,8 @@
   (a) ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Token (A) (B) (C) (D) (ESC) (P) (Q) (R))))
 (define-funs-rec
-  ((isSpecial ((x Token)) bool))
-  ((match x
+  ((isSpecial ((x3 Token)) bool))
+  ((match x3
      (case default false)
      (case ESC true)
      (case P true)
@@ -19,17 +19,16 @@
      (case Q B)
      (case R C))))
 (define-funs-rec
-  ((escape ((x2 (list Token))) (list Token)))
-  ((match x2
-     (case nil x2)
+  ((escape ((x (list Token))) (list Token)))
+  ((match x
+     (case nil x)
      (case
-       (cons x3 xs)
+       (cons x2 xs)
        (ite
-         (isSpecial x3) (cons ESC (cons (code x3) (escape xs)))
-         (cons x3 (escape xs)))))))
-(assert
-  (not
-    (forall
-      ((xs2 (list Token)) (ys (list Token)))
-      (=> (= (escape xs2) (escape ys)) (= xs2 ys)))))
+         (isSpecial x2) (cons ESC (cons (code x2) (escape xs)))
+         (cons x2 (escape xs)))))))
+(assert-not
+  (forall
+    ((xs2 (list Token)) (ys (list Token)))
+    (=> (= (escape xs2) (escape ys)) (= xs2 ys))))
 (check-sat)

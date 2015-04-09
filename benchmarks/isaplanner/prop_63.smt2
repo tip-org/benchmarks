@@ -34,9 +34,8 @@
        (match x5
          (case nil x5)
          (case (cons ipv4 ipv5) (as (drop ipv3 ipv5) (list a3))))))))
-(assert
-  (not
-    (forall
-      ((n Nat) (xs2 (list Nat)))
-      (=> (lt n (len xs2)) (= (last (drop n xs2)) (last xs2))))))
+(assert-not
+  (forall
+    ((n Nat) (xs2 (list Nat)))
+    (=> (lt n (len xs2)) (= (last (drop n xs2)) (last xs2)))))
 (check-sat)

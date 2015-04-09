@@ -25,9 +25,9 @@
        (match ds2
          (case nil ds2)
          (case (cons ipv ipv2) (cons x3 (as (butlast ds2) (list a3)))))))))
-(declare-sort a4 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a4)
     (forall
       ((xs2 (list a4)))
       (= (len (butlast xs2)) (minus (len xs2) (S Z))))))

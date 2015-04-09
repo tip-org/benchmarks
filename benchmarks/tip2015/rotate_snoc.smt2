@@ -21,7 +21,7 @@
   ((match x
      (case nil Z)
      (case (cons ds xs) (S (as (length xs) Nat))))))
-(declare-sort a5 0)
-(assert
-  (not (forall ((xs2 (list a5))) (= (rotate (length xs2) xs2) xs2))))
+(assert-not
+  (par
+    (a5) (forall ((xs2 (list a5))) (= (rotate (length xs2) xs2) xs2))))
 (check-sat)

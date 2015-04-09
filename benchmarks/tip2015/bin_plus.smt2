@@ -35,9 +35,8 @@
      (case One (S Z))
      (case (ZeroAnd xs) (plus (toNat xs) (toNat xs)))
      (case (OneAnd xs2) (S (plus (toNat xs2) (toNat xs2)))))))
-(assert
-  (not
-    (forall
-      ((x7 Bin) (y Bin))
-      (= (toNat (plus2 x7 y)) (plus (toNat x7) (toNat y))))))
+(assert-not
+  (forall
+    ((x7 Bin) (y Bin))
+    (= (toNat (plus2 x7 y)) (plus (toNat x7) (toNat y)))))
 (check-sat)

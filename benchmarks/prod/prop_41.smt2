@@ -35,9 +35,8 @@
      (case nil true)
      (case
        (cons x3 xs) (ite (elem x3 x2) (subset xs x2) (elem x3 x2))))))
-(assert
-  (not
-    (forall
-      ((x12 (list Nat)) (y2 (list Nat)))
-      (=> (subset x12 y2) (= (intersect x12 y2) x12)))))
+(assert-not
+  (forall
+    ((x12 (list Nat)) (y2 (list Nat)))
+    (=> (subset x12 y2) (= (intersect x12 y2) x12))))
 (check-sat)

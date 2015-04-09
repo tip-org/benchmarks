@@ -112,9 +112,8 @@
            (or2
              (and2 (recognise x7 s2) (recognise x8 s3))
              (recognisePair x7 x8 xs))))))))
-(assert
-  (not
-    (forall
-      ((p6 R) (q5 R) (s4 (list A)))
-      (= (recognise (Seq p6 q5) s4) (recognisePair p6 q5 (split s4))))))
+(assert-not
+  (forall
+    ((p6 R) (q5 R) (s4 (list A)))
+    (= (recognise (Seq p6 q5) s4) (recognisePair p6 q5 (split s4)))))
 (check-sat)

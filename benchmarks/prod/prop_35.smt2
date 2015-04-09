@@ -21,7 +21,6 @@
   ((match x5
      (case Z (S x5))
      (case (S n2) (mult x4 (exp x4 n2))))))
-(assert
-  (not
-    (forall ((x12 Nat) (y Nat)) (= (exp x12 y) (qexp x12 y one)))))
+(assert-not
+  (forall ((x12 Nat) (y Nat)) (= (exp x12 y) (qexp x12 y one))))
 (check-sat)

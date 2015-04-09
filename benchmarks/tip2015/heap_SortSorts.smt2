@@ -74,5 +74,5 @@
        (match ds
          (case nil true)
          (case (cons y xs2) (and2 (le x14 y) (ordered ds))))))))
-(assert (not (forall ((ds3 (list Nat))) (ordered (hsort ds3)))))
+(assert-not (forall ((ds3 (list Nat))) (ordered (hsort ds3))))
 (check-sat)

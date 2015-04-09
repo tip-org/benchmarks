@@ -14,6 +14,5 @@
        (match x2
          (case Z x)
          (case (S ipv2) (minus ipv ipv2)))))))
-(assert
-  (not (forall ((n Nat) (m Nat)) (= (minus n (plus n m)) Z))))
+(assert-not (forall ((n Nat) (m Nat)) (= (minus n (plus n m)) Z)))
 (check-sat)

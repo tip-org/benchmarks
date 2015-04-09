@@ -28,6 +28,6 @@
   ((match x
      (case nil x)
      (case (cons x2 xs) (insort x2 (sort xs))))))
-(assert
-  (not (forall ((xs4 (list Nat))) (= (len (sort xs4)) (len xs4)))))
+(assert-not
+  (forall ((xs4 (list Nat))) (= (len (sort xs4)) (len xs4))))
 (check-sat)

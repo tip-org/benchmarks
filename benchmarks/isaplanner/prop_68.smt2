@@ -36,8 +36,7 @@
      (case
        (cons x4 xs2)
        (ite (equal x2 x4) (delete x2 xs2) (cons x4 (delete x2 xs2)))))))
-(assert
-  (not
-    (forall
-      ((n Nat) (xs3 (list Nat))) (le (len (delete n xs3)) (len xs3)))))
+(assert-not
+  (forall
+    ((n Nat) (xs3 (list Nat))) (le (len (delete n xs3)) (len xs3))))
 (check-sat)

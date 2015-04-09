@@ -19,7 +19,7 @@
      (case
        (cons x2 xs)
        (append (as (rev xs) (list a2)) (cons x2 (as nil (list a2))))))))
-(declare-sort a5 0)
-(assert
-  (not (forall ((x7 (list a5))) (= (length (rev x7)) (length x7)))))
+(assert-not
+  (par
+    (a5) (forall ((x7 (list a5))) (= (length (rev x7)) (length x7)))))
 (check-sat)

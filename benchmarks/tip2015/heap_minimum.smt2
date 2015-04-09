@@ -57,7 +57,6 @@
      (case Nil Z))))
 (define-funs-rec
   ((toList2 ((x5 Heap)) (list Nat))) ((toList (heapSize x5) x5)))
-(assert
-  (not
-    (forall ((h Heap)) (= (listMinimum (toList2 h)) (minimum h)))))
+(assert-not
+  (forall ((h Heap)) (= (listMinimum (toList2 h)) (minimum h))))
 (check-sat)

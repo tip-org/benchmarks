@@ -14,8 +14,7 @@
        (match ds
          (case Z false)
          (case (S x2) (even x2)))))))
-(assert
-  (not
-    (forall
-      ((x6 Nat) (y Nat)) (= (even (plus x6 y)) (even (plus y x6))))))
+(assert-not
+  (forall
+    ((x6 Nat) (y Nat)) (= (even (plus x6 y)) (even (plus y x6)))))
 (check-sat)

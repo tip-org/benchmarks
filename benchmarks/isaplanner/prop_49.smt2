@@ -21,9 +21,9 @@
   ((match x2
      (case nil (butlast x))
      (case (cons ipv ipv2) (append x (butlast x2))))))
-(declare-sort a5 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a5)
     (forall
       ((xs2 (list a5)) (ys (list a5)))
       (= (butlast (append xs2 ys)) (butlastConcat xs2 ys)))))

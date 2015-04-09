@@ -34,9 +34,8 @@
      (case
        (cons x3 xs)
        (ite (elem x3 x2) (union xs x2) (cons x3 (union xs x2)))))))
-(assert
-  (not
-    (forall
-      ((x12 (list Nat)) (y2 (list Nat)))
-      (=> (subset x12 y2) (= (union x12 y2) y2)))))
+(assert-not
+  (forall
+    ((x12 (list Nat)) (y2 (list Nat)))
+    (=> (subset x12 y2) (= (union x12 y2) y2))))
 (check-sat)

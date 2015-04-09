@@ -11,9 +11,9 @@
        (match x2
          (case nil x2)
          (case (cons ipv2 ipv3) (as (drop ipv ipv3) (list a2))))))))
-(declare-sort a3 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a3)
     (forall
       ((x3 Nat) (y Nat) (z (list a3)))
       (= (drop x3 (drop y z)) (drop y (drop x3 z))))))

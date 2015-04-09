@@ -23,8 +23,7 @@
      (case
        (cons x4 xs2)
        (ite (lt x2 x4) (cons x2 x3) (cons x4 (ins x2 xs2)))))))
-(assert
-  (not
-    (forall
-      ((x8 Nat) (xs3 (list Nat))) (= (len (ins x8 xs3)) (S (len xs3))))))
+(assert-not
+  (forall
+    ((x8 Nat) (xs3 (list Nat))) (= (len (ins x8 xs3)) (S (len xs3)))))
 (check-sat)

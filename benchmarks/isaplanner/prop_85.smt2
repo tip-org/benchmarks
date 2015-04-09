@@ -33,10 +33,9 @@
      (case
        (cons x4 xs)
        (append (as (rev xs) (list a3)) (cons x4 (as nil (list a3))))))))
-(declare-sort a6 0)
-(declare-sort b3 0)
-(assert
-  (not
+(assert-not
+  (par
+    (a6 b3)
     (forall
       ((xs4 (list a6)) (ys (list b3)))
       (=>
