@@ -13,6 +13,7 @@ CVC4-compatible version of SMTLIB:
 
 * Why3: http://tip-org.github.io/tip-benchmarks-0.1-why3.tar.gz
 * CVC4: http://tip-org.github.io/tip-benchmarks-0.1-cvc4.tar.gz
+* TIP format: http://tip-org.github.io/tip-benchmarks-0.1.tar.gz
 
 ## Generating problems yourself
 
