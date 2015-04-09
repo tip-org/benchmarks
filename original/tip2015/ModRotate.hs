@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module Challenges.DifficultRotate where
+module ModRotate where
 
 import Prelude hiding (reverse,(++),(+),(*),(-),(<),(<=),length,drop,take,mod)
 
@@ -37,19 +37,10 @@ x   - Z   = x
 S x - S y = x - y
 
 mod :: Nat -> Nat -> Nat
-{-n `mod` Z = Z
+n `mod` Z = Z
 n `mod` m
     | n < m     = n
-    | otherwise = (n - m) `mod` m-}
-n `mod` m = mod2 n Z m
-
--- mod2 n k m = (n-k) mod m
-mod2 :: Nat -> Nat -> Nat -> Nat
-mod2 _ _ Z = Z
-mod2 Z Z _ = Z           -- 0 % m = 0
-mod2 Z (S n) m = m - S n -- (-S n) % m = m - S n
-mod2 (S n) Z (S m) = mod2 n m (S m) -- S n % S m = (S n - S m) % S m = (n - m) % S m
-mod2 (S n) (S k) m = mod2 n k m
+    | otherwise = (n - m) `mod` m
 
 length :: List a -> Nat
 length Nil         = Z
@@ -74,35 +65,9 @@ drop Z     xs          = xs
 drop _     Nil         = Nil
 drop (S n) (Cons x xs) = drop n xs
 
--- From productive use of failure
-prop_rot_self :: Nat -> List a -> Prop (List a)
-prop_rot_self n xs = rotate n (xs ++ xs) =:= rotate n xs ++ rotate n xs
+prop_mod :: Nat -> List a -> Prop (List a)
+prop_mod n xs = rotate n xs =:= drop (n `mod` length xs) xs ++ take (n `mod` length xs) xs
 
-prop_rot_mod :: Nat -> List a -> Prop (List a)
-prop_rot_mod n xs = rotate n xs =:= drop (n `mod` length xs) xs ++ take (n `mod` length xs) xs
-{-
-sig =
-    [ vars ["x", "y", "z"] (undefined :: A)
-    , vars ["n", "m", "o"] (undefined :: Nat)
-    , vars ["xs", "ys", "zs"] (undefined :: List)
-    , fun0 "True"   True
-    , fun0 "False"  False
-    , fun0 "Z"      Z
-    , fun1 "S"      S
-    , fun2 "+"      (+)
-    , fun2 "*"      (*)
-    , fun2 "`mod`"      (`mod`)
-    , fun2 "-"      (-)
-    , fun2 "<"      (<)
-    , fun0 "Nil"    Nil
-    , fun2 "Cons"   Cons
-    , fun1 "length" length
-    , fun2 "++"     (++)
-    , fun2 "rotate" rotate
-    , fun2 "take"   take
-    , fun2 "drop"   drop
-    ]
--}
 instance Enum Nat where
   toEnum 0 = Z
   toEnum n = S (toEnum (pred n))

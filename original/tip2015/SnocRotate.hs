@@ -1,6 +1,6 @@
 module SnocRotate where
 
-import Prelude hiding (length)
+import Prelude hiding (length, (++))
 
 import Tip.DSL
 import Test.QuickCheck hiding ((==>))
@@ -18,5 +18,13 @@ snoc :: a -> [a] -> [a]
 snoc x []     = [x]
 snoc x (y:ys) = y:snoc x ys
 
-prop_rotate :: [a] -> Prop [a]
-prop_rotate xs = rotate (length xs) xs =:= xs
+prop_snoc :: [a] -> Prop [a]
+prop_snoc xs = rotate (length xs) xs =:= xs
+
+(++) :: [a] -> [a] -> [a]
+[]     ++ ys = ys
+(x:xs) ++ ys = x : (xs ++ ys)
+
+prop_snoc_self :: Nat -> [a] -> Prop [a]
+prop_snoc_self n xs = rotate n (xs ++ xs) =:= rotate n xs ++ rotate n xs
+
