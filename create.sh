@@ -33,6 +33,9 @@ create() {
     )
 }
 
+create prop_  tip2015    Escape.hs              escape           "Escaping"
+create prop_  tip2015    Sort_TreeSort.hs       tree_sort        "Tree sort"
+
 create prop_T prod       Properties.hs prop "Source: Productive use of failure"
 create prop_  isaplanner Properties.hs prop "Source: IsaPlanner test suite"
 create prop_  tip2015    Integers.hs   int  "Integers implemented using natural numbers"

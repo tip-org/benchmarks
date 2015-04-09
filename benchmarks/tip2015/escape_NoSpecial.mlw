@@ -1,0 +1,72 @@
+(* Escaping *)
+module A
+  use HighOrd
+  type token = A | B | C | D | ESC | P | Q | R
+  type list 'a = Nil | Cons 'a (list 'a)
+  function and2 (ds : bool) (x : bool) : bool =
+    match ds with
+    | False -> False
+    | True -> x
+    end
+  function or2 (ds2 : bool) (ds1 : bool) : bool =
+    match ds2 with
+    | False -> ds1
+    | True -> True
+    end
+  function not2 (ds3 : bool) : bool =
+    match ds3 with
+    | False -> True
+    | True -> False
+    end
+  function all (p : ('a2 -> bool)) (ds4 : list 'a2) : bool =
+    match ds4 with
+    | Nil -> True
+    | Cons x2 xs -> and2 (p x2) (all p xs)
+    end
+  function code (ds5 : token) : token =
+    match ds5 with
+    | A -> A
+    | B -> B
+    | C -> C
+    | D -> D
+    | ESC -> ESC
+    | P -> A
+    | Q -> B
+    | R -> C
+    end
+  function isEsc (ds6 : token) : bool =
+    match ds6 with
+    | A -> False
+    | B -> False
+    | C -> False
+    | D -> False
+    | ESC -> True
+    | P -> False
+    | Q -> False
+    | R -> False
+    end
+  function isSpecial (ds7 : token) : bool =
+    match ds7 with
+    | A -> False
+    | B -> False
+    | C -> False
+    | D -> False
+    | ESC -> True
+    | P -> True
+    | Q -> True
+    | R -> True
+    end
+  function escape (ds8 : list token) : list token =
+    match ds8 with
+    | Nil -> Nil
+    | Cons x3 xs2 ->
+        match isSpecial x3 with
+        | False -> Cons x3 (escape xs2)
+        | True -> Cons ESC (Cons (code x3) (escape xs2))
+        end
+    end
+  function ok (x4 : token) : bool =
+    or2 (not2 (isSpecial x4)) (isEsc x4)
+  goal prop_NoSpecial :
+    forall xs3 : list token . all ok (escape xs3) = True
+end

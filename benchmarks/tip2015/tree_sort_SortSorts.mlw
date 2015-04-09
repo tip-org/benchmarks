@@ -1,0 +1,52 @@
+(* Tree sort *)
+module A
+  use HighOrd
+  type tree 'a = Node (tree 'a) 'a (tree 'a) | Nil
+  type nat = Z | S nat
+  type list 'a2 = Nil2 | Cons 'a2 (list 'a2)
+  function le (ds : nat) (ds2 : nat) : bool =
+    match ds with
+    | Z -> True
+    | S d ->
+        match ds2 with
+        | Z -> False
+        | S d2 -> le d d2
+        end
+    end
+  function add (x : nat) (ds3 : tree nat) : tree nat =
+    match ds3 with
+    | Node p y q ->
+        match le x y with
+        | False -> Node p y (add x q)
+        | True -> Node (add x p) y q
+        end
+    | Nil -> Node Nil x Nil
+    end
+  function flatten (ds4 : tree 'a3) (ys : list 'a3) : list 'a3 =
+    match ds4 with
+    | Node p2 x2 q2 -> flatten p2 (Cons x2 (flatten q2 ys))
+    | Nil -> ys
+    end
+  function toTree (ds5 : list nat) : tree nat =
+    match ds5 with
+    | Nil2 -> Nil
+    | Cons x3 xs -> add x3 (toTree xs)
+    end
+  function tsort (t : list nat) : list nat = flatten (toTree t) Nil2
+  function and2 (ds6 : bool) (x4 : bool) : bool =
+    match ds6 with
+    | False -> False
+    | True -> x4
+    end
+  function ordered (ds7 : list nat) : bool =
+    match ds7 with
+    | Nil2 -> True
+    | Cons x5 ds8 ->
+        match ds8 with
+        | Nil2 -> True
+        | Cons y2 xs2 -> and2 (le x5 y2) (ordered ds8)
+        end
+    end
+  goal prop_SortSorts :
+    forall ds9 : list nat . ordered (tsort ds9) = True
+end
