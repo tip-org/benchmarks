@@ -5,8 +5,6 @@ import Prelude hiding ((+),(*),(-),(<))
 import Tip.DSL
 import Test.QuickCheck hiding ((==>))
 import Data.Typeable
-import QuickSpec hiding (S)
-import Data.Typeable
 
 data Nat = Z | S Nat deriving (Eq,Ord,Show,Typeable)
 
@@ -45,3 +43,5 @@ instance Arbitrary Nat where
     x <- choose (0,round (sqrt (toEnum s)))
     return (toEnum x)
 
+prop_plus_comm :: Nat -> Nat -> Prop Nat
+prop_plus_comm x y = x + y =:= y + x
