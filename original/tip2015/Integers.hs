@@ -4,7 +4,9 @@
 module Challenges.Integers where
 
 import Prelude (Eq,Ord,Show,iterate,(!!),fmap,Bool(..),return,undefined)
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 import Data.Typeable
 
 import Nat hiding ((-))

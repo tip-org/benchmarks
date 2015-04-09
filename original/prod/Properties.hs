@@ -5,7 +5,9 @@
 -}
 module Properties where
 
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 import Prelude(Bool(..))
 import Definitions
 

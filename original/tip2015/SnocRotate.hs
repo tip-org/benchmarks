@@ -2,7 +2,9 @@ module SnocRotate where
 
 import Prelude hiding (length)
 
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 
 import Nat (Nat(..))
 import List (length)

@@ -4,7 +4,9 @@ module RegExp where
 import Test.QuickCheck
 import Test.QuickCheck.All
 import Control.Monad ( liftM, liftM2 )
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 import Prelude hiding (seq)
 
 --------------------------------------------------------------------------------
@@ -160,9 +162,6 @@ instance Arbitrary R where
   shrink Nil       = []
   shrink Eps       = [Nil]
   shrink (Atom a)  = [Eps,Nil] ++ [Atom a' | a' <- shrink a]
-
-return []
-testAll = $(quickCheckAll)
 
 --------------------------------------------------------------------------------
 

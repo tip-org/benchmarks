@@ -6,7 +6,9 @@ import Test.QuickCheck.Poly
 import Test.QuickCheck.All
 import Nat
 import Prelude hiding ((++), (==), (<=), minimum, elem, (+))
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 import Data.Maybe hiding (maybeToList)
 
 --------------------------------------------------------------------------------
@@ -145,9 +147,6 @@ prop_SortPermutes' (xs :: [Nat]) =
   hsort xs `isPermutation` xs =:= True
 
 --------------------------------------------------------------------------------
-
-return []
-testAll = $(quickCheckAll)
 
 --------------------------------------------------------------------------------
 

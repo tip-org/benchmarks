@@ -2,7 +2,9 @@ module Nichomachus where
 
 import Prelude (error)
 import Nat hiding (sig)
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 import QuickSpec.Signature
 
 sum :: Nat -> Nat

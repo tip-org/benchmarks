@@ -3,7 +3,9 @@ module SimpleExpr4 where
 
 import Prelude hiding ((++))
 import Control.Monad
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 
 (++) :: [a] -> [a] -> [a]
 (x:xs) ++ ys = x:(xs ++ ys)

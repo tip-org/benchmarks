@@ -2,7 +2,9 @@ module Properties where
 
 import Prelude (Bool(..),error,toEnum,fromEnum,pred,succ,sqrt,round
                ,Enum,Eq,Ord,Show,return,(.),undefined)
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 import Definitions
 
 prop_01 n xs

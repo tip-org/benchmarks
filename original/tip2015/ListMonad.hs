@@ -5,7 +5,9 @@ import Prelude hiding ((>>=),(++),fmap,id,(.), return)
 
 import Data.Typeable
 
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 
 (++) :: [a] -> [a] -> [a]
 (x:xs) ++ ys = x:(xs ++ ys)

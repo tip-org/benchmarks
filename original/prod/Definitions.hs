@@ -7,7 +7,9 @@
 module Definitions where
 
 import Prelude (Eq,Ord,Show,iterate,(!!),fmap,return,Bool(..))
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 
 -- Booleans
 

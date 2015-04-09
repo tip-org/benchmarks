@@ -3,7 +3,9 @@ module BinLists where
 
 import Prelude hiding ((+), (*), (++), (&&),(||),not)
 
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 
 import Control.Applicative
 

@@ -3,7 +3,9 @@ module Packrat where
 
 import Prelude hiding ((++),(+))
 import Control.Monad
-import HipSpec hiding (A,B)
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 
 {-
 

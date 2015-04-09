@@ -4,7 +4,9 @@ module List where
 import Prelude hiding (reverse,(++),length,map,filter,(.),(+),const)
 import QuickSpec hiding (S,Prop)
 import qualified Prelude
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 import Nat
 
 length :: [a] -> Nat

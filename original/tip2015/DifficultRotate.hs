@@ -3,7 +3,9 @@ module Challenges.DifficultRotate where
 
 import Prelude hiding (reverse,(++),(+),(*),(-),(<),(<=),length,drop,take,mod)
 
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 
 data List a = Cons a (List a) | Nil
   deriving (Eq,Typeable,Ord)

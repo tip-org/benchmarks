@@ -2,7 +2,9 @@
 module Nat where
 
 import Prelude hiding ((+),(*),(-),(<))
-import HipSpec
+import Tip.DSL
+import Test.QuickCheck hiding ((==>))
+import Data.Typeable
 import QuickSpec hiding (S)
 import Data.Typeable
 
