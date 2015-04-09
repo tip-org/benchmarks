@@ -2,22 +2,17 @@
 (declare-datatypes
   (a) ((list (nil) (cons (head a) (tail (list a))))))
 (define-funs-rec
-  ((par
-     (a3)
-     (append
-        ((x4 (list a3)) (x5 (list a3))) (list a3)
-        (match x4
-          (case nil x5)
-          (case (cons x6 xs2) (cons x6 (as (append xs2 x5) (list a3)))))))))
+  ((par (a3) (append ((x4 (list a3)) (x5 (list a3))) (list a3))))
+  ((match x4
+     (case nil x5)
+     (case (cons x6 xs2) (cons x6 (as (append xs2 x5) (list a3)))))))
 (define-funs-rec
   ((par
-     (a2 b)
-     (bind
-        ((x (list a2)) (x2 (=> a2 (list b)))) (list b)
-        (match x
-          (case nil (as nil (list b)))
-          (case
-            (cons x3 xs) (append (@ x2 x3) (as (bind xs x2) (list b)))))))))
+     (a2 b) (bind ((x (list a2)) (x2 (=> a2 (list b)))) (list b))))
+  ((match x
+     (case nil (as nil (list b)))
+     (case
+       (cons x3 xs) (append (@ x2 x3) (as (bind xs x2) (list b)))))))
 (declare-sort a4 0)
 (declare-sort b2 0)
 (declare-sort c 0)
