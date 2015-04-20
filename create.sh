@@ -17,6 +17,7 @@ create1() {
         ERR0=/tmp/$I-out0
         ERR1=/tmp/$I-out1
         ERR2=/tmp/$I-out2
+        echo tip-ghc $FILE $PROP$I
         (echo "; $COMMENT"; tip-ghc $FILE $PROP$I) > $RES
 
         tip-parser $RES cvc4 >$CVC4 2>$ERR0

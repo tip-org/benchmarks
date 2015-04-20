@@ -1,65 +1,56 @@
 ; Tree sort
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes
-  (a2)
-  ((Tree
-     (Node (Node_ (Tree a2)) (Node_2 a2) (Node_3 (Tree a2))) (Nil))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((Tree (Node (Node_0 (Tree a)) (Node_1 a) (Node_2 (Tree a)))
+     (Nil))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((le ((x14 Nat) (x15 Nat)) bool))
-  ((match x14
+  ((le ((x Nat) (y Nat)) bool))
+  ((match x
      (case Z true)
-     (case
-       (S d2)
-       (match x15
+     (case (S z)
+       (match y
          (case Z false)
-         (case (S d3) (le d2 d3)))))))
+         (case (S x2) (le z x2)))))))
 (define-funs-rec
-  ((par (a3) (flatten ((x4 (Tree a3)) (x5 (list a3))) (list a3))))
-  ((match x4
-     (case
-       (Node p2 x6 q)
-       (as (flatten p2 (cons x6 (as (flatten q x5) (list a3))))
-         (list a3)))
-     (case Nil x5))))
+  ((par (a) (flatten ((x (Tree a)) (y (list a))) (list a))))
+  ((match x
+     (case (Node q z q2)
+       (as (flatten q (cons z (as (flatten q2 y) (list a)))) (list a)))
+     (case Nil y))))
 (define-funs-rec
-  ((equal ((x11 Nat) (x12 Nat)) bool))
-  ((match x11
-     (case
-       Z
-       (match x12
+  ((equal ((x Nat) (y Nat)) bool))
+  ((match x
+     (case Z
+       (match y
          (case Z true)
-         (case (S d) false)))
-     (case
-       (S x13)
-       (match x12
+         (case (S z) false)))
+     (case (S x2)
+       (match y
          (case Z false)
-         (case (S y3) (equal x13 y3)))))))
+         (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((count ((x7 Nat) (x8 (list Nat))) Nat))
-  ((match x8
+  ((count ((x Nat) (y (list Nat))) Nat))
+  ((match y
      (case nil Z)
-     (case
-       (cons y xs2)
-       (ite (equal x7 y) (S (count x7 xs2)) (count x7 xs2))))))
+     (case (cons z xs)
+       (ite (equal x z) (S (count x xs)) (count x xs))))))
 (define-funs-rec
-  ((add ((x9 Nat) (x10 (Tree Nat))) (Tree Nat)))
-  ((match x10
-     (case
-       (Node p3 y2 q2)
-       (ite (le x9 y2) (Node (add x9 p3) y2 q2) (Node p3 y2 (add x9 q2))))
-     (case Nil (Node x10 x9 x10)))))
+  ((add ((x Nat) (y (Tree Nat))) (Tree Nat)))
+  ((match y
+     (case (Node q z q2)
+       (ite (le x z) (Node (add x q) z q2) (Node q z (add x q2))))
+     (case Nil (Node y x y)))))
 (define-funs-rec
-  ((toTree ((x2 (list Nat))) (Tree Nat)))
-  ((match x2
+  ((toTree ((x (list Nat))) (Tree Nat)))
+  ((match x
      (case nil (as Nil (Tree Nat)))
-     (case (cons x3 xs) (add x3 (toTree xs))))))
+     (case (cons y xs) (add y (toTree xs))))))
 (define-funs-rec
   ((tsort ((x (list Nat))) (list Nat)))
   ((flatten (toTree x) (as nil (list Nat)))))
 (assert-not
-  (forall
-    ((x16 Nat) (ds (list Nat)))
-    (= (count x16 (tsort ds)) (count x16 ds))))
+  (forall ((x Nat) (y (list Nat)))
+    (= (count x (tsort y)) (count x y))))
 (check-sat)

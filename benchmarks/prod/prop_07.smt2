@@ -1,26 +1,24 @@
 ; Source: Productive use of failure
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par (a2) (qrev ((x (list a2)) (x2 (list a2))) (list a2))))
+  ((par (a) (qrev ((x (list a)) (y (list a))) (list a))))
   ((match x
-     (case nil x2)
-     (case (cons x3 xs) (as (qrev xs (cons x3 x2)) (list a2))))))
+     (case nil y)
+     (case (cons z xs) (as (qrev xs (cons z y)) (list a))))))
 (define-funs-rec
-  ((plus ((x5 Nat) (x6 Nat)) Nat))
-  ((match x5
-     (case Z x6)
-     (case (S x7) (S (plus x7 x6))))))
+  ((plus ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case Z y)
+     (case (S z) (S (plus z y))))))
 (define-funs-rec
-  ((par (a3) (length ((x4 (list a3))) Nat)))
-  ((match x4
+  ((par (a) (length ((x (list a))) Nat)))
+  ((match x
      (case nil Z)
-     (case (cons ds xs2) (S (as (length xs2) Nat))))))
+     (case (cons y xs) (S (as (length xs) Nat))))))
 (assert-not
-  (par
-    (a4)
-    (forall
-      ((x8 (list a4)) (y (list a4)))
-      (= (length (qrev x8 y)) (plus (length x8) (length y))))))
+  (par (a)
+    (forall ((x (list a)) (y (list a)))
+      (= (length (qrev x y)) (plus (length x) (length y))))))
 (check-sat)

@@ -1,32 +1,29 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((equal ((x4 Nat) (x5 Nat)) bool))
-  ((match x4
-     (case
-       Z
-       (match x5
+  ((equal ((x Nat) (y Nat)) bool))
+  ((match x
+     (case Z
+       (match y
          (case Z true)
-         (case (S ipv) false)))
-     (case
-       (S ds)
-       (match x5
+         (case (S z) false)))
+     (case (S x2)
+       (match y
          (case Z false)
-         (case (S y) (equal ds y)))))))
+         (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((elem ((x Nat) (x2 (list Nat))) bool))
-  ((match x2
+  ((elem ((x Nat) (y (list Nat))) bool))
+  ((match y
      (case nil false)
-     (case (cons x3 xs) (ite (equal x x3) (equal x x3) (elem x xs))))))
+     (case (cons z xs) (ite (equal x z) true (elem x xs))))))
 (define-funs-rec
-  ((par (a2) (append ((x6 (list a2)) (x7 (list a2))) (list a2))))
-  ((match x6
-     (case nil x7)
-     (case (cons x8 xs2) (cons x8 (as (append xs2 x7) (list a2)))))))
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
+     (case nil y)
+     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
 (assert-not
-  (forall
-    ((x9 Nat) (xs3 (list Nat)) (ys (list Nat)))
-    (=> (elem x9 ys) (elem x9 (append xs3 ys)))))
+  (forall ((x Nat) (xs (list Nat)) (ys (list Nat)))
+    (=> (elem x ys) (elem x (append xs ys)))))
 (check-sat)

@@ -1,36 +1,33 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((le ((x8 Nat) (x9 Nat)) bool))
-  ((match x8
+  ((le ((x Nat) (y Nat)) bool))
+  ((match x
      (case Z true)
-     (case
-       (S ipv)
-       (match x9
+     (case (S z)
+       (match y
          (case Z false)
-         (case (S ipv2) (le ipv ipv2)))))))
+         (case (S x2) (le z x2)))))))
 (define-funs-rec
   ((sorted ((x (list Nat))) bool))
   ((match x
      (case nil true)
-     (case
-       (cons x2 ds)
-       (match ds
+     (case (cons y z)
+       (match z
          (case nil true)
-         (case (cons y ys) (ite (le x2 y) (sorted ds) (le x2 y))))))))
+         (case (cons y2 ys) (ite (le y y2) (sorted z) false)))))))
 (define-funs-rec
-  ((insort ((x5 Nat) (x6 (list Nat))) (list Nat)))
-  ((match x6
-     (case nil (cons x5 x6))
-     (case
-       (cons x7 xs2)
-       (ite (le x5 x7) (cons x5 x6) (cons x7 (insort x5 xs2)))))))
+  ((insort ((x Nat) (y (list Nat))) (list Nat)))
+  ((match y
+     (case nil (cons x y))
+     (case (cons z xs)
+       (ite (le x z) (cons x y) (cons z (insort x xs)))))))
 (define-funs-rec
-  ((sort ((x3 (list Nat))) (list Nat)))
-  ((match x3
-     (case nil x3)
-     (case (cons x4 xs) (insort x4 (sort xs))))))
-(assert-not (forall ((xs3 (list Nat))) (sorted (sort xs3))))
+  ((sort ((x (list Nat))) (list Nat)))
+  ((match x
+     (case nil x)
+     (case (cons y xs) (insort y (sort xs))))))
+(assert-not (forall ((xs (list Nat))) (sorted (sort xs))))
 (check-sat)

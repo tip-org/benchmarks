@@ -1,36 +1,33 @@
 ; Binary natural numbers
-(declare-datatypes
-  () ((Bin (One) (ZeroAnd (ZeroAnd_ Bin)) (OneAnd (OneAnd_ Bin)))))
+(declare-datatypes ()
+  ((Bin (One) (ZeroAnd (ZeroAnd_0 Bin)) (OneAnd (OneAnd_0 Bin)))))
 (define-funs-rec
-  ((s ((x3 Bin)) Bin))
-  ((match x3
-     (case One (ZeroAnd x3))
-     (case (ZeroAnd xs3) (OneAnd xs3))
-     (case (OneAnd xs4) (ZeroAnd (s xs4))))))
-(define-funs-rec
-  ((plus ((x4 Bin) (x5 Bin)) Bin))
-  ((match x4
-     (case One (s x5))
-     (case
-       (ZeroAnd ds)
-       (match x5
-         (case One (s x4))
-         (case (ZeroAnd ys) (ZeroAnd (plus ds ys)))
-         (case (OneAnd ys2) (OneAnd (plus ds ys2)))))
-     (case
-       (OneAnd ds2)
-       (match x5
-         (case One (s x4))
-         (case (ZeroAnd ys3) (OneAnd (plus ds2 ys3)))
-         (case (OneAnd ys4) (ZeroAnd (s (plus ds2 ys4)))))))))
-(define-funs-rec
-  ((times ((x Bin) (x2 Bin)) Bin))
+  ((s ((x Bin)) Bin))
   ((match x
-     (case One x2)
-     (case (ZeroAnd xs) (ZeroAnd (times xs x2)))
-     (case (OneAnd xs2) (plus (ZeroAnd (times xs2 x2)) x2)))))
+     (case One (ZeroAnd x))
+     (case (ZeroAnd xs) (OneAnd xs))
+     (case (OneAnd ys) (ZeroAnd (s ys))))))
+(define-funs-rec
+  ((plus ((x Bin) (y Bin)) Bin))
+  ((match x
+     (case One (s y))
+     (case (ZeroAnd z)
+       (match y
+         (case One (s x))
+         (case (ZeroAnd ys) (ZeroAnd (plus z ys)))
+         (case (OneAnd xs) (OneAnd (plus z xs)))))
+     (case (OneAnd x2)
+       (match y
+         (case One (s x))
+         (case (ZeroAnd zs) (OneAnd (plus x2 zs)))
+         (case (OneAnd ys2) (ZeroAnd (s (plus x2 ys2)))))))))
+(define-funs-rec
+  ((times ((x Bin) (y Bin)) Bin))
+  ((match x
+     (case One y)
+     (case (ZeroAnd xs) (ZeroAnd (times xs y)))
+     (case (OneAnd ys) (plus (ZeroAnd (times ys y)) y)))))
 (assert-not
-  (forall
-    ((x6 Bin) (y Bin) (z Bin))
-    (= (times x6 (times y z)) (times (times x6 y) z))))
+  (forall ((x Bin) (y Bin) (z Bin))
+    (= (times x (times y z)) (times (times x y) z))))
 (check-sat)

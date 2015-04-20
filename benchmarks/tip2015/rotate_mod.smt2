@@ -1,78 +1,67 @@
 ; Property about rotate and mod
 (declare-datatypes () ((Nat (S (p Nat)) (Z))))
-(declare-datatypes
-  (a) ((List2 (Cons (Cons_ a) (Cons_2 (List2 a))) (Nil))))
+(declare-datatypes (a)
+  ((List2 (Cons (Cons_0 a) (Cons_1 (List2 a))) (Nil))))
 (define-funs-rec
-  ((par (a5) (take ((x14 Nat) (x15 (List2 a5))) (List2 a5))))
-  ((match x14
-     (case
-       (S d8)
-       (match x15
-         (case (Cons d9 d10) (Cons d9 (as (take d8 d10) (List2 a5))))
-         (case Nil x15)))
-     (case Z (as Nil (List2 a5))))))
+  ((par (a) (take ((x Nat) (y (List2 a))) (List2 a))))
+  ((match x
+     (case (S z)
+       (match y
+         (case (Cons x2 x3) (Cons x2 (as (take z x3) (List2 a))))
+         (case Nil y)))
+     (case Z (as Nil (List2 a))))))
 (define-funs-rec
-  ((minus ((x4 Nat) (x5 Nat)) Nat))
-  ((match x4
-     (case
-       (S d2)
-       (match x5
-         (case (S d3) (minus d2 d3))
-         (case Z x4)))
-     (case Z x4))))
+  ((minus ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case (S z)
+       (match y
+         (case (S x2) (minus z x2))
+         (case Z x)))
+     (case Z x))))
 (define-funs-rec
-  ((lt ((x Nat) (x2 Nat)) bool))
-  ((match x2
-     (case
-       (S d)
+  ((lt ((x Nat) (y Nat)) bool))
+  ((match y
+     (case (S z)
        (match x
-         (case (S x3) (lt x3 d))
+         (case (S x2) (lt x2 z))
          (case Z true)))
      (case Z false))))
 (define-funs-rec
-  ((mod ((x6 Nat) (x7 Nat)) Nat))
-  ((match x7
-     (case (S d4) (ite (lt x6 x7) x6 (mod (minus x6 x7) x7)))
-     (case Z x7))))
+  ((mod ((x Nat) (y Nat)) Nat))
+  ((match y
+     (case (S z) (ite (lt x y) x (mod (minus x y) y)))
+     (case Z y))))
 (define-funs-rec
-  ((par (a2) (length ((x8 (List2 a2))) Nat)))
-  ((match x8
-     (case (Cons ds xs) (S (as (length xs) Nat)))
+  ((par (a) (length ((x (List2 a))) Nat)))
+  ((match x
+     (case (Cons y xs) (S (as (length xs) Nat)))
      (case Nil Z))))
 (define-funs-rec
-  ((par (a6) (drop ((x16 Nat) (x17 (List2 a6))) (List2 a6))))
-  ((match x16
-     (case
-       (S d11)
-       (match x17
-         (case (Cons d12 d13) (as (drop d11 d13) (List2 a6)))
-         (case Nil x17)))
-     (case Z x17))))
+  ((par (a) (drop ((x Nat) (y (List2 a))) (List2 a))))
+  ((match x
+     (case (S z)
+       (match y
+         (case (Cons x2 x3) (as (drop z x3) (List2 a)))
+         (case Nil y)))
+     (case Z y))))
 (define-funs-rec
-  ((par (a3) (append ((x9 (List2 a3)) (x10 (List2 a3))) (List2 a3))))
-  ((match x9
-     (case (Cons x11 xs2) (Cons x11 (as (append xs2 x10) (List2 a3))))
-     (case Nil x10))))
+  ((par (a) (append ((x (List2 a)) (y (List2 a))) (List2 a))))
+  ((match x
+     (case (Cons z xs) (Cons z (as (append xs y) (List2 a))))
+     (case Nil y))))
 (define-funs-rec
-  ((par (a4) (rotate ((x12 Nat) (x13 (List2 a4))) (List2 a4))))
-  ((match x12
-     (case
-       (S d5)
-       (match x13
-         (case
-           (Cons d6 d7)
-           (as (rotate d5 (append d7 (Cons d6 (as Nil (List2 a4)))))
-             (List2 a4)))
-         (case Nil x13)))
-     (case Z x13))))
+  ((par (a) (rotate ((x Nat) (y (List2 a))) (List2 a))))
+  ((match x
+     (case (S z)
+       (match y
+         (case (Cons x2 x3)
+           (as (rotate z (append x3 (Cons x2 (as Nil (List2 a))))) (List2 a)))
+         (case Nil y)))
+     (case Z y))))
 (assert-not
-  (par
-    (a7)
-    (forall
-      ((n Nat) (xs3 (List2 a7)))
-      (=
-        (rotate n xs3)
-        (append
-          (drop (mod n (length xs3)) xs3)
-          (take (mod n (length xs3)) xs3))))))
+  (par (a)
+    (forall ((n Nat) (xs (List2 a)))
+      (= (rotate n xs)
+        (append (drop (mod n (length xs)) xs)
+          (take (mod n (length xs)) xs))))))
 (check-sat)

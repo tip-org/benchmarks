@@ -1,18 +1,17 @@
 ; Source: Productive use of failure
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((plus ((x3 Nat) (x4 Nat)) Nat))
-  ((match x3
-     (case Z x4)
-     (case (S x5) (S (plus x5 x4))))))
+  ((plus ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case Z y)
+     (case (S z) (S (plus z y))))))
 (define-funs-rec
   ((half ((x Nat)) Nat))
   ((match x
      (case Z x)
-     (case
-       (S ds)
-       (match ds
-         (case Z ds)
-         (case (S x2) (S (half x2))))))))
-(assert-not (forall ((x6 Nat)) (= (half (plus x6 x6)) x6)))
+     (case (S y)
+       (match y
+         (case Z y)
+         (case (S z) (S (half z))))))))
+(assert-not (forall ((x Nat)) (= (half (plus x x)) x)))
 (check-sat)

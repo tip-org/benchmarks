@@ -1,34 +1,30 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par (a2) (len ((x (list a2))) Nat)))
+  ((par (a) (len ((x (list a))) Nat)))
   ((match x
      (case nil Z)
-     (case (cons ds xs) (S (as (len xs) Nat))))))
+     (case (cons y xs) (S (as (len xs) Nat))))))
 (define-funs-rec
-  ((le ((x5 Nat) (x6 Nat)) bool))
-  ((match x5
+  ((le ((x Nat) (y Nat)) bool))
+  ((match x
      (case Z true)
-     (case
-       (S ipv)
-       (match x6
+     (case (S z)
+       (match y
          (case Z false)
-         (case (S ipv2) (le ipv ipv2)))))))
+         (case (S x2) (le z x2)))))))
 (define-funs-rec
-  ((par (a3) (filter ((x2 (=> a3 bool)) (x3 (list a3))) (list a3))))
-  ((match x3
-     (case nil x3)
-     (case
-       (cons x4 xs2)
+  ((par (a) (filter ((x (=> a bool)) (y (list a))) (list a))))
+  ((match y
+     (case nil y)
+     (case (cons z xs)
        (ite
-         (@ x2 x4) (cons x4 (as (filter x2 xs2) (list a3)))
-         (as (filter x2 xs2) (list a3)))))))
+         (@ x z) (cons z (as (filter x xs) (list a)))
+         (as (filter x xs) (list a)))))))
 (assert-not
-  (par
-    (a4)
-    (forall
-      ((p2 (=> a4 bool)) (xs3 (list a4)))
-      (le (len (filter p2 xs3)) (len xs3)))))
+  (par (a)
+    (forall ((q (=> a bool)) (xs (list a)))
+      (le (len (filter q xs)) (len xs)))))
 (check-sat)

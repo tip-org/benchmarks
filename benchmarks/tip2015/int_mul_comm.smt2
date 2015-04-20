@@ -1,50 +1,48 @@
 ; Integers implemented using natural numbers (from Agda standard library)
 (declare-datatypes () ((Sign (Pos) (Neg))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
-(declare-datatypes () ((Z2 (P (P_ Nat)) (N (N_ Nat)))))
+(declare-datatypes () ((Nat (Zero) (Succ (pred Nat)))))
+(declare-datatypes () ((Z (P (P_0 Nat)) (N (N_0 Nat)))))
 (define-funs-rec
-  ((toInteger ((x5 Sign) (x6 Nat)) Z2))
-  ((match x5
-     (case Pos (P x6))
-     (case
-       Neg
-       (match x6
-         (case Z (P x6))
-         (case (S m) (N m)))))))
-(define-funs-rec
-  ((sign ((x11 Z2)) Sign))
-  ((match x11
-     (case (P ds) Pos)
-     (case (N ds2) Neg))))
-(define-funs-rec
-  ((plus ((x Nat) (x2 Nat)) Nat))
+  ((toInteger ((x Sign) (y Nat)) Z))
   ((match x
-     (case Z x2)
-     (case (S n) (S (plus n x2))))))
+     (case Pos (P y))
+     (case Neg
+       (match y
+         (case Zero (P y))
+         (case (Succ m) (N m)))))))
 (define-funs-rec
-  ((opposite ((x12 Sign)) Sign))
-  ((match x12
+  ((sign ((x Z)) Sign))
+  ((match x
+     (case (P y) Pos)
+     (case (N z) Neg))))
+(define-funs-rec
+  ((plus ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case Zero y)
+     (case (Succ n) (Succ (plus n y))))))
+(define-funs-rec
+  ((opposite ((x Sign)) Sign))
+  ((match x
      (case Pos Neg)
      (case Neg Pos))))
 (define-funs-rec
-  ((timesSigns ((x7 Sign) (x8 Sign)) Sign))
-  ((match x7
-     (case Pos x8)
-     (case Neg (opposite x8)))))
+  ((timesSign ((x Sign) (y Sign)) Sign))
+  ((match x
+     (case Pos y)
+     (case Neg (opposite y)))))
 (define-funs-rec
-  ((mult ((x3 Nat) (x4 Nat)) Nat))
-  ((match x3
-     (case Z x3)
-     (case (S n2) (plus x4 (mult n2 x4))))))
+  ((mult ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case Zero x)
+     (case (Succ n) (plus y (mult n y))))))
 (define-funs-rec
-  ((abs2 ((x13 Z2)) Nat))
-  ((match x13
-     (case (P n3) n3)
-     (case (N n4) (S n4)))))
+  ((absVal ((x Z)) Nat))
+  ((match x
+     (case (P n) n)
+     (case (N m) (Succ m)))))
 (define-funs-rec
-  ((times ((x9 Z2) (x10 Z2)) Z2))
-  ((toInteger
-     (timesSigns (sign x9) (sign x10)) (mult (abs2 x9) (abs2 x10)))))
-(assert-not
-  (forall ((x14 Z2) (y Z2)) (= (times x14 y) (times y x14))))
+  ((times ((x Z) (y Z)) Z))
+  ((toInteger (timesSign (sign x) (sign y))
+     (mult (absVal x) (absVal y)))))
+(assert-not (forall ((x Z) (y Z)) (= (times x y) (times y x))))
 (check-sat)

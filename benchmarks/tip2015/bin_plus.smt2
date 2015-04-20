@@ -1,42 +1,39 @@
 ; Binary natural numbers
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
-(declare-datatypes
-  () ((Bin (One) (ZeroAnd (ZeroAnd_ Bin)) (OneAnd (OneAnd_ Bin)))))
+(declare-datatypes ()
+  ((Bin (One) (ZeroAnd (ZeroAnd_0 Bin)) (OneAnd (OneAnd_0 Bin)))))
 (define-funs-rec
-  ((s ((x2 Bin)) Bin))
-  ((match x2
-     (case One (ZeroAnd x2))
-     (case (ZeroAnd xs3) (OneAnd xs3))
-     (case (OneAnd xs4) (ZeroAnd (s xs4))))))
+  ((s ((x Bin)) Bin))
+  ((match x
+     (case One (ZeroAnd x))
+     (case (ZeroAnd xs) (OneAnd xs))
+     (case (OneAnd ys) (ZeroAnd (s ys))))))
 (define-funs-rec
-  ((plus2 ((x3 Bin) (x4 Bin)) Bin))
-  ((match x3
-     (case One (s x4))
-     (case
-       (ZeroAnd ds)
-       (match x4
-         (case One (s x3))
-         (case (ZeroAnd ys) (ZeroAnd (plus2 ds ys)))
-         (case (OneAnd ys2) (OneAnd (plus2 ds ys2)))))
-     (case
-       (OneAnd ds2)
-       (match x4
-         (case One (s x3))
-         (case (ZeroAnd ys3) (OneAnd (plus2 ds2 ys3)))
-         (case (OneAnd ys4) (ZeroAnd (s (plus2 ds2 ys4)))))))))
+  ((plus2 ((x Bin) (y Bin)) Bin))
+  ((match x
+     (case One (s y))
+     (case (ZeroAnd z)
+       (match y
+         (case One (s x))
+         (case (ZeroAnd ys) (ZeroAnd (plus2 z ys)))
+         (case (OneAnd xs) (OneAnd (plus2 z xs)))))
+     (case (OneAnd x2)
+       (match y
+         (case One (s x))
+         (case (ZeroAnd zs) (OneAnd (plus2 x2 zs)))
+         (case (OneAnd ys2) (ZeroAnd (s (plus2 x2 ys2)))))))))
 (define-funs-rec
-  ((plus ((x5 Nat) (x6 Nat)) Nat))
-  ((match x5
-     (case Z x6)
-     (case (S n) (S (plus n x6))))))
+  ((plus ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case Z y)
+     (case (S n) (S (plus n y))))))
 (define-funs-rec
   ((toNat ((x Bin)) Nat))
   ((match x
      (case One (S Z))
      (case (ZeroAnd xs) (plus (toNat xs) (toNat xs)))
-     (case (OneAnd xs2) (S (plus (toNat xs2) (toNat xs2)))))))
+     (case (OneAnd ys) (S (plus (toNat ys) (toNat ys)))))))
 (assert-not
-  (forall
-    ((x7 Bin) (y Bin))
-    (= (toNat (plus2 x7 y)) (plus (toNat x7) (toNat y)))))
+  (forall ((x Bin) (y Bin))
+    (= (toNat (plus2 x y)) (plus (toNat x) (toNat y)))))
 (check-sat)

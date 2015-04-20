@@ -1,26 +1,24 @@
 ; Source: Productive use of failure
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par (a2) (length ((x (list a2))) Nat)))
+  ((par (a) (length ((x (list a))) Nat)))
   ((match x
      (case nil Z)
-     (case (cons ds xs) (S (as (length xs) Nat))))))
+     (case (cons y xs) (S (as (length xs) Nat))))))
 (define-funs-rec
-  ((double ((x2 Nat)) Nat))
-  ((match x2
-     (case Z x2)
-     (case (S x3) (S (S (double x3)))))))
+  ((double ((x Nat)) Nat))
+  ((match x
+     (case Z x)
+     (case (S y) (S (S (double y)))))))
 (define-funs-rec
-  ((par (a3) (append ((x4 (list a3)) (x5 (list a3))) (list a3))))
-  ((match x4
-     (case nil x5)
-     (case (cons x6 xs2) (cons x6 (as (append xs2 x5) (list a3)))))))
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
+     (case nil y)
+     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
 (assert-not
-  (par
-    (a4)
-    (forall
-      ((x7 (list a4)))
-      (= (length (append x7 x7)) (double (length x7))))))
+  (par (a)
+    (forall ((x (list a)))
+      (= (length (append x x)) (double (length x))))))
 (check-sat)

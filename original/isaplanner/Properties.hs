@@ -111,15 +111,11 @@ prop_33 a b
 prop_34 a b
   = (min a b == b =:= b <= a)
 
-constFalse _ = False
-
 prop_35 xs
-  = (dropWhile constFalse xs =:= xs)
-
-constTrue _ = True
+  = (dropWhile (\ _ -> False) xs =:= xs)
 
 prop_36 xs
-  = (takeWhile constTrue xs =:= xs)
+  = (takeWhile (\ _ -> True) xs =:= xs)
 
 prop_37 x xs
   = proveBool (not (x `elem` delete x xs))

@@ -1,35 +1,31 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((plus ((x5 Nat) (x6 Nat)) Nat))
-  ((match x5
-     (case Z x6)
-     (case (S x7) (S (plus x7 x6))))))
+  ((plus ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case Z y)
+     (case (S z) (S (plus z y))))))
 (define-funs-rec
-  ((equal ((x3 Nat) (x4 Nat)) bool))
-  ((match x3
-     (case
-       Z
-       (match x4
+  ((equal ((x Nat) (y Nat)) bool))
+  ((match x
+     (case Z
+       (match y
          (case Z true)
-         (case (S ipv) false)))
-     (case
-       (S ds)
-       (match x4
+         (case (S z) false)))
+     (case (S x2)
+       (match y
          (case Z false)
-         (case (S y2) (equal ds y2)))))))
+         (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((count ((x Nat) (x2 (list Nat))) Nat))
-  ((match x2
+  ((count ((x Nat) (y (list Nat))) Nat))
+  ((match y
      (case nil Z)
-     (case
-       (cons y ys) (ite (equal x y) (S (count x ys)) (count x ys))))))
+     (case (cons z ys)
+       (ite (equal x z) (S (count x ys)) (count x ys))))))
 (assert-not
-  (forall
-    ((n Nat) (m Nat) (xs (list Nat)))
-    (=
-      (plus (count n xs) (count n (cons m (as nil (list Nat)))))
+  (forall ((n Nat) (m Nat) (xs (list Nat)))
+    (= (plus (count n xs) (count n (cons m (as nil (list Nat)))))
       (count n (cons m xs)))))
 (check-sat)

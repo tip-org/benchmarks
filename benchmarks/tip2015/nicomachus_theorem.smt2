@@ -1,25 +1,25 @@
 ; Nicomachus's theorem
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((plus ((x Nat) (x2 Nat)) Nat))
+  ((plus ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x2)
-     (case (S n) (S (plus n x2))))))
+     (case Z y)
+     (case (S n) (S (plus n y))))))
 (define-funs-rec
-  ((sum ((x5 Nat)) Nat))
-  ((match x5
-     (case Z x5)
-     (case (S n3) (plus (sum n3) x5)))))
+  ((sum ((x Nat)) Nat))
+  ((match x
+     (case Z x)
+     (case (S n) (plus (sum n) x)))))
 (define-funs-rec
-  ((mult ((x3 Nat) (x4 Nat)) Nat))
-  ((match x3
-     (case Z x3)
-     (case (S n2) (plus x4 (mult n2 x4))))))
+  ((mult ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case Z x)
+     (case (S n) (plus y (mult n y))))))
 (define-funs-rec
-  ((cubes ((x6 Nat)) Nat))
-  ((match x6
-     (case Z x6)
-     (case (S n4) (plus (cubes n4) (mult (mult x6 x6) x6))))))
+  ((cubes ((x Nat)) Nat))
+  ((match x
+     (case Z x)
+     (case (S n) (plus (cubes n) (mult (mult x x) x))))))
 (assert-not
-  (forall ((n5 Nat)) (= (cubes n5) (mult (sum n5) (sum n5)))))
+  (forall ((n Nat)) (= (cubes n) (mult (sum n) (sum n)))))
 (check-sat)

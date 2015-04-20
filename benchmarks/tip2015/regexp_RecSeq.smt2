@@ -1,119 +1,98 @@
 ; Regular expressions
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a b) ((Pair2 (Pair (first a) (second b)))))
 (declare-datatypes () ((A (X) (Y))))
-(declare-datatypes
-  ()
-  ((R
-     (Nil) (Eps) (Atom (Atom_ A)) (Plus (Plus_ R) (Plus_2 R))
-     (Seq (Seq_ R) (Seq_2 R)) (Star (Star_ R)))))
+(declare-datatypes ()
+  ((R (Nil)
+     (Eps) (Atom (Atom_0 A)) (Plus (Plus_0 R) (Plus_1 R))
+     (Seq (Seq_0 R) (Seq_1 R)) (Star (Star_0 R)))))
 (define-funs-rec
-  ((seq ((x5 R) (x6 R)) R))
-  ((match x5
-     (case
-       default
-       (match x6
-         (case
-           default
-           (match x5
-             (case
-               default
-               (match x6
-                 (case default (Seq x5 x6))
-                 (case Eps x5)))
-             (case Eps x6)))
-         (case Nil x6)))
-     (case Nil x5))))
+  ((seq ((x R) (y R)) R))
+  ((match x
+     (case default
+       (match y
+         (case default
+           (match x
+             (case default
+               (match y
+                 (case default (Seq x y))
+                 (case Eps x)))
+             (case Eps y)))
+         (case Nil y)))
+     (case Nil x))))
 (define-funs-rec
-  ((plus ((x13 R) (x14 R)) R))
-  ((match x13
-     (case
-       default
-       (match x14
-         (case default (Plus x13 x14))
-         (case Nil x13)))
-     (case Nil x14))))
+  ((plus ((x R) (y R)) R))
+  ((match x
+     (case default
+       (match y
+         (case default (Plus x y))
+         (case Nil x)))
+     (case Nil y))))
+(define-funs-rec ((or2 ((x bool) (y bool)) bool)) ((ite x true y)))
 (define-funs-rec
-  ((or2 ((x21 bool) (x22 bool)) bool)) ((ite x21 x21 x22)))
-(define-funs-rec
-  ((eqA ((x15 A) (x16 A)) bool))
-  ((match x15
+  ((eqA ((x A) (y A)) bool))
+  ((match x
      (case X false)
-     (case
-       Y
-       (match x16
+     (case Y
+       (match y
          (case X false)
          (case Y true))))))
 (define-funs-rec
-  ((par
-     (a4 b2)
+  ((par (a b)
      (consfst
-        ((x19 a4) (x20 (list (Pair (list a4) b2))))
-        (list (Pair (list a4) b2)))))
-  ((match x20
-     (case nil x20)
-     (case
-       (cons ds3 ys)
-       (match ds3
-         (case
-           (Pair2 xs3 y)
-           (cons
-             (Pair2 (cons x19 xs3) y)
-             (as (consfst x19 ys) (list (Pair (list a4) b2))))))))))
+        ((x a) (y (list (Pair2 (list a) b)))) (list (Pair2 (list a) b)))))
+  ((match y
+     (case nil y)
+     (case (cons z ys)
+       (match z
+         (case (Pair xs y2)
+           (cons (Pair (cons x xs) y2)
+             (as (consfst x ys) (list (Pair2 (list a) b))))))))))
 (define-funs-rec
-  ((par
-     (a3) (split ((x3 (list a3))) (list (Pair (list a3) (list a3))))))
-  ((match x3
-     (case
-       nil
-       (cons (Pair2 x3 x3) (as nil (list (Pair (list a3) (list a3))))))
-     (case
-       (cons x4 s)
-       (cons
-         (Pair2 (as nil (list a3)) x3)
-         (consfst x4 (as (split s) (list (Pair (list a3) (list a3))))))))))
+  ((par (a) (split ((x (list a))) (list (Pair2 (list a) (list a))))))
+  ((match x
+     (case nil
+       (cons (Pair x x) (as nil (list (Pair2 (list a) (list a))))))
+     (case (cons y s)
+       (cons (Pair (as nil (list a)) x)
+         (consfst y (as (split s) (list (Pair2 (list a) (list a))))))))))
 (define-funs-rec
-  ((and2 ((x23 bool) (x24 bool)) bool)) ((ite x23 x24 x23)))
+  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
 (define-funs-rec
-  ((eps ((x18 R)) bool))
-  ((match x18
+  ((eps ((x R)) bool))
+  ((match x
      (case default false)
      (case Eps true)
-     (case (Plus p4 q3) (or2 (eps p4) (eps q3)))
-     (case (Seq p5 q4) (and2 (eps p5) (eps q4)))
-     (case (Star ds2) true))))
-(define-funs-rec ((epsR ((x17 R)) R)) ((ite (eps x17) Eps Nil)))
+     (case (Plus p q) (or2 (eps p) (eps q)))
+     (case (Seq p2 q2) (and2 (eps p2) (eps q2)))
+     (case (Star y) true))))
+(define-funs-rec ((epsR ((x R)) R)) ((ite (eps x) Eps Nil)))
 (define-funs-rec
-  ((step ((x R) (x2 A)) R))
+  ((step ((x R) (y A)) R))
   ((match x
      (case default Nil)
-     (case (Atom a2) (ite (eqA a2 x2) Eps Nil))
-     (case (Plus p q) (plus (step p x2) (step q x2)))
-     (case
-       (Seq p2 q2)
-       (plus (seq (step p2 x2) q2) (seq (epsR p2) (step q2 x2))))
-     (case (Star p3) (seq (step p3 x2) x)))))
+     (case (Atom a) (ite (eqA a y) Eps Nil))
+     (case (Plus p q) (plus (step p y) (step q y)))
+     (case (Seq p2 q2)
+       (plus (seq (step p2 y) q2) (seq (epsR p2) (step q2 y))))
+     (case (Star p3) (seq (step p3 y) x)))))
 (define-funs-rec
-  ((recognise ((x10 R) (x11 (list A))) bool))
-  ((match x11
-     (case nil (eps x10))
-     (case (cons x12 xs2) (recognise (step x10 x12) xs2)))))
+  ((recognise ((x R) (y (list A))) bool))
+  ((match y
+     (case nil (eps x))
+     (case (cons z xs) (recognise (step x z) xs)))))
 (define-funs-rec
   ((recognisePair
-      ((x7 R) (x8 R) (x9 (list (Pair (list A) (list A))))) bool))
-  ((match x9
+      ((x R) (y R) (z (list (Pair2 (list A) (list A))))) bool))
+  ((match z
      (case nil false)
-     (case
-       (cons ds xs)
-       (match ds
-         (case
-           (Pair2 s2 s3)
-           (or2
-             (and2 (recognise x7 s2) (recognise x8 s3))
-             (recognisePair x7 x8 xs))))))))
+     (case (cons x2 xs)
+       (match x2
+         (case (Pair s1 s2)
+           (or2 (and2 (recognise x s1) (recognise y s2))
+             (recognisePair x y xs))))))))
 (assert-not
-  (forall
-    ((p6 R) (q5 R) (s4 (list A)))
-    (= (recognise (Seq p6 q5) s4) (recognisePair p6 q5 (split s4)))))
+  (forall ((p R) (q R) (s (list A)))
+    (= (recognise (Seq p q) s) (recognisePair p q (split s)))))
 (check-sat)

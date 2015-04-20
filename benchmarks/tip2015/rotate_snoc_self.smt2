@@ -1,32 +1,28 @@
 ; Rotate expressed using a snoc instead of append
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par (a2) (snoc ((x a2) (x2 (list a2))) (list a2))))
-  ((match x2
-     (case nil (cons x x2))
-     (case (cons y ys) (cons y (as (snoc x ys) (list a2)))))))
+  ((par (a) (snoc ((x a) (y (list a))) (list a))))
+  ((match y
+     (case nil (cons x y))
+     (case (cons z ys) (cons z (as (snoc x ys) (list a)))))))
 (define-funs-rec
-  ((par (a3) (rotate ((x3 Nat) (x4 (list a3))) (list a3))))
-  ((match x3
-     (case Z x4)
-     (case
-       (S d)
-       (match x4
-         (case nil x4)
-         (case (cons d2 d3) (as (rotate d (snoc d2 d3)) (list a3))))))))
+  ((par (a) (rotate ((x Nat) (y (list a))) (list a))))
+  ((match x
+     (case Z y)
+     (case (S z)
+       (match y
+         (case nil y)
+         (case (cons x2 x3) (as (rotate z (snoc x2 x3)) (list a))))))))
 (define-funs-rec
-  ((par (a4) (append ((x5 (list a4)) (x6 (list a4))) (list a4))))
-  ((match x5
-     (case nil x6)
-     (case (cons x7 xs) (cons x7 (as (append xs x6) (list a4)))))))
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
+     (case nil y)
+     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
 (assert-not
-  (par
-    (a5)
-    (forall
-      ((n Nat) (xs2 (list a5)))
-      (=
-        (rotate n (append xs2 xs2))
-        (append (rotate n xs2) (rotate n xs2))))))
+  (par (a)
+    (forall ((n Nat) (xs (list a)))
+      (= (rotate n (append xs xs))
+        (append (rotate n xs) (rotate n xs))))))
 (check-sat)

@@ -7,9 +7,13 @@ import Control.Monad ( liftM, liftM2 )
 import Tip.DSL
 import Test.QuickCheck hiding ((==>))
 import Data.Typeable
-import Prelude hiding (seq)
+import Prelude hiding (seq, null)
 
 --------------------------------------------------------------------------------
+
+null :: [a] -> Bool
+null [] = True
+null _  = False
 
 data R
   = Nil

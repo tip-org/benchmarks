@@ -1,35 +1,30 @@
 ; Source: Productive use of failure
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((equal ((x7 Nat) (x8 Nat)) bool))
-  ((match x7
-     (case
-       Z
-       (match x8
-         (case Z true)
-         (case (S ipv) false)))
-     (case
-       (S ds)
-       (match x8
-         (case Z false)
-         (case (S y) (equal ds y)))))))
-(define-funs-rec
-  ((elem ((x4 Nat) (x5 (list Nat))) bool))
-  ((match x5
-     (case nil false)
-     (case
-       (cons x6 xs2) (ite (equal x4 x6) (equal x4 x6) (elem x4 xs2))))))
-(define-funs-rec
-  ((union ((x (list Nat)) (x2 (list Nat))) (list Nat)))
+  ((equal ((x Nat) (y Nat)) bool))
   ((match x
-     (case nil x2)
-     (case
-       (cons x3 xs)
-       (ite (elem x3 x2) (union xs x2) (cons x3 (union xs x2)))))))
+     (case Z
+       (match y
+         (case Z true)
+         (case (S z) false)))
+     (case (S x2)
+       (match y
+         (case Z false)
+         (case (S y2) (equal x2 y2)))))))
+(define-funs-rec
+  ((elem ((x Nat) (y (list Nat))) bool))
+  ((match y
+     (case nil false)
+     (case (cons z xs) (ite (equal x z) true (elem x xs))))))
+(define-funs-rec
+  ((union ((x (list Nat)) (y (list Nat))) (list Nat)))
+  ((match x
+     (case nil y)
+     (case (cons z xs)
+       (ite (elem z y) (union xs y) (cons z (union xs y)))))))
 (assert-not
-  (forall
-    ((x9 Nat) (y2 (list Nat)) (z (list Nat)))
-    (=> (elem x9 y2) (elem x9 (union y2 z)))))
+  (forall ((x Nat) (y (list Nat)) (z (list Nat)))
+    (=> (elem x y) (elem x (union y z)))))
 (check-sat)

@@ -1,56 +1,49 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par (a2) (take ((x Nat) (x2 (list a2))) (list a2))))
+  ((par (a) (take ((x Nat) (y (list a))) (list a))))
   ((match x
-     (case Z (as nil (list a2)))
-     (case
-       (S ipv)
-       (match x2
-         (case nil x2)
-         (case
-           (cons ipv2 ipv3) (cons ipv2 (as (take ipv ipv3) (list a2)))))))))
+     (case Z (as nil (list a)))
+     (case (S z)
+       (match y
+         (case nil y)
+         (case (cons x2 x3) (cons x2 (as (take z x3) (list a)))))))))
 (define-funs-rec
-  ((minus ((x8 Nat) (x9 Nat)) Nat))
-  ((match x8
-     (case Z x8)
-     (case
-       (S ipv7)
-       (match x9
-         (case Z x8)
-         (case (S ipv8) (minus ipv7 ipv8)))))))
+  ((minus ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case Z x)
+     (case (S z)
+       (match y
+         (case Z x)
+         (case (S x2) (minus z x2)))))))
 (define-funs-rec
-  ((par (a5) (len ((x5 (list a5))) Nat)))
-  ((match x5
+  ((par (a) (len ((x (list a))) Nat)))
+  ((match x
      (case nil Z)
-     (case (cons ds xs2) (S (as (len xs2) Nat))))))
+     (case (cons y xs) (S (as (len xs) Nat))))))
 (define-funs-rec
-  ((par (a6) (drop ((x6 Nat) (x7 (list a6))) (list a6))))
-  ((match x6
-     (case Z x7)
-     (case
-       (S ipv4)
-       (match x7
-         (case nil x7)
-         (case (cons ipv5 ipv6) (as (drop ipv4 ipv6) (list a6))))))))
+  ((par (a) (drop ((x Nat) (y (list a))) (list a))))
+  ((match x
+     (case Z y)
+     (case (S z)
+       (match y
+         (case nil y)
+         (case (cons x2 x3) (as (drop z x3) (list a))))))))
 (define-funs-rec
-  ((par (a4) (append ((x10 (list a4)) (x11 (list a4))) (list a4))))
-  ((match x10
-     (case nil x11)
-     (case (cons x12 xs3) (cons x12 (as (append xs3 x11) (list a4)))))))
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
+     (case nil y)
+     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
 (define-funs-rec
-  ((par (a3) (rev ((x3 (list a3))) (list a3))))
-  ((match x3
-     (case nil x3)
-     (case
-       (cons x4 xs)
-       (append (as (rev xs) (list a3)) (cons x4 (as nil (list a3))))))))
+  ((par (a) (rev ((x (list a))) (list a))))
+  ((match x
+     (case nil x)
+     (case (cons y xs)
+       (append (as (rev xs) (list a)) (cons y (as nil (list a))))))))
 (assert-not
-  (par
-    (a7)
-    (forall
-      ((i Nat) (xs4 (list a7)))
-      (= (rev (take i xs4)) (drop (minus (len xs4) i) (rev xs4))))))
+  (par (a)
+    (forall ((i Nat) (xs (list a)))
+      (= (rev (take i xs)) (drop (minus (len xs) i) (rev xs))))))
 (check-sat)

@@ -5,9 +5,6 @@ import Prelude (Eq,Ord,Show,iterate,(!!),fmap,Bool(..),div,return,(.),Maybe(..))
 import Tip.DSL
 import Test.QuickCheck hiding ((==>))
 import Data.Typeable
-import QuickSpec hiding (S,ins)
-import QuickSpec.Signature
-import QuickSpec.Type
 
 data Nat = Z | S Nat
   deriving (Eq,Show,Typeable,Ord)

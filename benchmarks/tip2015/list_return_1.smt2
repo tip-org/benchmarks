@@ -1,25 +1,20 @@
 ; List monad laws
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-funs-rec
-  ((par (a2) (return ((x a2)) (list a2))))
-  ((cons x (as nil (list a2)))))
+  ((par (a) (return ((x a)) (list a)))) ((cons x (as nil (list a)))))
 (define-funs-rec
-  ((par (a4) (append ((x5 (list a4)) (x6 (list a4))) (list a4))))
-  ((match x5
-     (case nil x6)
-     (case (cons x7 xs2) (cons x7 (as (append xs2 x6) (list a4)))))))
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
+     (case nil y)
+     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
 (define-funs-rec
-  ((par
-     (a3 b) (bind ((x2 (list a3)) (x3 (=> a3 (list b)))) (list b))))
-  ((match x2
+  ((par (a b) (bind ((x (list a)) (y (=> a (list b)))) (list b))))
+  ((match x
      (case nil (as nil (list b)))
-     (case
-       (cons x4 xs) (append (@ x3 x4) (as (bind xs x3) (list b)))))))
+     (case (cons z xs) (append (@ y z) (as (bind xs y) (list b)))))))
 (assert-not
-  (par
-    (a5 b2)
-    (forall
-      ((x8 a5) (f (=> a5 (list b2))))
-      (= (bind (return x8) f) (@ f x8)))))
+  (par (a b)
+    (forall ((x a) (f (=> a (list b))))
+      (= (bind (return x) f) (@ f x)))))
 (check-sat)

@@ -1,25 +1,22 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par (a2 b) (map2 ((x (=> a2 b)) (x2 (list a2))) (list b))))
-  ((match x2
+  ((par (a b) (map2 ((x (=> a b)) (y (list a))) (list b))))
+  ((match y
      (case nil (as nil (list b)))
-     (case (cons x3 xs) (cons (@ x x3) (as (map2 x xs) (list b)))))))
+     (case (cons z xs) (cons (@ x z) (as (map2 x xs) (list b)))))))
 (define-funs-rec
-  ((par (a3) (drop ((x4 Nat) (x5 (list a3))) (list a3))))
-  ((match x4
-     (case Z x5)
-     (case
-       (S ipv)
-       (match x5
-         (case nil x5)
-         (case (cons ipv2 ipv3) (as (drop ipv ipv3) (list a3))))))))
+  ((par (a) (drop ((x Nat) (y (list a))) (list a))))
+  ((match x
+     (case Z y)
+     (case (S z)
+       (match y
+         (case nil y)
+         (case (cons x2 x3) (as (drop z x3) (list a))))))))
 (assert-not
-  (par
-    (a4 a5)
-    (forall
-      ((n Nat) (f (=> a4 a5)) (xs2 (list a4)))
-      (= (drop n (map2 f xs2)) (map2 f (drop n xs2))))))
+  (par (a1 a)
+    (forall ((n Nat) (f (=> a1 a)) (xs (list a1)))
+      (= (drop n (map2 f xs)) (map2 f (drop n xs))))))
 (check-sat)

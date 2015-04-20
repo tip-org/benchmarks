@@ -1,18 +1,14 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-funs-rec
-  ((par
-     (a2) (dropWhile ((x (=> a2 bool)) (x2 (list a2))) (list a2))))
-  ((match x2
-     (case nil x2)
-     (case
-       (cons x3 xs) (ite (@ x x3) (as (dropWhile x xs) (list a2)) x2)))))
-(define-funs-rec ((par (t) (constFalse ((x4 t)) bool))) (false))
+  ((par (a) (dropWhile ((x (=> a bool)) (y (list a))) (list a))))
+  ((match y
+     (case nil y)
+     (case (cons z xs)
+       (ite (@ x z) (as (dropWhile x xs) (list a)) y)))))
 (assert-not
-  (par
-    (a3)
-    (forall
-      ((xs2 (list a3)))
-      (= (dropWhile (lambda ((x5 a3)) (constFalse x5)) xs2) xs2))))
+  (par (a)
+    (forall ((xs (list a)))
+      (= (dropWhile (lambda ((x a)) false) xs) xs))))
 (check-sat)

@@ -1,48 +1,44 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((le ((x10 Nat) (x11 Nat)) bool))
-  ((match x10
+  ((le ((x Nat) (y Nat)) bool))
+  ((match x
      (case Z true)
-     (case
-       (S ipv2)
-       (match x11
+     (case (S z)
+       (match y
          (case Z false)
-         (case (S ipv3) (le ipv2 ipv3)))))))
+         (case (S x2) (le z x2)))))))
 (define-funs-rec
-  ((insort ((x3 Nat) (x4 (list Nat))) (list Nat)))
-  ((match x4
-     (case nil (cons x3 x4))
-     (case
-       (cons x5 xs2)
-       (ite (le x3 x5) (cons x3 x4) (cons x5 (insort x3 xs2)))))))
+  ((insort ((x Nat) (y (list Nat))) (list Nat)))
+  ((match y
+     (case nil (cons x y))
+     (case (cons z xs)
+       (ite (le x z) (cons x y) (cons z (insort x xs)))))))
 (define-funs-rec
   ((sort ((x (list Nat))) (list Nat)))
   ((match x
      (case nil x)
-     (case (cons x2 xs) (insort x2 (sort xs))))))
+     (case (cons y xs) (insort y (sort xs))))))
 (define-funs-rec
-  ((equal ((x8 Nat) (x9 Nat)) bool))
-  ((match x8
-     (case
-       Z
-       (match x9
+  ((equal ((x Nat) (y Nat)) bool))
+  ((match x
+     (case Z
+       (match y
          (case Z true)
-         (case (S ipv) false)))
-     (case
-       (S ds)
-       (match x9
+         (case (S z) false)))
+     (case (S x2)
+       (match y
          (case Z false)
-         (case (S y2) (equal ds y2)))))))
+         (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((count ((x6 Nat) (x7 (list Nat))) Nat))
-  ((match x7
+  ((count ((x Nat) (y (list Nat))) Nat))
+  ((match y
      (case nil Z)
-     (case
-       (cons y ys) (ite (equal x6 y) (S (count x6 ys)) (count x6 ys))))))
+     (case (cons z ys)
+       (ite (equal x z) (S (count x ys)) (count x ys))))))
 (assert-not
-  (forall
-    ((n Nat) (xs3 (list Nat))) (= (count n xs3) (count n (sort xs3)))))
+  (forall ((n Nat) (xs (list Nat)))
+    (= (count n xs) (count n (sort xs)))))
 (check-sat)

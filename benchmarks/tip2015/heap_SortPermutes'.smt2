@@ -1,109 +1,95 @@
 ; Skew heaps
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
-(declare-datatypes
-  () ((Heap (Node (Node_ Heap) (Node_2 Nat) (Node_3 Heap)) (Nil))))
+(declare-datatypes ()
+  ((Heap (Node (Node_0 Heap) (Node_1 Nat) (Node_2 Heap)) (Nil))))
 (define-funs-rec
-  ((plus ((x Nat) (x2 Nat)) Nat))
+  ((plus ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x2)
-     (case (S n) (S (plus n x2))))))
+     (case Z y)
+     (case (S n) (S (plus n y))))))
+(define-funs-rec ((or2 ((x bool) (y bool)) bool)) ((ite x true y)))
 (define-funs-rec
-  ((or2 ((x6 bool) (x7 bool)) bool)) ((ite x6 x6 x7)))
-(define-funs-rec
-  ((par (a3) (null ((x10 (list a3))) bool)))
-  ((match x10
+  ((par (a) (null ((x (list a))) bool)))
+  ((match x
      (case nil true)
-     (case (cons ds ds2) false))))
+     (case (cons y z) false))))
 (define-funs-rec
-  ((le ((x34 Nat) (x35 Nat)) bool))
-  ((match x34
+  ((le ((x Nat) (y Nat)) bool))
+  ((match x
      (case Z true)
-     (case
-       (S d12)
-       (match x35
+     (case (S z)
+       (match y
          (case Z false)
-         (case (S d13) (le d12 d13)))))))
+         (case (S x2) (le z x2)))))))
 (define-funs-rec
-  ((merge ((x16 Heap) (x17 Heap)) Heap))
-  ((match x16
-     (case
-       (Node d5 d6 d7)
-       (match x17
-         (case
-           (Node d8 d9 d10)
+  ((merge ((x Heap) (y Heap)) Heap))
+  ((match x
+     (case (Node z x2 x3)
+       (match y
+         (case (Node x4 x5 x6)
            (ite
-             (le d6 d9) (Node (merge d7 x17) d6 d5)
-             (Node (merge x16 d10) d9 d8)))
-         (case Nil x16)))
-     (case Nil x17))))
+             (le x2 x5) (Node (merge x3 y) x2 z) (Node (merge x x6) x5 x4)))
+         (case Nil x)))
+     (case Nil y))))
 (define-funs-rec
-  ((toList ((x11 Nat) (x12 Heap)) (list Nat)))
-  ((match x11
+  ((toList ((x Nat) (y Heap)) (list Nat)))
+  ((match x
      (case Z (as nil (list Nat)))
-     (case
-       (S d)
-       (match x12
-         (case (Node d2 d3 d4) (cons d3 (toList d (merge d2 d4))))
+     (case (S z)
+       (match y
+         (case (Node x2 x3 x4) (cons x3 (toList z (merge x2 x4))))
          (case Nil (as nil (list Nat))))))))
 (define-funs-rec
-  ((insert2 ((x21 Nat) (x22 Heap)) Heap))
-  ((merge (Node Nil x21 Nil) x22)))
+  ((insert2 ((x Nat) (y Heap)) Heap)) ((merge (Node Nil x Nil) y)))
 (define-funs-rec
-  ((toHeap ((x14 (list Nat))) Heap))
-  ((match x14
+  ((toHeap ((x (list Nat))) Heap))
+  ((match x
      (case nil Nil)
-     (case (cons x15 xs) (insert2 x15 (toHeap xs))))))
+     (case (cons y xs) (insert2 y (toHeap xs))))))
 (define-funs-rec
-  ((heapSize ((x26 Heap)) Nat))
-  ((match x26
-     (case (Node l ds3 r) (plus (heapSize l) (heapSize r)))
+  ((heapSize ((x Heap)) Nat))
+  ((match x
+     (case (Node l y r) (S (plus (heapSize l) (heapSize r))))
      (case Nil Z))))
 (define-funs-rec
-  ((toList2 ((x13 Heap)) (list Nat))) ((toList (heapSize x13) x13)))
+  ((toList2 ((x Heap)) (list Nat))) ((toList (heapSize x) x)))
 (define-funs-rec
-  ((equal ((x31 Nat) (x32 Nat)) bool))
-  ((match x31
-     (case
-       Z
-       (match x32
+  ((equal ((x Nat) (y Nat)) bool))
+  ((match x
+     (case Z
+       (match y
          (case Z true)
-         (case (S d11) false)))
-     (case
-       (S x33)
-       (match x32
+         (case (S z) false)))
+     (case (S x2)
+       (match y
          (case Z false)
-         (case (S y3) (equal x33 y3)))))))
+         (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((elem ((x27 Nat) (x28 (list Nat))) bool))
-  ((match x28
+  ((elem ((x Nat) (y (list Nat))) bool))
+  ((match y
      (case nil false)
-     (case (cons y ys) (or2 (equal x27 y) (elem x27 ys))))))
+     (case (cons z ys) (or2 (equal x z) (elem x ys))))))
 (define-funs-rec
-  ((par (b c a2) (dot ((x3 (=> b c)) (x4 (=> a2 b)) (x5 a2)) c)))
-  ((@ x3 (@ x4 x5))))
+  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
+  ((@ x (@ y z))))
 (define-funs-rec
-  ((hsort ((x23 (list Nat))) (list Nat)))
-  ((dot
-     (lambda ((x24 Heap)) (toList2 x24))
-     (lambda ((x25 (list Nat))) (toHeap x25)) x23)))
+  ((hsort ((x (list Nat))) (list Nat)))
+  ((dot (lambda ((y Heap)) (toList2 y))
+     (lambda ((z (list Nat))) (toHeap z)) x)))
 (define-funs-rec
-  ((delete ((x29 Nat) (x30 (list Nat))) (list Nat)))
-  ((match x30
-     (case nil x30)
-     (case
-       (cons y2 ys2)
-       (ite (equal x29 y2) ys2 (cons y2 (delete x29 ys2)))))))
+  ((delete ((x Nat) (y (list Nat))) (list Nat)))
+  ((match y
+     (case nil y)
+     (case (cons z ys) (ite (equal x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
-  ((and2 ((x8 bool) (x9 bool)) bool)) ((ite x8 x9 x8)))
+  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
 (define-funs-rec
-  ((isPermutation ((x18 (list Nat)) (x19 (list Nat))) bool))
-  ((match x18
-     (case nil (null x19))
-     (case
-       (cons x20 xs2)
-       (and2 (elem x20 x19) (isPermutation xs2 (delete x20 x19)))))))
-(assert-not
-  (forall ((ds4 (list Nat))) (isPermutation (hsort ds4) ds4)))
+  ((isPermutation ((x (list Nat)) (y (list Nat))) bool))
+  ((match x
+     (case nil (null y))
+     (case (cons z xs)
+       (and2 (elem z y) (isPermutation xs (delete z y)))))))
+(assert-not (forall ((x (list Nat))) (isPermutation (hsort x) x)))
 (check-sat)

@@ -1,30 +1,26 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-funs-rec
-  ((par (a3) (butlast ((x3 (list a3))) (list a3))))
-  ((match x3
-     (case nil x3)
-     (case
-       (cons x4 ds)
-       (match ds
-         (case nil ds)
-         (case (cons ipv3 ipv4) (cons x4 (as (butlast ds) (list a3)))))))))
+  ((par (a) (butlast ((x (list a))) (list a))))
+  ((match x
+     (case nil x)
+     (case (cons y z)
+       (match z
+         (case nil z)
+         (case (cons x2 x3) (cons y (as (butlast z) (list a)))))))))
 (define-funs-rec
-  ((par (a4) (append ((x5 (list a4)) (x6 (list a4))) (list a4))))
-  ((match x5
-     (case nil x6)
-     (case (cons x7 xs) (cons x7 (as (append xs x6) (list a4)))))))
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
+     (case nil y)
+     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
 (define-funs-rec
-  ((par
-     (a2) (butlastConcat ((x (list a2)) (x2 (list a2))) (list a2))))
-  ((match x2
+  ((par (a) (butlastConcat ((x (list a)) (y (list a))) (list a))))
+  ((match y
      (case nil (butlast x))
-     (case (cons ipv ipv2) (append x (butlast x2))))))
+     (case (cons z x2) (append x (butlast y))))))
 (assert-not
-  (par
-    (a5)
-    (forall
-      ((xs2 (list a5)) (ys (list a5)))
-      (= (butlast (append xs2 ys)) (butlastConcat xs2 ys)))))
+  (par (a)
+    (forall ((xs (list a)) (ys (list a)))
+      (= (butlast (append xs ys)) (butlastConcat xs ys)))))
 (check-sat)

@@ -1,30 +1,27 @@
 ; Binary natural numbers
-(declare-datatypes
-  () ((Bin (One) (ZeroAnd (ZeroAnd_ Bin)) (OneAnd (OneAnd_ Bin)))))
+(declare-datatypes ()
+  ((Bin (One) (ZeroAnd (ZeroAnd_0 Bin)) (OneAnd (OneAnd_0 Bin)))))
 (define-funs-rec
   ((s ((x Bin)) Bin))
   ((match x
      (case One (ZeroAnd x))
      (case (ZeroAnd xs) (OneAnd xs))
-     (case (OneAnd xs2) (ZeroAnd (s xs2))))))
+     (case (OneAnd ys) (ZeroAnd (s ys))))))
 (define-funs-rec
-  ((plus ((x2 Bin) (x3 Bin)) Bin))
-  ((match x2
-     (case One (s x3))
-     (case
-       (ZeroAnd ds)
-       (match x3
-         (case One (s x2))
-         (case (ZeroAnd ys) (ZeroAnd (plus ds ys)))
-         (case (OneAnd ys2) (OneAnd (plus ds ys2)))))
-     (case
-       (OneAnd ds2)
-       (match x3
-         (case One (s x2))
-         (case (ZeroAnd ys3) (OneAnd (plus ds2 ys3)))
-         (case (OneAnd ys4) (ZeroAnd (s (plus ds2 ys4)))))))))
+  ((plus ((x Bin) (y Bin)) Bin))
+  ((match x
+     (case One (s y))
+     (case (ZeroAnd z)
+       (match y
+         (case One (s x))
+         (case (ZeroAnd ys) (ZeroAnd (plus z ys)))
+         (case (OneAnd xs) (OneAnd (plus z xs)))))
+     (case (OneAnd x2)
+       (match y
+         (case One (s x))
+         (case (ZeroAnd zs) (OneAnd (plus x2 zs)))
+         (case (OneAnd ys2) (ZeroAnd (s (plus x2 ys2)))))))))
 (assert-not
-  (forall
-    ((x4 Bin) (y Bin) (z Bin))
-    (= (plus x4 (plus y z)) (plus (plus x4 y) z))))
+  (forall ((x Bin) (y Bin) (z Bin))
+    (= (plus x (plus y z)) (plus (plus x y) z))))
 (check-sat)

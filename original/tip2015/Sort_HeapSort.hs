@@ -5,13 +5,17 @@ import Test.QuickCheck
 import Test.QuickCheck.Poly
 import Test.QuickCheck.All
 import Nat
-import Prelude hiding ((++), (==), (<=), minimum, elem, (+))
+import Prelude hiding ((++), (==), (<=), minimum, elem, (+), null)
 import Tip.DSL
 import Test.QuickCheck hiding ((==>))
 import Data.Typeable
 import Data.Maybe hiding (maybeToList)
 
 --------------------------------------------------------------------------------
+
+null :: [a] -> Bool
+null [] = True
+null _  = False
 
 (==), (<=) :: Nat -> Nat -> Bool
 Z == Z = True
@@ -56,6 +60,7 @@ prop_minimum h = listMinimum (toList h) =:= minimum h
 prop_deleteMinimum :: Heap -> Prop (Maybe [Nat])
 prop_deleteMinimum h = listDeleteMinimum (toList h) =:= maybeToList (deleteMinimum h)
 
+
 maybeToList :: Maybe Heap -> Maybe [Nat]
 maybeToList Nothing = Nothing
 maybeToList (Just x) = Just (toList x)
@@ -97,6 +102,9 @@ pairwise :: [Heap] -> [Heap]
 pairwise (p:q:qs) = (p `merge` q) : pairwise qs
 pairwise ps       = ps
 -}
+
+-- TODO: Add Koens heaps too (above)
+
 toList :: Heap -> [Nat]
 toList h = toList' (heapSize h) h
 
@@ -107,7 +115,7 @@ toList' (S n) (Node p x q) = x : toList' n (p `merge` q)
 
 heapSize :: Heap -> Nat
 heapSize Nil = Z
-heapSize (Node l _ r) = heapSize l + heapSize r
+heapSize (Node l _ r) = S (heapSize l + heapSize r)
 
 --------------------------------------------------------------------------------
 

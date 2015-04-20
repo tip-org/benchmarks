@@ -1,20 +1,17 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par (a2) (drop ((x Nat) (x2 (list a2))) (list a2))))
+  ((par (a) (drop ((x Nat) (y (list a))) (list a))))
   ((match x
-     (case Z x2)
-     (case
-       (S ipv)
-       (match x2
-         (case nil x2)
-         (case (cons ipv2 ipv3) (as (drop ipv ipv3) (list a2))))))))
+     (case Z y)
+     (case (S z)
+       (match y
+         (case nil y)
+         (case (cons x2 x3) (as (drop z x3) (list a))))))))
 (assert-not
-  (par
-    (a3)
-    (forall
-      ((n Nat) (x3 a3) (xs (list a3)))
-      (= (drop (S n) (cons x3 xs)) (drop n xs)))))
+  (par (a)
+    (forall ((n Nat) (x a) (xs (list a)))
+      (= (drop (S n) (cons x xs)) (drop n xs)))))
 (check-sat)

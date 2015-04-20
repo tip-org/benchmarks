@@ -1,46 +1,41 @@
 ; Integers implemented using natural numbers (from Agda standard library)
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
-(declare-datatypes () ((Z2 (P (P_ Nat)) (N (N_ Nat)))))
-(define-funs-rec ((zero () Z2)) ((P Z)))
+(declare-datatypes () ((Nat (Zero) (Succ (pred Nat)))))
+(declare-datatypes () ((Z (P (P_0 Nat)) (N (N_0 Nat)))))
+(define-funs-rec ((zero () Z)) ((P Zero)))
 (define-funs-rec
-  ((plus ((x Nat) (x2 Nat)) Nat))
+  ((plus2 ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x2)
-     (case (S n) (S (plus n x2))))))
+     (case Zero y)
+     (case (Succ n) (Succ (plus2 n y))))))
 (define-funs-rec
-  ((neg ((x5 Z2)) Z2))
-  ((match x5
-     (case
-       (P ds)
-       (match ds
-         (case Z x5)
-         (case (S n6) (N n6))))
-     (case (N n7) (P (S n7))))))
+  ((neg ((x Z)) Z))
+  ((match x
+     (case (P y)
+       (match y
+         (case Zero x)
+         (case (Succ n) (N n))))
+     (case (N m) (P (Succ m))))))
 (define-funs-rec
-  ((minus ((x6 Nat) (x7 Nat)) Z2))
-  ((match x6
-     (case
-       Z
-       (match x7
-         (case Z (P x7))
-         (case (S n8) (N n8))))
-     (case
-       (S m3)
-       (match x7
-         (case Z (P x6))
-         (case (S n9) (minus m3 n9)))))))
+  ((minus ((x Nat) (y Nat)) Z))
+  ((match x
+     (case Zero
+       (match y
+         (case Zero (P y))
+         (case (Succ n) (N n))))
+     (case (Succ m)
+       (match y
+         (case Zero (P x))
+         (case (Succ o) (minus m o)))))))
 (define-funs-rec
-  ((plus2 ((x3 Z2) (x4 Z2)) Z2))
-  ((match x3
-     (case
-       (P m)
-       (match x4
-         (case (P n2) (P (plus m n2)))
-         (case (N n3) (minus m (S n3)))))
-     (case
-       (N m2)
-       (match x4
-         (case (P n4) (minus n4 (S m2)))
-         (case (N n5) (N (S (plus m2 n5)))))))))
-(assert-not (forall ((x8 Z2)) (= (plus2 x8 (neg x8)) zero)))
+  ((plus ((x Z) (y Z)) Z))
+  ((match x
+     (case (P m)
+       (match y
+         (case (P n) (P (plus2 m n)))
+         (case (N o) (minus m (Succ o)))))
+     (case (N m2)
+       (match y
+         (case (P n2) (minus n2 (Succ m2)))
+         (case (N n3) (N (Succ (plus2 m2 n3)))))))))
+(assert-not (forall ((x Z)) (= (plus x (neg x)) zero)))
 (check-sat)

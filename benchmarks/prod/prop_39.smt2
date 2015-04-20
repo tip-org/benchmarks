@@ -1,36 +1,32 @@
 ; Source: Productive use of failure
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((equal ((x6 Nat) (x7 Nat)) bool))
-  ((match x6
-     (case
-       Z
-       (match x7
+  ((equal ((x Nat) (y Nat)) bool))
+  ((match x
+     (case Z
+       (match y
          (case Z true)
-         (case (S ipv4) false)))
-     (case
-       (S ds)
-       (match x7
+         (case (S z) false)))
+     (case (S x2)
+       (match y
          (case Z false)
-         (case (S y) (equal ds y)))))))
+         (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((elem ((x Nat) (x2 (list Nat))) bool))
-  ((match x2
+  ((elem ((x Nat) (y (list Nat))) bool))
+  ((match y
      (case nil false)
-     (case (cons x3 xs) (ite (equal x x3) (equal x x3) (elem x xs))))))
+     (case (cons z xs) (ite (equal x z) true (elem x xs))))))
 (define-funs-rec
-  ((par (a2) (drop ((x4 Nat) (x5 (list a2))) (list a2))))
-  ((match x4
-     (case Z x5)
-     (case
-       (S ipv)
-       (match x5
-         (case nil x5)
-         (case (cons ipv2 ipv3) (as (drop ipv ipv3) (list a2))))))))
+  ((par (a) (drop ((x Nat) (y (list a))) (list a))))
+  ((match x
+     (case Z y)
+     (case (S z)
+       (match y
+         (case nil y)
+         (case (cons x2 x3) (as (drop z x3) (list a))))))))
 (assert-not
-  (forall
-    ((x8 Nat) (y2 Nat) (z (list Nat)))
-    (=> (elem x8 (drop y2 z)) (elem x8 z))))
+  (forall ((x Nat) (y Nat) (z (list Nat)))
+    (=> (elem x (drop y z)) (elem x z))))
 (check-sat)

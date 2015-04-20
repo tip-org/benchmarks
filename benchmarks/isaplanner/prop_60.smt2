@@ -1,28 +1,26 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par (a2) (null ((x (list a2))) bool)))
+  ((par (a) (null ((x (list a))) bool)))
   ((match x
      (case nil true)
-     (case (cons ipv ipv2) false))))
+     (case (cons y z) false))))
 (define-funs-rec
-  ((last ((x2 (list Nat))) Nat))
-  ((match x2
+  ((last ((x (list Nat))) Nat))
+  ((match x
      (case nil Z)
-     (case
-       (cons x3 ds)
-       (match ds
-         (case nil x3)
-         (case (cons ipv3 ipv4) (last ds)))))))
+     (case (cons y z)
+       (match z
+         (case nil y)
+         (case (cons x2 x3) (last z)))))))
 (define-funs-rec
-  ((par (a3) (append ((x4 (list a3)) (x5 (list a3))) (list a3))))
-  ((match x4
-     (case nil x5)
-     (case (cons x6 xs) (cons x6 (as (append xs x5) (list a3)))))))
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
+     (case nil y)
+     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
 (assert-not
-  (forall
-    ((xs2 (list Nat)) (ys (list Nat)))
-    (=> (not (null ys)) (= (last (append xs2 ys)) (last ys)))))
+  (forall ((xs (list Nat)) (ys (list Nat)))
+    (=> (not (null ys)) (= (last (append xs ys)) (last ys)))))
 (check-sat)

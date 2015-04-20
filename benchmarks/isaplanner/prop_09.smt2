@@ -1,21 +1,19 @@
 ; Source: IsaPlanner test suite
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((plus ((x3 Nat) (x4 Nat)) Nat))
-  ((match x3
-     (case Z x4)
-     (case (S x5) (S (plus x5 x4))))))
+  ((plus ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case Z y)
+     (case (S z) (S (plus z y))))))
 (define-funs-rec
-  ((minus ((x Nat) (x2 Nat)) Nat))
+  ((minus ((x Nat) (y Nat)) Nat))
   ((match x
      (case Z x)
-     (case
-       (S ipv)
-       (match x2
+     (case (S z)
+       (match y
          (case Z x)
-         (case (S ipv2) (minus ipv ipv2)))))))
+         (case (S x2) (minus z x2)))))))
 (assert-not
-  (forall
-    ((i Nat) (j Nat) (k Nat))
+  (forall ((i Nat) (j Nat) (k Nat))
     (= (minus (minus i j) k) (minus i (plus j k)))))
 (check-sat)

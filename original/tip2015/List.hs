@@ -2,7 +2,6 @@
 module List where
 
 import Prelude hiding (reverse,(++),length,map,filter,(.),(+),const)
-import QuickSpec hiding (S,Prop)
 import qualified Prelude
 import Tip.DSL
 import Test.QuickCheck hiding ((==>))
@@ -28,21 +27,3 @@ filter p [] = []
 
 f . g = \ x -> f (g x)
 
-{-
-sig = [ vars ["m","n","o"]    (undefined :: Nat)
-      , vars ["x","y","z"]    (undefined :: A)
-      , vars ["xs","ys","zs"] (undefined :: [A])
-      , vars ["f","g"]        (undefined :: A -> A)
-      , vars ["p","q"]        (undefined :: A -> Bool)
-      , fun0 "Z"      Z
-      , fun1 "S"      S
-      , fun2 "+"      (+)
-      , fun0 "[]"     ([] :: [A])
-      , fun2 ":"      ((:) :: A -> [A] -> [A])
-      , fun2 "++"     ((++) :: [A] -> [A] -> [A])
-      , fun2 "map"    (map    :: (A -> A) -> [A] -> [A])
-      , fun1 "length" (length :: [A] -> Nat)
-      , fun2 "filter" (filter :: (A -> Bool) -> [A] -> [A])
-      , blind2 "."    ((.) :: (A -> A) -> (A -> A) -> (A -> A))
-      ]
--}

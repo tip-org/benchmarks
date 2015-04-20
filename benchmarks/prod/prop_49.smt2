@@ -1,49 +1,43 @@
 ; Source: Productive use of failure
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((le ((x11 Nat) (x12 Nat)) bool))
-  ((match x11
+  ((le ((x Nat) (y Nat)) bool))
+  ((match x
      (case Z true)
-     (case
-       (S ipv2)
-       (match x12
+     (case (S z)
+       (match y
          (case Z false)
-         (case (S ipv3) (le ipv2 ipv3)))))))
+         (case (S x2) (le z x2)))))))
 (define-funs-rec
-  ((insert2 ((x3 Nat) (x4 (list Nat))) (list Nat)))
-  ((match x4
-     (case nil (cons x3 x4))
-     (case
-       (cons x5 xs2)
-       (ite (le x3 x5) (cons x3 x4) (cons x5 (insert2 x3 xs2)))))))
+  ((insert2 ((x Nat) (y (list Nat))) (list Nat)))
+  ((match y
+     (case nil (cons x y))
+     (case (cons z xs)
+       (ite (le x z) (cons x y) (cons z (insert2 x xs)))))))
 (define-funs-rec
   ((isort ((x (list Nat))) (list Nat)))
   ((match x
      (case nil x)
-     (case (cons x2 xs) (insert2 x2 (isort xs))))))
+     (case (cons y xs) (insert2 y (isort xs))))))
 (define-funs-rec
-  ((equal ((x9 Nat) (x10 Nat)) bool))
-  ((match x9
-     (case
-       Z
-       (match x10
+  ((equal ((x Nat) (y Nat)) bool))
+  ((match x
+     (case Z
+       (match y
          (case Z true)
-         (case (S ipv) false)))
-     (case
-       (S ds)
-       (match x10
+         (case (S z) false)))
+     (case (S x2)
+       (match y
          (case Z false)
-         (case (S y) (equal ds y)))))))
+         (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((elem ((x6 Nat) (x7 (list Nat))) bool))
-  ((match x7
+  ((elem ((x Nat) (y (list Nat))) bool))
+  ((match y
      (case nil false)
-     (case
-       (cons x8 xs3) (ite (equal x6 x8) (equal x6 x8) (elem x6 xs3))))))
+     (case (cons z xs) (ite (equal x z) true (elem x xs))))))
 (assert-not
-  (forall
-    ((x13 Nat) (y2 (list Nat)))
-    (=> (elem x13 (isort y2)) (elem x13 y2))))
+  (forall ((x Nat) (y (list Nat)))
+    (=> (elem x (isort y)) (elem x y))))
 (check-sat)

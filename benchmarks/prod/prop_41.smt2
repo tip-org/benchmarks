@@ -1,42 +1,35 @@
 ; Source: Productive use of failure
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((equal ((x10 Nat) (x11 Nat)) bool))
-  ((match x10
-     (case
-       Z
-       (match x11
+  ((equal ((x Nat) (y Nat)) bool))
+  ((match x
+     (case Z
+       (match y
          (case Z true)
-         (case (S ipv) false)))
-     (case
-       (S ds)
-       (match x11
+         (case (S z) false)))
+     (case (S x2)
+       (match y
          (case Z false)
-         (case (S y) (equal ds y)))))))
+         (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((elem ((x7 Nat) (x8 (list Nat))) bool))
-  ((match x8
+  ((elem ((x Nat) (y (list Nat))) bool))
+  ((match y
      (case nil false)
-     (case
-       (cons x9 xs3) (ite (equal x7 x9) (equal x7 x9) (elem x7 xs3))))))
+     (case (cons z xs) (ite (equal x z) true (elem x xs))))))
 (define-funs-rec
-  ((intersect ((x4 (list Nat)) (x5 (list Nat))) (list Nat)))
-  ((match x4
-     (case nil x4)
-     (case
-       (cons x6 xs2)
-       (ite
-         (elem x6 x5) (cons x6 (intersect xs2 x5)) (intersect xs2 x5))))))
+  ((intersect ((x (list Nat)) (y (list Nat))) (list Nat)))
+  ((match x
+     (case nil x)
+     (case (cons z xs)
+       (ite (elem z y) (cons z (intersect xs y)) (intersect xs y))))))
 (define-funs-rec
-  ((subset ((x (list Nat)) (x2 (list Nat))) bool))
+  ((subset ((x (list Nat)) (y (list Nat))) bool))
   ((match x
      (case nil true)
-     (case
-       (cons x3 xs) (ite (elem x3 x2) (subset xs x2) (elem x3 x2))))))
+     (case (cons z xs) (ite (elem z y) (subset xs y) false)))))
 (assert-not
-  (forall
-    ((x12 (list Nat)) (y2 (list Nat)))
-    (=> (subset x12 y2) (= (intersect x12 y2) x12))))
+  (forall ((x (list Nat)) (y (list Nat)))
+    (=> (subset x y) (= (intersect x y) x))))
 (check-sat)

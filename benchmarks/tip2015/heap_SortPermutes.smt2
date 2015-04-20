@@ -1,90 +1,79 @@
 ; Skew heaps
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
-(declare-datatypes
-  () ((Heap (Node (Node_ Heap) (Node_2 Nat) (Node_3 Heap)) (Nil))))
+(declare-datatypes ()
+  ((Heap (Node (Node_0 Heap) (Node_1 Nat) (Node_2 Heap)) (Nil))))
 (define-funs-rec
-  ((plus ((x Nat) (x2 Nat)) Nat))
+  ((plus ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x2)
-     (case (S n) (S (plus n x2))))))
+     (case Z y)
+     (case (S n) (S (plus n y))))))
 (define-funs-rec
-  ((le ((x24 Nat) (x25 Nat)) bool))
-  ((match x24
+  ((le ((x Nat) (y Nat)) bool))
+  ((match x
      (case Z true)
-     (case
-       (S d12)
-       (match x25
+     (case (S z)
+       (match y
          (case Z false)
-         (case (S d13) (le d12 d13)))))))
+         (case (S x2) (le z x2)))))))
 (define-funs-rec
-  ((merge ((x11 Heap) (x12 Heap)) Heap))
-  ((match x11
-     (case
-       (Node d5 d6 d7)
-       (match x12
-         (case
-           (Node d8 d9 d10)
+  ((merge ((x Heap) (y Heap)) Heap))
+  ((match x
+     (case (Node z x2 x3)
+       (match y
+         (case (Node x4 x5 x6)
            (ite
-             (le d6 d9) (Node (merge d7 x12) d6 d5)
-             (Node (merge x11 d10) d9 d8)))
-         (case Nil x11)))
-     (case Nil x12))))
+             (le x2 x5) (Node (merge x3 y) x2 z) (Node (merge x x6) x5 x4)))
+         (case Nil x)))
+     (case Nil y))))
 (define-funs-rec
-  ((toList ((x6 Nat) (x7 Heap)) (list Nat)))
-  ((match x6
+  ((toList ((x Nat) (y Heap)) (list Nat)))
+  ((match x
      (case Z (as nil (list Nat)))
-     (case
-       (S d)
-       (match x7
-         (case (Node d2 d3 d4) (cons d3 (toList d (merge d2 d4))))
+     (case (S z)
+       (match y
+         (case (Node x2 x3 x4) (cons x3 (toList z (merge x2 x4))))
          (case Nil (as nil (list Nat))))))))
 (define-funs-rec
-  ((insert2 ((x13 Nat) (x14 Heap)) Heap))
-  ((merge (Node Nil x13 Nil) x14)))
+  ((insert2 ((x Nat) (y Heap)) Heap)) ((merge (Node Nil x Nil) y)))
 (define-funs-rec
-  ((toHeap ((x9 (list Nat))) Heap))
-  ((match x9
+  ((toHeap ((x (list Nat))) Heap))
+  ((match x
      (case nil Nil)
-     (case (cons x10 xs) (insert2 x10 (toHeap xs))))))
+     (case (cons y xs) (insert2 y (toHeap xs))))))
 (define-funs-rec
-  ((heapSize ((x18 Heap)) Nat))
-  ((match x18
-     (case (Node l ds r) (plus (heapSize l) (heapSize r)))
+  ((heapSize ((x Heap)) Nat))
+  ((match x
+     (case (Node l y r) (S (plus (heapSize l) (heapSize r))))
      (case Nil Z))))
 (define-funs-rec
-  ((toList2 ((x8 Heap)) (list Nat))) ((toList (heapSize x8) x8)))
+  ((toList2 ((x Heap)) (list Nat))) ((toList (heapSize x) x)))
 (define-funs-rec
-  ((equal ((x21 Nat) (x22 Nat)) bool))
-  ((match x21
-     (case
-       Z
-       (match x22
+  ((equal ((x Nat) (y Nat)) bool))
+  ((match x
+     (case Z
+       (match y
          (case Z true)
-         (case (S d11) false)))
-     (case
-       (S x23)
-       (match x22
+         (case (S z) false)))
+     (case (S x2)
+       (match y
          (case Z false)
-         (case (S y2) (equal x23 y2)))))))
+         (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((par (b c a2) (dot ((x3 (=> b c)) (x4 (=> a2 b)) (x5 a2)) c)))
-  ((@ x3 (@ x4 x5))))
+  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
+  ((@ x (@ y z))))
 (define-funs-rec
-  ((hsort ((x15 (list Nat))) (list Nat)))
-  ((dot
-     (lambda ((x16 Heap)) (toList2 x16))
-     (lambda ((x17 (list Nat))) (toHeap x17)) x15)))
+  ((hsort ((x (list Nat))) (list Nat)))
+  ((dot (lambda ((y Heap)) (toList2 y))
+     (lambda ((z (list Nat))) (toHeap z)) x)))
 (define-funs-rec
-  ((count ((x19 Nat) (x20 (list Nat))) Nat))
-  ((match x20
+  ((count ((x Nat) (y (list Nat))) Nat))
+  ((match y
      (case nil Z)
-     (case
-       (cons y xs2)
-       (ite (equal x19 y) (S (count x19 xs2)) (count x19 xs2))))))
+     (case (cons z xs)
+       (ite (equal x z) (S (count x xs)) (count x xs))))))
 (assert-not
-  (forall
-    ((x26 Nat) (ds2 (list Nat)))
-    (= (count x26 (hsort ds2)) (count x26 ds2))))
+  (forall ((x Nat) (y (list Nat)))
+    (= (count x (hsort y)) (count x y))))
 (check-sat)

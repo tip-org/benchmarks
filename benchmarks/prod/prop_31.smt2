@@ -1,15 +1,13 @@
 ; Source: Productive use of failure
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-funs-rec
-  ((par (a2) (qrev ((x (list a2)) (x2 (list a2))) (list a2))))
+  ((par (a) (qrev ((x (list a)) (y (list a))) (list a))))
   ((match x
-     (case nil x2)
-     (case (cons x3 xs) (as (qrev xs (cons x3 x2)) (list a2))))))
+     (case nil y)
+     (case (cons z xs) (as (qrev xs (cons z y)) (list a))))))
 (assert-not
-  (par
-    (a3)
-    (forall
-      ((x4 (list a3)))
-      (= (qrev (qrev x4 (as nil (list a3))) (as nil (list a3))) x4))))
+  (par (a)
+    (forall ((x (list a)))
+      (= (qrev (qrev x (as nil (list a))) (as nil (list a))) x))))
 (check-sat)

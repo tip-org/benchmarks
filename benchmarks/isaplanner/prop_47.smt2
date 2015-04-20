@@ -1,34 +1,29 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a)
-  ((Tree
-     (Leaf) (Node (Node_ (Tree a)) (Node_2 a) (Node_3 (Tree a))))))
+(declare-datatypes (a)
+  ((Tree (Leaf)
+     (Node (Node_0 (Tree a)) (Node_1 a) (Node_2 (Tree a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par (a2) (mirror ((x (Tree a2))) (Tree a2))))
+  ((par (a) (mirror ((x (Tree a))) (Tree a))))
   ((match x
      (case Leaf x)
-     (case
-       (Node l x2 r)
-       (Node (as (mirror r) (Tree a2)) x2 (as (mirror l) (Tree a2)))))))
+     (case (Node l y r)
+       (Node (as (mirror r) (Tree a)) y (as (mirror l) (Tree a)))))))
 (define-funs-rec
-  ((max2 ((x3 Nat) (x4 Nat)) Nat))
-  ((match x3
-     (case Z x4)
-     (case
-       (S ipv)
-       (match x4
-         (case Z x3)
-         (case (S ipv2) (S (max2 ipv ipv2))))))))
+  ((max2 ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case Z y)
+     (case (S z)
+       (match y
+         (case Z x)
+         (case (S x2) (S (max2 z x2))))))))
 (define-funs-rec
-  ((par (a5) (height ((x5 (Tree a5))) Nat)))
-  ((match x5
+  ((par (a) (height ((x (Tree a))) Nat)))
+  ((match x
      (case Leaf Z)
-     (case
-       (Node l2 x6 r2)
-       (S (max2 (as (height l2) Nat) (as (height r2) Nat)))))))
+     (case (Node l y r)
+       (S (max2 (as (height l) Nat) (as (height r) Nat)))))))
 (assert-not
-  (par
-    (a6)
-    (forall ((a7 (Tree a6))) (= (height (mirror a7)) (height a7)))))
+  (par (a)
+    (forall ((b (Tree a))) (= (height (mirror b)) (height b)))))
 (check-sat)

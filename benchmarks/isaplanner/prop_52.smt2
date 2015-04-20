@@ -1,39 +1,36 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((equal ((x5 Nat) (x6 Nat)) bool))
-  ((match x5
-     (case
-       Z
-       (match x6
+  ((equal ((x Nat) (y Nat)) bool))
+  ((match x
+     (case Z
+       (match y
          (case Z true)
-         (case (S ipv) false)))
-     (case
-       (S ds)
-       (match x6
+         (case (S z) false)))
+     (case (S x2)
+       (match y
          (case Z false)
-         (case (S y2) (equal ds y2)))))))
+         (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((count ((x3 Nat) (x4 (list Nat))) Nat))
-  ((match x4
+  ((count ((x Nat) (y (list Nat))) Nat))
+  ((match y
      (case nil Z)
-     (case
-       (cons y ys) (ite (equal x3 y) (S (count x3 ys)) (count x3 ys))))))
+     (case (cons z ys)
+       (ite (equal x z) (S (count x ys)) (count x ys))))))
 (define-funs-rec
-  ((par (a3) (append ((x7 (list a3)) (x8 (list a3))) (list a3))))
-  ((match x7
-     (case nil x8)
-     (case (cons x9 xs2) (cons x9 (as (append xs2 x8) (list a3)))))))
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
+     (case nil y)
+     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
 (define-funs-rec
-  ((par (a2) (rev ((x (list a2))) (list a2))))
+  ((par (a) (rev ((x (list a))) (list a))))
   ((match x
      (case nil x)
-     (case
-       (cons x2 xs)
-       (append (as (rev xs) (list a2)) (cons x2 (as nil (list a2))))))))
+     (case (cons y xs)
+       (append (as (rev xs) (list a)) (cons y (as nil (list a))))))))
 (assert-not
-  (forall
-    ((n Nat) (xs3 (list Nat))) (= (count n xs3) (count n (rev xs3)))))
+  (forall ((n Nat) (xs (list Nat)))
+    (= (count n xs) (count n (rev xs)))))
 (check-sat)

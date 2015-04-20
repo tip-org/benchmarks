@@ -2,8 +2,12 @@
 module Sort_TreeSort where
 
 import Nat
-import Prelude hiding ((++), (==), (<=), minimum, elem, (+))
+import Prelude hiding ((++), (==), (<=), minimum, elem, (+), null)
 import Tip.DSL
+
+null :: [a] -> Bool
+null [] = True
+null _  = False
 
 (==), (<=) :: Nat -> Nat -> Bool
 Z == Z = True

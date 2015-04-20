@@ -1,44 +1,36 @@
 ; Source: IsaPlanner test suite
-(declare-datatypes
-  (a) ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
+(declare-datatypes (a)
+  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes (a b) ((Pair2 (Pair (first a) (second b)))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par
-     (a2 b2) (zip ((x (list a2)) (x2 (list b2))) (list (Pair a2 b2)))))
+  ((par (a b) (zip ((x (list a)) (y (list b))) (list (Pair2 a b)))))
   ((match x
-     (case nil (as nil (list (Pair a2 b2))))
-     (case
-       (cons ipv ipv2)
-       (match x2
-         (case nil (as nil (list (Pair a2 b2))))
-         (case
-           (cons ipv3 ipv4)
-           (cons
-             (Pair2 ipv ipv3) (as (zip ipv2 ipv4) (list (Pair a2 b2))))))))))
+     (case nil (as nil (list (Pair2 a b))))
+     (case (cons z x2)
+       (match y
+         (case nil (as nil (list (Pair2 a b))))
+         (case (cons x3 x4)
+           (cons (Pair z x3) (as (zip x2 x4) (list (Pair2 a b))))))))))
 (define-funs-rec
-  ((par (a5) (len ((x5 (list a5))) Nat)))
-  ((match x5
+  ((par (a) (len ((x (list a))) Nat)))
+  ((match x
      (case nil Z)
-     (case (cons ds xs2) (S (as (len xs2) Nat))))))
+     (case (cons y xs) (S (as (len xs) Nat))))))
 (define-funs-rec
-  ((par (a4) (append ((x6 (list a4)) (x7 (list a4))) (list a4))))
-  ((match x6
-     (case nil x7)
-     (case (cons x8 xs3) (cons x8 (as (append xs3 x7) (list a4)))))))
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
+     (case nil y)
+     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
 (define-funs-rec
-  ((par (a3) (rev ((x3 (list a3))) (list a3))))
-  ((match x3
-     (case nil x3)
-     (case
-       (cons x4 xs)
-       (append (as (rev xs) (list a3)) (cons x4 (as nil (list a3))))))))
+  ((par (a) (rev ((x (list a))) (list a))))
+  ((match x
+     (case nil x)
+     (case (cons y xs)
+       (append (as (rev xs) (list a)) (cons y (as nil (list a))))))))
 (assert-not
-  (par
-    (a6 b3)
-    (forall
-      ((xs4 (list a6)) (ys (list b3)))
-      (=>
-        (= (len xs4) (len ys))
-        (= (zip (rev xs4) (rev ys)) (rev (zip xs4 ys)))))))
+  (par (a b)
+    (forall ((xs (list a)) (ys (list b)))
+      (=> (= (len xs) (len ys))
+        (= (zip (rev xs) (rev ys)) (rev (zip xs ys)))))))
 (check-sat)
