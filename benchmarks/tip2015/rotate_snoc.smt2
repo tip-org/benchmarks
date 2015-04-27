@@ -6,7 +6,7 @@
   ((par (a) (snoc ((x a) (y (list a))) (list a))))
   ((match y
      (case nil (cons x y))
-     (case (cons z ys) (cons z (as (snoc x ys) (list a)))))))
+     (case (cons z ys) (cons z (snoc x ys))))))
 (define-funs-rec
   ((par (a) (rotate ((x Nat) (y (list a))) (list a))))
   ((match x
@@ -14,12 +14,12 @@
      (case (S z)
        (match y
          (case nil y)
-         (case (cons x2 x3) (as (rotate z (snoc x2 x3)) (list a))))))))
+         (case (cons x2 x3) (rotate z (snoc x2 x3))))))))
 (define-funs-rec
   ((par (a) (length ((x (list a))) Nat)))
   ((match x
      (case nil Z)
-     (case (cons y xs) (S (as (length xs) Nat))))))
+     (case (cons y xs) (S (length xs))))))
 (assert-not
   (par (a) (forall ((xs (list a))) (= (rotate (length xs) xs) xs))))
 (check-sat)

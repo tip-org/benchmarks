@@ -1,3 +1,4 @@
+-- Show function for a simple expression language
 {-# LANGUAGE DeriveDataTypeable #-}
 module SimpleExpr2 where
 

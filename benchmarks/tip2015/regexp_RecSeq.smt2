@@ -1,4 +1,5 @@
-; Regular expressions
+; Regular expressions using Brzozowski derivatives (see the step function)
+; The plus and seq functions are smart constructors.
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes (a b) ((Pair2 (Pair (first a) (second b)))))
@@ -47,16 +48,14 @@
      (case (cons z ys)
        (match z
          (case (Pair xs y2)
-           (cons (Pair (cons x xs) y2)
-             (as (consfst x ys) (list (Pair2 (list a) b))))))))))
+           (cons (Pair (cons x xs) y2) (consfst x ys))))))))
 (define-funs-rec
   ((par (a) (split ((x (list a))) (list (Pair2 (list a) (list a))))))
   ((match x
      (case nil
        (cons (Pair x x) (as nil (list (Pair2 (list a) (list a))))))
      (case (cons y s)
-       (cons (Pair (as nil (list a)) x)
-         (consfst y (as (split s) (list (Pair2 (list a) (list a))))))))))
+       (cons (Pair (as nil (list a)) x) (consfst y (split s)))))))
 (define-funs-rec
   ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
 (define-funs-rec

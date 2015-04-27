@@ -40,7 +40,7 @@
   ((par (a) (all ((x (=> a bool)) (y (list a))) bool)))
   ((match y
      (case nil true)
-     (case (cons z xs) (and2 (@ x z) (as (all x xs) bool))))))
+     (case (cons z xs) (and2 (@ x z) (all x xs))))))
 (assert-not
   (forall ((xs (list Token)))
     (all (lambda ((x Token)) (ok x)) (escape xs))))

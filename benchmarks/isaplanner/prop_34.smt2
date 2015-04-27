@@ -1,4 +1,5 @@
-; Source: IsaPlanner test suite
+; Property from "Case-Analysis for Rippling and Inductive Proof",
+; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
   ((min2 ((x Nat) (y Nat)) Nat))

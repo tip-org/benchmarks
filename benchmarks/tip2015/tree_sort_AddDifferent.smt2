@@ -1,4 +1,6 @@
 ; Tree sort
+;
+; Inserting an element preserves the counts of different elements.
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes (a)
@@ -16,8 +18,7 @@
 (define-funs-rec
   ((par (a) (flatten ((x (Tree a)) (y (list a))) (list a))))
   ((match x
-     (case (Node q z q2)
-       (as (flatten q (cons z (as (flatten q2 y) (list a)))) (list a)))
+     (case (Node q z q2) (flatten q (cons z (flatten q2 y))))
      (case Nil y))))
 (define-funs-rec
   ((equal ((x Nat) (y Nat)) bool))

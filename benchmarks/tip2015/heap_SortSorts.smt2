@@ -1,4 +1,6 @@
 ; Skew heaps
+;
+; The sort function returns a sorted list.
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))

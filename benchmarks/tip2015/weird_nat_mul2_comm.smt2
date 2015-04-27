@@ -1,0 +1,23 @@
+; Weird functions over natural numbers
+;
+; Binary multiplication function with an interesting recursion structure,
+; which calls an accumulative trinary addition function.
+(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(define-funs-rec
+  ((add3acc ((x Nat) (y Nat) (z Nat)) Nat))
+  ((match x
+     (case Z
+       (match y
+         (case Z z)
+         (case (S y2) (add3acc x y2 (S z)))))
+     (case (S x2) (add3acc x2 (S y) z)))))
+(define-funs-rec
+  ((mul2 ((x Nat) (y Nat)) Nat))
+  ((match x
+     (case Z x)
+     (case (S z)
+       (match y
+         (case Z y)
+         (case (S x2) (S (add3acc z x2 (mul2 z x2)))))))))
+(assert-not (forall ((x Nat) (y Nat)) (= (mul2 x y) (mul2 y x))))
+(check-sat)

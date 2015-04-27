@@ -1,8 +1,5 @@
-{-
-
-    All properties from the article.
-
--}
+-- Property from "Productive Use of Failure in Inductive Proof",
+-- Andrew Ireland and Alan Bundy, JAR 1996
 module Properties where
 
 import Tip.DSL
@@ -52,6 +49,7 @@ prop_T12 x y = qrev x y =:= rev x ++ y
 prop_T13 :: Nat -> Prop Nat
 prop_T13 x = half (x + x) =:= x
 
+-- This property is the same as isaplanner #78
 prop_T14 :: [Nat] -> Prop Bool
 prop_T14 x = proveBool (sorted (isort x))
 
@@ -158,12 +156,14 @@ prop_T46 x y z = x =:= y ==> proveBool (x `elem` insert y z)
 prop_T47 :: Nat -> Nat -> [Nat] -> Prop Bool
 prop_T47 x y z = givenBool (x /= y) ((x `elem` insert y z) =:= x `elem` z)
 
+-- This property is the same as isaplanner #20
 prop_T48 :: [Nat] -> Prop Nat
 prop_T48 x = length (isort x) =:= length x
 
 prop_T49 :: Nat -> [Nat] -> Prop Bool
 prop_T49 x y = givenBool (x `elem` isort y) (proveBool (x `elem` y))
 
+-- This property is the same as isaplanner #53
 prop_T50 :: Nat -> [Nat] -> Prop Nat
 prop_T50 x y = count x (isort y) =:= count x y
 

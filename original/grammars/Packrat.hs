@@ -1,3 +1,11 @@
+-- Show unambiguity of the following grammar:
+--
+--  S <- A | B
+--  A <- xAy | xzy
+--  B <- xByy | xzyy
+--
+-- From "Packrat Parsing: Simple, Powerful, Lazy, Linear Time" (Functional
+-- Pearl), Bryan Ford ICFP 2012
 {-# LANGUAGE DeriveDataTypeable #-}
 module Packrat where
 

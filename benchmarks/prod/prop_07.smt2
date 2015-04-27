@@ -1,4 +1,5 @@
-; Source: Productive use of failure
+; Property from "Productive Use of Failure in Inductive Proof",
+; Andrew Ireland and Alan Bundy, JAR 1996
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
@@ -6,7 +7,7 @@
   ((par (a) (qrev ((x (list a)) (y (list a))) (list a))))
   ((match x
      (case nil y)
-     (case (cons z xs) (as (qrev xs (cons z y)) (list a))))))
+     (case (cons z xs) (qrev xs (cons z y))))))
 (define-funs-rec
   ((plus ((x Nat) (y Nat)) Nat))
   ((match x
@@ -16,7 +17,7 @@
   ((par (a) (length ((x (list a))) Nat)))
   ((match x
      (case nil Z)
-     (case (cons y xs) (S (as (length xs) Nat))))))
+     (case (cons y xs) (S (length xs))))))
 (assert-not
   (par (a)
     (forall ((x (list a)) (y (list a)))

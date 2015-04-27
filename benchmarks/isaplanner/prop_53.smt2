@@ -1,4 +1,7 @@
-; Source: IsaPlanner test suite
+; Property from "Case-Analysis for Rippling and Inductive Proof",
+; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
+;
+; This property is the same as prod #50
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))

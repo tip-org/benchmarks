@@ -1,4 +1,4 @@
-; Simple expression unambiguity
+; Show function for a simple expression language
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Tok (C) (D) (X) (Y) (Pl))))
@@ -7,7 +7,7 @@
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
   ((match x
      (case nil y)
-     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
+     (case (cons z xs) (cons z (append xs y))))))
 (define-funs-rec
   ((linTerm ((x E)) (list Tok))
    (lin ((x E)) (list Tok)))

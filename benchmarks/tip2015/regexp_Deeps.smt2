@@ -1,4 +1,5 @@
-; Regular expressions
+; Regular expressions using Brzozowski derivatives (see the step function)
+; The plus and seq functions are smart constructors.
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((A (X) (Y))))

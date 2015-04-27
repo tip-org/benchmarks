@@ -58,31 +58,35 @@ create() {
     )
 }
 
-#create prop_  tip2015    ModRotate.hs             rotate
-#create prop_  tip2015    StructuralModRotate.hs   rotate
-#create prop_  tip2015    SnocRotate.hs            rotate
-#create prop_  tip2015    Rotate.hs                rotate
-#
-#create prop_  tip2015    Escape.hs        escape
-#create prop_  tip2015    Sort_TreeSort.hs tree_sort
-#create prop_  tip2015    Sort_HeapSort.hs heap
-#
-#create prop_  tip2015    Integers.hs      int
-#create prop_  tip2015    BinLists.hs      bin
-#create prop_  tip2015    Nichomachus.hs   nicomachus
-#create prop_  tip2015    RegExp.hs        regexp
-#create prop_  tip2015    ListMonad.hs     list
-#create prop_  tip2015    RelaxedPrefix.hs relaxedprefix
-#
-#create prop_T prod       Properties.hs    prop
-#create prop_  isaplanner Properties.hs    prop
-#
-#create prop_  grammars   SimpleExpr1.hs   simp_expr
-#create prop_  grammars   SimpleExpr2.hs   simp_expr
-#create prop_  grammars   SimpleExpr3.hs   simp_expr
-#create prop_  grammars   SimpleExpr4.hs   simp_expr
-#create prop_  grammars   SimpleExpr5.hs   simp_expr
-#create prop_  grammars   Packrat.hs       packrat
+create prop_  tip2015    Nat.hs                   nat
+create prop_  tip2015    WeirdNat.hs              weird_nat
+create prop_  tip2015    Fermat.hs                fermat
+
+create prop_  tip2015    ModRotate.hs             rotate
+create prop_  tip2015    StructuralModRotate.hs   rotate
+create prop_  tip2015    SnocRotate.hs            rotate
+create prop_  tip2015    Rotate.hs                rotate
+
+create prop_  tip2015    Escape.hs        escape
+create prop_  tip2015    Sort_TreeSort.hs tree_sort
+create prop_  tip2015    Sort_HeapSort.hs heap
+
+create prop_  tip2015    Integers.hs      int
+create prop_  tip2015    BinLists.hs      bin
+create prop_  tip2015    Nichomachus.hs   nicomachus
+create prop_  tip2015    RegExp.hs        regexp
+create prop_  tip2015    ListMonad.hs     list
+create prop_  tip2015    RelaxedPrefix.hs relaxedprefix
+
+create prop_T prod       Properties.hs    prop
+create prop_  isaplanner Properties.hs    prop
+
+create prop_  grammars   SimpleExpr1.hs   simp_expr
+create prop_  grammars   SimpleExpr2.hs   simp_expr
+create prop_  grammars   SimpleExpr3.hs   simp_expr
+create prop_  grammars   SimpleExpr4.hs   simp_expr
+create prop_  grammars   SimpleExpr5.hs   simp_expr
+create prop_  grammars   Packrat.hs       packrat
 
 create prop_  koen   List.hs          list
 create prop_  koen   McCarthy91.hs    mccarthy91
@@ -91,7 +95,8 @@ create prop_  koen   Sort.hs          sort
 create prop_  koen   Subst.hs         subst
 create prop_  koen   Tree.hs          tree
 
-#tar vczf tip-benchmarks-${VERSION}.tar.gz benchmarks/**/*.smt2
-#tar vczf tip-benchmarks-${VERSION}-why3.tar.gz benchmarks-why3/**/*.mlw
-#tar vczf tip-benchmarks-${VERSION}-cvc4.tar.gz benchmarks-cvc4/**/*.smt2
+tar vczf tip-benchmarks-${VERSION}.tar.gz benchmarks/**/*.smt2
+tar vczf tip-benchmarks-${VERSION}-why3.tar.gz benchmarks-why3/**/*.mlw
+tar vczf tip-benchmarks-${VERSION}-cvc4.tar.gz benchmarks-cvc4/**/*.smt2
+
 
