@@ -1,4 +1,5 @@
-; Source: IsaPlanner test suite
+; Property from "Case-Analysis for Rippling and Inductive Proof",
+; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
@@ -19,7 +20,7 @@
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
   ((match x
      (case nil y)
-     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
+     (case (cons z xs) (cons z (append xs y))))))
 (assert-not
   (forall ((xs (list Nat)) (ys (list Nat)))
     (=> (not (null ys)) (= (last (append xs ys)) (last ys)))))

@@ -1,4 +1,5 @@
-; Source: Productive use of failure
+; Property from "Productive Use of Failure in Inductive Proof",
+; Andrew Ireland and Alan Bundy, JAR 1996
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
   ((plus ((x Nat) (y Nat)) Nat))

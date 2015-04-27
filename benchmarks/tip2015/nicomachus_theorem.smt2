@@ -1,4 +1,4 @@
-; Nicomachus's theorem
+; Nichomacus' theorem
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
   ((plus ((x Nat) (y Nat)) Nat))

@@ -1,4 +1,7 @@
-; Relaxed prefix from VerifyThis: etaps2015.verifythis.org
+; Relaxed prefix in VerifyThis 2015: etaps2015.verifythis.org
+; Challenge 1, submitted by Thomas Genet
+;
+; A way to specify the relaxed prefix function
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((It (A) (B) (C))))

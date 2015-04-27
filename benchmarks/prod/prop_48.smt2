@@ -1,4 +1,7 @@
-; Source: Productive use of failure
+; Property from "Productive Use of Failure in Inductive Proof",
+; Andrew Ireland and Alan Bundy, JAR 1996
+;
+; This property is the same as isaplanner #20
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
@@ -6,7 +9,7 @@
   ((par (a) (length ((x (list a))) Nat)))
   ((match x
      (case nil Z)
-     (case (cons y xs) (S (as (length xs) Nat))))))
+     (case (cons y xs) (S (length xs))))))
 (define-funs-rec
   ((le ((x Nat) (y Nat)) bool))
   ((match x

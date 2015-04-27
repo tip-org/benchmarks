@@ -1,4 +1,6 @@
 ; Skew heaps
+;
+; The sort function permutes the input list, version 2.
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))

@@ -1,4 +1,4 @@
-; Binary natural numbers
+; Property about natural numbers with binary presentation
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (declare-datatypes ()
   ((Bin (One) (ZeroAnd (ZeroAnd_0 Bin)) (OneAnd (OneAnd_0 Bin)))))

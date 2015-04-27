@@ -1,4 +1,5 @@
-; Integers implemented using natural numbers (from Agda standard library)
+; The implementation of these integers correspond to those in the
+; Agda standard library, which is proved to be a commutative ring
 (declare-datatypes () ((Sign (Pos) (Neg))))
 (declare-datatypes () ((Nat (Zero) (Succ (pred Nat)))))
 (declare-datatypes () ((Z (P (P_0 Nat)) (N (N_0 Nat)))))

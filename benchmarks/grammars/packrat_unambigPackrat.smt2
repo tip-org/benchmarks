@@ -1,4 +1,4 @@
-; An example from Packrat Parsing (ICFP 2002)
+; Show unambiguity of the following grammar:
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Tok (X) (Y) (Z))))
@@ -9,7 +9,7 @@
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
   ((match x
      (case nil y)
-     (case (cons z xs) (cons z (as (append xs y) (list a)))))))
+     (case (cons z xs) (cons z (append xs y))))))
 (define-funs-rec
   ((linA ((x A2)) (list Tok)))
   ((match x

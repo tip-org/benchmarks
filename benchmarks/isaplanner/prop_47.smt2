@@ -1,4 +1,5 @@
-; Source: IsaPlanner test suite
+; Property from "Case-Analysis for Rippling and Inductive Proof",
+; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes (a)
   ((Tree (Leaf)
      (Node (Node_0 (Tree a)) (Node_1 a) (Node_2 (Tree a))))))
@@ -7,8 +8,7 @@
   ((par (a) (mirror ((x (Tree a))) (Tree a))))
   ((match x
      (case Leaf x)
-     (case (Node l y r)
-       (Node (as (mirror r) (Tree a)) y (as (mirror l) (Tree a)))))))
+     (case (Node l y r) (Node (mirror r) y (mirror l))))))
 (define-funs-rec
   ((max2 ((x Nat) (y Nat)) Nat))
   ((match x
@@ -21,8 +21,7 @@
   ((par (a) (height ((x (Tree a))) Nat)))
   ((match x
      (case Leaf Z)
-     (case (Node l y r)
-       (S (max2 (as (height l) Nat) (as (height r) Nat)))))))
+     (case (Node l y r) (S (max2 (height l) (height r)))))))
 (assert-not
   (par (a)
     (forall ((b (Tree a))) (= (height (mirror b)) (height b)))))

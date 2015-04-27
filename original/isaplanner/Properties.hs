@@ -1,3 +1,5 @@
+-- Property from "Case-Analysis for Rippling and Inductive Proof",
+-- Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 module Properties where
 
 import Prelude (Bool(..),error,toEnum,fromEnum,pred,succ,sqrt,round
@@ -64,6 +66,7 @@ prop_18 i m
 prop_19 n xs
   = (len (drop n xs) =:= len xs - n)
 
+-- This property is the same as prod #48
 prop_20 xs
   = (len (sort xs) =:= len xs)
 
@@ -166,6 +169,7 @@ prop_51 xs x
 prop_52 n xs
   = (count n xs =:= count n (rev xs))
 
+-- This property is the same as prod #50
 prop_53 n xs
   = (count n xs =:= count n (sort xs))
 
@@ -248,6 +252,7 @@ prop_77 x xs
   = givenBool (sorted xs)
   ( proveBool (sorted (insort x xs)) )
 
+-- This property is the same as prod #14
 prop_78 xs
   = proveBool (sorted (sort xs))
 
@@ -271,6 +276,8 @@ prop_84 xs ys zs
   = (zip xs (ys ++ zs) =:=
            zip (take (len ys) xs) ys ++ zip (drop (len ys) xs) zs)
 
+-- One way to prove this is to first show "Nick's lemma":
+-- len xs = len ys ==> zip xs ys ++ zip as bs = zip (xs ++ as) (ys ++ bs)
 prop_85 xs ys
   = (len xs =:= len ys) ==>
     (zip (rev xs) (rev ys) =:= rev (zip xs ys))

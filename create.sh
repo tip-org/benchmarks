@@ -58,6 +58,10 @@ create() {
     )
 }
 
+create prop_  tip2015    Nat.hs                   nat
+create prop_  tip2015    WeirdNat.hs              weird_nat
+create prop_  tip2015    Fermat.hs                fermat
+
 create prop_  tip2015    ModRotate.hs             rotate
 create prop_  tip2015    StructuralModRotate.hs   rotate
 create prop_  tip2015    SnocRotate.hs            rotate
