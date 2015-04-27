@@ -1,5 +1,3 @@
--- Sorting algorithms.
-
 {-# LANGUAGE ScopedTypeVariables #-}
 module Sort where
 
@@ -17,6 +15,19 @@ type OrdA = Int
 
 reverse [] = []
 reverse (x:xs) = reverse xs ++ [x]
+
+take :: Nat -> [a] -> [a]
+take Z _ = []
+take _ [] = []
+take (S x) (y:ys) = y : (take x ys)
+
+drop :: Nat -> [a] -> [a]
+drop Z xs = xs
+drop _ [] = []
+drop (S x) (_:xs) = drop x xs
+
+splitAt :: Nat -> [a] -> ([a], [a])
+splitAt n xs = (take n xs, drop n xs)
 
 ztake, zdrop :: Int -> [a] -> [a]
 ztake 0 _ = []
@@ -68,8 +79,8 @@ third (S (S (S n))) = S (third n)
 
 twoThirds :: Nat -> Nat
 twoThirds Z = Z
-twoThirds (S Z) = Z
-twoThirds (S (S Z)) = Z
+twoThirds (S Z) = S Z
+twoThirds (S (S Z)) = S Z
 twoThirds (S (S (S n))) = S (S (twoThirds n))
 
 --------------------------------------------------------------------------------
@@ -170,10 +181,7 @@ insert x (y:xs) | x <= y    = x : y : xs
 prop_ISortSorts (xs :: [OrdA]) = ordered (isort xs) =:= True
 prop_ISortPermutes x (xs :: [OrdA]) = count x (isort xs) =:= count x xs
 prop_ISortPermutes' (xs :: [OrdA]) = isort xs `isPermutation` xs =:= True
-{-
-prop_ISortIsSort (xs :: [OrdA]) =
-  isort xs =:= sort xs
--}
+
 --------------------------------------------------------------------------------
 
 -- msortbu2 :: Ord a => [a] -> [a]
@@ -268,10 +276,10 @@ nmsorttd xs  = nmsorttd (take k xs) `lmerge` nmsorttd (drop k xs)
   k = half (length xs)
 
 -- Top-down merge sort, using division by two on natural numbers
-prop_MSortTDSorts (xs :: [OrdA]) = ordered (nmsorttd xs) =:= True
-prop_MSortTDPermutes x (xs :: [OrdA]) = count x (nmsorttd xs) =:= count x xs
-prop_MSortTDPermutes' (xs :: [OrdA]) = nmsorttd xs `isPermutation` xs =:= True
-prop_MSortTDIsSort (xs :: [OrdA]) = nmsorttd xs =:= sort xs
+prop_NMSortTDSorts (xs :: [OrdA]) = ordered (nmsorttd xs) =:= True
+prop_NMSortTDPermutes x (xs :: [OrdA]) = count x (nmsorttd xs) =:= count x xs
+prop_NMSortTDPermutes' (xs :: [OrdA]) = nmsorttd xs `isPermutation` xs =:= True
+prop_NMSortTDIsSort (xs :: [OrdA]) = nmsorttd xs =:= sort xs
 
 --------------------------------------------------------------------------------
 
@@ -440,6 +448,62 @@ prop_StoogeSort2Sorts (xs :: [OrdA]) = ordered (stoogesort2 xs) =:= True
 prop_StoogeSort2Permutes x (xs :: [OrdA]) = count x (stoogesort2 xs) =:= count x xs
 prop_StoogeSort2Permutes' (xs :: [OrdA]) = stoogesort2 xs `isPermutation` xs =:= True
 prop_StoogeSort2IsSort (xs :: [OrdA]) = stoogesort2 xs =:= sort xs
+
+--------------------------------------------------------------------------------
+
+{-# NOINLINE nstoogesort #-}
+nstoogesort :: [Int] -> [Int]
+nstoogesort [] = []
+nstoogesort [x] = [x]
+nstoogesort [x, y] = sort2 x y
+nstoogesort xs = nstooge1sort2 (nstooge1sort1 (nstooge1sort2 xs))
+
+{-# NOINLINE nstooge1sort1 #-}
+nstooge1sort1 :: [Int] -> [Int]
+nstooge1sort1 xs = ys ++ nstoogesort zs
+  where
+    (ys, zs) = splitAt (third (length xs)) xs
+
+{-# NOINLINE nstooge1sort2 #-}
+nstooge1sort2 :: [Int] -> [Int]
+nstooge1sort2 xs = nstoogesort zs ++ reverse ys
+  where
+    (ys, zs) = splitAt (third (length xs)) (reverse xs)
+
+--------------------------------------------------------------------------------
+
+-- Stooge sort defined using reverse and thirds on natural numbers
+prop_NStoogeSortSorts (xs :: [OrdA]) = ordered (nstoogesort xs) =:= True
+prop_NStoogeSortPermutes x (xs :: [OrdA]) = count x (nstoogesort xs) =:= count x xs
+prop_NStoogeSortPermutes' (xs :: [OrdA]) = nstoogesort xs `isPermutation` xs =:= True
+prop_NStoogeSortIsSort (xs :: [OrdA]) = nstoogesort xs =:= sort xs
+
+--------------------------------------------------------------------------------
+
+{-# NOINLINE nstoogesort2 #-}
+nstoogesort2, nstooge2sort1, nstooge2sort2 :: [Int] -> [Int]
+nstoogesort2 [] = []
+nstoogesort2 [x] = [x]
+nstoogesort2 [x, y] = sort2 x y
+nstoogesort2 xs = nstooge2sort2 (nstooge2sort1 (nstooge2sort2 xs))
+
+{-# NOINLINE nstooge2sort1 #-}
+nstooge2sort1 xs = ys ++ nstoogesort2 zs
+  where
+    (ys, zs) = splitAt (third (length xs)) xs
+
+{-# NOINLINE nstooge2sort2 #-}
+nstooge2sort2 xs = nstoogesort2 ys ++ zs
+  where
+    (ys, zs) = splitAt (twoThirds (length xs)) xs
+
+----------------------------------------------------------------------------------
+
+-- Stooge sort, using thirds on natural numbers
+prop_NStoogeSort2Sorts (xs :: [OrdA]) = ordered (nstoogesort2 xs) =:= True
+prop_NStoogeSort2Permutes x (xs :: [OrdA]) = count x (nstoogesort2 xs) =:= count x xs
+prop_NStoogeSort2Permutes' (xs :: [OrdA]) = nstoogesort2 xs `isPermutation` xs =:= True
+prop_NStoogeSort2IsSort (xs :: [OrdA]) = nstoogesort2 xs =:= sort xs
 
 --------------------------------------------------------------------------------
 

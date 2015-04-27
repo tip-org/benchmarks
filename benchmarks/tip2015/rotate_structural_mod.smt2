@@ -32,7 +32,7 @@
              (case (S m) (minus z y))
              (case Z y)))))
      (case Z z))))
-(define-funs-rec ((mod ((x Nat) (y Nat)) Nat)) ((mod2 x Z y)))
+(define-funs-rec ((mod3 ((x Nat) (y Nat)) Nat)) ((mod2 x Z y)))
 (define-funs-rec
   ((par (a) (length ((x (List2 a))) Nat)))
   ((match x
@@ -64,6 +64,6 @@
   (par (a)
     (forall ((n Nat) (xs (List2 a)))
       (= (rotate n xs)
-        (append (drop (mod n (length xs)) xs)
-          (take (mod n (length xs)) xs))))))
+        (append (drop (mod3 n (length xs)) xs)
+          (take (mod3 n (length xs)) xs))))))
 (check-sat)
