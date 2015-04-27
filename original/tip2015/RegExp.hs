@@ -1,3 +1,5 @@
+-- Regular expressions using Brzozowski derivatives (see the step function)
+-- The plus and seq functions are smart constructors.
 {-# LANGUAGE TemplateHaskell, DeriveDataTypeable #-}
 module RegExp where
 

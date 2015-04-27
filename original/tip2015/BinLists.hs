@@ -1,3 +1,4 @@
+-- Property about natural numbers with binary presentation
 {-# LANGUAGE DeriveDataTypeable, TemplateHaskell #-}
 module BinLists where
 

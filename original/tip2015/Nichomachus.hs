@@ -1,3 +1,4 @@
+-- Nichomacus' theorem
 module Nichomachus where
 
 import Prelude hiding ((+),(*),sum)
