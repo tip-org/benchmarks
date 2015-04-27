@@ -88,7 +88,15 @@ create prop_  grammars   SimpleExpr4.hs   simp_expr
 create prop_  grammars   SimpleExpr5.hs   simp_expr
 create prop_  grammars   Packrat.hs       packrat
 
+create prop_  koen   List.hs          list
+create prop_  koen   McCarthy91.hs    mccarthy91
+create prop_  koen   Propositional.hs propositional
+create prop_  koen   Sort.hs          sort
+create prop_  koen   Subst.hs         subst
+create prop_  koen   Tree.hs          tree
+
 tar vczf tip-benchmarks-${VERSION}.tar.gz benchmarks/**/*.smt2
 tar vczf tip-benchmarks-${VERSION}-why3.tar.gz benchmarks-why3/**/*.mlw
 tar vczf tip-benchmarks-${VERSION}-cvc4.tar.gz benchmarks-cvc4/**/*.smt2
+
 
