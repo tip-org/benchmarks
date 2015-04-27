@@ -1,3 +1,4 @@
+-- Escaping and unescaping
 module Escape where
 
 import Tip.DSL

@@ -1,3 +1,4 @@
+-- Property about rotate and mod, written structurally recursive
 {-# LANGUAGE DeriveDataTypeable #-}
 module StructuralModRotate where
 

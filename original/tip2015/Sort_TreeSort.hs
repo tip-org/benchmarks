@@ -1,3 +1,4 @@
+-- Tree sort
 {-# LANGUAGE ScopedTypeVariables #-}
 module Sort_TreeSort where
 
@@ -66,16 +67,21 @@ delete x (y:ys)
 
 --------------------------------------------------------------------------------
 
+-- The sort function returns a sorted list.
 prop_SortSorts (xs :: [Nat]) =
   ordered (tsort xs) =:= True
 
+-- The sort function permutes the input list.
 prop_SortPermutes x (xs :: [Nat]) =
   count x (tsort xs) =:= count x xs
 
+-- The sort function permutes the input list, version 2.
 prop_SortPermutes' (xs :: [Nat]) =
   tsort xs `isPermutation` xs =:= True
 
+-- Inserting an element adds one to the count of that element.
 prop_AddSame x t = count x (flatten (add x t) []) =:= S (count x (flatten t []))
 
+-- Inserting an element preserves the counts of different elements.
 prop_AddDifferent x y t = x == y =:= False ==> count y (flatten (add x t) []) =:= count y (flatten t [])
 

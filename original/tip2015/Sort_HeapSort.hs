@@ -1,3 +1,4 @@
+-- Skew heaps
 {-# LANGUAGE ScopedTypeVariables, TemplateHaskell, DeriveDataTypeable #-}
 module Sort_QuickSort where
 
@@ -145,12 +146,15 @@ delete x (y:ys)
 
 --------------------------------------------------------------------------------
 
+-- The sort function returns a sorted list.
 prop_SortSorts (xs :: [Nat]) =
   ordered (hsort xs) =:= True
 
+-- The sort function permutes the input list.
 prop_SortPermutes x (xs :: [Nat]) =
   count x (hsort xs) =:= count x xs
 
+-- The sort function permutes the input list, version 2.
 prop_SortPermutes' (xs :: [Nat]) =
   hsort xs `isPermutation` xs =:= True
 
