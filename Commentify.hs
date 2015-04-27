@@ -9,10 +9,11 @@ comments xs = (map (drop 3) ys, zs)
 
 decorate start start2 end [] = []
 decorate start start2 end (line:lines) =
-  decorateLast ((start ++ line):map (start2 ++) lines)
+  map clean (decorateLast ((start ++ line):map (start2 ++) lines))
   where
     decorateLast lines =
       init lines ++ [last lines ++ end]
+    clean = reverse . dropWhile isSpace . reverse
 
 chop [] = []
 chop ("":lines) =
