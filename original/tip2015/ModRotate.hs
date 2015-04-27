@@ -1,3 +1,4 @@
+-- Property about rotate and mod
 {-# LANGUAGE DeriveDataTypeable #-}
 module ModRotate where
 

@@ -1,3 +1,4 @@
+-- Rotate expressed using a snoc instead of append
 module SnocRotate where
 
 import Prelude hiding (length, (++))

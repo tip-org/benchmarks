@@ -1,3 +1,4 @@
+-- Another (simple) property about rotate
 {-# LANGUAGE DeriveDataTypeable #-}
 module Rotate where
 
@@ -58,4 +59,3 @@ rotate (S n) (Cons x xs) = rotate n (xs ++ Cons x Nil)
 -- A happy little property about rotate
 prop_self :: Nat -> List a -> Prop (List a)
 prop_self n xs = rotate n (xs ++ xs) =:= rotate n xs ++ rotate n xs
-
