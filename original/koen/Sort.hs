@@ -4,8 +4,8 @@
 module Sort where
 
 import Tip.DSL
-import Prelude hiding (Eq(..), Ord(..), map, all, elem, null, length, even, (++), filter)
-import Nat hiding ((+), (*))
+import Prelude hiding (Eq(..), Ord(..), map, all, elem, null, length, even, (++), filter, reverse, splitAt, take, drop)
+import Nat hiding ((+), (-), (*))
 import qualified Prelude
 
 type OrdA = Int
@@ -14,6 +14,21 @@ type OrdA = Int
 (<=) = (Prelude.<=)
 (>)  = (Prelude.>)
 (==) = (Prelude.==)
+
+reverse [] = []
+reverse (x:xs) = reverse xs ++ [x]
+
+ztake, zdrop :: Int -> [a] -> [a]
+ztake 0 _ = []
+ztake _ [] = []
+ztake n (x:xs) = x:ztake (n-1) xs
+
+zdrop 0 xs = xs
+zdrop _ [] = []
+zdrop n (x:xs) = zdrop (n-1) xs
+
+zsplitAt :: Int -> [a] -> ([a], [a])
+zsplitAt n xs = (ztake n xs, zdrop n xs)
 
 delete :: Int -> [Int] -> [Int]
 delete x [] = []
@@ -238,7 +253,7 @@ prop_MSortBUIsSort (xs :: [OrdA]) =
 -- msorttd :: Ord a => [a] -> [a]
 msorttd []  = []
 msorttd [x] = [x]
-msorttd xs  = msorttd (take k xs) `lmerge` msorttd (drop k xs)
+msorttd xs  = msorttd (ztake k xs) `lmerge` msorttd (zdrop k xs)
  where
   k = zlength xs `div` 2
 
@@ -390,17 +405,24 @@ prop_TSortIsSort (xs :: [OrdA]) =
 
 --------------------------------------------------------------------------------
 
+{-# NOINLINE stoogesort #-}
+stoogesort :: [Int] -> [Int]
 stoogesort [] = []
 stoogesort [x] = [x]
 stoogesort [x, y] = sort2 x y
-stoogesort xs = sort2 (sort1 (sort2 xs))
+stoogesort xs = stooge1sort2 (stooge1sort1 (stooge1sort2 xs))
+
+{-# NOINLINE stooge1sort1 #-}
+stooge1sort1 :: [Int] -> [Int]
+stooge1sort1 xs = ys ++ stoogesort zs
   where
-    sort1 xs = ys ++ stoogesort zs
-      where
-        (ys, zs) = splitAt (zlength xs `div` 3) xs
-    sort2 xs = stoogesort zs ++ reverse ys
-      where
-        (ys, zs) = splitAt (zlength xs `div` 3) (reverse xs)
+    (ys, zs) = zsplitAt (zlength xs `div` 3) xs
+
+{-# NOINLINE stooge1sort2 #-}
+stooge1sort2 :: [Int] -> [Int]
+stooge1sort2 xs = stoogesort zs ++ reverse ys
+  where
+    (ys, zs) = zsplitAt (zlength xs `div` 3) (reverse xs)
 
 --------------------------------------------------------------------------------
 
@@ -418,17 +440,22 @@ prop_StoogeSortIsSort (xs :: [OrdA]) =
 
 --------------------------------------------------------------------------------
 
+{-# NOINLINE stoogesort2 #-}
+stoogesort2, stooge2sort1, stooge2sort2 :: [Int] -> [Int]
 stoogesort2 [] = []
 stoogesort2 [x] = [x]
 stoogesort2 [x, y] = sort2 x y
-stoogesort2 xs = sort2 (sort1 (sort2 xs))
+stoogesort2 xs = stooge2sort2 (stooge2sort1 (stooge2sort2 xs))
+
+{-# NOINLINE stooge2sort1 #-}
+stooge2sort1 xs = ys ++ stoogesort2 zs
   where
-    sort1 xs = ys ++ stoogesort2 zs
-      where
-        (ys, zs) = splitAt (zlength xs `div` 3) xs
-    sort2 xs = stoogesort2 ys ++ zs
-      where
-        (ys, zs) = splitAt ((2 * zlength xs + 1) `div` 3) xs
+    (ys, zs) = zsplitAt (zlength xs `div` 3) xs
+
+{-# NOINLINE stooge2sort2 #-}
+stooge2sort2 xs = stoogesort2 ys ++ zs
+  where
+    (ys, zs) = zsplitAt ((2 * zlength xs + 1) `div` 3) xs
 
 ----------------------------------------------------------------------------------
 

@@ -84,11 +84,11 @@ create() {
 #create prop_  grammars   SimpleExpr5.hs   simp_expr
 #create prop_  grammars   Packrat.hs       packrat
 
-#create prop_  koen   List.hs          list
-#create prop_  koen   McCarthy91.hs    mccarthy91
-#create prop_  koen   Propositional.hs propositional
-#create prop_  koen   Sort.hs          sort
-#create prop_  koen   Subst.hs         subst
+create prop_  koen   List.hs          list
+create prop_  koen   McCarthy91.hs    mccarthy91
+create prop_  koen   Propositional.hs propositional
+create prop_  koen   Sort.hs          sort
+create prop_  koen   Subst.hs         subst
 create prop_  koen   Tree.hs          tree
 
 #tar vczf tip-benchmarks-${VERSION}.tar.gz benchmarks/**/*.smt2
