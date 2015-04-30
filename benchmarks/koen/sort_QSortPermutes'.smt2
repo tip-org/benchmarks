@@ -1,48 +1,49 @@
 ; QuickSort
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
+(define-funs-rec ((or2 ((x bool) (y bool)) bool)) ((ite x true y)))
 (define-funs-rec
-  ((par (t) (x ((p (=> t bool)) (y (list t))) (list t))))
-  ((match y
-     (case nil y)
-     (case (cons z x2) (ite (@ p z) (cons z (x p x2)) (x p x2))))))
-(define-funs-rec ((or2 ((y bool) (z bool)) bool)) ((ite y true z)))
-(define-funs-rec
-  ((par (t) (null ((y (list t))) bool)))
-  ((match y
+  ((par (t) (null ((x (list t))) bool)))
+  ((match x
      (case nil true)
-     (case (cons z x2) false))))
+     (case (cons y z) false))))
 (define-funs-rec
-  ((elem ((y int) (z (list int))) bool))
-  ((match z
-     (case nil false)
-     (case (cons y2 ys) (or2 (= y y2) (elem y ys))))))
+  ((par (t) (filter ((p (=> t bool)) (x (list t))) (list t))))
+  ((match x
+     (case nil x)
+     (case (cons y z)
+       (ite (@ p y) (cons y (filter p z)) (filter p z))))))
 (define-funs-rec
-  ((delete ((y int) (z (list int))) (list int)))
-  ((match z
-     (case nil z)
-     (case (cons y2 ys) (ite (= y y2) ys (cons y2 (delete y ys)))))))
-(define-funs-rec
-  ((par (a) (append ((y (list a)) (z (list a))) (list a))))
+  ((elem ((x int) (y (list int))) bool))
   ((match y
-     (case nil z)
-     (case (cons x2 xs) (cons x2 (append xs z))))))
+     (case nil false)
+     (case (cons z ys) (or2 (= x z) (elem x ys))))))
 (define-funs-rec
-  ((qsort ((y (list int))) (list int)))
+  ((delete ((x int) (y (list int))) (list int)))
   ((match y
      (case nil y)
-     (case (cons z xs)
+     (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
+(define-funs-rec
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
+     (case nil y)
+     (case (cons z xs) (cons z (append xs y))))))
+(define-funs-rec
+  ((qsort ((x (list int))) (list int)))
+  ((match x
+     (case nil x)
+     (case (cons y xs)
        (append
-       (append (qsort (x (lambda ((x2 int)) (<= x2 z)) xs))
-         (cons z (as nil (list int))))
-         (qsort (x (lambda ((x3 int)) (> x3 z)) xs)))))))
+       (append (qsort (filter (lambda ((z int)) (<= z y)) xs))
+         (cons y (as nil (list int))))
+         (qsort (filter (lambda ((x2 int)) (> x2 y)) xs)))))))
 (define-funs-rec
-  ((and2 ((y bool) (z bool)) bool)) ((ite y z false)))
+  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
 (define-funs-rec
-  ((isPermutation ((y (list int)) (z (list int))) bool))
-  ((match y
-     (case nil (null z))
-     (case (cons x2 xs)
-       (and2 (elem x2 z) (isPermutation xs (delete x2 z)))))))
-(assert-not (forall ((y (list int))) (isPermutation (qsort y) y)))
+  ((isPermutation ((x (list int)) (y (list int))) bool))
+  ((match x
+     (case nil (null y))
+     (case (cons z xs)
+       (and2 (elem z y) (isPermutation xs (delete z y)))))))
+(assert-not (forall ((x (list int))) (isPermutation (qsort x) x)))
 (check-sat)

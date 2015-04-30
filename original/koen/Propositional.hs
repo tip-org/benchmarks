@@ -1,3 +1,4 @@
+-- Propositional solver
 {-# LANGUAGE TemplateHaskell #-}
 module Propositional where
 
@@ -63,7 +64,7 @@ models (Not (Not p)) m =
   models p m
 
 models (Var x) m =
-  [ (x,True) : filter ((x/=).fst) m 
+  [ (x,True) : filter ((x/=).fst) m
   | not (or [x == y | (y, False) <- m])
   ]
 

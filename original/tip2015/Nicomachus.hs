@@ -1,5 +1,5 @@
--- Nichomacus' theorem
-module Nichomachus where
+-- Nicomachus' theorem
+module Nicomachus where
 
 import Prelude hiding ((+),(*),sum)
 import Nat hiding (sig)

@@ -1,52 +1,53 @@
+; Bottom-up merge sort
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par (t t2) (x ((f (=> t2 t)) (y (list t2))) (list t))))
-  ((match y
+  ((par (t t2) (map2 ((f (=> t2 t)) (x (list t2))) (list t))))
+  ((match x
      (case nil (as nil (list t)))
-     (case (cons z x2) (cons (@ f z) (x f x2))))))
+     (case (cons y z) (cons (@ f y) (map2 f z))))))
 (define-funs-rec
-  ((lmerge ((y (list int)) (z (list int))) (list int)))
-  ((match y
-     (case nil z)
-     (case (cons x2 x3)
-       (match z
-         (case nil y)
-         (case (cons x4 x5)
-           (ite
-             (<= x2 x4) (cons x2 (lmerge x3 z)) (cons x4 (lmerge y x5)))))))))
-(define-funs-rec
-  ((pairwise ((y (list (list int)))) (list (list int))))
-  ((match y
+  ((lmerge ((x (list int)) (y (list int))) (list int)))
+  ((match x
      (case nil y)
-     (case (cons xs z)
-       (match z
-         (case nil y)
+     (case (cons z x2)
+       (match y
+         (case nil x)
+         (case (cons x3 x4)
+           (ite
+             (<= z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4)))))))))
+(define-funs-rec
+  ((pairwise ((x (list (list int)))) (list (list int))))
+  ((match x
+     (case nil x)
+     (case (cons xs y)
+       (match y
+         (case nil x)
          (case (cons ys xss) (cons (lmerge xs ys) (pairwise xss))))))))
 (define-funs-rec
-  ((mergingbu ((y (list (list int)))) (list int)))
-  ((match y
+  ((mergingbu ((x (list (list int)))) (list int)))
+  ((match x
      (case nil (as nil (list int)))
-     (case (cons xs z)
-       (match z
+     (case (cons xs y)
+       (match y
          (case nil xs)
-         (case (cons x2 x3) (mergingbu (pairwise y))))))))
+         (case (cons z x2) (mergingbu (pairwise x))))))))
 (define-funs-rec
-  ((par (b c a) (dot ((y (=> b c)) (z (=> a b)) (x2 a)) c)))
-  ((@ y (@ z x2))))
+  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
+  ((@ x (@ y z))))
 (define-funs-rec
-  ((msortbu ((y (list int))) (list int)))
-  ((dot (lambda ((z (list (list int)))) (mergingbu z))
-     (lambda ((x2 (list int)))
-       (x (lambda ((x3 int)) (cons x3 (as nil (list int)))) x2))
-     y)))
+  ((msortbu ((x (list int))) (list int)))
+  ((dot (lambda ((y (list (list int)))) (mergingbu y))
+     (lambda ((z (list int)))
+       (map2 (lambda ((x2 int)) (cons x2 (as nil (list int)))) z))
+     x)))
 (define-funs-rec
-  ((count ((y int) (z (list int))) Nat))
-  ((match z
+  ((count ((x int) (y (list int))) Nat))
+  ((match y
      (case nil Z)
-     (case (cons y2 xs) (ite (= y y2) (S (count y xs)) (count y xs))))))
+     (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs))))))
 (assert-not
-  (forall ((y int) (z (list int)))
-    (= (count y (msortbu z)) (count y z))))
+  (forall ((x int) (y (list int)))
+    (= (count x (msortbu y)) (count x y))))
 (check-sat)

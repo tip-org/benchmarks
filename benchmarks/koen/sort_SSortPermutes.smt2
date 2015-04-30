@@ -3,10 +3,11 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((minimum ((x int) (y (list int))) int))
+  ((ssort_minimum ((x int) (y (list int))) int))
   ((match y
      (case nil x)
-     (case (cons z ys) (ite (<= z x) (minimum z ys) (minimum x ys))))))
+     (case (cons z ys)
+       (ite (<= z x) (ssort_minimum z ys) (ssort_minimum x ys))))))
 (define-funs-rec
   ((delete ((x int) (y (list int))) (list int)))
   ((match y
@@ -17,7 +18,8 @@
   ((match x
      (case nil x)
      (case (cons y ys)
-       (cons (minimum y ys) (ssort (delete (minimum y ys) x)))))))
+       (cons (ssort_minimum y ys)
+         (ssort (delete (ssort_minimum y ys) x)))))))
 (define-funs-rec
   ((count ((x int) (y (list int))) Nat))
   ((match y

@@ -2,10 +2,11 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (define-funs-rec
-  ((minimum ((x int) (y (list int))) int))
+  ((ssort_minimum ((x int) (y (list int))) int))
   ((match y
      (case nil x)
-     (case (cons z ys) (ite (<= z x) (minimum z ys) (minimum x ys))))))
+     (case (cons z ys)
+       (ite (<= z x) (ssort_minimum z ys) (ssort_minimum x ys))))))
 (define-funs-rec
   ((insert2 ((x int) (y (list int))) (list int)))
   ((match y
@@ -27,6 +28,7 @@
   ((match x
      (case nil x)
      (case (cons y ys)
-       (cons (minimum y ys) (ssort (delete (minimum y ys) x)))))))
+       (cons (ssort_minimum y ys)
+         (ssort (delete (ssort_minimum y ys) x)))))))
 (assert-not (forall ((x (list int))) (= (ssort x) (isort x))))
 (check-sat)

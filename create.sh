@@ -73,7 +73,7 @@ create prop_  tip2015    Sort_HeapSort.hs heap
 
 create prop_  tip2015    Integers.hs      int
 create prop_  tip2015    BinLists.hs      bin
-create prop_  tip2015    Nichomachus.hs   nicomachus
+create prop_  tip2015    Nicomachus.hs    nicomachus
 create prop_  tip2015    RegExp.hs        regexp
 create prop_  tip2015    ListMonad.hs     list
 create prop_  tip2015    RelaxedPrefix.hs relaxedprefix

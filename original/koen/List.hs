@@ -101,8 +101,6 @@ prop_PairOdds xs =
 prop_Interleave xs =
   interleave (evens xs) (odds xs) =:= xs
 
-prop_append_inj_1 xs ys zs =
-  xs ++ zs =:= ys ++ zs ==> xs =:= ys 
-
-prop_append_inj_2 xs ys zs =
-  xs ++ ys =:= xs ++ zs ==> ys =:= zs 
+-- Injectivity of append
+prop_append_inj_1 xs ys zs = xs ++ zs =:= ys ++ zs ==> xs =:= ys
+prop_append_inj_2 xs ys zs = xs ++ ys =:= xs ++ zs ==> ys =:= zs

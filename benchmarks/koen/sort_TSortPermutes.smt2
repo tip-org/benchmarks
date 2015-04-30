@@ -19,8 +19,6 @@
      (case nil Z)
      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs))))))
 (define-funs-rec
-  ((par (a b) (apply ((x (=> a b)) (y a)) b))) ((@ x y)))
-(define-funs-rec
   ((add ((x int) (y (Tree int))) (Tree int)))
   ((match y
      (case (TNode q z q2)
@@ -34,8 +32,7 @@
 (define-funs-rec
   ((tsort ((x (list int))) (list int)))
   ((dot
-   (lambda ((y (=> (list int) (list int))))
-     (apply y (as nil (list int))))
+   (lambda ((y (=> (list int) (list int)))) (@ y (as nil (list int))))
      (lambda ((z (list int)))
        (dot
        (lambda ((x2 (Tree int)))

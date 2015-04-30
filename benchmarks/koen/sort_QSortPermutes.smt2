@@ -3,30 +3,31 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((par (t) (x ((q (=> t bool)) (y (list t))) (list t))))
-  ((match y
-     (case nil y)
-     (case (cons z x2) (ite (@ q z) (cons z (x q x2)) (x q x2))))))
+  ((par (t) (filter ((q (=> t bool)) (x (list t))) (list t))))
+  ((match x
+     (case nil x)
+     (case (cons y z)
+       (ite (@ q y) (cons y (filter q z)) (filter q z))))))
 (define-funs-rec
-  ((count ((y int) (z (list int))) Nat))
-  ((match z
+  ((count ((x int) (y (list int))) Nat))
+  ((match y
      (case nil Z)
-     (case (cons y2 xs) (ite (= y y2) (S (count y xs)) (count y xs))))))
+     (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs))))))
 (define-funs-rec
-  ((par (a) (append ((y (list a)) (z (list a))) (list a))))
-  ((match y
-     (case nil z)
-     (case (cons x2 xs) (cons x2 (append xs z))))))
-(define-funs-rec
-  ((qsort ((y (list int))) (list int)))
-  ((match y
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
      (case nil y)
-     (case (cons z xs)
+     (case (cons z xs) (cons z (append xs y))))))
+(define-funs-rec
+  ((qsort ((x (list int))) (list int)))
+  ((match x
+     (case nil x)
+     (case (cons y xs)
        (append
-       (append (qsort (x (lambda ((x2 int)) (<= x2 z)) xs))
-         (cons z (as nil (list int))))
-         (qsort (x (lambda ((x3 int)) (> x3 z)) xs)))))))
+       (append (qsort (filter (lambda ((z int)) (<= z y)) xs))
+         (cons y (as nil (list int))))
+         (qsort (filter (lambda ((x2 int)) (> x2 y)) xs)))))))
 (assert-not
-  (forall ((y int) (z (list int)))
-    (= (count y (qsort z)) (count y z))))
+  (forall ((x int) (y (list int)))
+    (= (count x (qsort y)) (count x y))))
 (check-sat)

@@ -3,56 +3,59 @@
 (declare-datatypes ()
   ((Expr (Var (Var_0 int))
      (Lam (Lam_0 int) (Lam_1 Expr)) (App (App_0 Expr) (App_1 Expr)))))
+(define-funs-rec ((or2 ((x bool) (y bool)) bool)) ((ite x true y)))
 (define-funs-rec
-  ((par (t) (x ((p (=> t bool)) (y (list t))) (list t))))
+  ((new_maximum ((x int) (y (list int))) int))
   ((match y
-     (case nil y)
-     (case (cons z x2) (ite (@ p z) (cons z (x p x2)) (x p x2))))))
-(define-funs-rec ((or2 ((y bool) (z bool)) bool)) ((ite y true z)))
+     (case nil x)
+     (case (cons z ys)
+       (ite (<= x z) (new_maximum z ys) (new_maximum x ys))))))
 (define-funs-rec
-  ((maximum ((y int) (z (list int))) int))
-  ((match z
-     (case nil y)
-     (case (cons y2 ys)
-       (ite (<= y y2) (maximum y2 ys) (maximum y ys))))))
+  ((new ((x (list int))) int)) ((+ (new_maximum 0 x) 1)))
 (define-funs-rec
-  ((new ((y (list int))) int)) ((+ (maximum 0 y) 1)))
+  ((par (t) (filter ((p (=> t bool)) (x (list t))) (list t))))
+  ((match x
+     (case nil x)
+     (case (cons y z)
+       (ite (@ p y) (cons y (filter p z)) (filter p z))))))
 (define-funs-rec
-  ((elem ((y int) (z (list int))) bool))
-  ((match z
+  ((elem ((x int) (y (list int))) bool))
+  ((match y
      (case nil false)
-     (case (cons y2 ys) (or2 (= y y2) (elem y ys))))))
+     (case (cons z ys) (or2 (= x z) (elem x ys))))))
 (define-funs-rec
-  ((par (a) (append ((y (list a)) (z (list a))) (list a))))
-  ((match y
-     (case nil z)
-     (case (cons x2 xs) (cons x2 (append xs z))))))
+  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
+  ((match x
+     (case nil y)
+     (case (cons z xs) (cons z (append xs y))))))
 (define-funs-rec
-  ((free ((y Expr)) (list int)))
-  ((match y
-     (case (Var z) (cons z (as nil (list int))))
-     (case (Lam x2 b) (x (lambda ((x3 int)) (distinct x2 x3)) (free b)))
+  ((free ((x Expr)) (list int)))
+  ((match x
+     (case (Var y) (cons y (as nil (list int))))
+     (case (Lam z b)
+       (filter (lambda ((x2 int)) (distinct z x2)) (free b)))
      (case (App c b2) (append (free c) (free b2))))))
 (define-funs-rec
-  ((subst ((y int) (z Expr) (x2 Expr)) Expr))
-  ((match x2
-     (case (Var y2) (ite (= y y2) z x2))
+  ((subst ((x int) (y Expr) (z Expr)) Expr))
+  ((match z
+     (case (Var y2) (ite (= x y2) y z))
      (case (Lam y3 a)
        (ite
-         (= y y3) x2
+         (= x y3) z
          (ite
-           (elem y3 (free z))
-           (subst y
-             z
-             (Lam (new (append (free z) (free a)))
-               (subst y3 (Var (new (append (free z) (free a)))) a)))
-           (Lam y3 (subst y z a)))))
-     (case (App c b2) (App (subst y z c) (subst y z b2))))))
+           (elem y3 (free y))
+           (subst x
+             y
+             (Lam (new (append (free y) (free a)))
+               (subst y3 (Var (new (append (free y) (free a)))) a)))
+           (Lam y3 (subst x y a)))))
+     (case (App c b2) (App (subst x y c) (subst x y b2))))))
 (assert-not
-  (forall ((y int) (e Expr) (a Expr) (z int))
-    (=> (elem y (free a))
+  (forall ((x int) (e Expr) (a Expr) (y int))
+    (=> (elem x (free a))
       (=
-      (elem z
-        (append (x (lambda ((x2 int)) (distinct x2 y)) (free a)) (free e)))
-        (elem z (free (subst y e a)))))))
+      (elem y
+        (append (filter (lambda ((z int)) (distinct z x)) (free a))
+          (free e)))
+        (elem y (free (subst x e a)))))))
 (check-sat)

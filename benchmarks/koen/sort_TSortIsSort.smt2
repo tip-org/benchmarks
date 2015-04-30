@@ -24,8 +24,6 @@
   ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
   ((@ x (@ y z))))
 (define-funs-rec
-  ((par (a b) (apply ((x (=> a b)) (y a)) b))) ((@ x y)))
-(define-funs-rec
   ((add ((x int) (y (Tree int))) (Tree int)))
   ((match y
      (case (TNode p z q)
@@ -39,8 +37,7 @@
 (define-funs-rec
   ((tsort ((x (list int))) (list int)))
   ((dot
-   (lambda ((y (=> (list int) (list int))))
-     (apply y (as nil (list int))))
+   (lambda ((y (=> (list int) (list int)))) (@ y (as nil (list int))))
      (lambda ((z (list int)))
        (dot
        (lambda ((x2 (Tree int)))

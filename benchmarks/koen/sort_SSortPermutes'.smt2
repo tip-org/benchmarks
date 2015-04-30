@@ -1,17 +1,18 @@
 ; Selection sort, using a total minimum function
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
+(define-funs-rec
+  ((ssort_minimum ((x int) (y (list int))) int))
+  ((match y
+     (case nil x)
+     (case (cons z ys)
+       (ite (<= z x) (ssort_minimum z ys) (ssort_minimum x ys))))))
 (define-funs-rec ((or2 ((x bool) (y bool)) bool)) ((ite x true y)))
 (define-funs-rec
   ((par (t) (null ((x (list t))) bool)))
   ((match x
      (case nil true)
      (case (cons y z) false))))
-(define-funs-rec
-  ((minimum ((x int) (y (list int))) int))
-  ((match y
-     (case nil x)
-     (case (cons z ys) (ite (<= z x) (minimum z ys) (minimum x ys))))))
 (define-funs-rec
   ((elem ((x int) (y (list int))) bool))
   ((match y
@@ -27,7 +28,8 @@
   ((match x
      (case nil x)
      (case (cons y ys)
-       (cons (minimum y ys) (ssort (delete (minimum y ys) x)))))))
+       (cons (ssort_minimum y ys)
+         (ssort (delete (ssort_minimum y ys) x)))))))
 (define-funs-rec
   ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
 (define-funs-rec

@@ -5,60 +5,61 @@
   ((Heap (Node (Node_0 (Heap a)) (Node_1 a) (Node_2 (Heap a)))
      (Nil))))
 (define-funs-rec
-  ((x ((y (list int))) (list (Heap int))))
-  ((match y
+  ((toHeap2 ((x (list int))) (list (Heap int))))
+  ((match x
      (case nil (as nil (list (Heap int))))
-     (case (cons z x2)
-       (cons (Node (as Nil (Heap int)) z (as Nil (Heap int))) (x x2))))))
+     (case (cons y z)
+       (cons (Node (as Nil (Heap int)) y (as Nil (Heap int)))
+         (toHeap2 z))))))
 (define-funs-rec
-  ((hmerge ((y (Heap int)) (z (Heap int))) (Heap int)))
-  ((match y
-     (case (Node x2 x3 x4)
-       (match z
-         (case (Node x5 x6 x7)
+  ((hmerge ((x (Heap int)) (y (Heap int))) (Heap int)))
+  ((match x
+     (case (Node z x2 x3)
+       (match y
+         (case (Node x4 x5 x6)
            (ite
-             (<= x3 x6) (Node (hmerge x4 z) x3 x2) (Node (hmerge y x7) x6 x5)))
-         (case Nil y)))
-     (case Nil z))))
+             (<= x2 x5) (Node (hmerge x3 y) x2 z) (Node (hmerge x x6) x5 x4)))
+         (case Nil x)))
+     (case Nil y))))
 (define-funs-rec
-  ((hpairwise ((y (list (Heap int)))) (list (Heap int))))
-  ((match y
-     (case nil y)
-     (case (cons p z)
-       (match z
-         (case nil y)
+  ((hpairwise ((x (list (Heap int)))) (list (Heap int))))
+  ((match x
+     (case nil x)
+     (case (cons p y)
+       (match y
+         (case nil x)
          (case (cons q qs) (cons (hmerge p q) (hpairwise qs))))))))
 (define-funs-rec
-  ((hmerging ((y (list (Heap int)))) (Heap int)))
-  ((match y
+  ((hmerging ((x (list (Heap int)))) (Heap int)))
+  ((match x
      (case nil (as Nil (Heap int)))
-     (case (cons p z)
-       (match z
+     (case (cons p y)
+       (match y
          (case nil p)
-         (case (cons x2 x3) (hmerging (hpairwise y))))))))
+         (case (cons z x2) (hmerging (hpairwise x))))))))
 (define-funs-rec
-  ((toHeap ((y (list int))) (Heap int))) ((hmerging (x y))))
+  ((toHeap ((x (list int))) (Heap int))) ((hmerging (toHeap2 x))))
 (define-funs-rec
-  ((toList ((y (Heap int))) (list int)))
-  ((match y
-     (case (Node p z q) (cons z (toList (hmerge p q))))
+  ((toList ((x (Heap int))) (list int)))
+  ((match x
+     (case (Node p y q) (cons y (toList (hmerge p q))))
      (case Nil (as nil (list int))))))
 (define-funs-rec
-  ((par (b c a) (dot ((y (=> b c)) (z (=> a b)) (x2 a)) c)))
-  ((@ y (@ z x2))))
+  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
+  ((@ x (@ y z))))
 (define-funs-rec
-  ((hsort ((y (list int))) (list int)))
-  ((dot (lambda ((z (Heap int))) (toList z))
-     (lambda ((x2 (list int))) (toHeap x2)) y)))
+  ((hsort ((x (list int))) (list int)))
+  ((dot (lambda ((y (Heap int))) (toList y))
+     (lambda ((z (list int))) (toHeap z)) x)))
 (define-funs-rec
-  ((and2 ((y bool) (z bool)) bool)) ((ite y z false)))
+  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
 (define-funs-rec
-  ((ordered ((y (list int))) bool))
-  ((match y
+  ((ordered ((x (list int))) bool))
+  ((match x
      (case nil true)
-     (case (cons z x2)
-       (match x2
+     (case (cons y z)
+       (match z
          (case nil true)
-         (case (cons y2 xs) (and2 (<= z y2) (ordered x2))))))))
-(assert-not (forall ((y (list int))) (ordered (hsort y))))
+         (case (cons y2 xs) (and2 (<= y y2) (ordered z))))))))
+(assert-not (forall ((x (list int))) (ordered (hsort x))))
 (check-sat)

@@ -241,17 +241,11 @@ mergingbu xss  = mergingbu (pairwise xss)
 
 --------------------------------------------------------------------------------
 
-prop_MSortBUSorts (xs :: [OrdA]) =
-  ordered (msortbu xs) =:= True
-
-prop_MSortBUPermutes x (xs :: [OrdA]) =
-  count x (msortbu xs) =:= count x xs
-
-prop_MSortBUPermutes' (xs :: [OrdA]) =
-  msortbu xs `isPermutation` xs =:= True
-
-prop_MSortBUIsSort (xs :: [OrdA]) =
-  msortbu xs =:= sort xs
+-- Bottom-up merge sort
+prop_MSortBUSorts (xs :: [OrdA]) = ordered (msortbu xs) =:= True
+prop_MSortBUPermutes x (xs :: [OrdA]) = count x (msortbu xs) =:= count x xs
+prop_MSortBUPermutes' (xs :: [OrdA]) = msortbu xs `isPermutation` xs =:= True
+prop_MSortBUIsSort (xs :: [OrdA]) = msortbu xs =:= sort xs
 
 -- msorttd :: Ord a => [a] -> [a]
 msorttd []  = []

@@ -1,3 +1,4 @@
+; Injectivity of append
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (define-funs-rec

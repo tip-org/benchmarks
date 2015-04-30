@@ -29,8 +29,6 @@
      (case nil y)
      (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
-  ((par (a b) (apply ((x (=> a b)) (y a)) b))) ((@ x y)))
-(define-funs-rec
   ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
 (define-funs-rec
   ((isPermutation ((x (list int)) (y (list int))) bool))
@@ -52,8 +50,7 @@
 (define-funs-rec
   ((tsort ((x (list int))) (list int)))
   ((dot
-   (lambda ((y (=> (list int) (list int))))
-     (apply y (as nil (list int))))
+   (lambda ((y (=> (list int) (list int)))) (@ y (as nil (list int))))
      (lambda ((z (list int)))
        (dot
        (lambda ((x2 (Tree int)))

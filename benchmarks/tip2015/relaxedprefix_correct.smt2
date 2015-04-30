@@ -6,63 +6,63 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((It (A) (B) (C))))
 (define-funs-rec
-  ((y ((z It) (x2 (list (list It)))) (list (list It))))
-  ((match x2
-     (case nil x2)
-     (case (cons x3 x4) (cons (cons z x3) (y z x4))))))
+  ((removeOne2 ((x It) (y (list (list It)))) (list (list It))))
+  ((match y
+     (case nil y)
+     (case (cons z x2) (cons (cons x z) (removeOne2 x x2))))))
 (define-funs-rec
-  ((removeOne ((z (list It))) (list (list It))))
-  ((match z
+  ((removeOne ((x (list It))) (list (list It))))
+  ((match x
      (case nil (as nil (list (list It))))
-     (case (cons x2 xs) (cons xs (y x2 (removeOne xs)))))))
+     (case (cons y xs) (cons xs (removeOne2 y (removeOne xs)))))))
 (define-funs-rec
-  ((or2 ((z (list bool))) bool))
-  ((match z
+  ((or2 ((x (list bool))) bool))
+  ((match x
      (case nil false)
-     (case (cons x2 x3) (ite x2 true (or2 x3))))))
+     (case (cons y z) (ite y true (or2 z))))))
 (define-funs-rec
-  ((eq ((z It) (x2 It)) bool))
-  ((match z
+  ((eq ((x It) (y It)) bool))
+  ((match x
      (case A
-       (match x2
+       (match y
          (case default false)
          (case A true)))
      (case B
-       (match x2
+       (match y
          (case default false)
          (case B true)))
      (case C
-       (match x2
+       (match y
          (case default false)
          (case C true))))))
 (define-funs-rec
-  ((isPrefix ((z (list It)) (x2 (list It))) bool))
-  ((match z
+  ((isPrefix ((x (list It)) (y (list It))) bool))
+  ((match x
      (case nil true)
-     (case (cons x3 x4)
-       (match x2
+     (case (cons z x2)
+       (match y
          (case nil false)
-         (case (cons x5 x6) (ite (eq x3 x5) (isPrefix x4 x6) false)))))))
+         (case (cons x3 x4) (ite (eq z x3) (isPrefix x2 x4) false)))))))
 (define-funs-rec
-  ((x ((ys (list It)) (z (list (list It)))) (list bool)))
-  ((match z
+  ((spec2 ((ys (list It)) (x (list (list It)))) (list bool)))
+  ((match x
      (case nil (as nil (list bool)))
-     (case (cons x2 x3) (cons (isPrefix x2 ys) (x ys x3))))))
+     (case (cons y z) (cons (isPrefix y ys) (spec2 ys z))))))
 (define-funs-rec
-  ((spec ((z (list It)) (x2 (list It))) bool))
-  ((or2 (x x2 (cons z (removeOne z))))))
+  ((spec ((x (list It)) (y (list It))) bool))
+  ((or2 (spec2 y (cons x (removeOne x))))))
 (define-funs-rec
-  ((isRelaxedPrefix ((z (list It)) (x2 (list It))) bool))
-  ((match z
+  ((isRelaxedPrefix ((x (list It)) (y (list It))) bool))
+  ((match x
      (case nil true)
-     (case (cons x3 x4)
-       (match x4
+     (case (cons z x2)
+       (match x2
          (case nil true)
-         (case (cons x5 x6)
-           (match x2
+         (case (cons x3 x4)
+           (match y
              (case nil false)
-             (case (cons x7 x8)
-               (ite (eq x3 x7) (isRelaxedPrefix x4 x8) (isPrefix x4 x2))))))))))
+             (case (cons x5 x6)
+               (ite (eq z x5) (isRelaxedPrefix x2 x6) (isPrefix x2 y))))))))))
 (assert-not
   (forall ((xs (list It)) (ys (list It)))
     (= (isRelaxedPrefix xs ys) (spec xs ys))))
