@@ -4,7 +4,7 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((lt ((x Nat) (y Nat)) bool))
+  ((lt ((x Nat) (y Nat)) Bool))
   ((match y
      (case Z false)
      (case (S z)

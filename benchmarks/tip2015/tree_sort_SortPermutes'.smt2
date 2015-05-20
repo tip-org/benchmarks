@@ -7,14 +7,14 @@
   ((Tree (Node (Node_0 (Tree a)) (Node_1 a) (Node_2 (Tree a)))
      (Nil))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
-(define-funs-rec ((or2 ((x bool) (y bool)) bool)) ((ite x true y)))
+(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
-  ((par (a) (null ((x (list a))) bool)))
+  ((par (a) (null ((x (list a))) Bool)))
   ((match x
      (case nil true)
      (case (cons y z) false))))
 (define-funs-rec
-  ((le ((x Nat) (y Nat)) bool))
+  ((le ((x Nat) (y Nat)) Bool))
   ((match x
      (case Z true)
      (case (S z)
@@ -27,7 +27,7 @@
      (case (Node q z q2) (flatten q (cons z (flatten q2 y))))
      (case Nil y))))
 (define-funs-rec
-  ((equal ((x Nat) (y Nat)) bool))
+  ((equal ((x Nat) (y Nat)) Bool))
   ((match x
      (case Z
        (match y
@@ -38,7 +38,7 @@
          (case Z false)
          (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((elem ((x Nat) (y (list Nat))) bool))
+  ((elem ((x Nat) (y (list Nat))) Bool))
   ((match y
      (case nil false)
      (case (cons z ys) (or2 (equal x z) (elem x ys))))))
@@ -48,9 +48,9 @@
      (case nil y)
      (case (cons z ys) (ite (equal x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
-  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
+  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec
-  ((isPermutation ((x (list Nat)) (y (list Nat))) bool))
+  ((isPermutation ((x (list Nat)) (y (list Nat))) Bool))
   ((match x
      (case nil (null y))
      (case (cons z xs)

@@ -2,7 +2,7 @@
 ; The plus and seq functions are smart constructors.
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes (a b) ((Pair2 (Pair (first a) (second b)))))
+(declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
 (declare-datatypes () ((A (X) (Y))))
 (declare-datatypes ()
   ((R (Nil)
@@ -30,9 +30,9 @@
          (case default (Plus x y))
          (case Nil x)))
      (case Nil y))))
-(define-funs-rec ((or2 ((x bool) (y bool)) bool)) ((ite x true y)))
+(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
-  ((eqA ((x A) (y A)) bool))
+  ((eqA ((x A) (y A)) Bool))
   ((match x
      (case X false)
      (case Y
@@ -42,24 +42,24 @@
 (define-funs-rec
   ((par (a b)
      (consfst
-        ((x a) (y (list (Pair2 (list a) b)))) (list (Pair2 (list a) b)))))
+        ((x a) (y (list (Pair (list a) b)))) (list (Pair (list a) b)))))
   ((match y
      (case nil y)
      (case (cons z ys)
        (match z
-         (case (Pair xs y2)
-           (cons (Pair (cons x xs) y2) (consfst x ys))))))))
+         (case (Pair2 xs y2)
+           (cons (Pair2 (cons x xs) y2) (consfst x ys))))))))
 (define-funs-rec
-  ((par (a) (split ((x (list a))) (list (Pair2 (list a) (list a))))))
+  ((par (a) (split ((x (list a))) (list (Pair (list a) (list a))))))
   ((match x
      (case nil
-       (cons (Pair x x) (as nil (list (Pair2 (list a) (list a))))))
+       (cons (Pair2 x x) (as nil (list (Pair (list a) (list a))))))
      (case (cons y s)
-       (cons (Pair (as nil (list a)) x) (consfst y (split s)))))))
+       (cons (Pair2 (as nil (list a)) x) (consfst y (split s)))))))
 (define-funs-rec
-  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
+  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec
-  ((eps ((x R)) bool))
+  ((eps ((x R)) Bool))
   ((match x
      (case default false)
      (case Eps true)
@@ -77,18 +77,18 @@
        (plus (seq (step p2 y) q2) (seq (epsR p2) (step q2 y))))
      (case (Star p3) (seq (step p3 y) x)))))
 (define-funs-rec
-  ((recognise ((x R) (y (list A))) bool))
+  ((recognise ((x R) (y (list A))) Bool))
   ((match y
      (case nil (eps x))
      (case (cons z xs) (recognise (step x z) xs)))))
 (define-funs-rec
   ((recognisePair
-      ((x R) (y R) (z (list (Pair2 (list A) (list A))))) bool))
+      ((x R) (y R) (z (list (Pair (list A) (list A))))) Bool))
   ((match z
      (case nil false)
      (case (cons x2 xs)
        (match x2
-         (case (Pair s1 s2)
+         (case (Pair2 s1 s2)
            (or2 (and2 (recognise x s1) (recognise y s2))
              (recognisePair x y xs))))))))
 (assert-not

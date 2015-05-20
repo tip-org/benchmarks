@@ -1,7 +1,7 @@
 ; Stooge sort, using thirds on natural numbers
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes (a b) ((Pair2 (Pair (first a) (second b)))))
+(declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
   ((twoThirds ((x Nat)) Nat))
@@ -34,10 +34,10 @@
          (case nil y)
          (case (cons x2 x3) (cons x2 (take z x3))))))))
 (define-funs-rec
-  ((sort2 ((x int) (y int)) (list int)))
+  ((sort2 ((x Int) (y Int)) (list Int)))
   ((ite
-     (<= x y) (cons x (cons y (as nil (list int))))
-     (cons y (cons x (as nil (list int)))))))
+     (<= x y) (cons x (cons y (as nil (list Int))))
+     (cons y (cons x (as nil (list Int)))))))
 (define-funs-rec
   ((par (t) (length ((x (list t))) Nat)))
   ((match x
@@ -53,21 +53,21 @@
          (case (cons x2 x3) (drop z x3)))))))
 (define-funs-rec
   ((par (a)
-     (splitAt ((x Nat) (y (list a))) (Pair2 (list a) (list a)))))
-  ((Pair (take x y) (drop x y))))
+     (splitAt ((x Nat) (y (list a))) (Pair (list a) (list a)))))
+  ((Pair2 (take x y) (drop x y))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
   ((match x
      (case nil y)
      (case (cons z xs) (cons z (append xs y))))))
 (define-funs-rec
-  ((nstooge2sort2 ((x (list int))) (list int))
-   (nstoogesort2 ((x (list int))) (list int))
-   (nstooge2sort1 ((x (list int))) (list int)))
+  ((nstooge2sort2 ((x (list Int))) (list Int))
+   (nstoogesort2 ((x (list Int))) (list Int))
+   (nstooge2sort1 ((x (list Int))) (list Int)))
   ((match (splitAt (twoThirds (length x)) x)
-     (case (Pair ys zs)
+     (case (Pair2 ys zs)
        (match (splitAt (twoThirds (length x)) x)
-         (case (Pair xs zs2) (append (nstoogesort2 ys) zs2)))))
+         (case (Pair2 xs zs2) (append (nstoogesort2 ys) zs2)))))
    (match x
      (case nil x)
      (case (cons y z)
@@ -79,18 +79,18 @@
              (case (cons x3 x4)
                (nstooge2sort2 (nstooge2sort1 (nstooge2sort2 x)))))))))
    (match (splitAt (third (length x)) x)
-     (case (Pair ys zs)
+     (case (Pair2 ys zs)
        (match (splitAt (third (length x)) x)
-         (case (Pair xs zs2) (append ys (nstoogesort2 zs2))))))))
+         (case (Pair2 xs zs2) (append ys (nstoogesort2 zs2))))))))
 (define-funs-rec
-  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
+  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec
-  ((ordered ((x (list int))) bool))
+  ((ordered ((x (list Int))) Bool))
   ((match x
      (case nil true)
      (case (cons y z)
        (match z
          (case nil true)
          (case (cons y2 xs) (and2 (<= y y2) (ordered z))))))))
-(assert-not (forall ((x (list int))) (ordered (nstoogesort2 x))))
+(assert-not (forall ((x (list Int))) (ordered (nstoogesort2 x))))
 (check-sat)

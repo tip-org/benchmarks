@@ -29,9 +29,9 @@
          (case default (Plus x y))
          (case Nil x)))
      (case Nil y))))
-(define-funs-rec ((or2 ((x bool) (y bool)) bool)) ((ite x true y)))
+(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
-  ((eqA ((x A) (y A)) bool))
+  ((eqA ((x A) (y A)) Bool))
   ((match x
      (case X false)
      (case Y
@@ -39,9 +39,9 @@
          (case X false)
          (case Y true))))))
 (define-funs-rec
-  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
+  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec
-  ((eps ((x R)) bool))
+  ((eps ((x R)) Bool))
   ((match x
      (case default false)
      (case Eps true)
@@ -59,12 +59,12 @@
        (plus (seq (step p2 y) q2) (seq (epsR p2) (step q2 y))))
      (case (Star p3) (seq (step p3 y) x)))))
 (define-funs-rec
-  ((recognise ((x R) (y (list A))) bool))
+  ((recognise ((x R) (y (list A))) Bool))
   ((match y
      (case nil (eps x))
      (case (cons z xs) (recognise (step x z) xs)))))
 (define-funs-rec
-  ((eqList ((x (list A)) (y (list A))) bool))
+  ((eqList ((x (list A)) (y (list A))) Bool))
   ((match x
      (case nil
        (match y

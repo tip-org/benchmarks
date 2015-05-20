@@ -3,7 +3,7 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Token (A) (B) (C) (D) (ESC) (P) (Q) (R))))
 (define-funs-rec
-  ((isSpecial ((x Token)) bool))
+  ((isSpecial ((x Token)) Bool))
   ((match x
      (case default false)
      (case ESC true)

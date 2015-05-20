@@ -3,7 +3,7 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (define-funs-rec
-  ((par (a) (filter ((x (=> a bool)) (y (list a))) (list a))))
+  ((par (a) (filter ((x (=> a Bool)) (y (list a))) (list a))))
   ((match y
      (case nil y)
      (case (cons z xs)
@@ -15,7 +15,7 @@
      (case (cons z xs) (cons z (append xs y))))))
 (assert-not
   (par (a)
-    (forall ((p (=> a bool)) (xs (list a)) (ys (list a)))
+    (forall ((p (=> a Bool)) (xs (list a)) (ys (list a)))
       (= (filter p (append xs ys))
         (append (filter p xs) (filter p ys))))))
 (check-sat)

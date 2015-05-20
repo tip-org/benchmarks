@@ -13,9 +13,9 @@
   ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
   ((@ x (@ y z))))
 (define-funs-rec
-  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
+  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec
-  ((ordered ((x (list int))) bool))
+  ((ordered ((x (list Int))) Bool))
   ((match x
      (case nil true)
      (case (cons y z)
@@ -23,25 +23,25 @@
          (case nil true)
          (case (cons y2 xs) (and2 (<= y y2) (ordered z))))))))
 (define-funs-rec
-  ((add ((x int) (y (Tree int))) (Tree int)))
+  ((add ((x Int) (y (Tree Int))) (Tree Int)))
   ((match y
      (case (TNode p z q)
        (ite (<= x z) (TNode (add x p) z q) (TNode p z (add x q))))
      (case TNil (TNode y x y)))))
 (define-funs-rec
-  ((toTree ((x (list int))) (Tree int)))
+  ((toTree ((x (list Int))) (Tree Int)))
   ((match x
-     (case nil (as TNil (Tree int)))
+     (case nil (as TNil (Tree Int)))
      (case (cons y xs) (add y (toTree xs))))))
 (define-funs-rec
-  ((tsort ((x (list int))) (list int)))
+  ((tsort ((x (list Int))) (list Int)))
   ((dot
-   (lambda ((y (=> (list int) (list int)))) (@ y (as nil (list int))))
-     (lambda ((z (list int)))
+   (lambda ((y (=> (list Int) (list Int)))) (@ y (as nil (list Int))))
+     (lambda ((z (list Int)))
        (dot
-       (lambda ((x2 (Tree int)))
-         (lambda ((x3 (list int))) (flatten x2 x3)))
-         (lambda ((x4 (list int))) (toTree x4)) z))
+       (lambda ((x2 (Tree Int)))
+         (lambda ((x3 (list Int))) (flatten x2 x3)))
+         (lambda ((x4 (list Int))) (toTree x4)) z))
      x)))
-(assert-not (forall ((x (list int))) (ordered (tsort x))))
+(assert-not (forall ((x (list Int))) (ordered (tsort x))))
 (check-sat)

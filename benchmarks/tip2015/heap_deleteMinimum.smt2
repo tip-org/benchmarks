@@ -16,7 +16,7 @@
      (case nil (as Nothing (Maybe (list Nat))))
      (case (cons y xs) (Just xs)))))
 (define-funs-rec
-  ((le ((x Nat) (y Nat)) bool))
+  ((le ((x Nat) (y Nat)) Bool))
   ((match x
      (case Z true)
      (case (S z)

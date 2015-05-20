@@ -3,10 +3,10 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((sort2 ((x int) (y int)) (list int)))
+  ((sort2 ((x Int) (y Int)) (list Int)))
   ((ite
-     (<= x y) (cons x (cons y (as nil (list int))))
-     (cons y (cons x (as nil (list int)))))))
+     (<= x y) (cons x (cons y (as nil (list Int))))
+     (cons y (cons x (as nil (list Int)))))))
 (define-funs-rec
   ((par (a) (evens ((x (list a))) (list a)))
    (par (a) (odds ((x (list a))) (list a))))
@@ -17,7 +17,7 @@
      (case nil x)
      (case (cons y xs) (evens xs)))))
 (define-funs-rec
-  ((count ((x int) (y (list int))) Nat))
+  ((count ((x Int) (y (list Int))) Nat))
   ((match y
      (case nil Z)
      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs))))))
@@ -27,7 +27,7 @@
      (case nil y)
      (case (cons z xs) (cons z (append xs y))))))
 (define-funs-rec
-  ((pairs ((x (list int)) (y (list int))) (list int)))
+  ((pairs ((x (list Int)) (y (list Int))) (list Int)))
   ((match x
      (case nil y)
      (case (cons z x2)
@@ -35,12 +35,12 @@
          (case nil x)
          (case (cons x3 x4) (append (sort2 z x3) (pairs x2 x4))))))))
 (define-funs-rec
-  ((stitch ((x (list int)) (y (list int))) (list int)))
+  ((stitch ((x (list Int)) (y (list Int))) (list Int)))
   ((match x
      (case nil y)
      (case (cons z xs) (cons z (pairs xs y))))))
 (define-funs-rec
-  ((bmerge ((x (list int)) (y (list int))) (list int)))
+  ((bmerge ((x (list Int)) (y (list Int))) (list Int)))
   ((match x
      (case nil x)
      (case (cons z x2)
@@ -57,7 +57,7 @@
                (stitch (bmerge (evens x) (evens y))
                  (bmerge (odds x) (odds y)))))))))))
 (define-funs-rec
-  ((bsort ((x (list int))) (list int)))
+  ((bsort ((x (list Int))) (list Int)))
   ((match x
      (case nil x)
      (case (cons y z)
@@ -66,6 +66,6 @@
          (case (cons x2 x3)
            (bmerge (bsort (evens x)) (bsort (odds x)))))))))
 (assert-not
-  (forall ((x int) (y (list int)))
+  (forall ((x Int) (y (list Int)))
     (= (count x (bsort y)) (count x y))))
 (check-sat)

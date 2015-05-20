@@ -12,7 +12,7 @@
      (case Z y)
      (case (S n) (S (plus n y))))))
 (define-funs-rec
-  ((le ((x Nat) (y Nat)) bool))
+  ((le ((x Nat) (y Nat)) Bool))
   ((match x
      (case Z true)
      (case (S z)
@@ -52,7 +52,7 @@
 (define-funs-rec
   ((toList2 ((x Heap)) (list Nat))) ((toList (heapSize x) x)))
 (define-funs-rec
-  ((equal ((x Nat) (y Nat)) bool))
+  ((equal ((x Nat) (y Nat)) Bool))
   ((match x
      (case Z
        (match y

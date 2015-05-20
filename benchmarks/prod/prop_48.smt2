@@ -11,7 +11,7 @@
      (case nil Z)
      (case (cons y xs) (S (length xs))))))
 (define-funs-rec
-  ((le ((x Nat) (y Nat)) bool))
+  ((le ((x Nat) (y Nat)) Bool))
   ((match x
      (case Z true)
      (case (S z)

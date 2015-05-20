@@ -11,7 +11,7 @@
          (case nil y)
          (case (cons x2 x3) (cons x2 (take z x3))))))))
 (define-funs-rec
-  ((lmerge ((x (list int)) (y (list int))) (list int)))
+  ((lmerge ((x (list Int)) (y (list Int))) (list Int)))
   ((match x
      (case nil y)
      (case (cons z x2)
@@ -26,13 +26,13 @@
      (case nil Z)
      (case (cons y xs) (S (length xs))))))
 (define-funs-rec
-  ((insert2 ((x int) (y (list int))) (list int)))
+  ((insert2 ((x Int) (y (list Int))) (list Int)))
   ((match y
      (case nil (cons x y))
      (case (cons z xs)
        (ite (<= x z) (cons x y) (cons z (insert2 x xs)))))))
 (define-funs-rec
-  ((isort ((x (list int))) (list int)))
+  ((isort ((x (list Int))) (list Int)))
   ((match x
      (case nil x)
      (case (cons y xs) (insert2 y (isort xs))))))
@@ -53,7 +53,7 @@
          (case nil y)
          (case (cons x2 x3) (drop z x3)))))))
 (define-funs-rec
-  ((nmsorttd ((x (list int))) (list int)))
+  ((nmsorttd ((x (list Int))) (list Int)))
   ((match x
      (case nil x)
      (case (cons y z)
@@ -62,5 +62,5 @@
          (case (cons x2 x3)
            (lmerge (nmsorttd (take (half (length x)) x))
              (nmsorttd (drop (half (length x)) x)))))))))
-(assert-not (forall ((x (list int))) (= (nmsorttd x) (isort x))))
+(assert-not (forall ((x (list Int))) (= (nmsorttd x) (isort x))))
 (check-sat)

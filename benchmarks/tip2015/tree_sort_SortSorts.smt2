@@ -8,7 +8,7 @@
      (Nil))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((le ((x Nat) (y Nat)) bool))
+  ((le ((x Nat) (y Nat)) Bool))
   ((match x
      (case Z true)
      (case (S z)
@@ -21,9 +21,9 @@
      (case (Node q z q2) (flatten q (cons z (flatten q2 y))))
      (case Nil y))))
 (define-funs-rec
-  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
+  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec
-  ((ordered ((x (list Nat))) bool))
+  ((ordered ((x (list Nat))) Bool))
   ((match x
      (case nil true)
      (case (cons y z)

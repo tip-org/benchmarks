@@ -16,12 +16,12 @@
      (case nil (as nil (list (list It))))
      (case (cons y xs) (cons xs (removeOne2 y (removeOne xs)))))))
 (define-funs-rec
-  ((or2 ((x (list bool))) bool))
+  ((or2 ((x (list Bool))) Bool))
   ((match x
      (case nil false)
      (case (cons y z) (ite y true (or2 z))))))
 (define-funs-rec
-  ((eq ((x It) (y It)) bool))
+  ((eq ((x It) (y It)) Bool))
   ((match x
      (case A
        (match y
@@ -36,7 +36,7 @@
          (case default false)
          (case C true))))))
 (define-funs-rec
-  ((isPrefix ((x (list It)) (y (list It))) bool))
+  ((isPrefix ((x (list It)) (y (list It))) Bool))
   ((match x
      (case nil true)
      (case (cons z x2)
@@ -44,15 +44,15 @@
          (case nil false)
          (case (cons x3 x4) (ite (eq z x3) (isPrefix x2 x4) false)))))))
 (define-funs-rec
-  ((spec2 ((ys (list It)) (x (list (list It)))) (list bool)))
+  ((spec2 ((ys (list It)) (x (list (list It)))) (list Bool)))
   ((match x
-     (case nil (as nil (list bool)))
+     (case nil (as nil (list Bool)))
      (case (cons y z) (cons (isPrefix y ys) (spec2 ys z))))))
 (define-funs-rec
-  ((spec ((x (list It)) (y (list It))) bool))
+  ((spec ((x (list It)) (y (list It))) Bool))
   ((or2 (spec2 y (cons x (removeOne x))))))
 (define-funs-rec
-  ((isRelaxedPrefix ((x (list It)) (y (list It))) bool))
+  ((isRelaxedPrefix ((x (list It)) (y (list It))) Bool))
   ((match x
      (case nil true)
      (case (cons z x2)

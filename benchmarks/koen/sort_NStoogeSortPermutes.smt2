@@ -1,7 +1,7 @@
 ; Stooge sort defined using reverse and thirds on natural numbers
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes (a b) ((Pair2 (Pair (first a) (second b)))))
+(declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
   ((third ((x Nat)) Nat))
@@ -23,10 +23,10 @@
          (case nil y)
          (case (cons x2 x3) (cons x2 (take z x3))))))))
 (define-funs-rec
-  ((sort2 ((x int) (y int)) (list int)))
+  ((sort2 ((x Int) (y Int)) (list Int)))
   ((ite
-     (<= x y) (cons x (cons y (as nil (list int))))
-     (cons y (cons x (as nil (list int)))))))
+     (<= x y) (cons x (cons y (as nil (list Int))))
+     (cons y (cons x (as nil (list Int)))))))
 (define-funs-rec
   ((par (t) (length ((x (list t))) Nat)))
   ((match x
@@ -42,10 +42,10 @@
          (case (cons x2 x3) (drop z x3)))))))
 (define-funs-rec
   ((par (a)
-     (splitAt ((x Nat) (y (list a))) (Pair2 (list a) (list a)))))
-  ((Pair (take x y) (drop x y))))
+     (splitAt ((x Nat) (y (list a))) (Pair (list a) (list a)))))
+  ((Pair2 (take x y) (drop x y))))
 (define-funs-rec
-  ((count ((x int) (y (list int))) Nat))
+  ((count ((x Int) (y (list Int))) Nat))
   ((match y
      (case nil Z)
      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs))))))
@@ -61,13 +61,13 @@
      (case (cons y xs)
        (append (reverse xs) (cons y (as nil (list t))))))))
 (define-funs-rec
-  ((nstooge1sort2 ((x (list int))) (list int))
-   (nstoogesort ((x (list int))) (list int))
-   (nstooge1sort1 ((x (list int))) (list int)))
+  ((nstooge1sort2 ((x (list Int))) (list Int))
+   (nstoogesort ((x (list Int))) (list Int))
+   (nstooge1sort1 ((x (list Int))) (list Int)))
   ((match (splitAt (third (length x)) (reverse x))
-     (case (Pair ys zs)
+     (case (Pair2 ys zs)
        (match (splitAt (third (length x)) (reverse x))
-         (case (Pair xs zs2) (append (nstoogesort zs) (reverse xs))))))
+         (case (Pair2 xs zs2) (append (nstoogesort zs) (reverse xs))))))
    (match x
      (case nil x)
      (case (cons y z)
@@ -79,10 +79,10 @@
              (case (cons x3 x4)
                (nstooge1sort2 (nstooge1sort1 (nstooge1sort2 x)))))))))
    (match (splitAt (third (length x)) x)
-     (case (Pair ys zs)
+     (case (Pair2 ys zs)
        (match (splitAt (third (length x)) x)
-         (case (Pair xs zs2) (append ys (nstoogesort zs2))))))))
+         (case (Pair2 xs zs2) (append ys (nstoogesort zs2))))))))
 (assert-not
-  (forall ((x int) (y (list int)))
+  (forall ((x Int) (y (list Int)))
     (= (count x (nstoogesort y)) (count x y))))
 (check-sat)
