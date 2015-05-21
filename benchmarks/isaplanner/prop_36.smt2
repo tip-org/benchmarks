@@ -3,7 +3,7 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (define-funs-rec
-  ((par (a) (takeWhile ((x (=> a bool)) (y (list a))) (list a))))
+  ((par (a) (takeWhile ((x (=> a Bool)) (y (list a))) (list a))))
   ((match y
      (case nil y)
      (case (cons z xs)

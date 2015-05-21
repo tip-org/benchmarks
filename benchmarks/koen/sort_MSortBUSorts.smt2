@@ -7,7 +7,7 @@
      (case nil (as nil (list t)))
      (case (cons y z) (cons (@ f y) (map2 f z))))))
 (define-funs-rec
-  ((lmerge ((x (list int)) (y (list int))) (list int)))
+  ((lmerge ((x (list Int)) (y (list Int))) (list Int)))
   ((match x
      (case nil y)
      (case (cons z x2)
@@ -17,7 +17,7 @@
            (ite
              (<= z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4)))))))))
 (define-funs-rec
-  ((pairwise ((x (list (list int)))) (list (list int))))
+  ((pairwise ((x (list (list Int)))) (list (list Int))))
   ((match x
      (case nil x)
      (case (cons xs y)
@@ -25,9 +25,9 @@
          (case nil x)
          (case (cons ys xss) (cons (lmerge xs ys) (pairwise xss))))))))
 (define-funs-rec
-  ((mergingbu ((x (list (list int)))) (list int)))
+  ((mergingbu ((x (list (list Int)))) (list Int)))
   ((match x
-     (case nil (as nil (list int)))
+     (case nil (as nil (list Int)))
      (case (cons xs y)
        (match y
          (case nil xs)
@@ -36,20 +36,20 @@
   ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
   ((@ x (@ y z))))
 (define-funs-rec
-  ((msortbu ((x (list int))) (list int)))
-  ((dot (lambda ((y (list (list int)))) (mergingbu y))
-     (lambda ((z (list int)))
-       (map2 (lambda ((x2 int)) (cons x2 (as nil (list int)))) z))
+  ((msortbu ((x (list Int))) (list Int)))
+  ((dot (lambda ((y (list (list Int)))) (mergingbu y))
+     (lambda ((z (list Int)))
+       (map2 (lambda ((x2 Int)) (cons x2 (as nil (list Int)))) z))
      x)))
 (define-funs-rec
-  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
+  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec
-  ((ordered ((x (list int))) bool))
+  ((ordered ((x (list Int))) Bool))
   ((match x
      (case nil true)
      (case (cons y z)
        (match z
          (case nil true)
          (case (cons y2 xs) (and2 (<= y y2) (ordered z))))))))
-(assert-not (forall ((x (list int))) (ordered (msortbu x))))
+(assert-not (forall ((x (list Int))) (ordered (msortbu x))))
 (check-sat)

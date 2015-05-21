@@ -4,7 +4,7 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
-  ((equal ((x Nat) (y Nat)) bool))
+  ((equal ((x Nat) (y Nat)) Bool))
   ((match x
      (case Z
        (match y
@@ -20,7 +20,7 @@
      (case nil (cons x y))
      (case (cons z xs) (ite (equal x z) y (cons z (ins1 x xs)))))))
 (define-funs-rec
-  ((elem ((x Nat) (y (list Nat))) bool))
+  ((elem ((x Nat) (y (list Nat))) Bool))
   ((match y
      (case nil false)
      (case (cons z xs) (ite (equal x z) true (elem x xs))))))

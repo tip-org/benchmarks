@@ -19,7 +19,7 @@
          (case Z x)))
      (case Z x))))
 (define-funs-rec
-  ((lt ((x Nat) (y Nat)) bool))
+  ((lt ((x Nat) (y Nat)) Bool))
   ((match y
      (case (S z)
        (match x

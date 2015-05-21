@@ -6,7 +6,7 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((It (A) (B) (C))))
 (define-funs-rec
-  ((eq ((x It) (y It)) bool))
+  ((eq ((x It) (y It)) Bool))
   ((match x
      (case A
        (match y
@@ -21,7 +21,7 @@
          (case default false)
          (case C true))))))
 (define-funs-rec
-  ((isPrefix ((x (list It)) (y (list It))) bool))
+  ((isPrefix ((x (list It)) (y (list It))) Bool))
   ((match x
      (case nil true)
      (case (cons z x2)
@@ -29,7 +29,7 @@
          (case nil false)
          (case (cons x3 x4) (ite (eq z x3) (isPrefix x2 x4) false)))))))
 (define-funs-rec
-  ((isRelaxedPrefix ((x (list It)) (y (list It))) bool))
+  ((isRelaxedPrefix ((x (list It)) (y (list It))) Bool))
   ((match x
      (case nil true)
      (case (cons z x2)

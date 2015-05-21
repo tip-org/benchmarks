@@ -12,7 +12,7 @@
      (case Z y)
      (case (S n) (S (plus n y))))))
 (define-funs-rec
-  ((le ((x Nat) (y Nat)) bool))
+  ((le ((x Nat) (y Nat)) Bool))
   ((match x
      (case Z true)
      (case (S z)
@@ -59,9 +59,9 @@
   ((dot (lambda ((y Heap)) (toList2 y))
      (lambda ((z (list Nat))) (toHeap z)) x)))
 (define-funs-rec
-  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
+  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec
-  ((ordered ((x (list Nat))) bool))
+  ((ordered ((x (list Nat))) Bool))
   ((match x
      (case nil true)
      (case (cons y z)

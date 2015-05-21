@@ -10,14 +10,14 @@
        (match y
          (case nil y)
          (case (cons x2 x3) (cons x2 (take z x3))))))))
-(define-funs-rec ((or2 ((x bool) (y bool)) bool)) ((ite x true y)))
+(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
-  ((par (t) (null ((x (list t))) bool)))
+  ((par (t) (null ((x (list t))) Bool)))
   ((match x
      (case nil true)
      (case (cons y z) false))))
 (define-funs-rec
-  ((lmerge ((x (list int)) (y (list int))) (list int)))
+  ((lmerge ((x (list Int)) (y (list Int))) (list Int)))
   ((match x
      (case nil y)
      (case (cons z x2)
@@ -40,7 +40,7 @@
          (case Z y)
          (case (S n) (S (half n))))))))
 (define-funs-rec
-  ((elem ((x int) (y (list int))) bool))
+  ((elem ((x Int) (y (list Int))) Bool))
   ((match y
      (case nil false)
      (case (cons z ys) (or2 (= x z) (elem x ys))))))
@@ -53,7 +53,7 @@
          (case nil y)
          (case (cons x2 x3) (drop z x3)))))))
 (define-funs-rec
-  ((nmsorttd ((x (list int))) (list int)))
+  ((nmsorttd ((x (list Int))) (list Int)))
   ((match x
      (case nil x)
      (case (cons y z)
@@ -63,18 +63,18 @@
            (lmerge (nmsorttd (take (half (length x)) x))
              (nmsorttd (drop (half (length x)) x)))))))))
 (define-funs-rec
-  ((delete ((x int) (y (list int))) (list int)))
+  ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y
      (case nil y)
      (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
-  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
+  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec
-  ((isPermutation ((x (list int)) (y (list int))) bool))
+  ((isPermutation ((x (list Int)) (y (list Int))) Bool))
   ((match x
      (case nil (null y))
      (case (cons z xs)
        (and2 (elem z y) (isPermutation xs (delete z y)))))))
 (assert-not
-  (forall ((x (list int))) (isPermutation (nmsorttd x) x)))
+  (forall ((x (list Int))) (isPermutation (nmsorttd x) x)))
 (check-sat)

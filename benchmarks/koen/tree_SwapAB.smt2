@@ -4,7 +4,7 @@
   ((Tree (Node (Node_0 (Tree a)) (Node_1 a) (Node_2 (Tree a)))
      (Nil))))
 (define-funs-rec
-  ((swap ((x int) (y int) (z (Tree int))) (Tree int)))
+  ((swap ((x Int) (y Int) (z (Tree Int))) (Tree Int)))
   ((match z
      (case (Node p x2 q)
        (ite
@@ -13,9 +13,9 @@
            (= x2 y) (Node (swap x y p) x (swap x y q))
            (Node (swap x y p) x2 (swap x y q)))))
      (case Nil z))))
-(define-funs-rec ((or2 ((x bool) (y bool)) bool)) ((ite x true y)))
+(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
-  ((elem ((x int) (y (list int))) bool))
+  ((elem ((x Int) (y (list Int))) Bool))
   ((match y
      (case nil false)
      (case (cons z ys) (or2 (= x z) (elem x ys))))))
@@ -32,9 +32,9 @@
          (flatten0 q)))
      (case Nil (as nil (list a))))))
 (define-funs-rec
-  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
+  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (assert-not
-  (forall ((p (Tree int)) (a int) (b int))
+  (forall ((p (Tree Int)) (a Int) (b Int))
     (=> (and2 (elem a (flatten0 p)) (elem b (flatten0 p)))
       (and2 (elem a (flatten0 (swap a b p)))
         (elem b (flatten0 (swap a b p)))))))

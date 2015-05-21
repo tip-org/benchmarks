@@ -2,9 +2,9 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Token (A) (B) (C) (D) (ESC) (P) (Q) (R))))
-(define-funs-rec ((or2 ((x bool) (y bool)) bool)) ((ite x true y)))
+(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
-  ((isSpecial ((x Token)) bool))
+  ((isSpecial ((x Token)) Bool))
   ((match x
      (case default false)
      (case ESC true)
@@ -12,12 +12,12 @@
      (case Q true)
      (case R true))))
 (define-funs-rec
-  ((isEsc ((x Token)) bool))
+  ((isEsc ((x Token)) Bool))
   ((match x
      (case default false)
      (case ESC true))))
 (define-funs-rec
-  ((ok ((x Token)) bool)) ((or2 (not (isSpecial x)) (isEsc x))))
+  ((ok ((x Token)) Bool)) ((or2 (not (isSpecial x)) (isEsc x))))
 (define-funs-rec
   ((code ((x Token)) Token))
   ((match x
@@ -35,9 +35,9 @@
          (isSpecial y) (cons ESC (cons (code y) (escape xs)))
          (cons y (escape xs)))))))
 (define-funs-rec
-  ((and2 ((x bool) (y bool)) bool)) ((ite x y false)))
+  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec
-  ((par (a) (all ((x (=> a bool)) (y (list a))) bool)))
+  ((par (a) (all ((x (=> a Bool)) (y (list a))) Bool)))
   ((match y
      (case nil true)
      (case (cons z xs) (and2 (@ x z) (all x xs))))))

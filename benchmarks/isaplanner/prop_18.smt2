@@ -7,7 +7,7 @@
      (case Z y)
      (case (S z) (S (plus z y))))))
 (define-funs-rec
-  ((lt ((x Nat) (y Nat)) bool))
+  ((lt ((x Nat) (y Nat)) Bool))
   ((match y
      (case Z false)
      (case (S z)

@@ -9,7 +9,7 @@
      (case nil Z)
      (case (cons y xs) (S (len xs))))))
 (define-funs-rec
-  ((le ((x Nat) (y Nat)) bool))
+  ((le ((x Nat) (y Nat)) Bool))
   ((match x
      (case Z true)
      (case (S z)
@@ -17,13 +17,13 @@
          (case Z false)
          (case (S x2) (le z x2)))))))
 (define-funs-rec
-  ((par (a) (filter ((x (=> a bool)) (y (list a))) (list a))))
+  ((par (a) (filter ((x (=> a Bool)) (y (list a))) (list a))))
   ((match y
      (case nil y)
      (case (cons z xs)
        (ite (@ x z) (cons z (filter x xs)) (filter x xs))))))
 (assert-not
   (par (a)
-    (forall ((q (=> a bool)) (xs (list a)))
+    (forall ((q (=> a Bool)) (xs (list a)))
       (le (len (filter q xs)) (len xs)))))
 (check-sat)

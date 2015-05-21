@@ -16,7 +16,7 @@
      (case Z (S y))
      (case (S m) (mult x (pow x m))))))
 (define-funs-rec
-  ((lt ((x Nat) (y Nat)) bool))
+  ((lt ((x Nat) (y Nat)) Bool))
   ((match x
      (case Z true)
      (case (S z)
