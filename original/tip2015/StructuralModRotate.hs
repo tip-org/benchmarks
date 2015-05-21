@@ -4,8 +4,7 @@ module StructuralModRotate where
 
 import Prelude hiding (reverse,(++),(+),(*),(-),(<),(<=),length,drop,take,mod)
 
-import Tip.DSL
-import Test.QuickCheck hiding ((==>))
+import Tip
 import Data.Typeable
 
 data List a = Cons a (List a) | Nil
@@ -71,6 +70,6 @@ drop Z     xs          = xs
 drop _     Nil         = Nil
 drop (S n) (Cons x xs) = drop n xs
 
-prop_structural_mod :: Nat -> List a -> Prop (List a)
-prop_structural_mod n xs = rotate n xs =:= drop (n `mod` length xs) xs ++ take (n `mod` length xs) xs
+prop_structural_mod :: Nat -> List a -> Equality (List a)
+prop_structural_mod n xs = rotate n xs === drop (n `mod` length xs) xs ++ take (n `mod` length xs) xs
 

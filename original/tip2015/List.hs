@@ -3,8 +3,7 @@ module List where
 
 import Prelude hiding (reverse,(++),length,map,filter,(.),(+),const)
 import qualified Prelude
-import Tip.DSL
-import Test.QuickCheck hiding ((==>))
+import Tip
 import Data.Typeable
 import Nat
 

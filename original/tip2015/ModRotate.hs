@@ -4,8 +4,7 @@ module ModRotate where
 
 import Prelude hiding (reverse,(++),(+),(*),(-),(<),(<=),length,drop,take,mod)
 
-import Tip.DSL
-import Test.QuickCheck hiding ((==>))
+import Tip
 import Data.Typeable
 
 data List a = Cons a (List a) | Nil
@@ -66,8 +65,8 @@ drop Z     xs          = xs
 drop _     Nil         = Nil
 drop (S n) (Cons x xs) = drop n xs
 
-prop_mod :: Nat -> List a -> Prop (List a)
-prop_mod n xs = rotate n xs =:= drop (n `mod` length xs) xs ++ take (n `mod` length xs) xs
+prop_mod :: Nat -> List a -> Equality (List a)
+prop_mod n xs = rotate n xs === drop (n `mod` length xs) xs ++ take (n `mod` length xs) xs
 
 instance Enum Nat where
   toEnum 0 = Z

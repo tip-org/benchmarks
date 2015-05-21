@@ -3,11 +3,8 @@
 {-# LANGUAGE TemplateHaskell, DeriveDataTypeable #-}
 module RegExp where
 
-import Test.QuickCheck
-import Test.QuickCheck.All
 import Control.Monad ( liftM, liftM2 )
-import Tip.DSL
-import Test.QuickCheck hiding ((==>))
+import Tip
 import Data.Typeable
 import Prelude hiding (seq, null)
 
@@ -65,29 +62,29 @@ recognise p (x:xs) = recognise (step p x) xs
 
 --------------------------------------------------------------------------------
 
-prop_PlusIdempotent :: R -> [A] -> Prop Bool
+prop_PlusIdempotent :: R -> [A] -> Equality Bool
 prop_PlusIdempotent p s =
-  recognise (p `Plus` p) s =:= recognise p s
+  recognise (p `Plus` p) s === recognise p s
 
-prop_PlusCommutative :: R -> R -> [A] -> Prop Bool
+prop_PlusCommutative :: R -> R -> [A] -> Equality Bool
 prop_PlusCommutative p q s =
-  recognise (p `Plus` q) s =:= recognise (q `Plus` p) s
+  recognise (p `Plus` q) s === recognise (q `Plus` p) s
 
-prop_PlusAssociative :: R -> R -> R -> [A] -> Prop Bool
+prop_PlusAssociative :: R -> R -> R -> [A] -> Equality Bool
 prop_PlusAssociative p q r s =
-  recognise (p `Plus` (q `Plus` r)) s =:= recognise ((p `Plus` q) `Plus` r) s
+  recognise (p `Plus` (q `Plus` r)) s === recognise ((p `Plus` q) `Plus` r) s
 
-prop_SeqAssociative :: R -> R -> R -> [A] -> Prop Bool
+prop_SeqAssociative :: R -> R -> R -> [A] -> Equality Bool
 prop_SeqAssociative p q r s =
-  recognise (p `Seq` (q `Seq` r)) s =:= recognise ((p `Seq` q) `Seq` r) s
+  recognise (p `Seq` (q `Seq` r)) s === recognise ((p `Seq` q) `Seq` r) s
 
-prop_SeqDistrPlus :: R -> R -> R -> [A] -> Prop Bool
+prop_SeqDistrPlus :: R -> R -> R -> [A] -> Equality Bool
 prop_SeqDistrPlus p q r s =
-  recognise (p `Seq` (q `Plus` r)) s =:= recognise ((p `Seq` q) `Plus` (p `Seq` r)) s
+  recognise (p `Seq` (q `Plus` r)) s === recognise ((p `Seq` q) `Plus` (p `Seq` r)) s
 
-prop_Star :: R -> [A] -> Prop Bool
+prop_Star :: R -> [A] -> Equality Bool
 prop_Star p s =
-  recognise (Star p) s =:= recognise (Eps `Plus` (p `Seq` Star p)) s
+  recognise (Star p) s === recognise (Eps `Plus` (p `Seq` Star p)) s
 
 --------------------------------------------------------------------------------
 
@@ -102,19 +99,19 @@ eqList :: [A] -> [A] -> Bool
 _ `eqList` _ = False
 
 prop_RecAtom a s =
-  recognise (Atom a) s =:= (s `eqList` [a])
+  recognise (Atom a) s === (s `eqList` [a])
 
 prop_RecEps s =
-  recognise Eps s =:= null s
+  recognise Eps s === null s
 
 prop_RecNil s =
-  recognise Nil s =:= False
+  recognise Nil s === False
 
 prop_RecPlus p q s =
-  recognise (p `Plus` q) s =:= recognise p s || recognise q s
+  recognise (p `Plus` q) s === (recognise p s || recognise q s)
 
 prop_RecSeq p q s =
-  recognise (p `Seq` q) s =:= recognisePair p q (split s)
+  recognise (p `Seq` q) s === recognisePair p q (split s)
 
 recognisePair :: R -> R -> [([A], [A])] -> Bool
 recognisePair p q [] = False
@@ -129,7 +126,7 @@ consfst x [] = []
 consfst x ((xs, y):ys) = (x:xs, y):consfst x ys
 
 prop_RecStar p s =
-  recognise (Star p) s =:= null s || recognise (p `Seq` Star p) s
+  recognise (Star p) s === (null s || recognise (p `Seq` Star p) s)
 
 --------------------------------------------------------------------------------
 
@@ -144,7 +141,7 @@ deeps (p `Seq` q)
 deeps (Star p)     = deeps p
 
 prop_Deeps p s =
-  recognise (Star p) s =:= recognise (Star (deeps p)) s
+  recognise (Star p) s === recognise (Star (deeps p)) s
 
 --------------------------------------------------------------------------------
 

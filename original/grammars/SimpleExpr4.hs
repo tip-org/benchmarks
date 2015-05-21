@@ -1,11 +1,10 @@
 -- Show function for a simple expression language
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveDataTypeable, TypeOperators #-}
 module SimpleExpr4 where
 
 import Prelude hiding ((++))
 import Control.Monad
-import Tip.DSL
-import Test.QuickCheck hiding ((==>))
+import Tip
 import Data.Typeable
 
 (++) :: [a] -> [a] -> [a]
@@ -28,17 +27,17 @@ linTerm e@(_ `Plus` _) = [C] ++ lin e ++ [D]
 linTerm EX          = [X]
 linTerm EY          = [Y]
 
-prop_unambig4 :: E -> E -> Prop E
-prop_unambig4 u v = lin u =:= lin v ==> u =:= v
+prop_unambig4 :: E -> E -> Equality [Tok] :=>: Equality E
+prop_unambig4 u v = lin u === lin v ==> u === v
 
-unambigTerm u v = linTerm u =:= linTerm v ==> u =:= v
+unambigTerm u v = linTerm u === linTerm v ==> u === v
 
-injR u v w = v ++ u =:= w ++ u ==> v =:= w
-inj1 x v w = v ++ [x] =:= w ++ [x] ==> v =:= w
-injL u v w = u ++ v =:= u ++ w ==> v =:= w
+injR u v w = v ++ u === w ++ u ==> v === w
+inj1 x v w = v ++ [x] === w ++ [x] ==> v === w
+injL u v w = u ++ v === u ++ w ==> v === w
 
-lemma v w s t = lin v ++ s =:= lin w ++ t ==> (v,s) =:= (w,t)
-lemmaTerm v w s t = linTerm v ++ s =:= linTerm w ++ t ==> (v,s) =:= (w,t)
+lemma v w s t = lin v ++ s === lin w ++ t ==> (v,s) === (w,t)
+lemmaTerm v w s t = linTerm v ++ s === linTerm w ++ t ==> (v,s) === (w,t)
 
 instance Arbitrary E where
   arbitrary = sized arb

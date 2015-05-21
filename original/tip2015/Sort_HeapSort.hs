@@ -2,13 +2,9 @@
 {-# LANGUAGE ScopedTypeVariables, TemplateHaskell, DeriveDataTypeable #-}
 module Sort_QuickSort where
 
-import Test.QuickCheck
-import Test.QuickCheck.Poly
-import Test.QuickCheck.All
 import Nat
 import Prelude hiding ((++), (==), (<=), minimum, elem, (+), null)
-import Tip.DSL
-import Test.QuickCheck hiding ((==>))
+import Tip
 import Data.Typeable
 import Data.Maybe hiding (maybeToList)
 
@@ -46,20 +42,20 @@ mergeLists (x:xs) (y:ys)
   | x <= y = x:mergeLists xs (y:ys)
   | otherwise = y:mergeLists (x:xs) ys
 
-prop_merge :: Heap -> Heap -> Prop [Nat]
-prop_merge x y = toList (merge x y) =:= toList x `mergeLists` toList y
+prop_merge :: Heap -> Heap -> Equality [Nat]
+prop_merge x y = toList (merge x y) === toList x `mergeLists` toList y
 
 insert :: Nat -> Heap -> Heap
 insert x h = merge (Node Nil x Nil) h
 
-prop_insert :: Nat -> Heap -> Prop [Nat]
-prop_insert x h = toList (insert x h) =:= listInsert x (toList h)
+prop_insert :: Nat -> Heap -> Equality [Nat]
+prop_insert x h = toList (insert x h) === listInsert x (toList h)
 
-prop_minimum :: Heap -> Prop (Maybe Nat)
-prop_minimum h = listMinimum (toList h) =:= minimum h
+prop_minimum :: Heap -> Equality (Maybe Nat)
+prop_minimum h = listMinimum (toList h) === minimum h
 
-prop_deleteMinimum :: Heap -> Prop (Maybe [Nat])
-prop_deleteMinimum h = listDeleteMinimum (toList h) =:= maybeToList (deleteMinimum h)
+prop_deleteMinimum :: Heap -> Equality (Maybe [Nat])
+prop_deleteMinimum h = listDeleteMinimum (toList h) === maybeToList (deleteMinimum h)
 
 
 maybeToList :: Maybe Heap -> Maybe [Nat]
@@ -148,15 +144,15 @@ delete x (y:ys)
 
 -- The sort function returns a sorted list.
 prop_SortSorts (xs :: [Nat]) =
-  ordered (hsort xs) =:= True
+  ordered (hsort xs) === True
 
 -- The sort function permutes the input list.
 prop_SortPermutes x (xs :: [Nat]) =
-  count x (hsort xs) =:= count x xs
+  count x (hsort xs) === count x xs
 
 -- The sort function permutes the input list, version 2.
 prop_SortPermutes' (xs :: [Nat]) =
-  hsort xs `isPermutation` xs =:= True
+  hsort xs `isPermutation` xs === True
 
 --------------------------------------------------------------------------------
 

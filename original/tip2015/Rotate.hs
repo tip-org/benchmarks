@@ -4,8 +4,7 @@ module Rotate where
 
 import Prelude hiding (reverse,(++),(+),(*),(-),(<),(<=),length,drop,take,mod)
 
-import Tip.DSL
-import Test.QuickCheck hiding ((==>))
+import Tip
 import Data.Typeable
 
 data List a = Cons a (List a) | Nil
@@ -56,5 +55,5 @@ rotate Z     xs          = xs
 rotate _     Nil         = Nil
 rotate (S n) (Cons x xs) = rotate n (xs ++ Cons x Nil)
 
-prop_self :: Nat -> List a -> Prop (List a)
-prop_self n xs = rotate n (xs ++ xs) =:= rotate n xs ++ rotate n xs
+prop_self :: Nat -> List a -> Equality (List a)
+prop_self n xs = rotate n (xs ++ xs) === rotate n xs ++ rotate n xs

@@ -4,8 +4,7 @@ module BinLists where
 
 import Prelude hiding ((+), (*), (++), (&&),(||),not)
 
-import Tip.DSL
-import Test.QuickCheck hiding ((==>))
+import Tip
 import Data.Typeable
 
 import Control.Applicative
@@ -61,29 +60,29 @@ times One xs = xs
 times (ZeroAnd xs) ys = ZeroAnd (times xs ys)
 times (OneAnd xs) ys = plus (ZeroAnd (times xs ys)) ys
 
-prop_s :: Bin -> Prop Nat
-prop_s n = toNat (s n) =:= S (toNat n)
+prop_s :: Bin -> Equality Nat
+prop_s n = toNat (s n) === S (toNat n)
 
-prop_plus :: Bin -> Bin -> Prop Nat
-prop_plus x y = toNat (x `plus` y) =:= toNat x + toNat y
+prop_plus :: Bin -> Bin -> Equality Nat
+prop_plus x y = toNat (x `plus` y) === toNat x + toNat y
 
-prop_plus_comm :: Bin -> Bin -> Prop Bin
-prop_plus_comm x y = x `plus` y =:= y `plus` x
+prop_plus_comm :: Bin -> Bin -> Equality Bin
+prop_plus_comm x y = x `plus` y === y `plus` x
 
-prop_plus_assoc :: Bin -> Bin -> Bin -> Prop Bin
-prop_plus_assoc x y z = x `plus` (y `plus` z) =:= (x `plus` y) `plus` z
+prop_plus_assoc :: Bin -> Bin -> Bin -> Equality Bin
+prop_plus_assoc x y z = x `plus` (y `plus` z) === (x `plus` y) `plus` z
 
-prop_times :: Bin -> Bin -> Prop Nat
-prop_times x y = toNat (x `times` y) =:= toNat x * toNat y
+prop_times :: Bin -> Bin -> Equality Nat
+prop_times x y = toNat (x `times` y) === toNat x * toNat y
 
-prop_times_comm :: Bin -> Bin -> Prop Bin
-prop_times_comm x y = x `times` y =:= y `times` x
+prop_times_comm :: Bin -> Bin -> Equality Bin
+prop_times_comm x y = x `times` y === y `times` x
 
-prop_times_assoc :: Bin -> Bin -> Bin -> Prop Bin
-prop_times_assoc x y z = x `times` (y `times` z) =:= (x `times` y) `times` z
+prop_times_assoc :: Bin -> Bin -> Bin -> Equality Bin
+prop_times_assoc x y z = x `times` (y `times` z) === (x `times` y) `times` z
 
-prop_distrib :: Bin -> Bin -> Bin -> Prop Bin
-prop_distrib x y z = x `times` (y `plus` z) =:= (x `times` y) `plus` (x `times` z)
+prop_distrib :: Bin -> Bin -> Bin -> Equality Bin
+prop_distrib x y z = x `times` (y `plus` z) === (x `times` y) `plus` (x `times` z)
 
 instance Arbitrary Bin where
   arbitrary = sized arbBin

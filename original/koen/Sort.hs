@@ -1,7 +1,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module Sort where
 
-import Tip.DSL
+import Tip
 import Prelude hiding (Eq(..), Ord(..), map, all, elem, null, length, even, (++), filter, reverse, splitAt, take, drop)
 import Nat hiding ((+), (-), (*))
 import qualified Prelude
@@ -119,10 +119,10 @@ bubble xs       = (False,xs)
 --------------------------------------------------------------------------------
 
 -- Bubble sort
-prop_BubSortSorts (xs :: [OrdA]) = ordered (bubsort xs) =:= True
-prop_BubSortPermutes x (xs :: [OrdA]) = count x (bubsort xs) =:= count x xs
-prop_BubSortPermutes' (xs :: [OrdA]) = bubsort xs `isPermutation` xs =:= True
-prop_BubSortIsSort (xs :: [OrdA]) = bubsort xs =:= sort xs
+prop_BubSortSorts (xs :: [OrdA]) = ordered (bubsort xs) === True
+prop_BubSortPermutes x (xs :: [OrdA]) = count x (bubsort xs) === count x xs
+prop_BubSortPermutes' (xs :: [OrdA]) = bubsort xs `isPermutation` xs === True
+prop_BubSortIsSort (xs :: [OrdA]) = bubsort xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -157,10 +157,10 @@ toList (Node p x q) = x : toList (p `hmerge` q)
 --------------------------------------------------------------------------------
 
 -- Heap sort (using skew heaps)
-prop_HSortSorts (xs :: [OrdA]) = ordered (hsort xs) =:= True
-prop_HSortPermutes x (xs :: [OrdA]) = count x (hsort xs) =:= count x xs
-prop_HSortPermutes' (xs :: [OrdA]) = hsort xs `isPermutation` xs =:= True
-prop_HSortIsSort (xs :: [OrdA]) = hsort xs =:= sort xs
+prop_HSortSorts (xs :: [OrdA]) = ordered (hsort xs) === True
+prop_HSortPermutes x (xs :: [OrdA]) = count x (hsort xs) === count x xs
+prop_HSortPermutes' (xs :: [OrdA]) = hsort xs `isPermutation` xs === True
+prop_HSortIsSort (xs :: [OrdA]) = hsort xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -178,9 +178,9 @@ insert x (y:xs) | x <= y    = x : y : xs
 --------------------------------------------------------------------------------
 
 -- Insertion sort
-prop_ISortSorts (xs :: [OrdA]) = ordered (isort xs) =:= True
-prop_ISortPermutes x (xs :: [OrdA]) = count x (isort xs) =:= count x xs
-prop_ISortPermutes' (xs :: [OrdA]) = isort xs `isPermutation` xs =:= True
+prop_ISortSorts (xs :: [OrdA]) = ordered (isort xs) === True
+prop_ISortPermutes x (xs :: [OrdA]) = count x (isort xs) === count x xs
+prop_ISortPermutes' (xs :: [OrdA]) = isort xs `isPermutation` xs === True
 
 --------------------------------------------------------------------------------
 
@@ -224,10 +224,10 @@ xs     `lmerge` [] = xs
 --------------------------------------------------------------------------------
 
 -- Bottom-up merge sort, using a total risers function
-prop_MSortBU2Sorts (xs :: [OrdA]) = ordered (msortbu2 xs) =:= True
-prop_MSortBU2Permutes x (xs :: [OrdA]) = count x (msortbu2 xs) =:= count x xs
-prop_MSortBU2Permutes' (xs :: [OrdA]) = msortbu2 xs `isPermutation` xs =:= True
-prop_MSortBU2IsSort (xs :: [OrdA]) = msortbu2 xs =:= sort xs
+prop_MSortBU2Sorts (xs :: [OrdA]) = ordered (msortbu2 xs) === True
+prop_MSortBU2Permutes x (xs :: [OrdA]) = count x (msortbu2 xs) === count x xs
+prop_MSortBU2Permutes' (xs :: [OrdA]) = msortbu2 xs `isPermutation` xs === True
+prop_MSortBU2IsSort (xs :: [OrdA]) = msortbu2 xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -242,10 +242,10 @@ mergingbu xss  = mergingbu (pairwise xss)
 --------------------------------------------------------------------------------
 
 -- Bottom-up merge sort
-prop_MSortBUSorts (xs :: [OrdA]) = ordered (msortbu xs) =:= True
-prop_MSortBUPermutes x (xs :: [OrdA]) = count x (msortbu xs) =:= count x xs
-prop_MSortBUPermutes' (xs :: [OrdA]) = msortbu xs `isPermutation` xs =:= True
-prop_MSortBUIsSort (xs :: [OrdA]) = msortbu xs =:= sort xs
+prop_MSortBUSorts (xs :: [OrdA]) = ordered (msortbu xs) === True
+prop_MSortBUPermutes x (xs :: [OrdA]) = count x (msortbu xs) === count x xs
+prop_MSortBUPermutes' (xs :: [OrdA]) = msortbu xs `isPermutation` xs === True
+prop_MSortBUIsSort (xs :: [OrdA]) = msortbu xs === sort xs
 
 -- msorttd :: Ord a => [a] -> [a]
 msorttd []  = []
@@ -255,10 +255,10 @@ msorttd xs  = msorttd (ztake k xs) `lmerge` msorttd (zdrop k xs)
   k = zlength xs `div` 2
 
 -- Top-down merge sort
-prop_MSortTDSorts (xs :: [OrdA]) = ordered (msorttd xs) =:= True
-prop_MSortTDPermutes x (xs :: [OrdA]) = count x (msorttd xs) =:= count x xs
-prop_MSortTDPermutes' (xs :: [OrdA]) = msorttd xs `isPermutation` xs =:= True
-prop_MSortTDIsSort (xs :: [OrdA]) = msorttd xs =:= sort xs
+prop_MSortTDSorts (xs :: [OrdA]) = ordered (msorttd xs) === True
+prop_MSortTDPermutes x (xs :: [OrdA]) = count x (msorttd xs) === count x xs
+prop_MSortTDPermutes' (xs :: [OrdA]) = msorttd xs `isPermutation` xs === True
+prop_MSortTDIsSort (xs :: [OrdA]) = msorttd xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -270,10 +270,10 @@ nmsorttd xs  = nmsorttd (take k xs) `lmerge` nmsorttd (drop k xs)
   k = half (length xs)
 
 -- Top-down merge sort, using division by two on natural numbers
-prop_NMSortTDSorts (xs :: [OrdA]) = ordered (nmsorttd xs) =:= True
-prop_NMSortTDPermutes x (xs :: [OrdA]) = count x (nmsorttd xs) =:= count x xs
-prop_NMSortTDPermutes' (xs :: [OrdA]) = nmsorttd xs `isPermutation` xs =:= True
-prop_NMSortTDIsSort (xs :: [OrdA]) = nmsorttd xs =:= sort xs
+prop_NMSortTDSorts (xs :: [OrdA]) = ordered (nmsorttd xs) === True
+prop_NMSortTDPermutes x (xs :: [OrdA]) = count x (nmsorttd xs) === count x xs
+prop_NMSortTDPermutes' (xs :: [OrdA]) = nmsorttd xs `isPermutation` xs === True
+prop_NMSortTDIsSort (xs :: [OrdA]) = nmsorttd xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -321,10 +321,10 @@ sort2 x y | x <= y    = [x,y]
 --------------------------------------------------------------------------------
 
 -- Bitonic sort
-prop_BSortSorts (xs :: [OrdA]) = ordered (bsort xs) =:= True
-prop_BSortPermutes x (xs :: [OrdA]) = count x (bsort xs) =:= count x xs
-prop_BSortPermutes' (xs :: [OrdA]) = bsort xs `isPermutation` xs =:= True
-prop_BSortIsSort (xs :: [OrdA]) = bsort xs =:= sort xs
+prop_BSortSorts (xs :: [OrdA]) = ordered (bsort xs) === True
+prop_BSortPermutes x (xs :: [OrdA]) = count x (bsort xs) === count x xs
+prop_BSortPermutes' (xs :: [OrdA]) = bsort xs `isPermutation` xs === True
+prop_BSortIsSort (xs :: [OrdA]) = bsort xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -333,10 +333,10 @@ qsort []     = []
 qsort (x:xs) = qsort (filter (<=x) xs) ++ [x] ++ qsort (filter (>x) xs)
 
 -- QuickSort
-prop_QSortSorts (xs :: [OrdA]) = ordered (qsort xs) =:= True
-prop_QSortPermutes x (xs :: [OrdA]) = count x (qsort xs) =:= count x xs
-prop_QSortPermutes' (xs :: [OrdA]) = qsort xs `isPermutation` xs =:= True
-prop_QSortIsSort (xs :: [OrdA]) = qsort xs =:= sort xs
+prop_QSortSorts (xs :: [OrdA]) = ordered (qsort xs) === True
+prop_QSortPermutes x (xs :: [OrdA]) = count x (qsort xs) === count x xs
+prop_QSortPermutes' (xs :: [OrdA]) = qsort xs `isPermutation` xs === True
+prop_QSortIsSort (xs :: [OrdA]) = qsort xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -354,10 +354,10 @@ ssort xs@(y:ys) = m : ssort (delete m xs)
 --------------------------------------------------------------------------------
 
 -- Selection sort, using a total minimum function
-prop_SSortSorts (xs :: [OrdA]) = ordered (ssort xs) =:= True
-prop_SSortPermutes x (xs :: [OrdA]) = count x (ssort xs) =:= count x xs
-prop_SSortPermutes' (xs :: [OrdA]) = ssort xs `isPermutation` xs =:= True
-prop_SSortIsSort (xs :: [OrdA]) = ssort xs =:= sort xs
+prop_SSortSorts (xs :: [OrdA]) = ordered (ssort xs) === True
+prop_SSortPermutes x (xs :: [OrdA]) = count x (ssort xs) === count x xs
+prop_SSortPermutes' (xs :: [OrdA]) = ssort xs `isPermutation` xs === True
+prop_SSortIsSort (xs :: [OrdA]) = ssort xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -382,10 +382,10 @@ flatten (TNode p x q) ys = flatten p (x : flatten q ys)
 --------------------------------------------------------------------------------
 
 -- Tree sort
-prop_TSortSorts (xs :: [OrdA]) = ordered (tsort xs) =:= True
-prop_TSortPermutes x (xs :: [OrdA]) = count x (tsort xs) =:= count x xs
-prop_TSortPermutes' (xs :: [OrdA]) = tsort xs `isPermutation` xs =:= True
-prop_TSortIsSort (xs :: [OrdA]) = tsort xs =:= sort xs
+prop_TSortSorts (xs :: [OrdA]) = ordered (tsort xs) === True
+prop_TSortPermutes x (xs :: [OrdA]) = count x (tsort xs) === count x xs
+prop_TSortPermutes' (xs :: [OrdA]) = tsort xs `isPermutation` xs === True
+prop_TSortIsSort (xs :: [OrdA]) = tsort xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -411,10 +411,10 @@ stooge1sort2 xs = stoogesort zs ++ reverse ys
 --------------------------------------------------------------------------------
 
 -- Stooge sort defined using reverse
-prop_StoogeSortSorts (xs :: [OrdA]) = ordered (stoogesort xs) =:= True
-prop_StoogeSortPermutes x (xs :: [OrdA]) = count x (stoogesort xs) =:= count x xs
-prop_StoogeSortPermutes' (xs :: [OrdA]) = stoogesort xs `isPermutation` xs =:= True
-prop_StoogeSortIsSort (xs :: [OrdA]) = stoogesort xs =:= sort xs
+prop_StoogeSortSorts (xs :: [OrdA]) = ordered (stoogesort xs) === True
+prop_StoogeSortPermutes x (xs :: [OrdA]) = count x (stoogesort xs) === count x xs
+prop_StoogeSortPermutes' (xs :: [OrdA]) = stoogesort xs `isPermutation` xs === True
+prop_StoogeSortIsSort (xs :: [OrdA]) = stoogesort xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -438,10 +438,10 @@ stooge2sort2 xs = stoogesort2 ys ++ zs
 ----------------------------------------------------------------------------------
 
 -- Stooge sort
-prop_StoogeSort2Sorts (xs :: [OrdA]) = ordered (stoogesort2 xs) =:= True
-prop_StoogeSort2Permutes x (xs :: [OrdA]) = count x (stoogesort2 xs) =:= count x xs
-prop_StoogeSort2Permutes' (xs :: [OrdA]) = stoogesort2 xs `isPermutation` xs =:= True
-prop_StoogeSort2IsSort (xs :: [OrdA]) = stoogesort2 xs =:= sort xs
+prop_StoogeSort2Sorts (xs :: [OrdA]) = ordered (stoogesort2 xs) === True
+prop_StoogeSort2Permutes x (xs :: [OrdA]) = count x (stoogesort2 xs) === count x xs
+prop_StoogeSort2Permutes' (xs :: [OrdA]) = stoogesort2 xs `isPermutation` xs === True
+prop_StoogeSort2IsSort (xs :: [OrdA]) = stoogesort2 xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -467,10 +467,10 @@ nstooge1sort2 xs = nstoogesort zs ++ reverse ys
 --------------------------------------------------------------------------------
 
 -- Stooge sort defined using reverse and thirds on natural numbers
-prop_NStoogeSortSorts (xs :: [OrdA]) = ordered (nstoogesort xs) =:= True
-prop_NStoogeSortPermutes x (xs :: [OrdA]) = count x (nstoogesort xs) =:= count x xs
-prop_NStoogeSortPermutes' (xs :: [OrdA]) = nstoogesort xs `isPermutation` xs =:= True
-prop_NStoogeSortIsSort (xs :: [OrdA]) = nstoogesort xs =:= sort xs
+prop_NStoogeSortSorts (xs :: [OrdA]) = ordered (nstoogesort xs) === True
+prop_NStoogeSortPermutes x (xs :: [OrdA]) = count x (nstoogesort xs) === count x xs
+prop_NStoogeSortPermutes' (xs :: [OrdA]) = nstoogesort xs `isPermutation` xs === True
+prop_NStoogeSortIsSort (xs :: [OrdA]) = nstoogesort xs === sort xs
 
 --------------------------------------------------------------------------------
 
@@ -494,10 +494,10 @@ nstooge2sort2 xs = nstoogesort2 ys ++ zs
 ----------------------------------------------------------------------------------
 
 -- Stooge sort, using thirds on natural numbers
-prop_NStoogeSort2Sorts (xs :: [OrdA]) = ordered (nstoogesort2 xs) =:= True
-prop_NStoogeSort2Permutes x (xs :: [OrdA]) = count x (nstoogesort2 xs) =:= count x xs
-prop_NStoogeSort2Permutes' (xs :: [OrdA]) = nstoogesort2 xs `isPermutation` xs =:= True
-prop_NStoogeSort2IsSort (xs :: [OrdA]) = nstoogesort2 xs =:= sort xs
+prop_NStoogeSort2Sorts (xs :: [OrdA]) = ordered (nstoogesort2 xs) === True
+prop_NStoogeSort2Permutes x (xs :: [OrdA]) = count x (nstoogesort2 xs) === count x xs
+prop_NStoogeSort2Permutes' (xs :: [OrdA]) = nstoogesort2 xs `isPermutation` xs === True
+prop_NStoogeSort2IsSort (xs :: [OrdA]) = nstoogesort2 xs === sort xs
 
 --------------------------------------------------------------------------------
 

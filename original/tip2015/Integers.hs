@@ -3,7 +3,7 @@
 module Integers where
 
 import Prelude (Bool(..))
-import Tip.DSL
+import Tip hiding (neg)
 
 data Nat = Zero | Succ Nat
 
@@ -51,23 +51,23 @@ P m `plus` P n = P (m + n)
 zero :: Z
 zero = P Zero
 
-prop_add_ident_left :: Z -> Prop Z
-prop_add_ident_left x = x =:= zero `plus` x
+prop_add_ident_left :: Z -> Equality Z
+prop_add_ident_left x = x === zero `plus` x
 
-prop_add_ident_right :: Z -> Prop Z
-prop_add_ident_right x = x =:= x `plus` zero
+prop_add_ident_right :: Z -> Equality Z
+prop_add_ident_right x = x === x `plus` zero
 
-prop_add_assoc :: Z -> Z -> Z -> Prop Z
-prop_add_assoc x y z = (x `plus` (y `plus` z)) =:= ((x `plus` y) `plus` z)
+prop_add_assoc :: Z -> Z -> Z -> Equality Z
+prop_add_assoc x y z = (x `plus` (y `plus` z)) === ((x `plus` y) `plus` z)
 
-prop_add_comm :: Z -> Z -> Prop Z
-prop_add_comm x y = (x `plus` y) =:= (y `plus` x)
+prop_add_comm :: Z -> Z -> Equality Z
+prop_add_comm x y = (x `plus` y) === (y `plus` x)
 
-prop_add_inv_left :: Z -> Prop Z
-prop_add_inv_left x = neg x `plus` x =:= zero
+prop_add_inv_left :: Z -> Equality Z
+prop_add_inv_left x = neg x `plus` x === zero
 
-prop_add_inv_right :: Z -> Prop Z
-prop_add_inv_right x = x `plus` neg x =:= zero
+prop_add_inv_right :: Z -> Equality Z
+prop_add_inv_right x = x `plus` neg x === zero
 
 -- Integer subtraction
 {-# NOINLINE (-.) #-}
@@ -114,21 +114,21 @@ i `times` j = (sign i `timesSign` sign j) `toInteger` (absVal i * absVal j)
 one :: Z
 one = P (Succ Zero)
 
-prop_mul_ident_left :: Z -> Prop Z
-prop_mul_ident_left x = x =:= one `times` x
+prop_mul_ident_left :: Z -> Equality Z
+prop_mul_ident_left x = x === one `times` x
 
-prop_mul_ident_right :: Z -> Prop Z
-prop_mul_ident_right x = x =:= x `times` one
+prop_mul_ident_right :: Z -> Equality Z
+prop_mul_ident_right x = x === x `times` one
 
-prop_mul_assoc :: Z -> Z -> Z -> Prop Z
-prop_mul_assoc x y z = (x `times` (y `times` z)) =:= ((x `times` y) `times` z)
+prop_mul_assoc :: Z -> Z -> Z -> Equality Z
+prop_mul_assoc x y z = (x `times` (y `times` z)) === ((x `times` y) `times` z)
 
-prop_mul_comm :: Z -> Z -> Prop Z
-prop_mul_comm x y = (x `times` y) =:= (y `times` x)
+prop_mul_comm :: Z -> Z -> Equality Z
+prop_mul_comm x y = (x `times` y) === (y `times` x)
 
-prop_left_distrib :: Z -> Z -> Z -> Prop Z
-prop_left_distrib x y z = x `times` (y `plus` z) =:= (x `times` y) `plus` (x `times` z)
+prop_left_distrib :: Z -> Z -> Z -> Equality Z
+prop_left_distrib x y z = x `times` (y `plus` z) === (x `times` y) `plus` (x `times` z)
 
-prop_right_distrib :: Z -> Z -> Z -> Prop Z
-prop_right_distrib x y z = (x `plus` y) `times` z =:= (x `times` z) `plus` (y `times` z)
+prop_right_distrib :: Z -> Z -> Z -> Equality Z
+prop_right_distrib x y z = (x `plus` y) `times` z === (x `times` z) `plus` (y `times` z)
 

@@ -1,7 +1,7 @@
 -- Escaping and unescaping
 module Escape where
 
-import Tip.DSL
+import Tip
 
 import Prelude hiding (all)
 
@@ -43,8 +43,8 @@ ok x = not (isSpecial x) || isEsc x
 --------------------------------------------------------------------------------
 
 prop_Injective xs ys =
-  escape xs =:= escape ys ==> xs =:= ys
+  escape xs === escape ys ==> xs === ys
 
 prop_NoSpecial xs =
-  all ok (escape xs) =:= True
+  all ok (escape xs) === True
 

@@ -1,11 +1,10 @@
 -- Show function for a simple expression language
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveDataTypeable, TypeOperators #-}
 module SimpleExpr1 where
 
 import Prelude hiding ((++))
 import Control.Monad
-import Tip.DSL
-import Test.QuickCheck hiding ((==>))
+import Tip
 import Data.Typeable
 
 (++) :: [a] -> [a] -> [a]
@@ -23,14 +22,14 @@ lin (a `Plus` b) = [C] ++ lin a ++ [Pl] ++ lin b ++ [D]
 lin EX        = [X]
 lin EY        = [Y]
 
-prop_unambig1 :: E -> E -> Prop E
-prop_unambig1 u v = lin u =:= lin v ==> u =:= v
+prop_unambig1 :: E -> E -> Equality [Tok] :=>: Equality E
+prop_unambig1 u v = lin u === lin v ==> u === v
 
-injR u v w = v ++ u =:= w ++ u ==> v =:= w
-inj1 x v w = v ++ [x] =:= w ++ [x] ==> v =:= w
-injL u v w = u ++ v =:= u ++ w ==> v =:= w
+injR u v w = v ++ u === w ++ u ==> v === w
+inj1 x v w = v ++ [x] === w ++ [x] ==> v === w
+injL u v w = u ++ v === u ++ w ==> v === w
 
-lemma v w s t = lin v ++ s =:= lin w ++ t ==> (v,s) =:= (w,t)
+lemma v w s t = lin v ++ s === lin w ++ t ==> (v,s) === (w,t)
 
 instance Arbitrary E where
   arbitrary = sized arb

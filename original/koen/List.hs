@@ -1,7 +1,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module List where
 
-import Tip.DSL
+import Tip
 import Prelude hiding (Eq(..), Ord(..), map, all, elem, null, length, even, (++))
 import Nat
 import qualified Prelude
@@ -76,31 +76,31 @@ count x (y:xs) | x == y    = S (count x xs)
 --------------------------------------------------------------------------------
 
 prop_Select xs =
-  map fst (select xs) =:= xs
+  map fst (select xs) === xs
 
 prop_SelectPermutations xs =
-  all (`isPermutation` xs) [ y:ys | (y,ys) <- select xs ] =:= True
+  all (`isPermutation` xs) [ y:ys | (y,ys) <- select xs ] === True
 
 prop_SelectPermutations' xs z =
-  all ((n `eq`) . count z) [ y:ys | (y,ys) <- select xs ] =:= True
+  all ((n `eq`) . count z) [ y:ys | (y,ys) <- select xs ] === True
  where
   n = count z xs
 
 prop_PairUnpair xs =
-  even (length xs) =:= True ==>
-    unpair (pairs xs) =:= xs
+  even (length xs) === True ==>
+    unpair (pairs xs) === xs
 
 prop_PairEvens xs =
-  even (length xs) =:= True ==>
-    map fst (pairs xs) =:= evens xs
+  even (length xs) === True ==>
+    map fst (pairs xs) === evens xs
 
 prop_PairOdds xs =
 --  even (length xs) ==>
-    map snd (pairs xs) =:= odds xs
+    map snd (pairs xs) === odds xs
 
 prop_Interleave xs =
-  interleave (evens xs) (odds xs) =:= xs
+  interleave (evens xs) (odds xs) === xs
 
 -- Injectivity of append
-prop_append_inj_1 xs ys zs = xs ++ zs =:= ys ++ zs ==> xs =:= ys
-prop_append_inj_2 xs ys zs = xs ++ ys =:= xs ++ zs ==> ys =:= zs
+prop_append_inj_1 xs ys zs = xs ++ zs === ys ++ zs ==> xs === ys
+prop_append_inj_2 xs ys zs = xs ++ ys === xs ++ zs ==> ys === zs

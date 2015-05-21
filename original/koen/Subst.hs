@@ -1,7 +1,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Subst where
 
-import Tip.DSL
+import Tip
 import Prelude hiding (Eq(..), Ord(..), map, all, elem, null, length, even, (++), filter)
 import Nat hiding ((+))
 import qualified Prelude
@@ -71,9 +71,9 @@ subst x e (Lam y a)
 --------------------------------------------------------------------------------
 
 prop_SubstFreeNo x e a y =
-  x `elem` free a =:= False ==>
-    (y `elem` free a) =:= (y `elem` free (subst x e a))
+  x `elem` free a === False ==>
+    (y `elem` free a) === (y `elem` free (subst x e a))
 
 prop_SubstFreeYes x e a y =
-  x `elem` free a =:= True ==>
-    (y `elem` (filter (/=x) (free a) ++ free e)) =:= (y `elem` free (subst x e a))
+  x `elem` free a === True ==>
+    (y `elem` (filter (/=x) (free a) ++ free e)) === (y `elem` free (subst x e a))

@@ -1,7 +1,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module Tree where
 
-import Tip.DSL
+import Tip
 import Prelude hiding (Eq(..), Ord(..), map, all, elem, null, length, even, (++), concatMap)
 import Nat
 import qualified Prelude
@@ -64,16 +64,16 @@ flatten3 (Node Nil x q)          = x : flatten3 q
 --------------------------------------------------------------------------------
 
 prop_Flatten1 p =
-  flatten1 [p] =:= flatten0 p
+  flatten1 [p] === flatten0 p
 
 prop_Flatten1List ps =
-  flatten1 ps =:= concatMap flatten0 ps
+  flatten1 ps === concatMap flatten0 ps
 
 prop_Flatten2 p =
-  flatten2 p [] =:= flatten0 p
+  flatten2 p [] === flatten0 p
 
 prop_Flatten3 p =
-  flatten3 p =:= flatten0 p
+  flatten3 p === flatten0 p
 
 --------------------------------------------------------------------------------
 
@@ -86,8 +86,8 @@ swap a b (Node p x q) = Node (swap a b p) x' (swap a b q)
      | otherwise = x
 
 prop_SwapAB p a b =
-  a `elem` flatten0 p &&
-    b `elem` flatten0 p =:= True ==>
-      a `elem` flatten0 (swap a b p) &&
-        b `elem` flatten0 (swap a b p) =:= True
+  a `elem` flatten0 p ==>
+  b `elem` flatten0 p ==>
+  a `elem` flatten0 (swap a b p) .&&.
+  b `elem` flatten0 (swap a b p)
 

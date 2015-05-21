@@ -2,8 +2,7 @@
 module Definitions where
 
 import Prelude (Eq,Ord,Show,iterate,(!!),fmap,Bool(..),div,return,(.),Maybe(..))
-import Tip.DSL
-import Test.QuickCheck hiding ((==>))
+import Tip
 import Data.Typeable
 
 data Nat = Z | S Nat

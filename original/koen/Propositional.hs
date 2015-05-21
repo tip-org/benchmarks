@@ -2,7 +2,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Propositional where
 
-import Tip.DSL
+import Tip
 import Prelude hiding (Eq(..), Ord(..), map, all, elem, null, length, even, or, (++), filter)
 import Nat
 import qualified Prelude
@@ -79,13 +79,13 @@ valid p = null (models (Not p) [])
 --------------------------------------------------------------------------------
 
 prop_AndCommutative p q =
-  valid (p :&: q) =:= valid (q :&: p)
+  valid (p :&: q) === valid (q :&: p)
 
 prop_AndIdempotent p =
-  valid (p :&: p) =:= valid p
+  valid (p :&: p) === valid p
 
 prop_AndImplication p q =
-  valid (p :&: q) =:= True ==> valid q =:= True
+  valid (p :&: q) === True ==> valid q === True
 
 --------------------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ okay []        = True
 okay ((x,b):m) = not (x `elem` map fst m) && okay m
 
 prop_Okay p =
-  all okay (models p []) =:= True
+  all okay (models p []) === True
 
 (|=) :: Val -> Form -> Bool
 m |= Var x     = or [ x == y | (y, True) <- m ]
@@ -102,4 +102,4 @@ m |= Not p     = not (m |= p)
 m |= (p :&: q) = m |= p && m |= q
 
 prop_Sound p =
-  all (|= p) (models p []) =:= True
+  all (|= p) (models p []) === True

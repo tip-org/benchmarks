@@ -6,13 +6,12 @@
 --
 -- From "Packrat Parsing: Simple, Powerful, Lazy, Linear Time" (Functional
 -- Pearl), Bryan Ford ICFP 2012
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveDataTypeable, TypeOperators #-}
 module Packrat where
 
 import Prelude hiding ((++),(+))
 import Control.Monad
-import Tip.DSL
-import Test.QuickCheck hiding ((==>))
+import Tip
 import Data.Typeable
 
 {-
@@ -91,43 +90,43 @@ linB ZB     = [X,Z,Y,Y]
 linB (SB b) = [X] ++ linB b ++ [Y,Y]
 
 -- this one is false:
-alemmaS_L v w s t = linS v ++ s =:= linS w ++ t ==> (v,s) =:= (w,t)
+alemmaS_L v w s t = linS v ++ s === linS w ++ t ==> (v,s) === (w,t)
 
-prop_unambigPackrat :: S -> S -> Prop S
-prop_unambigPackrat u v = linS u =:= linS v ==> u =:= v
+prop_unambigPackrat :: S -> S -> Equality [Tok] :=>: Equality S
+prop_unambigPackrat u v = linS u === linS v ==> u === v
 
-unambigA u v = linA u =:= linA v ==> u =:= v
-unambigB u v = linB u =:= linB v ==> u =:= v
+unambigA u v = linA u === linA v ==> u === v
+unambigB u v = linB u === linB v ==> u === v
 
-injR u v w = v ++ u =:= w ++ u ==> v =:= w
-inj1 x v w = v ++ [x] =:= w ++ [x] ==> v =:= w
-injL u v w = u ++ v =:= u ++ w ==> v =:= w
+injR u v w = v ++ u === w ++ u ==> v === w
+inj1 x v w = v ++ [x] === w ++ [x] ==> v === w
+injL u v w = u ++ v === u ++ w ==> v === w
 
-lemmaA_L v w s t = linA v ++ s =:= linA w ++ t ==> (v,s) =:= (w,t)
-lemmaB_L v w s t = linB v ++ s =:= linB w ++ t ==> (v,s) =:= (w,t)
+lemmaA_L v w s t = linA v ++ s === linA w ++ t ==> (v,s) === (w,t)
+lemmaB_L v w s t = linB v ++ s === linB w ++ t ==> (v,s) === (w,t)
 
 {-
-lemmaAB a b = linA a =:= linB b ==> A a =:= B b {- i.e: false -}
+lemmaAB a b = linA a === linB b ==> A a === B b {- i.e: false -}
 
-lemmaCountA a = count X (linA a) =:= count Y (linA a)
-lemmaCountB b = double (count X (linB b)) =:= count Y (linB b)
+lemmaCountA a = count X (linA a) === count Y (linA a)
+lemmaCountB b = double (count X (linB b)) === count Y (linB b)
 
-countMorph x xs ys = count x (xs ++ ys) =:= count x xs + count x ys
+countMorph x xs ys = count x (xs ++ ys) === count x xs + count x ys
 
-nonZeroA x a = nonZero (count x (linA a)) =:= True
-nonZeroB x b = nonZero (count x (linB b)) =:= True
+nonZeroA x a = nonZero (count x (linA a)) === True
+nonZeroB x b = nonZero (count x (linB b)) === True
 -}
 
 -- after either of these (because commutativity), all the lemmas about double below follow
-plusInjL x y z = y + x =:= z + x ==> y =:= z
-plusInjR x y z = x + y =:= x + z ==> y =:= z
+plusInjL x y z = y + x === z + x ==> y === z
+plusInjR x y z = x + y === x + z ==> y === z
 
 {-
-lemmaDouble x = double (S x) =:= S x ==> x =:= S x
-lemmaDouble2 x = double x =:= x ==> x =:= Zero
+lemmaDouble x = double (S x) === S x ==> x === S x
+lemmaDouble2 x = double x === x ==> x === Zero
 
-lemmaPlus x  = S x + S x =:= S x ==> x =:= S x
-lemmaPlus2 x = x + x =:= x ==> x =:= Zero
+lemmaPlus x  = S x + S x === S x ==> x === S x
+lemmaPlus2 x = x + x === x ==> x === Zero
 -}
 
 
