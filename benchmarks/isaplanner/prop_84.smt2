@@ -39,8 +39,8 @@
      (case nil y)
      (case (cons z xs) (cons z (append xs y))))))
 (assert-not
-  (par (a a1)
-    (forall ((xs (list a)) (ys (list a1)) (zs (list a1)))
+  (par (a b)
+    (forall ((xs (list a)) (ys (list b)) (zs (list b)))
       (= (zip xs (append ys zs))
         (append (zip (take (len ys) xs) ys)
           (zip (drop (len ys) xs) zs))))))

@@ -31,11 +31,10 @@
        (append (append (flatten0 p) (cons y (as nil (list a))))
          (flatten0 q)))
      (case Nil (as nil (list a))))))
-(define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (assert-not
   (forall ((p (Tree Int)) (a Int) (b Int))
-    (=> (and2 (elem a (flatten0 p)) (elem b (flatten0 p)))
-      (and2 (elem a (flatten0 (swap a b p)))
-        (elem b (flatten0 (swap a b p)))))))
+    (=> (elem a (flatten0 p))
+      (=> (elem b (flatten0 p))
+        (and (elem a (flatten0 (swap a b p)))
+          (elem b (flatten0 (swap a b p))))))))
 (check-sat)

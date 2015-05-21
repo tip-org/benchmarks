@@ -17,7 +17,7 @@
      (case nil (as nil (list b)))
      (case (cons z xs) (cons (@ x z) (map2 x xs))))))
 (assert-not
-  (par (a1 a)
-    (forall ((n Nat) (f (=> a1 a)) (xs (list a1)))
+  (par (a b)
+    (forall ((n Nat) (f (=> b a)) (xs (list b)))
       (= (take n (map2 f xs)) (map2 f (take n xs))))))
 (check-sat)
