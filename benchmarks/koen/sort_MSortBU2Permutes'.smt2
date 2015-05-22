@@ -48,6 +48,8 @@
          (case nil xs)
          (case (cons z x2) (mergingbu2 (pairwise x))))))))
 (define-funs-rec
+  ((msortbu2 ((x (list Int))) (list Int))) ((mergingbu2 (risers x))))
+(define-funs-rec
   ((elem ((x Int) (y (list Int))) Bool))
   ((match y
      (case nil false)
@@ -55,10 +57,6 @@
 (define-funs-rec
   ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
   ((@ x (@ y z))))
-(define-funs-rec
-  ((msortbu2 ((x (list Int))) (list Int)))
-  ((dot (lambda ((y (list (list Int)))) (mergingbu2 y))
-     (lambda ((z (list Int))) (risers z)) x)))
 (define-funs-rec
   ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y

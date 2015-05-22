@@ -56,11 +56,9 @@
      (case (Node p y q) (cons y (toList (hmerge p q))))
      (case Nil (as nil (list Int))))))
 (define-funs-rec
+  ((hsort ((x (list Int))) (list Int))) ((toList (toHeap x))))
+(define-funs-rec
   ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
   ((@ x (@ y z))))
-(define-funs-rec
-  ((hsort ((x (list Int))) (list Int)))
-  ((dot (lambda ((y (Heap Int))) (toList y))
-     (lambda ((z (list Int))) (toHeap z)) x)))
 (assert-not (forall ((x (list Int))) (= (hsort x) (isort x))))
 (check-sat)

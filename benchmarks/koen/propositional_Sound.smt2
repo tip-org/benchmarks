@@ -74,23 +74,15 @@
              (not (or3 (=3 x2 y)))
              (cons
              (cons (Pair2 x2 false)
-               (filter
-               (lambda ((x3 (Pair Int Bool)))
-                 (dot (lambda ((x4 Int)) (distinct x2 x4))
-                   (lambda ((x5 (Pair Int Bool))) (fst x5)) x3))
-                 y))
+               (filter (lambda ((x3 (Pair Int Bool))) (distinct x2 (fst x3))) y))
                (as nil (list (list (Pair Int Bool)))))
              (as nil (list (list (Pair Int Bool))))))))
-     (case (Var x6)
+     (case (Var x4)
        (ite
-         (not (or3 (models3 x6 y)))
+         (not (or3 (models3 x4 y)))
          (cons
-         (cons (Pair2 x6 true)
-           (filter
-           (lambda ((x7 (Pair Int Bool)))
-             (dot (lambda ((x8 Int)) (distinct x6 x8))
-               (lambda ((x9 (Pair Int Bool))) (fst x9)) x7))
-             y))
+         (cons (Pair2 x4 true)
+           (filter (lambda ((x3 (Pair Int Bool))) (distinct x4 (fst x3))) y))
            (as nil (list (list (Pair Int Bool)))))
          (as nil (list (list (Pair Int Bool)))))))
    (match x

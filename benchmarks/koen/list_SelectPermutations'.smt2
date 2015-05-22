@@ -54,9 +54,6 @@
      (case (cons z xs) (and2 (@ x z) (all x xs))))))
 (assert-not
   (forall ((xs (list Int)) (z Int))
-    (all
-    (lambda ((x (list Int)))
-      (dot (lambda ((y Nat)) (eq (count z xs) y))
-        (lambda ((x2 (list Int))) (count z x2)) x))
+    (all (lambda ((x (list Int))) (eq (count z xs) (count z x)))
       (prop_SelectPermutations (select xs)))))
 (check-sat)

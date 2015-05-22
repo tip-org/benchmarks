@@ -35,13 +35,6 @@
      (case (cons y xs) (add y (toTree xs))))))
 (define-funs-rec
   ((tsort ((x (list Int))) (list Int)))
-  ((dot
-   (lambda ((y (=> (list Int) (list Int)))) (@ y (as nil (list Int))))
-     (lambda ((z (list Int)))
-       (dot
-       (lambda ((x2 (Tree Int)))
-         (lambda ((x3 (list Int))) (flatten x2 x3)))
-         (lambda ((x4 (list Int))) (toTree x4)) z))
-     x)))
+  ((flatten (toTree x) (as nil (list Int)))))
 (assert-not (forall ((x (list Int))) (ordered (tsort x))))
 (check-sat)
