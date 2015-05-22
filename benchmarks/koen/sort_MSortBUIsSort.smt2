@@ -33,6 +33,10 @@
          (case nil xs)
          (case (cons z x2) (mergingbu (pairwise x))))))))
 (define-funs-rec
+  ((msortbu ((x (list Int))) (list Int)))
+  ((mergingbu
+   (map2 (lambda ((y Int)) (cons y (as nil (list Int)))) x))))
+(define-funs-rec
   ((insert2 ((x Int) (y (list Int))) (list Int)))
   ((match y
      (case nil (cons x y))
@@ -43,14 +47,5 @@
   ((match x
      (case nil x)
      (case (cons y xs) (insert2 y (isort xs))))))
-(define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
-(define-funs-rec
-  ((msortbu ((x (list Int))) (list Int)))
-  ((dot (lambda ((y (list (list Int)))) (mergingbu y))
-     (lambda ((z (list Int)))
-       (map2 (lambda ((x2 Int)) (cons x2 (as nil (list Int)))) z))
-     x)))
 (assert-not (forall ((x (list Int))) (= (msortbu x) (isort x))))
 (check-sat)

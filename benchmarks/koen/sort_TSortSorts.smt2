@@ -10,9 +10,6 @@
      (case (TNode p z q) (flatten p (cons z (flatten q y))))
      (case TNil y))))
 (define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
-(define-funs-rec
   ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec
   ((ordered ((x (list Int))) Bool))
@@ -35,13 +32,6 @@
      (case (cons y xs) (add y (toTree xs))))))
 (define-funs-rec
   ((tsort ((x (list Int))) (list Int)))
-  ((dot
-   (lambda ((y (=> (list Int) (list Int)))) (@ y (as nil (list Int))))
-     (lambda ((z (list Int)))
-       (dot
-       (lambda ((x2 (Tree Int)))
-         (lambda ((x3 (list Int))) (flatten x2 x3)))
-         (lambda ((x4 (list Int))) (toTree x4)) z))
-     x)))
+  ((flatten (toTree x) (as nil (list Int)))))
 (assert-not (forall ((x (list Int))) (ordered (tsort x))))
 (check-sat)
