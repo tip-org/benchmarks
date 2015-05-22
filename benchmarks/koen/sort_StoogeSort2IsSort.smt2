@@ -7,7 +7,7 @@
   ((ite
      (= x 0) (as nil (list a))
      (match y
-       (case nil y)
+       (case nil (as nil (list a)))
        (case (cons z xs) (cons z (ztake (- x 1) xs)))))))
 (define-funs-rec
   ((par (a) (zlength ((x (list a))) Int)))
@@ -19,7 +19,7 @@
   ((ite
      (= x 0) y
      (match y
-       (case nil y)
+       (case nil (as nil (list a)))
        (case (cons z xs) (zdrop (- x 1) xs))))))
 (define-funs-rec
   ((par (a)
@@ -33,13 +33,13 @@
 (define-funs-rec
   ((insert2 ((x Int) (y (list Int))) (list Int)))
   ((match y
-     (case nil (cons x y))
+     (case nil (cons x (as nil (list Int))))
      (case (cons z xs)
        (ite (<= x z) (cons x y) (cons z (insert2 x xs)))))))
 (define-funs-rec
   ((isort ((x (list Int))) (list Int)))
   ((match x
-     (case nil x)
+     (case nil (as nil (list Int)))
      (case (cons y xs) (insert2 y (isort xs))))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
@@ -51,23 +51,19 @@
    (stoogesort2 ((x (list Int))) (list Int))
    (stooge2sort1 ((x (list Int))) (list Int)))
   ((match (zsplitAt (div (+ (* 2 (zlength x)) 1) 3) x)
-     (case (Pair2 ys zs)
-       (match (zsplitAt (div (+ (* 2 (zlength x)) 1) 3) x)
-         (case (Pair2 xs zs2) (append (stoogesort2 ys) zs2)))))
+     (case (Pair2 ys zs) (append (stoogesort2 ys) zs)))
    (match x
-     (case nil x)
+     (case nil (as nil (list Int)))
      (case (cons y z)
        (match z
-         (case nil x)
+         (case nil (cons y (as nil (list Int))))
          (case (cons y2 x2)
            (match x2
              (case nil (sort2 y y2))
              (case (cons x3 x4)
                (stooge2sort2 (stooge2sort1 (stooge2sort2 x)))))))))
    (match (zsplitAt (div (zlength x) 3) x)
-     (case (Pair2 ys zs)
-       (match (zsplitAt (div (zlength x) 3) x)
-         (case (Pair2 xs zs2) (append ys (stoogesort2 zs2))))))))
+     (case (Pair2 ys zs) (append ys (stoogesort2 zs))))))
 (assert-not
   (forall ((x (list Int))) (= (stoogesort2 x) (isort x))))
 (check-sat)

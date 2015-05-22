@@ -25,10 +25,10 @@
 (define-funs-rec
   ((hpairwise ((x (list (Heap Int)))) (list (Heap Int))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list (Heap Int))))
      (case (cons q y)
        (match y
-         (case nil x)
+         (case nil (cons q (as nil (list (Heap Int)))))
          (case (cons q2 qs) (cons (hmerge q q2) (hpairwise qs))))))))
 (define-funs-rec
   ((hmerging ((x (list (Heap Int)))) (Heap Int)))

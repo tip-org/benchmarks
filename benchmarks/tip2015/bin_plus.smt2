@@ -5,7 +5,7 @@
 (define-funs-rec
   ((s ((x Bin)) Bin))
   ((match x
-     (case One (ZeroAnd x))
+     (case One (ZeroAnd One))
      (case (ZeroAnd xs) (OneAnd xs))
      (case (OneAnd ys) (ZeroAnd (s ys))))))
 (define-funs-rec

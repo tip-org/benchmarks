@@ -8,7 +8,7 @@
   ((ite
      (= x 0) (as nil (list a))
      (match y
-       (case nil y)
+       (case nil (as nil (list a)))
        (case (cons z xs) (cons z (ztake (- x 1) xs)))))))
 (define-funs-rec
   ((par (a) (zlength ((x (list a))) Int)))
@@ -20,7 +20,7 @@
   ((ite
      (= x 0) y
      (match y
-       (case nil y)
+       (case nil (as nil (list a)))
        (case (cons z xs) (zdrop (- x 1) xs))))))
 (define-funs-rec
   ((par (a)
@@ -44,7 +44,7 @@
 (define-funs-rec
   ((par (t) (reverse ((x (list t))) (list t))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list t)))
      (case (cons y xs)
        (append (reverse xs) (cons y (as nil (list t))))))))
 (define-funs-rec
@@ -52,23 +52,19 @@
    (stoogesort ((x (list Int))) (list Int))
    (stooge1sort1 ((x (list Int))) (list Int)))
   ((match (zsplitAt (div (zlength x) 3) (reverse x))
-     (case (Pair2 ys zs)
-       (match (zsplitAt (div (zlength x) 3) (reverse x))
-         (case (Pair2 xs zs2) (append (stoogesort zs) (reverse xs))))))
+     (case (Pair2 ys zs) (append (stoogesort zs) (reverse ys))))
    (match x
-     (case nil x)
+     (case nil (as nil (list Int)))
      (case (cons y z)
        (match z
-         (case nil x)
+         (case nil (cons y (as nil (list Int))))
          (case (cons y2 x2)
            (match x2
              (case nil (sort2 y y2))
              (case (cons x3 x4)
                (stooge1sort2 (stooge1sort1 (stooge1sort2 x)))))))))
    (match (zsplitAt (div (zlength x) 3) x)
-     (case (Pair2 ys zs)
-       (match (zsplitAt (div (zlength x) 3) x)
-         (case (Pair2 xs zs2) (append ys (stoogesort zs2))))))))
+     (case (Pair2 ys zs) (append ys (stoogesort zs))))))
 (assert-not
   (forall ((x Int) (y (list Int)))
     (= (count x (stoogesort y)) (count x y))))

@@ -10,7 +10,7 @@
 (define-funs-rec
   ((mult ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S z) (plus y (mult z y))))))
 (define-funs-rec
   ((qfac ((x Nat) (y Nat)) Nat))
@@ -20,7 +20,7 @@
 (define-funs-rec
   ((fac ((x Nat)) Nat))
   ((match x
-     (case Z (S x))
+     (case Z (S Z))
      (case (S y) (mult x (fac y))))))
 (assert-not (forall ((x Nat)) (= (fac x) (qfac x one))))
 (check-sat)

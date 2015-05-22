@@ -26,7 +26,7 @@
 (define-funs-rec
   ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y
-     (case nil y)
+     (case nil (as nil (list Int)))
      (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
   ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
@@ -41,7 +41,7 @@
   ((match y
      (case (TNode p z q)
        (ite (<= x z) (TNode (add x p) z q) (TNode p z (add x q))))
-     (case TNil (TNode y x y)))))
+     (case TNil (TNode (as TNil (Tree Int)) x (as TNil (Tree Int)))))))
 (define-funs-rec
   ((toTree ((x (list Int))) (Tree Int)))
   ((match x

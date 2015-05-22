@@ -5,7 +5,7 @@
 (define-funs-rec
   ((par (a) (filter ((x (=> a Bool)) (y (list a))) (list a))))
   ((match y
-     (case nil y)
+     (case nil (as nil (list a)))
      (case (cons z xs)
        (ite (@ x z) (cons z (filter x xs)) (filter x xs))))))
 (define-funs-rec
@@ -16,7 +16,7 @@
 (define-funs-rec
   ((par (a) (rev ((x (list a))) (list a))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list a)))
      (case (cons y xs) (append (rev xs) (cons y (as nil (list a))))))))
 (assert-not
   (par (a)

@@ -9,22 +9,22 @@
 (define-funs-rec
   ((insert2 ((x Int) (y (list Int))) (list Int)))
   ((match y
-     (case nil (cons x y))
+     (case nil (cons x (as nil (list Int))))
      (case (cons z xs)
        (ite (<= x z) (cons x y) (cons z (insert2 x xs)))))))
 (define-funs-rec
   ((isort ((x (list Int))) (list Int)))
   ((match x
-     (case nil x)
+     (case nil (as nil (list Int)))
      (case (cons y xs) (insert2 y (isort xs))))))
 (define-funs-rec
   ((par (a) (evens ((x (list a))) (list a)))
    (par (a) (odds ((x (list a))) (list a))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list a)))
      (case (cons y xs) (cons y (odds xs))))
    (match x
-     (case nil x)
+     (case nil (as nil (list a)))
      (case (cons y xs) (evens xs)))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
@@ -47,7 +47,7 @@
 (define-funs-rec
   ((bmerge ((x (list Int)) (y (list Int))) (list Int)))
   ((match x
-     (case nil x)
+     (case nil (as nil (list Int)))
      (case (cons z x2)
        (match y
          (case nil x)
@@ -57,17 +57,18 @@
                (match x4
                  (case nil (sort2 z x3))
                  (case (cons x5 x6)
-                   (stitch (bmerge (evens x) (evens y)) (bmerge (odds x) (odds y))))))
+                   (stitch (bmerge (evens (cons z (as nil (list Int)))) (evens y))
+                     (bmerge (odds (cons z (as nil (list Int)))) (odds y))))))
              (case (cons x7 x8)
                (stitch (bmerge (evens x) (evens y))
                  (bmerge (odds x) (odds y)))))))))))
 (define-funs-rec
   ((bsort ((x (list Int))) (list Int)))
   ((match x
-     (case nil x)
+     (case nil (as nil (list Int)))
      (case (cons y z)
        (match z
-         (case nil x)
+         (case nil (cons y (as nil (list Int))))
          (case (cons x2 x3)
            (bmerge (bsort (evens x)) (bsort (odds x)))))))))
 (assert-not (forall ((x (list Int))) (= (bsort x) (isort x))))

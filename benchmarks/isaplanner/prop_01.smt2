@@ -9,7 +9,7 @@
      (case Z (as nil (list a)))
      (case (S z)
        (match y
-         (case nil y)
+         (case nil (as nil (list a)))
          (case (cons x2 x3) (cons x2 (take z x3))))))))
 (define-funs-rec
   ((par (a) (drop ((x Nat) (y (list a))) (list a))))
@@ -17,7 +17,7 @@
      (case Z y)
      (case (S z)
        (match y
-         (case nil y)
+         (case nil (as nil (list a)))
          (case (cons x2 x3) (drop z x3)))))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))

@@ -14,14 +14,14 @@
   ((code ((x Token)) Token))
   ((match x
      (case default x)
-     (case ESC x)
+     (case ESC ESC)
      (case P A)
      (case Q B)
      (case R C))))
 (define-funs-rec
   ((escape ((x (list Token))) (list Token)))
   ((match x
-     (case nil x)
+     (case nil (as nil (list Token)))
      (case (cons y xs)
        (ite
          (isSpecial y) (cons ESC (cons (code y) (escape xs)))

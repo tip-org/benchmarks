@@ -12,7 +12,7 @@
          (ite
            (= x2 y) (Node (swap x y p) x (swap x y q))
            (Node (swap x y p) x2 (swap x y q)))))
-     (case Nil z))))
+     (case Nil (as Nil (Tree Int))))))
 (define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
   ((elem ((x Int) (y (list Int))) Bool))

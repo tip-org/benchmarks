@@ -14,7 +14,7 @@
 (define-funs-rec
   ((insert2 ((x Nat) (y (list Nat))) (list Nat)))
   ((match y
-     (case nil (cons x y))
+     (case nil (cons x (as nil (list Nat))))
      (case (cons z xs)
        (ite (le x z) (cons x y) (cons z (insert2 x xs)))))))
 (define-funs-rec

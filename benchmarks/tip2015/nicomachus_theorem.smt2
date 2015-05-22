@@ -8,17 +8,17 @@
 (define-funs-rec
   ((sum ((x Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S n) (plus (sum n) x)))))
 (define-funs-rec
   ((mult ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S n) (plus y (mult n y))))))
 (define-funs-rec
   ((cubes ((x Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S n) (plus (cubes n) (mult (mult x x) x))))))
 (assert-not
   (forall ((n Nat)) (= (cubes n) (mult (sum n) (sum n)))))

@@ -9,15 +9,15 @@
 (define-funs-rec
   ((mult ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S n) (plus y (mult n y))))))
 (define-funs-rec
   ((alt_mul ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S z)
        (match y
-         (case Z y)
+         (case Z Z)
          (case (S x2) (S (plus (plus (alt_mul z x2) z) x2))))))))
 (assert-not
   (forall ((x Nat)) (forall ((y Nat)) (= (alt_mul x y) (mult x y)))))

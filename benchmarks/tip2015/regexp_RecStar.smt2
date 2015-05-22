@@ -19,8 +19,8 @@
                  (case default (Seq x y))
                  (case Eps x)))
              (case Eps y)))
-         (case Nil y)))
-     (case Nil x))))
+         (case Nil Nil)))
+     (case Nil Nil))))
 (define-funs-rec
   ((plus ((x R) (y R)) R))
   ((match x
@@ -62,7 +62,13 @@
      (case (Plus p q) (plus (step p y) (step q y)))
      (case (Seq p2 q2)
        (plus (seq (step p2 y) q2) (seq (epsR p2) (step q2 y))))
-     (case (Star p3) (seq (step p3 y) x)))))
+     (case (Star p3)
+       (match (step p3 y)
+         (case default
+           (match (step p3 y)
+             (case default (Seq (step p3 y) x))
+             (case Eps x)))
+         (case Nil Nil))))))
 (define-funs-rec
   ((recognise ((x R) (y (list A))) Bool))
   ((match y

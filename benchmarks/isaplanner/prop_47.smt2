@@ -7,7 +7,7 @@
 (define-funs-rec
   ((par (a) (mirror ((x (Tree a))) (Tree a))))
   ((match x
-     (case Leaf x)
+     (case Leaf (as Leaf (Tree a)))
      (case (Node l y r) (Node (mirror r) y (mirror l))))))
 (define-funs-rec
   ((max2 ((x Nat) (y Nat)) Nat))

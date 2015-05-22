@@ -5,7 +5,7 @@
 (define-funs-rec
   ((par (a) (snoc ((x a) (y (list a))) (list a))))
   ((match y
-     (case nil (cons x y))
+     (case nil (cons x (as nil (list a))))
      (case (cons z ys) (cons z (snoc x ys))))))
 (define-funs-rec
   ((par (a) (rotate ((x Nat) (y (list a))) (list a))))
@@ -13,7 +13,7 @@
      (case Z y)
      (case (S z)
        (match y
-         (case nil y)
+         (case nil (as nil (list a)))
          (case (cons x2 x3) (rotate z (snoc x2 x3))))))))
 (define-funs-rec
   ((par (a) (length ((x (list a))) Nat)))

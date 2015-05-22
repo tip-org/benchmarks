@@ -25,7 +25,7 @@
 (define-funs-rec
   ((par (t) (filter ((p (=> t Bool)) (x (list t))) (list t))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list t)))
      (case (cons y z)
        (ite (@ p y) (cons y (filter p z)) (filter p z))))))
 (define-funs-rec
@@ -86,7 +86,7 @@
            (as nil (list (list (Pair Int Bool)))))
          (as nil (list (list (Pair Int Bool)))))))
    (match x
-     (case nil x)
+     (case nil (as nil (list (list (Pair Int Bool)))))
      (case (cons y z) (models4 q z (models q y))))
    (match y
      (case nil (models2 q x))

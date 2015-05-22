@@ -14,7 +14,7 @@
        (match y
          (case (Cons x2 x3)
            (rotate z (append x3 (Cons x2 (as Nil (List2 a))))))
-         (case Nil y)))
+         (case Nil (as Nil (List2 a)))))
      (case Z y))))
 (assert-not
   (par (a)

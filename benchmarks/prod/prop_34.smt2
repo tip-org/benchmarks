@@ -9,7 +9,7 @@
 (define-funs-rec
   ((mult2 ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S z) (plus y (mult2 z y))))))
 (define-funs-rec
   ((mult ((x Nat) (y Nat) (z Nat)) Nat))

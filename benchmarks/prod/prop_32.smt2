@@ -19,7 +19,7 @@
      (case Z y)
      (case (S z)
        (match y
-         (case nil y)
+         (case nil (as nil (list a)))
          (case (cons x2 x3)
            (rotate z (append x3 (cons x2 (as nil (list a)))))))))))
 (assert-not

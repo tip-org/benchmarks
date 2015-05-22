@@ -10,7 +10,7 @@
 (define-funs-rec
   ((par (a) (rev ((x (list a))) (list a))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list a)))
      (case (cons y xs) (append (rev xs) (cons y (as nil (list a))))))))
 (assert-not
   (par (a)

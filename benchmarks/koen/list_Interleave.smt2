@@ -9,10 +9,10 @@
   ((par (a) (evens ((x (list a))) (list a)))
    (par (a) (odds ((x (list a))) (list a))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list a)))
      (case (cons y xs) (cons y (odds xs))))
    (match x
-     (case nil x)
+     (case nil (as nil (list a)))
      (case (cons y xs) (evens xs)))))
 (assert-not
   (par (a)

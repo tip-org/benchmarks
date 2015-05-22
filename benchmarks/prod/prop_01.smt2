@@ -9,7 +9,7 @@
 (define-funs-rec
   ((double ((x Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S y) (S (S (double y)))))))
 (assert-not (forall ((x Nat)) (= (double x) (plus x x))))
 (check-sat)

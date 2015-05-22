@@ -4,7 +4,7 @@
 (define-funs-rec
   ((minus ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S z)
        (match y
          (case Z x)

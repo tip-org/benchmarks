@@ -18,7 +18,7 @@
      (case Z (as nil (list a)))
      (case (S z)
        (match y
-         (case nil y)
+         (case nil (as nil (list a)))
          (case (cons x2 x3) (cons x2 (take z x3))))))))
 (assert-not
   (par (a b)

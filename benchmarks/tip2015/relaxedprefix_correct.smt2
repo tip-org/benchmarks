@@ -8,7 +8,7 @@
 (define-funs-rec
   ((removeOne2 ((x It) (y (list (list It)))) (list (list It))))
   ((match y
-     (case nil y)
+     (case nil (as nil (list (list It))))
      (case (cons z x2) (cons (cons x z) (removeOne2 x x2))))))
 (define-funs-rec
   ((removeOne ((x (list It))) (list (list It))))

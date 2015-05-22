@@ -13,7 +13,7 @@
   ((match x
      (case (P y)
        (match y
-         (case Zero x)
+         (case Zero (P Zero))
          (case (Succ n) (N n))))
      (case (N m) (P (Succ m))))))
 (define-funs-rec
@@ -21,7 +21,7 @@
   ((match x
      (case Zero
        (match y
-         (case Zero (P y))
+         (case Zero (P Zero))
          (case (Succ n) (N n))))
      (case (Succ m)
        (match y

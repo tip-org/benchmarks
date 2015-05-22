@@ -20,10 +20,10 @@
 (define-funs-rec
   ((pairwise ((x (list (list Int)))) (list (list Int))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list (list Int))))
      (case (cons xs y)
        (match y
-         (case nil x)
+         (case nil (cons xs (as nil (list (list Int)))))
          (case (cons ys xss) (cons (lmerge xs ys) (pairwise xss))))))))
 (define-funs-rec
   ((mergingbu ((x (list (list Int)))) (list Int)))

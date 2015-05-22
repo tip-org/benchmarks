@@ -8,7 +8,7 @@
      (case Z
        (match y
          (case Z z)
-         (case (S y2) (add3acc x y2 (S z)))))
+         (case (S y2) (add3acc Z y2 (S z)))))
      (case (S x2) (add3acc x2 (S y) z)))))
 (assert-not
   (forall ((x1 Nat) (x2 Nat) (x3 Nat) (x4 Nat) (x5 Nat))

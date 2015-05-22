@@ -30,7 +30,7 @@
 (define-funs-rec
   ((delete ((x Nat) (y (list Nat))) (list Nat)))
   ((match y
-     (case nil y)
+     (case nil (as nil (list Nat)))
      (case (cons z xs)
        (ite (equal x z) (delete x xs) (cons z (delete x xs)))))))
 (assert-not

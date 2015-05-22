@@ -8,12 +8,12 @@
 (define-funs-rec
   ((mult ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S n) (plus y (mult n y))))))
 (define-funs-rec
   ((pow ((x Nat) (y Nat)) Nat))
   ((match y
-     (case Z (S y))
+     (case Z (S Z))
      (case (S m) (mult x (pow x m))))))
 (define-funs-rec
   ((lt ((x Nat) (y Nat)) Bool))
@@ -26,7 +26,7 @@
 (define-funs-rec
   ((factorial ((x Nat)) Nat))
   ((match x
-     (case Z (S x))
+     (case Z (S Z))
      (case (S n) (mult x (factorial n))))))
 (assert-not
   (forall ((n Nat))

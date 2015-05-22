@@ -19,7 +19,7 @@
 (define-funs-rec
   ((ins ((x Nat) (y (list Nat))) (list Nat)))
   ((match y
-     (case nil (cons x y))
+     (case nil (cons x (as nil (list Nat))))
      (case (cons z xs) (ite (lt x z) (cons x y) (cons z (ins x xs)))))))
 (assert-not
   (forall ((x Nat) (xs (list Nat)))

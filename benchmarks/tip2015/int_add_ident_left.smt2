@@ -13,7 +13,7 @@
   ((match x
      (case Zero
        (match y
-         (case Zero (P y))
+         (case Zero (P Zero))
          (case (Succ n) (N n))))
      (case (Succ m)
        (match y

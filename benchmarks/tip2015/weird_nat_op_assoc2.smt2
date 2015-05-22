@@ -9,7 +9,7 @@
      (case Z
        (match z
          (case Z x2)
-         (case (S x3) (op x y x3 (S x2)))))
+         (case (S x3) (op Z y x3 (S x2)))))
      (case (S x4)
        (match z
          (case Z (op x4 y y x2))

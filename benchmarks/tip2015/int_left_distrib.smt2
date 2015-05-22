@@ -9,7 +9,7 @@
      (case Pos (P y))
      (case Neg
        (match y
-         (case Zero (P y))
+         (case Zero (P Zero))
          (case (Succ m) (N m)))))))
 (define-funs-rec
   ((sign ((x Z)) Sign))
@@ -34,14 +34,14 @@
 (define-funs-rec
   ((mult ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Zero x)
+     (case Zero Zero)
      (case (Succ n) (plus2 y (mult n y))))))
 (define-funs-rec
   ((minus ((x Nat) (y Nat)) Z))
   ((match x
      (case Zero
        (match y
-         (case Zero (P y))
+         (case Zero (P Zero))
          (case (Succ n) (N n))))
      (case (Succ m)
        (match y

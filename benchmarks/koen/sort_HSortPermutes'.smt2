@@ -30,10 +30,10 @@
 (define-funs-rec
   ((hpairwise ((x (list (Heap Int)))) (list (Heap Int))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list (Heap Int))))
      (case (cons p y)
        (match y
-         (case nil x)
+         (case nil (cons p (as nil (list (Heap Int)))))
          (case (cons q qs) (cons (hmerge p q) (hpairwise qs))))))))
 (define-funs-rec
   ((hmerging ((x (list (Heap Int)))) (Heap Int)))
@@ -63,7 +63,7 @@
 (define-funs-rec
   ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y
-     (case nil y)
+     (case nil (as nil (list Int)))
      (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
   ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))

@@ -13,7 +13,7 @@
   ((match x
      (case (P y)
        (match y
-         (case Zero x)
+         (case Zero (P Zero))
          (case (Succ n) (N n))))
      (case (N m) (P (Succ m))))))
 (define-funs-rec
@@ -21,7 +21,7 @@
   ((match x
      (case Zero
        (match y
-         (case Zero (P y))
+         (case Zero (P Zero))
          (case (Succ n) (N n))))
      (case (Succ m)
        (match y
@@ -38,5 +38,14 @@
        (match y
          (case (P n2) (minus n2 (Succ m2)))
          (case (N n3) (N (Succ (plus2 m2 n3)))))))))
-(assert-not (forall ((x Z)) (= (plus x (neg x)) zero)))
+(assert-not
+  (forall ((x Z))
+    (=
+    (match x
+      (case (P m)
+        (match m
+          (case Zero (P (plus2 Zero Zero)))
+          (case (Succ n) (minus m m))))
+      (case (N o) (minus (Succ o) (Succ o))))
+      zero)))
 (check-sat)

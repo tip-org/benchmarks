@@ -7,13 +7,13 @@
 (define-funs-rec
   ((insert2 ((x Int) (y (list Int))) (list Int)))
   ((match y
-     (case nil (cons x y))
+     (case nil (cons x (as nil (list Int))))
      (case (cons z xs)
        (ite (<= x z) (cons x y) (cons z (insert2 x xs)))))))
 (define-funs-rec
   ((isort ((x (list Int))) (list Int)))
   ((match x
-     (case nil x)
+     (case nil (as nil (list Int)))
      (case (cons y xs) (insert2 y (isort xs))))))
 (define-funs-rec
   ((par (a) (flatten ((x (Tree a)) (y (list a))) (list a))))
@@ -28,7 +28,7 @@
   ((match y
      (case (TNode p z q)
        (ite (<= x z) (TNode (add x p) z q) (TNode p z (add x q))))
-     (case TNil (TNode y x y)))))
+     (case TNil (TNode (as TNil (Tree Int)) x (as TNil (Tree Int)))))))
 (define-funs-rec
   ((toTree ((x (list Int))) (Tree Int)))
   ((match x

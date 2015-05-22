@@ -22,7 +22,7 @@
 (define-funs-rec
   ((intersect ((x (list Nat)) (y (list Nat))) (list Nat)))
   ((match x
-     (case nil x)
+     (case nil (as nil (list Nat)))
      (case (cons z xs)
        (ite (elem z y) (cons z (intersect xs y)) (intersect xs y))))))
 (assert-not

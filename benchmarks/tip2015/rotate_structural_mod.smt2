@@ -8,7 +8,7 @@
      (case (S z)
        (match y
          (case (Cons x2 x3) (Cons x2 (take z x3)))
-         (case Nil y)))
+         (case Nil (as Nil (List2 a)))))
      (case Z (as Nil (List2 a))))))
 (define-funs-rec
   ((minus ((x Nat) (y Nat)) Nat))
@@ -17,7 +17,7 @@
        (match y
          (case (S x2) (minus z x2))
          (case Z x)))
-     (case Z x))))
+     (case Z Z))))
 (define-funs-rec
   ((mod2 ((x Nat) (y Nat) (z Nat)) Nat))
   ((match z
@@ -30,8 +30,8 @@
          (case Z
            (match y
              (case (S m) (minus z y))
-             (case Z y)))))
-     (case Z z))))
+             (case Z Z)))))
+     (case Z Z))))
 (define-funs-rec ((mod3 ((x Nat) (y Nat)) Nat)) ((mod2 x Z y)))
 (define-funs-rec
   ((par (a) (length ((x (List2 a))) Nat)))
@@ -44,7 +44,7 @@
      (case (S z)
        (match y
          (case (Cons x2 x3) (drop z x3))
-         (case Nil y)))
+         (case Nil (as Nil (List2 a)))))
      (case Z y))))
 (define-funs-rec
   ((par (a) (append ((x (List2 a)) (y (List2 a))) (List2 a))))
@@ -58,7 +58,7 @@
        (match y
          (case (Cons x2 x3)
            (rotate z (append x3 (Cons x2 (as Nil (List2 a))))))
-         (case Nil y)))
+         (case Nil (as Nil (List2 a)))))
      (case Z y))))
 (assert-not
   (par (a)

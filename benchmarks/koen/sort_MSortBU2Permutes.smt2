@@ -8,12 +8,13 @@
      (case nil (as nil (list (list Int))))
      (case (cons y z)
        (match z
-         (case nil (cons x (as nil (list (list Int)))))
+         (case nil
+           (cons (cons y (as nil (list Int))) (as nil (list (list Int)))))
          (case (cons y2 xs)
            (ite
              (<= y y2)
              (match (risers z)
-               (case nil (risers z))
+               (case nil (as nil (list (list Int))))
                (case (cons ys yss) (cons (cons y ys) yss)))
              (cons (cons y (as nil (list Int))) (risers z)))))))))
 (define-funs-rec
@@ -29,10 +30,10 @@
 (define-funs-rec
   ((pairwise ((x (list (list Int)))) (list (list Int))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list (list Int))))
      (case (cons xs y)
        (match y
-         (case nil x)
+         (case nil (cons xs (as nil (list (list Int)))))
          (case (cons ys xss) (cons (lmerge xs ys) (pairwise xss))))))))
 (define-funs-rec
   ((mergingbu2 ((x (list (list Int)))) (list Int)))

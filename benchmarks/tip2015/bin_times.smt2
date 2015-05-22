@@ -5,7 +5,7 @@
 (define-funs-rec
   ((s ((x Bin)) Bin))
   ((match x
-     (case One (ZeroAnd x))
+     (case One (ZeroAnd One))
      (case (ZeroAnd xs) (OneAnd xs))
      (case (OneAnd ys) (ZeroAnd (s ys))))))
 (define-funs-rec
@@ -42,7 +42,7 @@
 (define-funs-rec
   ((mult ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S n) (plus y (mult n y))))))
 (assert-not
   (forall ((x Bin) (y Bin))

@@ -10,35 +10,37 @@
      (case Z
        (match y
          (case Z z)
-         (case (S y2) (add3acc x y2 (S z)))))
+         (case (S y2) (add3acc Z y2 (S z)))))
      (case (S x2) (add3acc x2 (S y) z)))))
 (define-funs-rec
   ((mul3acc ((x Nat) (y Nat) (z Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S x2)
        (match y
-         (case Z y)
+         (case Z Z)
          (case (S x3)
            (match z
-             (case Z z)
+             (case Z Z)
              (case (S x4)
                (match x2
                  (case Z
                    (match x3
                      (case Z
                        (match x4
-                         (case Z z)
+                         (case Z (S Z))
                          (case (S x5)
                            (S
-                           (add3acc (mul3acc x2 x3 x4)
-                             (add3acc (mul3acc y x3 x4) (mul3acc x2 y x4) (mul3acc x2 x3 y))
-                             (add3acc x2 x3 x4))))))
+                           (add3acc (mul3acc Z Z x4)
+                             (add3acc (mul3acc (S Z) Z x4)
+                               (mul3acc Z (S Z) x4) (mul3acc Z Z (S Z)))
+                             (add3acc Z Z x4))))))
                      (case (S x6)
                        (S
-                       (add3acc (mul3acc x2 x3 x4)
-                         (add3acc (mul3acc x x3 x4) (mul3acc x2 x x4) (mul3acc x2 x3 x))
-                         (add3acc x2 x3 x4))))))
+                       (add3acc (mul3acc Z x3 x4)
+                         (add3acc (mul3acc (S Z) x3 x4)
+                           (mul3acc Z (S Z) x4) (mul3acc Z x3 (S Z)))
+                         (add3acc Z x3 x4))))))
                  (case (S x7)
                    (S
                    (add3acc (mul3acc x2 x3 x4)

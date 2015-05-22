@@ -20,8 +20,8 @@
                  (case default (Seq x y))
                  (case Eps x)))
              (case Eps y)))
-         (case Nil y)))
-     (case Nil x))))
+         (case Nil Nil)))
+     (case Nil Nil))))
 (define-funs-rec
   ((plus ((x R) (y R)) R))
   ((match x
@@ -44,7 +44,7 @@
      (consfst
         ((x a) (y (list (Pair (list a) b)))) (list (Pair (list a) b)))))
   ((match y
-     (case nil y)
+     (case nil (as nil (list (Pair (list a) b))))
      (case (cons z ys)
        (match z
          (case (Pair2 xs y2)
@@ -53,7 +53,8 @@
   ((par (a) (split ((x (list a))) (list (Pair (list a) (list a))))))
   ((match x
      (case nil
-       (cons (Pair2 x x) (as nil (list (Pair (list a) (list a))))))
+       (cons (Pair2 (as nil (list a)) (as nil (list a)))
+         (as nil (list (Pair (list a) (list a))))))
      (case (cons y s)
        (cons (Pair2 (as nil (list a)) x) (consfst y (split s)))))))
 (define-funs-rec
@@ -75,7 +76,13 @@
      (case (Plus p q) (plus (step p y) (step q y)))
      (case (Seq p2 q2)
        (plus (seq (step p2 y) q2) (seq (epsR p2) (step q2 y))))
-     (case (Star p3) (seq (step p3 y) x)))))
+     (case (Star p3)
+       (match (step p3 y)
+         (case default
+           (match (step p3 y)
+             (case default (Seq (step p3 y) x))
+             (case Eps x)))
+         (case Nil Nil))))))
 (define-funs-rec
   ((recognise ((x R) (y (list A))) Bool))
   ((match y

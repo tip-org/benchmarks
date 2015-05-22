@@ -6,13 +6,13 @@
 (define-funs-rec
   ((third ((x Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S y)
        (match y
-         (case Z y)
+         (case Z Z)
          (case (S z)
            (match z
-             (case Z z)
+             (case Z Z)
              (case (S n) (S (third n))))))))))
 (define-funs-rec
   ((par (a) (take ((x Nat) (y (list a))) (list a))))
@@ -20,7 +20,7 @@
      (case Z (as nil (list a)))
      (case (S z)
        (match y
-         (case nil y)
+         (case nil (as nil (list a)))
          (case (cons x2 x3) (cons x2 (take z x3))))))))
 (define-funs-rec
   ((sort2 ((x Int) (y Int)) (list Int)))
@@ -49,7 +49,7 @@
      (case Z y)
      (case (S z)
        (match y
-         (case nil y)
+         (case nil (as nil (list a)))
          (case (cons x2 x3) (drop z x3)))))))
 (define-funs-rec
   ((par (a)
@@ -58,7 +58,7 @@
 (define-funs-rec
   ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y
-     (case nil y)
+     (case nil (as nil (list Int)))
      (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
@@ -68,7 +68,7 @@
 (define-funs-rec
   ((par (t) (reverse ((x (list t))) (list t))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list t)))
      (case (cons y xs)
        (append (reverse xs) (cons y (as nil (list t))))))))
 (define-funs-rec
@@ -76,23 +76,19 @@
    (nstoogesort ((x (list Int))) (list Int))
    (nstooge1sort1 ((x (list Int))) (list Int)))
   ((match (splitAt (third (length x)) (reverse x))
-     (case (Pair2 ys zs)
-       (match (splitAt (third (length x)) (reverse x))
-         (case (Pair2 xs zs2) (append (nstoogesort zs) (reverse xs))))))
+     (case (Pair2 ys zs) (append (nstoogesort zs) (reverse ys))))
    (match x
-     (case nil x)
+     (case nil (as nil (list Int)))
      (case (cons y z)
        (match z
-         (case nil x)
+         (case nil (cons y (as nil (list Int))))
          (case (cons y2 x2)
            (match x2
              (case nil (sort2 y y2))
              (case (cons x3 x4)
                (nstooge1sort2 (nstooge1sort1 (nstooge1sort2 x)))))))))
    (match (splitAt (third (length x)) x)
-     (case (Pair2 ys zs)
-       (match (splitAt (third (length x)) x)
-         (case (Pair2 xs zs2) (append ys (nstoogesort zs2))))))))
+     (case (Pair2 ys zs) (append ys (nstoogesort zs))))))
 (define-funs-rec
   ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec

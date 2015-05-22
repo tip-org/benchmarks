@@ -6,7 +6,7 @@
      (select2
         ((x a) (y (list (Pair a (list a))))) (list (Pair a (list a))))))
   ((match y
-     (case nil y)
+     (case nil (as nil (list (Pair a (list a)))))
      (case (cons z x2)
        (match z
          (case (Pair2 y2 ys)

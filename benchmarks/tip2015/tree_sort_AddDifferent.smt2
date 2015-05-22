@@ -42,7 +42,7 @@
   ((match y
      (case (Node q z q2)
        (ite (le x z) (Node (add x q) z q2) (Node q z (add x q2))))
-     (case Nil (Node y x y)))))
+     (case Nil (Node (as Nil (Tree Nat)) x (as Nil (Tree Nat)))))))
 (assert-not
   (forall ((x Nat) (y Nat) (t (Tree Nat)))
     (=> (not (equal x y))

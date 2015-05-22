@@ -11,7 +11,7 @@
 (define-funs-rec
   ((double ((x Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S y) (S (S (double y)))))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))

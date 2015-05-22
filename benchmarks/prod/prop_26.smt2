@@ -9,10 +9,10 @@
 (define-funs-rec
   ((half ((x Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S y)
        (match y
-         (case Z y)
+         (case Z Z)
          (case (S z) (S (half z))))))))
 (assert-not
   (forall ((x Nat) (y Nat)) (= (half (plus x y)) (half (plus y x)))))

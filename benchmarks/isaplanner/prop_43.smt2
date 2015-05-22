@@ -5,13 +5,13 @@
 (define-funs-rec
   ((par (a) (takeWhile ((x (=> a Bool)) (y (list a))) (list a))))
   ((match y
-     (case nil y)
+     (case nil (as nil (list a)))
      (case (cons z xs)
        (ite (@ x z) (cons z (takeWhile x xs)) (as nil (list a)))))))
 (define-funs-rec
   ((par (a) (dropWhile ((x (=> a Bool)) (y (list a))) (list a))))
   ((match y
-     (case nil y)
+     (case nil (as nil (list a)))
      (case (cons z xs) (ite (@ x z) (dropWhile x xs) y)))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))

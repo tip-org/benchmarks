@@ -21,12 +21,12 @@
 (define-funs-rec
   ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y
-     (case nil y)
+     (case nil (as nil (list Int)))
      (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
   ((ssort ((x (list Int))) (list Int)))
   ((match x
-     (case nil x)
+     (case nil (as nil (list Int)))
      (case (cons y ys)
        (cons (ssort_minimum y ys)
          (ssort (delete (ssort_minimum y ys) x)))))))

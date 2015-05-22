@@ -23,7 +23,7 @@
   ((match y
      (case (TNode q z q2)
        (ite (<= x z) (TNode (add x q) z q2) (TNode q z (add x q2))))
-     (case TNil (TNode y x y)))))
+     (case TNil (TNode (as TNil (Tree Int)) x (as TNil (Tree Int)))))))
 (define-funs-rec
   ((toTree ((x (list Int))) (Tree Int)))
   ((match x

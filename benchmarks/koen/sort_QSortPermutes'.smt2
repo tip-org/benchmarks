@@ -10,7 +10,7 @@
 (define-funs-rec
   ((par (t) (filter ((p (=> t Bool)) (x (list t))) (list t))))
   ((match x
-     (case nil x)
+     (case nil (as nil (list t)))
      (case (cons y z)
        (ite (@ p y) (cons y (filter p z)) (filter p z))))))
 (define-funs-rec
@@ -21,7 +21,7 @@
 (define-funs-rec
   ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y
-     (case nil y)
+     (case nil (as nil (list Int)))
      (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
@@ -31,7 +31,7 @@
 (define-funs-rec
   ((qsort ((x (list Int))) (list Int)))
   ((match x
-     (case nil x)
+     (case nil (as nil (list Int)))
      (case (cons y xs)
        (append
        (append (qsort (filter (lambda ((z Int)) (<= z y)) xs))

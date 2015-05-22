@@ -6,7 +6,7 @@
      (select2
         ((x a) (y (list (Pair a (list a))))) (list (Pair a (list a))))))
   ((match y
-     (case nil y)
+     (case nil (as nil (list (Pair a (list a)))))
      (case (cons z x2)
        (match z
          (case (Pair2 y2 ys)
@@ -39,7 +39,7 @@
 (define-funs-rec
   ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y
-     (case nil y)
+     (case nil (as nil (list Int)))
      (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
   ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))

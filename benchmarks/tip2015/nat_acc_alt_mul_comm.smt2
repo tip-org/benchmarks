@@ -10,10 +10,10 @@
 (define-funs-rec
   ((acc_alt_mul ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S z)
        (match y
-         (case Z y)
+         (case Z Z)
          (case (S x2)
            (S (acc_plus z (acc_plus x2 (acc_alt_mul z x2))))))))))
 (assert-not

@@ -4,10 +4,10 @@
 (define-funs-rec
   ((min2 ((x Nat) (y Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S z)
        (match y
-         (case Z y)
+         (case Z Z)
          (case (S y1) (S (min2 z y1))))))))
 (define-funs-rec
   ((le ((x Nat) (y Nat)) Bool))

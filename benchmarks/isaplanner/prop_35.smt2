@@ -5,7 +5,7 @@
 (define-funs-rec
   ((par (a) (dropWhile ((x (=> a Bool)) (y (list a))) (list a))))
   ((match y
-     (case nil y)
+     (case nil (as nil (list a)))
      (case (cons z xs) (ite (@ x z) (dropWhile x xs) y)))))
 (assert-not
   (par (a)

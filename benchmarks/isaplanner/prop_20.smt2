@@ -21,13 +21,13 @@
 (define-funs-rec
   ((insort ((x Nat) (y (list Nat))) (list Nat)))
   ((match y
-     (case nil (cons x y))
+     (case nil (cons x (as nil (list Nat))))
      (case (cons z xs)
        (ite (le x z) (cons x y) (cons z (insort x xs)))))))
 (define-funs-rec
   ((sort ((x (list Nat))) (list Nat)))
   ((match x
-     (case nil x)
+     (case nil (as nil (list Nat)))
      (case (cons y xs) (insort y (sort xs))))))
 (assert-not
   (forall ((xs (list Nat))) (= (len (sort xs)) (len xs))))

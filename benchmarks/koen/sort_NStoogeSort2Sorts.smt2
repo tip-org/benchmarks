@@ -6,24 +6,24 @@
 (define-funs-rec
   ((twoThirds ((x Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S y)
        (match y
-         (case Z x)
+         (case Z (S Z))
          (case (S z)
            (match z
-             (case Z y)
+             (case Z (S Z))
              (case (S n) (S (S (twoThirds n)))))))))))
 (define-funs-rec
   ((third ((x Nat)) Nat))
   ((match x
-     (case Z x)
+     (case Z Z)
      (case (S y)
        (match y
-         (case Z y)
+         (case Z Z)
          (case (S z)
            (match z
-             (case Z z)
+             (case Z Z)
              (case (S n) (S (third n))))))))))
 (define-funs-rec
   ((par (a) (take ((x Nat) (y (list a))) (list a))))
@@ -31,7 +31,7 @@
      (case Z (as nil (list a)))
      (case (S z)
        (match y
-         (case nil y)
+         (case nil (as nil (list a)))
          (case (cons x2 x3) (cons x2 (take z x3))))))))
 (define-funs-rec
   ((sort2 ((x Int) (y Int)) (list Int)))
@@ -49,7 +49,7 @@
      (case Z y)
      (case (S z)
        (match y
-         (case nil y)
+         (case nil (as nil (list a)))
          (case (cons x2 x3) (drop z x3)))))))
 (define-funs-rec
   ((par (a)
@@ -65,23 +65,19 @@
    (nstoogesort2 ((x (list Int))) (list Int))
    (nstooge2sort1 ((x (list Int))) (list Int)))
   ((match (splitAt (twoThirds (length x)) x)
-     (case (Pair2 ys zs)
-       (match (splitAt (twoThirds (length x)) x)
-         (case (Pair2 xs zs2) (append (nstoogesort2 ys) zs2)))))
+     (case (Pair2 ys zs) (append (nstoogesort2 ys) zs)))
    (match x
-     (case nil x)
+     (case nil (as nil (list Int)))
      (case (cons y z)
        (match z
-         (case nil x)
+         (case nil (cons y (as nil (list Int))))
          (case (cons y2 x2)
            (match x2
              (case nil (sort2 y y2))
              (case (cons x3 x4)
                (nstooge2sort2 (nstooge2sort1 (nstooge2sort2 x)))))))))
    (match (splitAt (third (length x)) x)
-     (case (Pair2 ys zs)
-       (match (splitAt (third (length x)) x)
-         (case (Pair2 xs zs2) (append ys (nstoogesort2 zs2))))))))
+     (case (Pair2 ys zs) (append ys (nstoogesort2 zs))))))
 (define-funs-rec
   ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec

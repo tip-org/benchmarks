@@ -81,7 +81,7 @@
 (define-funs-rec
   ((delete ((x Nat) (y (list Nat))) (list Nat)))
   ((match y
-     (case nil y)
+     (case nil (as nil (list Nat)))
      (case (cons z ys) (ite (equal x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
   ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
