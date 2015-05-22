@@ -52,7 +52,12 @@
 (define-funs-rec
   ((toList2 ((x Heap)) (list Nat))) ((toList (heapSize x) x)))
 (define-funs-rec
-  ((hsort ((x (list Nat))) (list Nat))) ((toList2 (toHeap x))))
+  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
+  ((@ x (@ y z))))
+(define-funs-rec
+  ((hsort ((x (list Nat))) (list Nat)))
+  ((dot (lambda ((y Heap)) (toList2 y))
+     (lambda ((z (list Nat))) (toHeap z)) x)))
 (define-funs-rec
   ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec

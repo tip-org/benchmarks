@@ -23,7 +23,7 @@ _ <= Z = False
 S x <= S y = x <= y
 
 hsort :: [Nat] -> [Nat]
-hsort xs = toList (toHeap xs)
+hsort = toList . toHeap
 
 data Heap = Node (Heap) Nat (Heap) | Nil
  deriving ( Eq, Ord, Show, Typeable )

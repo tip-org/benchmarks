@@ -127,7 +127,7 @@ prop_BubSortIsSort (xs :: [OrdA]) = bubsort xs === sort xs
 --------------------------------------------------------------------------------
 
 -- hsort :: Ord a => [a] -> [a]
-hsort xs = toList (toHeap xs)
+hsort = toList . toHeap
 
 data Heap a = Node (Heap a) a (Heap a) | Nil
 
@@ -185,7 +185,7 @@ prop_ISortPermutes' (xs :: [OrdA]) = isort xs `isPermutation` xs === True
 --------------------------------------------------------------------------------
 
 -- msortbu2 :: Ord a => [a] -> [a]
-msortbu2 xs = mergingbu2 (risers xs)
+msortbu2 = mergingbu2 . risers
 
 {-
 risers :: Ord a => [a] -> [[a]]
@@ -232,7 +232,7 @@ prop_MSortBU2IsSort (xs :: [OrdA]) = msortbu2 xs === sort xs
 --------------------------------------------------------------------------------
 
 -- msortbu :: Ord a => [a] -> [a]
-msortbu xs = mergingbu (map (:[]) xs)
+msortbu = mergingbu . map (:[])
 
 -- mergingbu :: Ord a => [[a]] -> [a]
 mergingbu []   = []
@@ -362,7 +362,7 @@ prop_SSortIsSort (xs :: [OrdA]) = ssort xs === sort xs
 --------------------------------------------------------------------------------
 
 -- tsort :: Ord a => [a] -> [a]
-tsort xs = flatten (toTree xs) []
+tsort = ($[]) . flatten . toTree
 
 data Tree a = TNode (Tree a) a (Tree a) | TNil
 
