@@ -77,6 +77,7 @@ create prop_  tip2015    Nicomachus.hs    nicomachus
 create prop_  tip2015    RegExp.hs        regexp
 create prop_  tip2015    ListMonad.hs     list
 create prop_  tip2015    RelaxedPrefix.hs relaxedprefix
+create prop_  tip2015    Seq.hs           polyrec_seq
 
 create prop_T prod       Properties.hs    prop
 create prop_  isaplanner Properties.hs    prop
