@@ -40,15 +40,12 @@
   ((match z
      (case (Var y2) (ite (= x y2) y z))
      (case (Lam y3 a)
-       (ite
-         (= x y3) z
+       (let (((z2 Int) (new (append (free y) (free a)))))
          (ite
-           (elem y3 (free y))
-           (subst x
-             y
-             (Lam (new (append (free y) (free a)))
-               (subst y3 (Var (new (append (free y) (free a)))) a)))
-           (Lam y3 (subst x y a)))))
+           (= x y3) z
+           (ite
+             (elem y3 (free y)) (subst x y (Lam z2 (subst y3 (Var z2) a)))
+             (Lam y3 (subst x y a))))))
      (case (App c b2) (App (subst x y c) (subst x y b2))))))
 (assert-not
   (forall ((x Int) (e Expr) (a Expr) (y Int))

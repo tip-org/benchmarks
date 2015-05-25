@@ -39,8 +39,8 @@
        (match z
          (case nil (cons y (as nil (list Int))))
          (case (cons x2 x3)
-           (lmerge (msorttd (ztake (div (zlength x) 2) x))
-             (msorttd (zdrop (div (zlength x) 2) x)))))))))
+           (let (((k Int) (div (zlength x) 2)))
+             (lmerge (msorttd (ztake k x)) (msorttd (zdrop k x))))))))))
 (define-funs-rec
   ((count ((x Int) (y (list Int))) Nat))
   ((match y

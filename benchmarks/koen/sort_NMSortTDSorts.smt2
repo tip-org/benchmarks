@@ -49,8 +49,8 @@
        (match z
          (case nil (cons y (as nil (list Int))))
          (case (cons x2 x3)
-           (lmerge (nmsorttd (take (half (length x)) x))
-             (nmsorttd (drop (half (length x)) x)))))))))
+           (let (((k Nat) (half (length x))))
+             (lmerge (nmsorttd (take k x)) (nmsorttd (drop k x))))))))))
 (define-funs-rec
   ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
 (define-funs-rec

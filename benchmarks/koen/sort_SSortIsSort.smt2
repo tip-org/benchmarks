@@ -28,7 +28,7 @@
   ((match x
      (case nil (as nil (list Int)))
      (case (cons y ys)
-       (cons (ssort_minimum y ys)
-         (ssort (delete (ssort_minimum y ys) x)))))))
+       (let (((m Int) (ssort_minimum y ys)))
+         (cons m (ssort (delete m x))))))))
 (assert-not (forall ((x (list Int))) (= (ssort x) (isort x))))
 (check-sat)

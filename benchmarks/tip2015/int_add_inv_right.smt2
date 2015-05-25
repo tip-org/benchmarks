@@ -38,14 +38,5 @@
        (match y
          (case (P n2) (minus n2 (Succ m2)))
          (case (N n3) (N (Succ (plus2 m2 n3)))))))))
-(assert-not
-  (forall ((x Z))
-    (=
-    (match x
-      (case (P m)
-        (match m
-          (case Zero (P (plus2 Zero Zero)))
-          (case (Succ n) (minus m m))))
-      (case (N o) (minus (Succ o) (Succ o))))
-      zero)))
+(assert-not (forall ((x Z)) (= (plus x (neg x)) zero)))
 (check-sat)
