@@ -1,5 +1,4 @@
 -- Propositional solver
-{-# LANGUAGE TemplateHaskell #-}
 module Propositional where
 
 import Tip
