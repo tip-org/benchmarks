@@ -51,8 +51,8 @@
   (forall ((x Int) (e Expr) (a Expr) (y Int))
     (=> (elem x (free a))
       (=
-      (elem y
-        (append (filter (lambda ((z Int)) (distinct z x)) (free a))
-          (free e)))
+        (elem y
+          (append (filter (lambda ((z Int)) (distinct z x)) (free a))
+            (free e)))
         (elem y (free (subst x e a)))))))
 (check-sat)

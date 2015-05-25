@@ -13,8 +13,8 @@
   ((match x
      (case (Plus a b)
        (append
-       (append (append (cons C (as nil (list Tok))) (lin a))
-         (cons D (cons Pl (as nil (list Tok)))))
+         (append (append (cons C (as nil (list Tok))) (lin a))
+           (cons D (cons Pl (as nil (list Tok)))))
          (lin b)))
      (case EX (cons X (as nil (list Tok))))
      (case EY (cons Y (as nil (list Tok)))))))

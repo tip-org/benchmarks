@@ -17,7 +17,7 @@
 (assert-not
   (forall ((n Nat) (x Nat) (y Nat) (z Nat))
     (=>
-    (= (plus (pow (S x) (S (S (S n)))) (pow (S y) (S (S (S n)))))
-      (pow (S z) (S (S (S n)))))
+      (= (plus (pow (S x) (S (S (S n)))) (pow (S y) (S (S (S n)))))
+        (pow (S z) (S (S (S n)))))
       false)))
 (check-sat)

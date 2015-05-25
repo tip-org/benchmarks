@@ -29,8 +29,8 @@
      (case nil (as nil (list Int)))
      (case (cons y xs)
        (append
-       (append (qsort (filter (lambda ((z Int)) (<= z y)) xs))
-         (cons y (as nil (list Int))))
+         (append (qsort (filter (lambda ((z Int)) (<= z y)) xs))
+           (cons y (as nil (list Int))))
          (qsort (filter (lambda ((x2 Int)) (> x2 y)) xs)))))))
 (assert-not (forall ((x (list Int))) (= (qsort x) (isort x))))
 (check-sat)

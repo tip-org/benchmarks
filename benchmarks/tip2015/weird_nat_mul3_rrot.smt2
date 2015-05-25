@@ -31,19 +31,19 @@
                          (case Z (S Z))
                          (case (S x5)
                            (S
-                           (add3 (mul3 Z Z x4)
-                             (add3 (mul3 (S Z) Z x4) (mul3 Z (S Z) x4) (mul3 Z Z (S Z)))
-                             (add3 Z Z x4))))))
+                             (add3 (mul3 Z Z x4)
+                               (add3 (mul3 (S Z) Z x4) (mul3 Z (S Z) x4) (mul3 Z Z (S Z)))
+                               (add3 Z Z x4))))))
                      (case (S x6)
                        (S
-                       (add3 (mul3 Z x3 x4)
-                         (add3 (mul3 (S Z) x3 x4) (mul3 Z (S Z) x4) (mul3 Z x3 (S Z)))
-                         (add3 Z x3 x4))))))
+                         (add3 (mul3 Z x3 x4)
+                           (add3 (mul3 (S Z) x3 x4) (mul3 Z (S Z) x4) (mul3 Z x3 (S Z)))
+                           (add3 Z x3 x4))))))
                  (case (S x7)
                    (S
-                   (add3 (mul3 x2 x3 x4)
-                     (add3 (mul3 (S Z) x3 x4) (mul3 x2 (S Z) x4) (mul3 x2 x3 (S Z)))
-                     (add3 x2 x3 x4)))))))))))))
+                     (add3 (mul3 x2 x3 x4)
+                       (add3 (mul3 (S Z) x3 x4) (mul3 x2 (S Z) x4) (mul3 x2 x3 (S Z)))
+                       (add3 x2 x3 x4)))))))))))))
 (assert-not
   (forall ((x Nat) (y Nat) (z Nat)) (= (mul3 x y z) (mul3 z x y))))
 (check-sat)

@@ -41,7 +41,7 @@
 (define-funs-rec
   ((msortbu ((x (list Int))) (list Int)))
   ((mergingbu
-   (map2 (lambda ((y Int)) (cons y (as nil (list Int)))) x))))
+     (map2 (lambda ((y Int)) (cons y (as nil (list Int)))) x))))
 (define-funs-rec
   ((elem ((x Int) (y (list Int))) Bool))
   ((match y
