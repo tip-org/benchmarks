@@ -1,0 +1,4 @@
+.PHONY: all clean all-benchmarks check
+.DEFAULT: all
+all: all-benchmarks
+.SUBDIRS: .
