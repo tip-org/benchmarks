@@ -9,6 +9,8 @@ commentify = $(file Commentify)
 Commentify: Commentify.hs
 	ghc --make -O $@
 
+tip-tools = $(file $(which tip-ghc)) $(file $(which tip-parser))
+
 clean:
 	rm -r benchmarks benchmarks-why3 benchmarks-cvc4
 
@@ -30,18 +32,19 @@ create(prop_base, kind, source, target_base) =
 		why3=$(file benchmarks-why3/$(name).mlw)
 
 		all-benchmarks: $(tip) $(smt2) $(why3)
+		only-benchmarks: $(tip)
 
 		mkdir(-p $(dirname $(tip)))
 		.SUBDIRS: $(dirname $(source))
-			$(tip): $(source) $(commentify)
+			$(tip): $(source) $(commentify) $(tip-tools)
 				($(commentify) $< "$(prop)" "; " "; " ""; tip-ghc $< "$(prop)") > $@
 
 		mkdir(-p $(dirname $(smt2)))
-		$(smt2): $(tip)
+		$(smt2): $(tip) $(tip-tools)
 			($(commentify) $< "$(prop)" "; " "; " ""; tip-parser $< cvc4) > $@
 
 		mkdir(-p $(dirname $(why3)))
-		$(why3): $(tip)
+		$(why3): $(tip) $(tip-tools)
 			($(commentify) $< "$(prop)" "(* " " * " " *)"; tip-parser $< why3) > $@
 
 		check: $(why3)
