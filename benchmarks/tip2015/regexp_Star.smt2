@@ -33,7 +33,10 @@
 (define-funs-rec
   ((eqA ((x A) (y A)) Bool))
   ((match x
-     (case X false)
+     (case X
+       (match y
+         (case X true)
+         (case Y false)))
      (case Y
        (match y
          (case X false)

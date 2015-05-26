@@ -89,7 +89,7 @@ prop_Star p s =
 --------------------------------------------------------------------------------
 
 eqA :: A -> A -> Bool
-X `eqX` X = True
+X `eqA` X = True
 Y `eqA` Y = True
 _ `eqA` _ = False
 
