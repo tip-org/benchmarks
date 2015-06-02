@@ -11,6 +11,5 @@
      (case Z y)
      (case (S z) (acc_plus z (S y))))))
 (assert-not
-  (forall ((x Nat))
-    (forall ((y Nat)) (= (plus x y) (acc_plus x y)))))
+  (forall ((x Nat) (y Nat)) (= (plus x y) (acc_plus x y))))
 (check-sat)

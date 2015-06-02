@@ -27,6 +27,5 @@
          (case (S x2)
            (S (acc_plus z (acc_plus x2 (acc_alt_mul z x2))))))))))
 (assert-not
-  (forall ((x Nat))
-    (forall ((y Nat)) (= (acc_alt_mul x y) (mult x y)))))
+  (forall ((x Nat) (y Nat)) (= (acc_alt_mul x y) (mult x y))))
 (check-sat)
