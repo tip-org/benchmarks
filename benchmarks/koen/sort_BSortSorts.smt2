@@ -7,6 +7,14 @@
      (<= x y) (cons x (cons y (as nil (list Int))))
      (cons y (cons x (as nil (list Int)))))))
 (define-funs-rec
+  ((ordered ((x (list Int))) Bool))
+  ((match x
+     (case nil true)
+     (case (cons y z)
+       (match z
+         (case nil true)
+         (case (cons y2 xs) (and (<= y y2) (ordered z))))))))
+(define-funs-rec
   ((par (a) (evens ((x (list a))) (list a)))
    (par (a) (odds ((x (list a))) (list a))))
   ((match x
@@ -60,15 +68,5 @@
          (case nil (cons y (as nil (list Int))))
          (case (cons x2 x3)
            (bmerge (bsort (evens x)) (bsort (odds x)))))))))
-(define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
-  ((ordered ((x (list Int))) Bool))
-  ((match x
-     (case nil true)
-     (case (cons y z)
-       (match z
-         (case nil true)
-         (case (cons y2 xs) (and2 (<= y y2) (ordered z))))))))
 (assert-not (forall ((x (list Int))) (ordered (bsort x))))
 (check-sat)

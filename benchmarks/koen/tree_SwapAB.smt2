@@ -13,12 +13,11 @@
            (= x2 y) (Node (swap x y p) x (swap x y q))
            (Node (swap x y p) x2 (swap x y q)))))
      (case Nil (as Nil (Tree Int))))))
-(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
   ((elem ((x Int) (y (list Int))) Bool))
   ((match y
      (case nil false)
-     (case (cons z ys) (or2 (= x z) (elem x ys))))))
+     (case (cons z ys) (or (= x z) (elem x ys))))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
   ((match x

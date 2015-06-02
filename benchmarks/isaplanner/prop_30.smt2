@@ -31,6 +31,6 @@
   ((elem ((x Nat) (y (list Nat))) Bool))
   ((match y
      (case nil false)
-     (case (cons z xs) (ite (equal x z) true (elem x xs))))))
+     (case (cons z xs) (or (equal x z) (elem x xs))))))
 (assert-not (forall ((x Nat) (xs (list Nat))) (elem x (ins x xs))))
 (check-sat)

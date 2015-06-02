@@ -30,7 +30,6 @@
   ((ite
      (<= x y) (cons x (cons y (as nil (list Int))))
      (cons y (cons x (as nil (list Int)))))))
-(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
   ((par (t) (null ((x (list t))) Bool)))
   ((match x
@@ -40,12 +39,18 @@
   ((elem ((x Int) (y (list Int))) Bool))
   ((match y
      (case nil false)
-     (case (cons z ys) (or2 (= x z) (elem x ys))))))
+     (case (cons z ys) (or (= x z) (elem x ys))))))
 (define-funs-rec
   ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y
      (case nil (as nil (list Int)))
      (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
+(define-funs-rec
+  ((isPermutation ((x (list Int)) (y (list Int))) Bool))
+  ((match x
+     (case nil (null y))
+     (case (cons z xs)
+       (and (elem z y) (isPermutation xs (delete z y)))))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
   ((match x
@@ -75,14 +80,6 @@
                (stooge1sort2 (stooge1sort1 (stooge1sort2 x)))))))))
    (match (zsplitAt (div (zlength x) 3) x)
      (case (Pair2 ys zs) (append ys (stoogesort zs))))))
-(define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
-  ((isPermutation ((x (list Int)) (y (list Int))) Bool))
-  ((match x
-     (case nil (null y))
-     (case (cons z xs)
-       (and2 (elem z y) (isPermutation xs (delete z y)))))))
 (assert-not
   (forall ((x (list Int))) (isPermutation (stoogesort x) x)))
 (check-sat)

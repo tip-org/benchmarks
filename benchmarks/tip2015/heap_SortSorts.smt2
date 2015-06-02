@@ -38,6 +38,14 @@
          (case (Node x2 x3 x4) (cons x3 (toList z (merge x2 x4))))
          (case Nil (as nil (list Nat))))))))
 (define-funs-rec
+  ((ordered ((x (list Nat))) Bool))
+  ((match x
+     (case nil true)
+     (case (cons y z)
+       (match z
+         (case nil true)
+         (case (cons y2 xs) (and (le y y2) (ordered z))))))))
+(define-funs-rec
   ((insert2 ((x Nat) (y Heap)) Heap)) ((merge (Node Nil x Nil) y)))
 (define-funs-rec
   ((toHeap ((x (list Nat))) Heap))
@@ -56,15 +64,5 @@
 (define-funs-rec
   ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
   ((@ x (@ y z))))
-(define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
-  ((ordered ((x (list Nat))) Bool))
-  ((match x
-     (case nil true)
-     (case (cons y z)
-       (match z
-         (case nil true)
-         (case (cons y2 xs) (and2 (le y y2) (ordered z))))))))
 (assert-not (forall ((x (list Nat))) (ordered (hsort x))))
 (check-sat)

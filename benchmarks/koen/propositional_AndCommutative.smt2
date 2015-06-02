@@ -5,12 +5,11 @@
 (declare-datatypes ()
   ((Form (& (&_0 Form) (&_1 Form))
      (Not (Not_0 Form)) (Var (Var_0 Int)))))
-(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
-  ((or3 ((x (list Bool))) Bool))
+  ((or2 ((x (list Bool))) Bool))
   ((match x
      (case nil false)
-     (case (cons y xs) (or2 y (or3 xs))))))
+     (case (cons y xs) (or y (or2 xs))))))
 (define-funs-rec
   ((par (t) (null ((x (list t))) Bool)))
   ((match x
@@ -69,7 +68,7 @@
          (case (Not p3) (models p3 y))
          (case (Var x2)
            (ite
-             (not (or3 (models3 x2 y)))
+             (not (or2 (models3 x2 y)))
              (cons
                (cons (Pair2 x2 false)
                  (filter (lambda ((x3 (Pair Int Bool))) (distinct x2 (fst x3))) y))
@@ -77,7 +76,7 @@
              (as nil (list (list (Pair Int Bool))))))))
      (case (Var x4)
        (ite
-         (not (or3 (models4 x4 y)))
+         (not (or2 (models4 x4 y)))
          (cons
            (cons (Pair2 x4 true)
              (filter (lambda ((x3 (Pair Int Bool))) (distinct x4 (fst x3))) y))

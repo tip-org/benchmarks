@@ -39,6 +39,14 @@
      (<= x y) (cons x (cons y (as nil (list Int))))
      (cons y (cons x (as nil (list Int)))))))
 (define-funs-rec
+  ((ordered ((x (list Int))) Bool))
+  ((match x
+     (case nil true)
+     (case (cons y z)
+       (match z
+         (case nil true)
+         (case (cons y2 xs) (and (<= y y2) (ordered z))))))))
+(define-funs-rec
   ((par (t) (length ((x (list t))) Nat)))
   ((match x
      (case nil Z)
@@ -78,15 +86,5 @@
                (nstooge2sort2 (nstooge2sort1 (nstooge2sort2 x)))))))))
    (match (splitAt (third (length x)) x)
      (case (Pair2 ys zs) (append ys (nstoogesort2 zs))))))
-(define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
-  ((ordered ((x (list Int))) Bool))
-  ((match x
-     (case nil true)
-     (case (cons y z)
-       (match z
-         (case nil true)
-         (case (cons y2 xs) (and2 (<= y y2) (ordered z))))))))
 (assert-not (forall ((x (list Int))) (ordered (nstoogesort2 x))))
 (check-sat)

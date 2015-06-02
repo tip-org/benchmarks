@@ -19,7 +19,7 @@
   ((or2 ((x (list Bool))) Bool))
   ((match x
      (case nil false)
-     (case (cons y z) (ite y true (or2 z))))))
+     (case (cons y z) (or y (or2 z))))))
 (define-funs-rec
   ((eq ((x It) (y It)) Bool))
   ((match x
@@ -42,7 +42,7 @@
      (case (cons z x2)
        (match y
          (case nil false)
-         (case (cons x3 x4) (ite (eq z x3) (isPrefix x2 x4) false)))))))
+         (case (cons x3 x4) (and (eq z x3) (isPrefix x2 x4))))))))
 (define-funs-rec
   ((spec2 ((ys (list It)) (x (list (list It)))) (list Bool)))
   ((match x

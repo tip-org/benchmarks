@@ -46,12 +46,10 @@
      (case nil Z)
      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs))))))
 (define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
   ((par (t) (all ((x (=> t Bool)) (y (list t))) Bool)))
   ((match y
      (case nil true)
-     (case (cons z xs) (and2 (@ x z) (all x xs))))))
+     (case (cons z xs) (and (@ x z) (all x xs))))))
 (assert-not
   (forall ((xs (list Int)) (z Int))
     (all (lambda ((x (list Int))) (eq (count z xs) (count z x)))

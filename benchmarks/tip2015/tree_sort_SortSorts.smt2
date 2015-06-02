@@ -16,20 +16,18 @@
          (case Z false)
          (case (S x2) (le z x2)))))))
 (define-funs-rec
-  ((par (a) (flatten ((x (Tree a)) (y (list a))) (list a))))
-  ((match x
-     (case (Node q z q2) (flatten q (cons z (flatten q2 y))))
-     (case Nil y))))
-(define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
   ((ordered ((x (list Nat))) Bool))
   ((match x
      (case nil true)
      (case (cons y z)
        (match z
          (case nil true)
-         (case (cons y2 xs) (and2 (le y y2) (ordered z))))))))
+         (case (cons y2 xs) (and (le y y2) (ordered z))))))))
+(define-funs-rec
+  ((par (a) (flatten ((x (Tree a)) (y (list a))) (list a))))
+  ((match x
+     (case (Node q z q2) (flatten q (cons z (flatten q2 y))))
+     (case Nil y))))
 (define-funs-rec
   ((add ((x Nat) (y (Tree Nat))) (Tree Nat)))
   ((match y

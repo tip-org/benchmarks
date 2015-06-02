@@ -29,7 +29,6 @@
          (case default (Plus x y))
          (case Nil x)))
      (case Nil y))))
-(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
   ((eqA ((x A) (y A)) Bool))
   ((match x
@@ -42,14 +41,12 @@
          (case X false)
          (case Y true))))))
 (define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
   ((eps ((x R)) Bool))
   ((match x
      (case default false)
      (case Eps true)
-     (case (Plus p q) (or2 (eps p) (eps q)))
-     (case (Seq p2 q2) (and2 (eps p2) (eps q2)))
+     (case (Plus p q) (or (eps p) (eps q)))
+     (case (Seq p2 q2) (and (eps p2) (eps q2)))
      (case (Star y) true))))
 (define-funs-rec ((epsR ((x R)) R)) ((ite (eps x) Eps Nil)))
 (define-funs-rec

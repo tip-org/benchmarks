@@ -21,6 +21,14 @@
        (case nil (as nil (list a)))
        (case (cons z xs) (zdrop (- x 1) xs))))))
 (define-funs-rec
+  ((ordered ((x (list Int))) Bool))
+  ((match x
+     (case nil true)
+     (case (cons y z)
+       (match z
+         (case nil true)
+         (case (cons y2 xs) (and (<= y y2) (ordered z))))))))
+(define-funs-rec
   ((lmerge ((x (list Int)) (y (list Int))) (list Int)))
   ((match x
      (case nil y)
@@ -40,15 +48,5 @@
          (case (cons x2 x3)
            (let (((k Int) (div (zlength x) 2)))
              (lmerge (msorttd (ztake k x)) (msorttd (zdrop k x))))))))))
-(define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
-  ((ordered ((x (list Int))) Bool))
-  ((match x
-     (case nil true)
-     (case (cons y z)
-       (match z
-         (case nil true)
-         (case (cons y2 xs) (and2 (<= y y2) (ordered z))))))))
 (assert-not (forall ((x (list Int))) (ordered (msorttd x))))
 (check-sat)

@@ -18,7 +18,7 @@
   ((elem ((x Nat) (y (list Nat))) Bool))
   ((match y
      (case nil false)
-     (case (cons z xs) (ite (equal x z) true (elem x xs))))))
+     (case (cons z xs) (or (equal x z) (elem x xs))))))
 (define-funs-rec
   ((intersect ((x (list Nat)) (y (list Nat))) (list Nat)))
   ((match x

@@ -7,7 +7,6 @@
   ((Tree (Node (Node_0 (Tree a)) (Node_1 a) (Node_2 (Tree a)))
      (Nil))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
-(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
   ((par (a) (null ((x (list a))) Bool)))
   ((match x
@@ -41,20 +40,18 @@
   ((elem ((x Nat) (y (list Nat))) Bool))
   ((match y
      (case nil false)
-     (case (cons z ys) (or2 (equal x z) (elem x ys))))))
+     (case (cons z ys) (or (equal x z) (elem x ys))))))
 (define-funs-rec
   ((delete ((x Nat) (y (list Nat))) (list Nat)))
   ((match y
      (case nil (as nil (list Nat)))
      (case (cons z ys) (ite (equal x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
   ((isPermutation ((x (list Nat)) (y (list Nat))) Bool))
   ((match x
      (case nil (null y))
      (case (cons z xs)
-       (and2 (elem z y) (isPermutation xs (delete z y)))))))
+       (and (elem z y) (isPermutation xs (delete z y)))))))
 (define-funs-rec
   ((add ((x Nat) (y (Tree Nat))) (Tree Nat)))
   ((match y

@@ -11,7 +11,6 @@
   ((match x
      (case Z y)
      (case (S n) (S (plus n y))))))
-(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
   ((par (a) (null ((x (list a))) Bool)))
   ((match x
@@ -74,7 +73,7 @@
   ((elem ((x Nat) (y (list Nat))) Bool))
   ((match y
      (case nil false)
-     (case (cons z ys) (or2 (equal x z) (elem x ys))))))
+     (case (cons z ys) (or (equal x z) (elem x ys))))))
 (define-funs-rec
   ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
   ((@ x (@ y z))))
@@ -84,12 +83,10 @@
      (case nil (as nil (list Nat)))
      (case (cons z ys) (ite (equal x z) ys (cons z (delete x ys)))))))
 (define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
   ((isPermutation ((x (list Nat)) (y (list Nat))) Bool))
   ((match x
      (case nil (null y))
      (case (cons z xs)
-       (and2 (elem z y) (isPermutation xs (delete z y)))))))
+       (and (elem z y) (isPermutation xs (delete z y)))))))
 (assert-not (forall ((x (list Nat))) (isPermutation (hsort x) x)))
 (check-sat)

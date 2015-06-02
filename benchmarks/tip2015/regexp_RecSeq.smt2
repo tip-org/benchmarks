@@ -30,7 +30,6 @@
          (case default (Plus x y))
          (case Nil x)))
      (case Nil y))))
-(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
   ((eqA ((x A) (y A)) Bool))
   ((match x
@@ -43,32 +42,12 @@
          (case X false)
          (case Y true))))))
 (define-funs-rec
-  ((par (a b)
-     (consfst
-        ((x a) (y (list (Pair (list a) b)))) (list (Pair (list a) b)))))
-  ((match y
-     (case nil (as nil (list (Pair (list a) b))))
-     (case (cons z ys)
-       (match z
-         (case (Pair2 xs y2)
-           (cons (Pair2 (cons x xs) y2) (consfst x ys))))))))
-(define-funs-rec
-  ((par (a) (split ((x (list a))) (list (Pair (list a) (list a))))))
-  ((match x
-     (case nil
-       (cons (Pair2 (as nil (list a)) (as nil (list a)))
-         (as nil (list (Pair (list a) (list a))))))
-     (case (cons y s)
-       (cons (Pair2 (as nil (list a)) x) (consfst y (split s)))))))
-(define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
   ((eps ((x R)) Bool))
   ((match x
      (case default false)
      (case Eps true)
-     (case (Plus p q) (or2 (eps p) (eps q)))
-     (case (Seq p2 q2) (and2 (eps p2) (eps q2)))
+     (case (Plus p q) (or (eps p) (eps q)))
+     (case (Seq p2 q2) (and (eps p2) (eps q2)))
      (case (Star y) true))))
 (define-funs-rec ((epsR ((x R)) R)) ((ite (eps x) Eps Nil)))
 (define-funs-rec
@@ -93,8 +72,26 @@
      (case (cons x2 xs)
        (match x2
          (case (Pair2 s1 s2)
-           (or2 (and2 (recognise x s1) (recognise y s2))
+           (or (and (recognise x s1) (recognise y s2))
              (recognisePair x y xs))))))))
+(define-funs-rec
+  ((par (a b)
+     (consfst
+        ((x a) (y (list (Pair (list a) b)))) (list (Pair (list a) b)))))
+  ((match y
+     (case nil (as nil (list (Pair (list a) b))))
+     (case (cons z ys)
+       (match z
+         (case (Pair2 xs y2)
+           (cons (Pair2 (cons x xs) y2) (consfst x ys))))))))
+(define-funs-rec
+  ((par (a) (split ((x (list a))) (list (Pair (list a) (list a))))))
+  ((match x
+     (case nil
+       (cons (Pair2 (as nil (list a)) (as nil (list a)))
+         (as nil (list (Pair (list a) (list a))))))
+     (case (cons y s)
+       (cons (Pair2 (as nil (list a)) x) (consfst y (split s)))))))
 (assert-not
   (forall ((p R) (q R) (s (list A)))
     (= (recognise (Seq p q) s) (recognisePair p q (split s)))))

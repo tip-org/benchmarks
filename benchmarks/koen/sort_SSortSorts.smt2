@@ -8,6 +8,14 @@
      (case (cons z ys)
        (ite (<= z x) (ssort_minimum z ys) (ssort_minimum x ys))))))
 (define-funs-rec
+  ((ordered ((x (list Int))) Bool))
+  ((match x
+     (case nil true)
+     (case (cons y z)
+       (match z
+         (case nil true)
+         (case (cons y2 xs) (and (<= y y2) (ordered z))))))))
+(define-funs-rec
   ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y
      (case nil (as nil (list Int)))
@@ -19,15 +27,5 @@
      (case (cons y ys)
        (let (((m Int) (ssort_minimum y ys)))
          (cons m (ssort (delete m x))))))))
-(define-funs-rec
-  ((and2 ((x Bool) (y Bool)) Bool)) ((ite x y false)))
-(define-funs-rec
-  ((ordered ((x (list Int))) Bool))
-  ((match x
-     (case nil true)
-     (case (cons y z)
-       (match z
-         (case nil true)
-         (case (cons y2 xs) (and2 (<= y y2) (ordered z))))))))
 (assert-not (forall ((x (list Int))) (ordered (ssort x))))
 (check-sat)

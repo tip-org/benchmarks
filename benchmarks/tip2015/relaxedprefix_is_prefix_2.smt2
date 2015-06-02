@@ -27,7 +27,7 @@
      (case (cons z x2)
        (match y
          (case nil false)
-         (case (cons x3 x4) (ite (eq z x3) (isPrefix x2 x4) false)))))))
+         (case (cons x3 x4) (and (eq z x3) (isPrefix x2 x4))))))))
 (define-funs-rec
   ((isRelaxedPrefix ((x (list It)) (y (list It))) Bool))
   ((match x

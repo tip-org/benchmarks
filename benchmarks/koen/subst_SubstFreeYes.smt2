@@ -3,7 +3,6 @@
 (declare-datatypes ()
   ((Expr (Var (Var_0 Int))
      (Lam (Lam_0 Int) (Lam_1 Expr)) (App (App_0 Expr) (App_1 Expr)))))
-(define-funs-rec ((or2 ((x Bool) (y Bool)) Bool)) ((ite x true y)))
 (define-funs-rec
   ((new_maximum ((x Int) (y (list Int))) Int))
   ((match y
@@ -22,7 +21,7 @@
   ((elem ((x Int) (y (list Int))) Bool))
   ((match y
      (case nil false)
-     (case (cons z ys) (or2 (= x z) (elem x ys))))))
+     (case (cons z ys) (or (= x z) (elem x ys))))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
   ((match x

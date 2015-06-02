@@ -32,7 +32,7 @@
   ((elem ((x Nat) (y (list Nat))) Bool))
   ((match y
      (case nil false)
-     (case (cons z xs) (ite (equal x z) true (elem x xs))))))
+     (case (cons z xs) (or (equal x z) (elem x xs))))))
 (assert-not
   (forall ((x Nat) (y Nat) (z (list Nat)))
     (=> (= x y) (elem x (insert2 y z)))))

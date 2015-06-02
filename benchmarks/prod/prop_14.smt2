@@ -20,7 +20,7 @@
      (case (cons y z)
        (match z
          (case nil true)
-         (case (cons y2 xs) (ite (le y y2) (sorted z) false)))))))
+         (case (cons y2 xs) (and (le y y2) (sorted z))))))))
 (define-funs-rec
   ((insert2 ((x Nat) (y (list Nat))) (list Nat)))
   ((match y

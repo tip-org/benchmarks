@@ -18,12 +18,12 @@
   ((elem ((x Nat) (y (list Nat))) Bool))
   ((match y
      (case nil false)
-     (case (cons z xs) (ite (equal x z) true (elem x xs))))))
+     (case (cons z xs) (or (equal x z) (elem x xs))))))
 (define-funs-rec
   ((subset ((x (list Nat)) (y (list Nat))) Bool))
   ((match x
      (case nil true)
-     (case (cons z xs) (ite (elem z y) (subset xs y) false)))))
+     (case (cons z xs) (and (elem z y) (subset xs y))))))
 (define-funs-rec
   ((union ((x (list Nat)) (y (list Nat))) (list Nat)))
   ((match x
