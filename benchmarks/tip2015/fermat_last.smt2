@@ -16,7 +16,7 @@
      (case (S m) (mult x (pow x m))))))
 (assert-not
   (forall ((n Nat) (x Nat) (y Nat) (z Nat))
-    (not
-      (= (plus (pow (S x) (S (S (S n)))) (pow (S y) (S (S (S n)))))
-        (pow (S z) (S (S (S n))))))))
+    (distinct
+      (plus (pow (S x) (S (S (S n)))) (pow (S y) (S (S (S n)))))
+      (pow (S z) (S (S (S n)))))))
 (check-sat)
