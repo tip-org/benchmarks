@@ -122,7 +122,7 @@ qrev (x:xs) acc = qrev xs (x:acc)
 
 revflat :: [[a]] -> [a]
 revflat []           = []
-revflat (xs:xss)     = revflat xss ++ xs
+revflat (xs:xss)     = revflat xss ++ rev xs
 
 qrevflat :: [[a]] -> [a] -> [a]
 qrevflat []           acc = acc

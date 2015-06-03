@@ -21,7 +21,7 @@
   ((par (a) (revflat ((x (list (list a)))) (list a))))
   ((match x
      (case nil (as nil (list a)))
-     (case (cons xs xss) (append (revflat xss) xs)))))
+     (case (cons xs xss) (append (revflat xss) (rev xs))))))
 (assert-not
   (par (a)
     (forall ((x (list (list a))))
