@@ -54,8 +54,5 @@
      (case Nil (as nil (list Int))))))
 (define-funs-rec
   ((hsort ((x (list Int))) (list Int))) ((toList (toHeap x))))
-(define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
 (assert-not (forall ((x (list Int))) (ordered (hsort x))))
 (check-sat)

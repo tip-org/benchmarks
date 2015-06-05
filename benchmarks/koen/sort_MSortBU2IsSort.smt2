@@ -55,8 +55,5 @@
   ((match x
      (case nil (as nil (list Int)))
      (case (cons y xs) (insert2 y (isort xs))))))
-(define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
 (assert-not (forall ((x (list Int))) (= (msortbu2 x) (isort x))))
 (check-sat)

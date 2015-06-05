@@ -75,9 +75,6 @@
      (case nil false)
      (case (cons z ys) (or (equal x z) (elem x ys))))))
 (define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
-(define-funs-rec
   ((delete ((x Nat) (y (list Nat))) (list Nat)))
   ((match y
      (case nil (as nil (list Nat)))

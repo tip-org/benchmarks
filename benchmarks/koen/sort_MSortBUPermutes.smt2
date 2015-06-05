@@ -38,9 +38,6 @@
   ((mergingbu
      (map2 (lambda ((y Int)) (cons y (as nil (list Int)))) x))))
 (define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
-(define-funs-rec
   ((count ((x Int) (y (list Int))) Nat))
   ((match y
      (case nil Z)

@@ -47,16 +47,6 @@
   ((match x
      (case nil (as Nil (Seq a)))
      (case (cons y xs) (Cons y (fromList (pair xs)))))))
-(define-funs-rec
-  ((par (a b) (=<<< ((x (=> a (Maybe b))) (y (Maybe a))) (Maybe b))))
-  ((match y
-     (case Nothing (as Nothing (Maybe b)))
-     (case (Just z) (@ x z)))))
-(define-funs-rec
-  ((par (a b) (<$$> ((x (=> a b)) (y (Maybe a))) (Maybe b))))
-  ((match y
-     (case Nothing (as Nothing (Maybe b)))
-     (case (Just z) (Just (@ x z))))))
 (assert-not
   (par (a)
     (forall ((n Int) (xs (list a)))

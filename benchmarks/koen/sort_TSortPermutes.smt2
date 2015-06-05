@@ -11,9 +11,6 @@
      (case (TNode q z q2) (flatten q (cons z (flatten q2 y))))
      (case TNil y))))
 (define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
-(define-funs-rec
   ((count ((x Int) (y (list Int))) Nat))
   ((match y
      (case nil Z)

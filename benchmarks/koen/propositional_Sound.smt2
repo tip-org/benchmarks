@@ -28,9 +28,6 @@
      (case (cons y z)
        (ite (@ p y) (cons y (filter p z)) (filter p z))))))
 (define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
-(define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
   ((match x
      (case nil y)

@@ -65,9 +65,6 @@
          (case Z false)
          (case (S y2) (equal x2 y2)))))))
 (define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
-(define-funs-rec
   ((count ((x Nat) (y (list Nat))) Nat))
   ((match y
      (case nil Z)

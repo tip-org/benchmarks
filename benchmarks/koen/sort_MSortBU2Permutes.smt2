@@ -46,9 +46,6 @@
 (define-funs-rec
   ((msortbu2 ((x (list Int))) (list Int))) ((mergingbu2 (risers x))))
 (define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
-(define-funs-rec
   ((count ((x Int) (y (list Int))) Nat))
   ((match y
      (case nil Z)

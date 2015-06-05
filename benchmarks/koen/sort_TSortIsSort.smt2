@@ -21,9 +21,6 @@
      (case (TNode p z q) (flatten p (cons z (flatten q y))))
      (case TNil y))))
 (define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
-(define-funs-rec
   ((add ((x Int) (y (Tree Int))) (Tree Int)))
   ((match y
      (case (TNode p z q)

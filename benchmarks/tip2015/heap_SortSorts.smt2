@@ -61,8 +61,5 @@
   ((toList2 ((x Heap)) (list Nat))) ((toList (heapSize x) x)))
 (define-funs-rec
   ((hsort ((x (list Nat))) (list Nat))) ((toList2 (toHeap x))))
-(define-funs-rec
-  ((par (b c a) (dot ((x (=> b c)) (y (=> a b)) (z a)) c)))
-  ((@ x (@ y z))))
 (assert-not (forall ((x (list Nat))) (ordered (hsort x))))
 (check-sat)
