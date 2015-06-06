@@ -21,12 +21,12 @@ create1() {
         echo tip-ghc $FILE $PROP$I
         ($ROOT/Commentify $FILE $PROP$I "; " "; " ""; tip-ghc $FILE $PROP$I) > $RES
 
-        tip-parser $RES cvc4 >$CVC4 2>$ERR0
+        tip-parser $RES --smtlib >$CVC4 2>$ERR0
         ST0=$?
         ($ROOT/Commentify $FILE $PROP$I "; " "; " ""; cat $CVC4) > $TMP
         cat $TMP > $CVC4
 
-        tip-parser $RES why3 >$WHY 2>$ERR1
+        tip-parser $RES --why >$WHY 2>$ERR1
         ST1=$?
         ($ROOT/Commentify $FILE $PROP$I "(* " " * " " *)"; cat $WHY) > $TMP
         cat $TMP > $WHY

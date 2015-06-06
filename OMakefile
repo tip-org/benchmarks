@@ -41,11 +41,11 @@ create(prop_base, kind, source, target_base) =
 
 		mkdir(-p $(dirname $(smt2)))
 		$(smt2): $(tip) $(tip-tools)
-			($(commentify) $< "$(prop)" "; " "; " ""; tip-parser $< cvc4) > $@
+			($(commentify) $< "$(prop)" "; " "; " ""; tip-parser $< --smtlib) > $@
 
 		mkdir(-p $(dirname $(why3)))
 		$(why3): $(tip) $(tip-tools)
-			($(commentify) $< "$(prop)" "(* " " * " " *)"; tip-parser $< why3) > $@
+			($(commentify) $< "$(prop)" "(* " " * " " *)"; tip-parser $< --why) > $@
 
 		check: $(why3)
 			why3 prove $< > /dev/null || true
