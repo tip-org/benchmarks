@@ -11,6 +11,11 @@
          (case nil (as nil (list a)))
          (case (cons x2 x3) (cons x2 (take z x3))))))))
 (define-funs-rec
+  ((par (t) (null ((x (list t))) Bool)))
+  ((match x
+     (case nil true)
+     (case (cons y z) false))))
+(define-funs-rec
   ((lmerge ((x (list Int)) (y (list Int))) (list Int)))
   ((match x
      (case nil y)
@@ -34,6 +39,11 @@
          (case Z Z)
          (case (S n) (S (half n))))))))
 (define-funs-rec
+  ((elem ((x Int) (y (list Int))) Bool))
+  ((match y
+     (case nil false)
+     (case (cons z ys) (or (= x z) (elem x ys))))))
+(define-funs-rec
   ((par (a) (drop ((x Nat) (y (list a))) (list a))))
   ((match x
      (case Z y)
@@ -52,11 +62,16 @@
            (let (((k Nat) (half (length x))))
              (lmerge (nmsorttd (take k x)) (nmsorttd (drop k x))))))))))
 (define-funs-rec
-  ((count ((x Int) (y (list Int))) Nat))
+  ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y
-     (case nil Z)
-     (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs))))))
+     (case nil (as nil (list Int)))
+     (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
+(define-funs-rec
+  ((isPermutation ((x (list Int)) (y (list Int))) Bool))
+  ((match x
+     (case nil (null y))
+     (case (cons z xs)
+       (and (elem z y) (isPermutation xs (delete z y)))))))
 (assert-not
-  (forall ((x Int) (y (list Int)))
-    (= (count x (nmsorttd y)) (count x y))))
+  (forall ((x (list Int))) (isPermutation (nmsorttd x) x)))
 (check-sat)

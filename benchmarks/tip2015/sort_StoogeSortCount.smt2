@@ -2,6 +2,7 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
+(declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-funs-rec
   ((par (a) (ztake ((x Int) (y (list a))) (list a))))
   ((ite
@@ -31,26 +32,10 @@
      (<= x y) (cons x (cons y (as nil (list Int))))
      (cons y (cons x (as nil (list Int)))))))
 (define-funs-rec
-  ((par (t) (null ((x (list t))) Bool)))
-  ((match x
-     (case nil true)
-     (case (cons y z) false))))
-(define-funs-rec
-  ((elem ((x Int) (y (list Int))) Bool))
+  ((count ((x Int) (y (list Int))) Nat))
   ((match y
-     (case nil false)
-     (case (cons z ys) (or (= x z) (elem x ys))))))
-(define-funs-rec
-  ((delete ((x Int) (y (list Int))) (list Int)))
-  ((match y
-     (case nil (as nil (list Int)))
-     (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
-(define-funs-rec
-  ((isPermutation ((x (list Int)) (y (list Int))) Bool))
-  ((match x
-     (case nil (null y))
-     (case (cons z xs)
-       (and (elem z y) (isPermutation xs (delete z y)))))))
+     (case nil Z)
+     (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs))))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
   ((match x
@@ -81,5 +66,6 @@
    (match (zsplitAt (div (zlength x) 3) x)
      (case (Pair2 ys zs) (append ys (stoogesort zs))))))
 (assert-not
-  (forall ((x (list Int))) (isPermutation (stoogesort x) x)))
+  (forall ((x Int) (y (list Int)))
+    (= (count x (stoogesort y)) (count x y))))
 (check-sat)

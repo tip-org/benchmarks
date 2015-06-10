@@ -1,7 +1,6 @@
 ; Heap sort (using skew heaps)
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (declare-datatypes (a)
   ((Heap (Node (Node_0 (Heap a)) (Node_1 a) (Node_2 (Heap a)))
      (Nil))))
@@ -12,6 +11,11 @@
      (case (cons y z)
        (cons (Node (as Nil (Heap Int)) y (as Nil (Heap Int)))
          (toHeap2 z))))))
+(define-funs-rec
+  ((par (t) (null ((x (list t))) Bool)))
+  ((match x
+     (case nil true)
+     (case (cons y z) false))))
 (define-funs-rec
   ((hmerge ((x (Heap Int)) (y (Heap Int))) (Heap Int)))
   ((match x
@@ -26,33 +30,42 @@
   ((hpairwise ((x (list (Heap Int)))) (list (Heap Int))))
   ((match x
      (case nil (as nil (list (Heap Int))))
-     (case (cons q y)
+     (case (cons p y)
        (match y
-         (case nil (cons q (as nil (list (Heap Int)))))
-         (case (cons q2 qs) (cons (hmerge q q2) (hpairwise qs))))))))
+         (case nil (cons p (as nil (list (Heap Int)))))
+         (case (cons q qs) (cons (hmerge p q) (hpairwise qs))))))))
 (define-funs-rec
   ((hmerging ((x (list (Heap Int)))) (Heap Int)))
   ((match x
      (case nil (as Nil (Heap Int)))
-     (case (cons q y)
+     (case (cons p y)
        (match y
-         (case nil q)
+         (case nil p)
          (case (cons z x2) (hmerging (hpairwise x))))))))
 (define-funs-rec
   ((toHeap ((x (list Int))) (Heap Int))) ((hmerging (toHeap2 x))))
 (define-funs-rec
   ((toList ((x (Heap Int))) (list Int)))
   ((match x
-     (case (Node q y q2) (cons y (toList (hmerge q q2))))
+     (case (Node p y q) (cons y (toList (hmerge p q))))
      (case Nil (as nil (list Int))))))
 (define-funs-rec
   ((hsort ((x (list Int))) (list Int))) ((toList (toHeap x))))
 (define-funs-rec
-  ((count ((x Int) (y (list Int))) Nat))
+  ((elem ((x Int) (y (list Int))) Bool))
   ((match y
-     (case nil Z)
-     (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs))))))
-(assert-not
-  (forall ((x Int) (y (list Int)))
-    (= (count x (hsort y)) (count x y))))
+     (case nil false)
+     (case (cons z ys) (or (= x z) (elem x ys))))))
+(define-funs-rec
+  ((delete ((x Int) (y (list Int))) (list Int)))
+  ((match y
+     (case nil (as nil (list Int)))
+     (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
+(define-funs-rec
+  ((isPermutation ((x (list Int)) (y (list Int))) Bool))
+  ((match x
+     (case nil (null y))
+     (case (cons z xs)
+       (and (elem z y) (isPermutation xs (delete z y)))))))
+(assert-not (forall ((x (list Int))) (isPermutation (hsort x) x)))
 (check-sat)

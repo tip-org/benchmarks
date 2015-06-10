@@ -39,10 +39,20 @@
      (<= x y) (cons x (cons y (as nil (list Int))))
      (cons y (cons x (as nil (list Int)))))))
 (define-funs-rec
+  ((par (t) (null ((x (list t))) Bool)))
+  ((match x
+     (case nil true)
+     (case (cons y z) false))))
+(define-funs-rec
   ((par (t) (length ((x (list t))) Nat)))
   ((match x
      (case nil Z)
      (case (cons y xs) (S (length xs))))))
+(define-funs-rec
+  ((elem ((x Int) (y (list Int))) Bool))
+  ((match y
+     (case nil false)
+     (case (cons z ys) (or (= x z) (elem x ys))))))
 (define-funs-rec
   ((par (a) (drop ((x Nat) (y (list a))) (list a))))
   ((match x
@@ -56,10 +66,16 @@
      (splitAt ((x Nat) (y (list a))) (Pair (list a) (list a)))))
   ((Pair2 (take x y) (drop x y))))
 (define-funs-rec
-  ((count ((x Int) (y (list Int))) Nat))
+  ((delete ((x Int) (y (list Int))) (list Int)))
   ((match y
-     (case nil Z)
-     (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs))))))
+     (case nil (as nil (list Int)))
+     (case (cons z ys) (ite (= x z) ys (cons z (delete x ys)))))))
+(define-funs-rec
+  ((isPermutation ((x (list Int)) (y (list Int))) Bool))
+  ((match x
+     (case nil (null y))
+     (case (cons z xs)
+       (and (elem z y) (isPermutation xs (delete z y)))))))
 (define-funs-rec
   ((par (a) (append ((x (list a)) (y (list a))) (list a))))
   ((match x
@@ -84,6 +100,5 @@
    (match (splitAt (third (length x)) x)
      (case (Pair2 ys zs) (append ys (nstoogesort2 zs))))))
 (assert-not
-  (forall ((x Int) (y (list Int)))
-    (= (count x (nstoogesort2 y)) (count x y))))
+  (forall ((x (list Int))) (isPermutation (nstoogesort2 x) x)))
 (check-sat)
