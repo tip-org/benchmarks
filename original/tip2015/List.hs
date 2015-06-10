@@ -26,3 +26,5 @@ filter p [] = []
 
 f . g = \ x -> f (g x)
 
+reverse (x:xs) = reverse xs ++ [x]
+reverse []     = []

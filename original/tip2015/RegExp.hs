@@ -6,7 +6,8 @@ module RegExp where
 import Control.Monad ( liftM, liftM2 )
 import Tip
 import Data.Typeable
-import Prelude hiding (seq, null)
+import Prelude hiding (seq, null, reverse, (++))
+import List ((++), reverse)
 
 --------------------------------------------------------------------------------
 
@@ -61,6 +62,17 @@ recognise p []     = eps p
 recognise p (x:xs) = recognise (step p x) xs
 
 --------------------------------------------------------------------------------
+
+rev :: R -> R
+rev (a `Plus` b) = rev a `Plus` rev b
+rev (a `Seq` b)  = rev b `Seq` rev a
+rev (Star a)     = Star (rev a)
+rev a            = a
+
+--------------------------------------------------------------------------------
+
+prop_Reverse :: R -> [A] -> Equality Bool
+prop_Reverse r s = recognise (rev r) s === recognise r (reverse s)
 
 prop_PlusIdempotent :: R -> [A] -> Equality Bool
 prop_PlusIdempotent p s =
