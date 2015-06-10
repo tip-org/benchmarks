@@ -44,6 +44,8 @@ You are also free to email the maintainers with new problems (or questions):
 * Moa Johansson [`jomoa@chalmers.se`](mailto:jomoa@chalmers.se)
 * Nick Smallbone [`nicsma@chalmers.se`](mailto:nicsma@chalmers.se)
 
+<!--
+
 ## Known nuances
 
 * The tree sort exists in two versions, one sorting Ints, and the other sorting Nats.
@@ -54,3 +56,4 @@ You are also free to email the maintainers with new problems (or questions):
   the toList function is structurally recursive. Like the tree sort version,
   they also differ in whether they sort Nats or Ints.
 
+-->
