@@ -272,3 +272,6 @@ prop_84 xs ys zs
 prop_85 xs ys
   = (len xs === len ys) ==>
     (zip (rev xs) (rev ys) === rev (zip xs ys))
+
+prop_86 x y xs
+  = x < y ==> (elem x (ins y xs) === elem x xs)
