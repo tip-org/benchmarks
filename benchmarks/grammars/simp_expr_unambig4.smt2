@@ -3,11 +3,13 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Tok (C) (D) (X) (Y) (Pl))))
 (declare-datatypes () ((E (Plus (Plus_0 E) (Plus_1 E)) (EX) (EY))))
-(define-funs-rec
-  ((par (a) (append ((x (list a)) (y (list a))) (list a))))
-  ((match x
-     (case nil y)
-     (case (cons z xs) (cons z (append xs y))))))
+(define-fun-rec
+  (par (a)
+    (append
+       ((x (list a)) (y (list a))) (list a)
+       (match x
+         (case nil y)
+         (case (cons z xs) (cons z (append xs y)))))))
 (define-funs-rec
   ((linTerm ((x E)) (list Tok))
    (lin ((x E)) (list Tok)))

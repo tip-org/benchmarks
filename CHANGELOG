@@ -1,0 +1,7 @@
+version 0.2 (released 2015-06-24):
+* use define-fun, define-fun-rec and declare-const
+* add missing problem number 86 from isaplanner
+* improve translation to vanilla smtlib by monomorphisation
+
+version 0.1 (released 2015-06-10):
+* initial release
