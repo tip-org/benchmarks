@@ -1,5 +1,6 @@
 version 0.2 (released 2015-06-24):
 * use define-fun, define-fun-rec and declare-const
+* use correct syntax for lets
 * add missing problem number 86 from isaplanner
 * improve translation to vanilla smtlib by monomorphisation
 
