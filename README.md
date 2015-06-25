@@ -2,8 +2,8 @@
 
 This repository contains benchmarks and challenge problems for inductive
 theorem provers. The benchmarks are written in a superset of SMTLIB
-under the `benchmarks/` directory and its subdirectories.  Each file
-contains exactly one problem.
+under the [`benchmarks/`](https://github.com/tip-org/benchmarks/tree/master/benchmarks)
+directory and its subdirectories.  Each file contains exactly one problem.
 
 The `original` directory contains the original Haskell source
 files for many of the problems.
@@ -11,9 +11,9 @@ files for many of the problems.
 The benchmarks are also available to download in Why3 format, and a
 CVC4-compatible version of SMTLIB:
 
-* Why3: http://tip-org.github.io/tip-benchmarks-0.1-why3.tar.gz
-* CVC4: http://tip-org.github.io/tip-benchmarks-0.1-cvc4.tar.gz
-* TIP format: http://tip-org.github.io/tip-benchmarks-0.1.tar.gz
+* Why3: http://tip-org.github.io/tip-benchmarks-0.2-why3.tar.gz
+* CVC4: http://tip-org.github.io/tip-benchmarks-0.2-cvc4.tar.gz
+* TIP format: http://tip-org.github.io/tip-benchmarks-0.2.tar.gz
 
 ## Generating problems yourself
 
