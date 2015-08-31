@@ -59,6 +59,19 @@
       (case (Node l y r) (S (plus (heapSize l) (heapSize r))))
       (case Nil Z)))
 (define-fun toList2 ((x Heap)) (list Nat) (toList (heapSize x) x))
+(define-fun-rec
+  heap1
+    ((x Nat) (y Heap)) Bool
+    (match y
+      (case (Node l z r) (and (le x z) (and (heap1 z l) (heap1 z r))))
+      (case Nil true)))
+(define-fun
+  heap
+    ((x Heap)) Bool
+    (match x
+      (case (Node l y r) (and (heap1 y l) (heap1 y r)))
+      (case Nil true)))
 (assert-not
-  (forall ((h Heap)) (= (listMinimum (toList2 h)) (minimum h))))
+  (forall ((h Heap))
+    (=> (heap h) (= (listMinimum (toList2 h)) (minimum h)))))
 (check-sat)

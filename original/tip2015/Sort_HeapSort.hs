@@ -28,6 +28,14 @@ hsort = toList . toHeap
 data Heap = Node (Heap) Nat (Heap) | Nil
  deriving ( Eq, Ord, Show, Typeable )
 
+heap :: Heap -> Bool
+heap Nil = True
+heap (Node l x r) = heap1 x l && heap1 x r
+
+heap1 :: Nat -> Heap -> Bool
+heap1 _ Nil = True
+heap1 x (Node l y r) = x <= y && heap1 y l && heap1 y r
+
 merge :: Heap -> Heap -> Heap
 Nil        `merge` q          = q
 p          `merge` Nil        = p
@@ -42,20 +50,13 @@ mergeLists (x:xs) (y:ys)
   | x <= y = x:mergeLists xs (y:ys)
   | otherwise = y:mergeLists (x:xs) ys
 
-prop_merge :: Heap -> Heap -> Equality [Nat]
-prop_merge x y = toList (merge x y) === toList x `mergeLists` toList y
-
 insert :: Nat -> Heap -> Heap
 insert x h = merge (Node Nil x Nil) h
 
-prop_insert :: Nat -> Heap -> Equality [Nat]
-prop_insert x h = toList (insert x h) === listInsert x (toList h)
-
-prop_minimum :: Heap -> Equality (Maybe Nat)
-prop_minimum h = listMinimum (toList h) === minimum h
-
-prop_deleteMinimum :: Heap -> Equality (Maybe [Nat])
-prop_deleteMinimum h = listDeleteMinimum (toList h) === maybeToList (deleteMinimum h)
+prop_merge x y = heap x ==> heap y ==> toList (merge x y) === toList x `mergeLists` toList y
+prop_insert x h = heap h ==> toList (insert x h) === listInsert x (toList h)
+prop_minimum h = heap h ==> listMinimum (toList h) === minimum h
+prop_deleteMinimum h = heap h ==> listDeleteMinimum (toList h) === maybeToList (deleteMinimum h)
 
 
 maybeToList :: Maybe Heap -> Maybe [Nat]

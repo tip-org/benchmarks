@@ -59,6 +59,18 @@
     (match x
       (case Nothing (as Nothing (Maybe (list Nat))))
       (case (Just y) (Just (toList2 y)))))
+(define-fun-rec
+  heap1
+    ((x Nat) (y Heap)) Bool
+    (match y
+      (case (Node l z r) (and (le x z) (and (heap1 z l) (heap1 z r))))
+      (case Nil true)))
+(define-fun
+  heap
+    ((x Heap)) Bool
+    (match x
+      (case (Node l y r) (and (heap1 y l) (heap1 y r)))
+      (case Nil true)))
 (define-fun
   deleteMinimum
     ((x Heap)) (Maybe Heap)
@@ -67,6 +79,7 @@
       (case Nil (as Nothing (Maybe Heap)))))
 (assert-not
   (forall ((h Heap))
-    (= (listDeleteMinimum (toList2 h))
-      (maybeToList (deleteMinimum h)))))
+    (=> (heap h)
+      (= (listDeleteMinimum (toList2 h))
+        (maybeToList (deleteMinimum h))))))
 (check-sat)
