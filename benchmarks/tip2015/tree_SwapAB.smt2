@@ -4,6 +4,12 @@
   ((Tree (Node (Node_0 (Tree a)) (Node_1 a) (Node_2 (Tree a)))
      (Nil))))
 (define-fun-rec
+  zelem
+    ((x Int) (y (list Int))) Bool
+    (match y
+      (case nil false)
+      (case (cons z ys) (or (= x z) (zelem x ys)))))
+(define-fun-rec
   swap
     ((x Int) (y Int) (z (Tree Int))) (Tree Int)
     (match z
@@ -14,12 +20,6 @@
             (= x2 y) (Node (swap x y p) x (swap x y q))
             (Node (swap x y p) x2 (swap x y q)))))
       (case Nil (as Nil (Tree Int)))))
-(define-fun-rec
-  elem
-    ((x Int) (y (list Int))) Bool
-    (match y
-      (case nil false)
-      (case (cons z ys) (or (= x z) (elem x ys)))))
 (define-fun-rec
   (par (a)
     (append
@@ -38,8 +38,8 @@
          (case Nil (as nil (list a)))))))
 (assert-not
   (forall ((p (Tree Int)) (a Int) (b Int))
-    (=> (elem a (flatten0 p))
-      (=> (elem b (flatten0 p))
-        (and (elem a (flatten0 (swap a b p)))
-          (elem b (flatten0 (swap a b p))))))))
+    (=> (zelem a (flatten0 p))
+      (=> (zelem b (flatten0 p))
+        (and (zelem a (flatten0 (swap a b p)))
+          (zelem b (flatten0 (swap a b p))))))))
 (check-sat)

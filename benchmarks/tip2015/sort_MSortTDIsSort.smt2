@@ -25,7 +25,7 @@
          (= x 0) y
          (match y
            (case nil (as nil (list a)))
-           (case (cons z xs) (zdrop (- x 1) xs)))))))
+           (case (cons z xs1) (zdrop (- x 1) xs1)))))))
 (define-fun-rec
   lmerge
     ((x (list Int)) (y (list Int))) (list Int)

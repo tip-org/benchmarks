@@ -4,11 +4,11 @@
 (declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
-  count
+  zcount
     ((x Int) (y (list Int))) Nat
     (match y
       (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs)))))
+      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
 (define-fun-rec
   bubble
     ((x (list Int))) (Pair Bool (list Int))
@@ -29,5 +29,5 @@
     (match (bubble x) (case (Pair2 c ys) (ite c (bubsort ys) x))))
 (assert-not
   (forall ((x Int) (y (list Int)))
-    (= (count x (bubsort y)) (count x y))))
+    (= (zcount x (bubsort y)) (zcount x y))))
 (check-sat)

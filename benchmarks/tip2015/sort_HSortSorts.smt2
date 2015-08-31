@@ -5,6 +5,15 @@
   ((Heap (Node (Node_0 (Heap a)) (Node_1 a) (Node_2 (Heap a)))
      (Nil))))
 (define-fun-rec
+  zordered
+    ((x (list Int))) Bool
+    (match x
+      (case nil true)
+      (case (cons y z)
+        (match z
+          (case nil true)
+          (case (cons y2 xs) (and (<= y y2) (zordered z)))))))
+(define-fun-rec
   toHeap2
     ((x (list Int))) (list (Heap Int))
     (match x
@@ -12,15 +21,6 @@
       (case (cons y z)
         (cons (Node (as Nil (Heap Int)) y (as Nil (Heap Int)))
           (toHeap2 z)))))
-(define-fun-rec
-  ordered
-    ((x (list Int))) Bool
-    (match x
-      (case nil true)
-      (case (cons y z)
-        (match z
-          (case nil true)
-          (case (cons y2 xs) (and (<= y y2) (ordered z)))))))
 (define-fun-rec
   hmerge
     ((x (Heap Int)) (y (Heap Int))) (Heap Int)
@@ -59,5 +59,5 @@
       (case (Node p y q) (cons y (toList (hmerge p q))))
       (case Nil (as nil (list Int)))))
 (define-fun hsort ((x (list Int))) (list Int) (toList (toHeap x)))
-(assert-not (forall ((x (list Int))) (ordered (hsort x))))
+(assert-not (forall ((x (list Int))) (zordered (hsort x))))
 (check-sat)

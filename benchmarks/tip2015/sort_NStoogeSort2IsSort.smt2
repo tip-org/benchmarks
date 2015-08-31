@@ -44,9 +44,9 @@
       (<= x y) (cons x (cons y (as nil (list Int))))
       (cons y (cons x (as nil (list Int))))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (length
-       ((x (list t))) Nat
+       ((x (list a))) Nat
        (match x
          (case nil Z)
          (case (cons y xs) (S (length xs)))))))

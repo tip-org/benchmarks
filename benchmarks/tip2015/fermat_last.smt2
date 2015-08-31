@@ -11,11 +11,12 @@
     (match x
       (case Z Z)
       (case (S n) (plus y (mult n y)))))
+(define-fun ^1 () Nat (S Z))
 (define-fun-rec
   pow
     ((x Nat) (y Nat)) Nat
     (match y
-      (case Z (S Z))
+      (case Z ^1)
       (case (S m) (mult x (pow x m)))))
 (assert-not
   (forall ((n Nat) (x Nat) (y Nat) (z Nat))

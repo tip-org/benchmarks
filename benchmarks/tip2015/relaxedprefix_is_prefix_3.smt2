@@ -44,11 +44,12 @@
               (case (cons x5 x6)
                 (ite (eq z x5) (isRelaxedPrefix x2 x6) (isPrefix x2 y)))))))))
 (define-fun-rec
-  append
-    ((x (list It)) (y (list It))) (list It)
-    (match x
-      (case nil y)
-      (case (cons z xs) (cons z (append xs y)))))
+  (par (a)
+    (append
+       ((x (list a)) (y (list a))) (list a)
+       (match x
+         (case nil y)
+         (case (cons z xs) (cons z (append xs y)))))))
 (assert-not
   (forall ((x It) (xs (list It)) (ys (list It)))
     (isRelaxedPrefix (append xs (cons x (as nil (list It))))

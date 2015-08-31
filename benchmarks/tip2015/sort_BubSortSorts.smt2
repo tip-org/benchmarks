@@ -3,14 +3,14 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
 (define-fun-rec
-  ordered
+  zordered
     ((x (list Int))) Bool
     (match x
       (case nil true)
       (case (cons y z)
         (match z
           (case nil true)
-          (case (cons y2 xs) (and (<= y y2) (ordered z)))))))
+          (case (cons y2 xs) (and (<= y y2) (zordered z)))))))
 (define-fun-rec
   bubble
     ((x (list Int))) (Pair Bool (list Int))
@@ -29,5 +29,5 @@
   bubsort
     ((x (list Int))) (list Int)
     (match (bubble x) (case (Pair2 c ys) (ite c (bubsort ys) x))))
-(assert-not (forall ((x (list Int))) (ordered (bubsort x))))
+(assert-not (forall ((x (list Int))) (zordered (bubsort x))))
 (check-sat)

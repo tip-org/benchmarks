@@ -6,18 +6,18 @@
      (TNil))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
+  zcount
+    ((x Int) (y (list Int))) Nat
+    (match y
+      (case nil Z)
+      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
+(define-fun-rec
   (par (a)
     (flatten
        ((x (Tree a)) (y (list a))) (list a)
        (match x
          (case (TNode q z q2) (flatten q (cons z (flatten q2 y))))
          (case TNil y)))))
-(define-fun-rec
-  count
-    ((x Int) (y (list Int))) Nat
-    (match y
-      (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs)))))
 (define-fun-rec
   add
     ((x Int) (y (Tree Int))) (Tree Int)
@@ -37,5 +37,5 @@
     (flatten (toTree x) (as nil (list Int))))
 (assert-not
   (forall ((x Int) (y (list Int)))
-    (= (count x (tsort y)) (count x y))))
+    (= (zcount x (tsort y)) (zcount x y))))
 (check-sat)

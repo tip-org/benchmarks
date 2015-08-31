@@ -3,6 +3,12 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
+  zcount
+    ((x Int) (y (list Int))) Nat
+    (match y
+      (case nil Z)
+      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
+(define-fun-rec
   insert2
     ((x Int) (y (list Int))) (list Int)
     (match y
@@ -15,13 +21,7 @@
     (match x
       (case nil (as nil (list Int)))
       (case (cons y xs) (insert2 y (isort xs)))))
-(define-fun-rec
-  count
-    ((x Int) (y (list Int))) Nat
-    (match y
-      (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs)))))
 (assert-not
   (forall ((x Int) (y (list Int)))
-    (= (count x (isort y)) (count x y))))
+    (= (zcount x (isort y)) (zcount x y))))
 (check-sat)

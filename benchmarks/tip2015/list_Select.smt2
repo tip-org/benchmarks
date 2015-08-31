@@ -19,18 +19,18 @@
          (case nil (as nil (list (Pair a (list a)))))
          (case (cons y xs) (cons (Pair2 y xs) (select3 y (select2 xs))))))))
 (define-fun-rec
-  (par (t t2)
+  (par (a b)
     (map2
-       ((f (=> t2 t)) (x (list t2))) (list t)
-       (match x
-         (case nil (as nil (list t)))
-         (case (cons y z) (cons (@ f y) (map2 f z)))))))
+       ((x (=> a b)) (y (list a))) (list b)
+       (match y
+         (case nil (as nil (list b)))
+         (case (cons z xs) (cons (@ x z) (map2 x xs)))))))
 (define-fun
   (par (a b)
     (fst ((x (Pair a b))) a (match x (case (Pair2 y z) y)))))
 (assert-not
-  (par (t)
-    (forall ((xs (list t)))
-      (= (map2 (lambda ((x (Pair t (list t)))) (fst x)) (select2 xs))
+  (par (b)
+    (forall ((xs (list b)))
+      (= (map2 (lambda ((x (Pair b (list b)))) (fst x)) (select2 xs))
         xs))))
 (check-sat)

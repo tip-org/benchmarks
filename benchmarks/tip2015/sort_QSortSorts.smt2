@@ -2,22 +2,22 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
-  ordered
+  zordered
     ((x (list Int))) Bool
     (match x
       (case nil true)
       (case (cons y z)
         (match z
           (case nil true)
-          (case (cons y2 xs) (and (<= y y2) (ordered z)))))))
+          (case (cons y2 xs) (and (<= y y2) (zordered z)))))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (filter
-       ((p (=> t Bool)) (x (list t))) (list t)
-       (match x
-         (case nil (as nil (list t)))
-         (case (cons y z)
-           (ite (@ p y) (cons y (filter p z)) (filter p z)))))))
+       ((x (=> a Bool)) (y (list a))) (list a)
+       (match y
+         (case nil (as nil (list a)))
+         (case (cons z xs)
+           (ite (@ x z) (cons z (filter x xs)) (filter x xs)))))))
 (define-fun-rec
   (par (a)
     (append
@@ -35,5 +35,5 @@
           (append (qsort (filter (lambda ((z Int)) (<= z y)) xs))
             (cons y (as nil (list Int))))
           (qsort (filter (lambda ((x2 Int)) (> x2 y)) xs))))))
-(assert-not (forall ((x (list Int))) (ordered (qsort x))))
+(assert-not (forall ((x (list Int))) (zordered (qsort x))))
 (check-sat)

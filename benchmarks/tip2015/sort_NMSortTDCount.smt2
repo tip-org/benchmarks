@@ -3,6 +3,12 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
+  zcount
+    ((x Int) (y (list Int))) Nat
+    (match y
+      (case nil Z)
+      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
+(define-fun-rec
   (par (a)
     (take
        ((x Nat) (y (list a))) (list a)
@@ -23,9 +29,9 @@
           (case (cons x3 x4)
             (ite (<= z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (length
-       ((x (list t))) Nat
+       ((x (list a))) Nat
        (match x
          (case nil Z)
          (case (cons y xs) (S (length xs)))))))
@@ -59,13 +65,7 @@
           (case (cons x2 x3)
             (let ((k (half (length x))))
               (lmerge (nmsorttd (take k x)) (nmsorttd (drop k x)))))))))
-(define-fun-rec
-  count
-    ((x Int) (y (list Int))) Nat
-    (match y
-      (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs)))))
 (assert-not
   (forall ((x Int) (y (list Int)))
-    (= (count x (nmsorttd y)) (count x y))))
+    (= (zcount x (nmsorttd y)) (zcount x y))))
 (check-sat)

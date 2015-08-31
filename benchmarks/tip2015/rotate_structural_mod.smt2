@@ -1,81 +1,81 @@
-; Property about rotate and mod, written structurally recursive
-(declare-datatypes () ((Nat (S (p Nat)) (Z))))
+; Property about rotate and mod
 (declare-datatypes (a)
-  ((List2 (Cons (Cons_0 a) (Cons_1 (List2 a))) (Nil))))
+  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
   (par (a)
     (take
-       ((x Nat) (y (List2 a))) (List2 a)
+       ((x Nat) (y (list a))) (list a)
        (match x
+         (case Z (as nil (list a)))
          (case (S z)
            (match y
-             (case (Cons x2 x3) (Cons x2 (take z x3)))
-             (case Nil (as Nil (List2 a)))))
-         (case Z (as Nil (List2 a)))))))
+             (case nil (as nil (list a)))
+             (case (cons x2 x3) (cons x2 (take z x3)))))))))
 (define-fun-rec
   minus
     ((x Nat) (y Nat)) Nat
     (match x
-      (case (S z)
+      (case Z Z)
+      (case (S n)
         (match y
-          (case (S x2) (minus z x2))
-          (case Z x)))
-      (case Z Z)))
-(define-fun-rec
-  mod2
-    ((x Nat) (y Nat) (z Nat)) Nat
-    (match z
-      (case (S x2)
-        (match x
-          (case (S n)
-            (match y
-              (case (S k) (mod2 n k z))
-              (case Z (mod2 n x2 z))))
-          (case Z
-            (match y
-              (case (S m) (minus z y))
-              (case Z Z)))))
-      (case Z Z)))
-(define-fun mod3 ((x Nat) (y Nat)) Nat (mod2 x Z y))
+          (case Z x)
+          (case (S m) (minus n m))))))
 (define-fun-rec
   (par (a)
     (length
-       ((x (List2 a))) Nat
+       ((x (list a))) Nat
        (match x
-         (case (Cons y xs) (S (length xs)))
-         (case Nil Z)))))
+         (case nil Z)
+         (case (cons y xs) (S (length xs)))))))
+(define-fun-rec
+  go
+    ((x Nat) (y Nat) (z Nat)) Nat
+    (match z
+      (case Z Z)
+      (case (S x2)
+        (match x
+          (case Z
+            (match y
+              (case Z Z)
+              (case (S n) (minus z y))))
+          (case (S m)
+            (match y
+              (case Z (go m x2 z))
+              (case (S k) (go m k z))))))))
+(define-fun mod_structural ((x Nat) (y Nat)) Nat (go x Z y))
 (define-fun-rec
   (par (a)
     (drop
-       ((x Nat) (y (List2 a))) (List2 a)
+       ((x Nat) (y (list a))) (list a)
        (match x
+         (case Z y)
          (case (S z)
            (match y
-             (case (Cons x2 x3) (drop z x3))
-             (case Nil (as Nil (List2 a)))))
-         (case Z y)))))
+             (case nil (as nil (list a)))
+             (case (cons x2 x3) (drop z x3))))))))
 (define-fun-rec
   (par (a)
     (append
-       ((x (List2 a)) (y (List2 a))) (List2 a)
+       ((x (list a)) (y (list a))) (list a)
        (match x
-         (case (Cons z xs) (Cons z (append xs y)))
-         (case Nil y)))))
+         (case nil y)
+         (case (cons z xs) (cons z (append xs y)))))))
 (define-fun-rec
   (par (a)
     (rotate
-       ((x Nat) (y (List2 a))) (List2 a)
+       ((x Nat) (y (list a))) (list a)
        (match x
+         (case Z y)
          (case (S z)
            (match y
-             (case (Cons x2 x3)
-               (rotate z (append x3 (Cons x2 (as Nil (List2 a))))))
-             (case Nil (as Nil (List2 a)))))
-         (case Z y)))))
+             (case nil (as nil (list a)))
+             (case (cons x2 x3)
+               (rotate z (append x3 (cons x2 (as nil (list a))))))))))))
 (assert-not
   (par (a)
-    (forall ((n Nat) (xs (List2 a)))
+    (forall ((n Nat) (xs (list a)))
       (= (rotate n xs)
-        (append (drop (mod3 n (length xs)) xs)
-          (take (mod3 n (length xs)) xs))))))
+        (append (drop (mod_structural n (length xs)) xs)
+          (take (mod_structural n (length xs)) xs))))))
 (check-sat)

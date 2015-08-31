@@ -1,38 +1,8 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module List where
 
-import Tip
-import Prelude hiding (Eq(..), Ord(..), map, all, elem, null, length, even, (++))
-import Nat
-import qualified Prelude
-
-type OrdA = Int
-
-(>), (<=), (==) :: Int -> Int -> Bool
-(<=) = (Prelude.<=)
-(>)  = (Prelude.>)
-(==) = (Prelude.==)
-
-delete :: Int -> [Int] -> [Int]
-delete x [] = []
-delete x (y:ys)
-  | x == y = ys
-  | otherwise = y:delete x ys
-
-map f xs = [ f x | x <- xs ]
-all p [] = True
-all p (x:xs) = p x && all p xs
-x `elem` [] = False
-x `elem` (y:ys) = x == y || x `elem` ys
-null [] = True
-null _ = False
-length [] = Z
-length (_:xs) = S (length xs)
-even Z = True
-even (S Z) = False
-even (S (S x)) = even x
-[] ++ xs = xs
-(x:xs) ++ ys = x:(xs ++ ys)
+import Prelude ()
+import Tip.Prelude
 
 --------------------------------------------------------------------------------
 
@@ -64,34 +34,23 @@ interleave []     ys = ys
 
 --------------------------------------------------------------------------------
 
--- count :: Eq a => a -> [a] -> Integer
-count x []                 = Z
-count x (y:xs) | x == y    = S (count x xs)
-               | otherwise = count x xs
-
--- isPermutation :: Eq a => [a] -> [a] -> Bool
-[]     `isPermutation` ys = null ys
-(x:xs) `isPermutation` ys = x `elem` ys && xs `isPermutation` delete x ys
-
---------------------------------------------------------------------------------
-
 prop_Select xs =
   map fst (select xs) === xs
 
 prop_SelectPermutations xs =
-  all (`isPermutation` xs) [ y:ys | (y,ys) <- select xs ] === True
+  all (`zisPermutation` xs) [ y:ys | (y,ys) <- select xs ] === True
 
 prop_SelectPermutations' xs z =
-  all ((n `eq`) . count z) [ y:ys | (y,ys) <- select xs ] === True
+  all ((n ==) . zcount z) [ y:ys | (y,ys) <- select xs ] === True
  where
-  n = count z xs
+  n = zcount z xs
 
 prop_PairUnpair xs =
-  even (length xs) === True ==>
+  even (length xs) ==>
     unpair (pairs xs) === xs
 
 prop_PairEvens xs =
-  even (length xs) === True ==>
+  even (length xs) ==>
     map fst (pairs xs) === evens xs
 
 prop_PairOdds xs =
@@ -104,3 +63,40 @@ prop_Interleave xs =
 -- Injectivity of append
 prop_append_inj_1 xs ys zs = xs ++ zs === ys ++ zs ==> xs === ys
 prop_append_inj_2 xs ys zs = xs ++ ys === xs ++ zs ==> ys === zs
+
+prop_nub_nub xs = nub (nub xs) === nub xs
+
+prop_elem_nub_l x xs = x `elem` xs ==> x `elem` nub xs
+prop_elem_nub_r x xs = x `elem` nub xs ==> x `elem` xs
+prop_count_nub  x xs = x `elem` xs ==> count x (nub xs) === S Z
+
+prop_perm_trans xs ys zs = xs `isPermutation` ys ==> ys `isPermutation` zs ==> xs `isPermutation` zs
+prop_perm_refl xs        = xs `isPermutation` xs === True
+prop_perm_symm xs ys     = xs `isPermutation` ys ==> ys `isPermutation` xs
+
+prop_perm_elem x xs ys   = x `elem` xs ==> xs `isPermutation` ys ==> x `elem` ys
+
+prop_deleteAll_count x xs = deleteAll x xs === delete x xs ==> count x xs <= S Z
+
+-- prop_elem x xs = x `elem` xs ==> exists (\ i -> maybe False (x ==) (index xs i))
+-- prop_elem_map y f xs = y `elem` map f xs ==> exists (\ x -> f x === y .&. y `elem` xs)
+
+-- Same as above, but with ints
+
+prop_z_nub_nub xs = znub (znub xs) === znub xs
+
+prop_z_elem_nub_l x xs = x `zelem` xs ==> x `zelem` znub xs
+prop_z_elem_nub_r x xs = x `zelem` znub xs ==> x `zelem` xs
+prop_z_count_nub  x xs = x `zelem` xs ==> zcount x (znub xs) === S Z
+
+prop_z_perm_trans xs ys zs = xs `zisPermutation` ys ==> ys `zisPermutation` zs ==> xs `zisPermutation` zs
+prop_z_perm_refl xs        = xs `zisPermutation` xs === True
+prop_z_perm_symm xs ys     = xs `zisPermutation` ys ==> ys `zisPermutation` xs
+
+prop_z_perm_elem x xs ys   = x `zelem` xs ==> xs `zisPermutation` ys ==> x `zelem` ys
+
+prop_z_deleteAll_count x xs = zdeleteAll x xs === zdelete x xs ==> zcount x xs <= S Z
+
+-- prop_z_elem x xs = x `zelem` xs ==> exists (\ i -> maybe False (x `zeq`) (index xs i))
+-- prop_z_elem_map y f xs = y `zelem` map f xs ==> exists (\ x -> f x === y .&. y `zelem` xs)
+

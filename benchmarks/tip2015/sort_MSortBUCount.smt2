@@ -3,12 +3,18 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
-  (par (t t2)
+  zcount
+    ((x Int) (y (list Int))) Nat
+    (match y
+      (case nil Z)
+      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
+(define-fun-rec
+  (par (a b)
     (map2
-       ((f (=> t2 t)) (x (list t2))) (list t)
-       (match x
-         (case nil (as nil (list t)))
-         (case (cons y z) (cons (@ f y) (map2 f z)))))))
+       ((x (=> a b)) (y (list a))) (list b)
+       (match y
+         (case nil (as nil (list b)))
+         (case (cons z xs) (cons (@ x z) (map2 x xs)))))))
 (define-fun-rec
   lmerge
     ((x (list Int)) (y (list Int))) (list Int)
@@ -42,13 +48,7 @@
     ((x (list Int))) (list Int)
     (mergingbu
       (map2 (lambda ((y Int)) (cons y (as nil (list Int)))) x)))
-(define-fun-rec
-  count
-    ((x Int) (y (list Int))) Nat
-    (match y
-      (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs)))))
 (assert-not
   (forall ((x Int) (y (list Int)))
-    (= (count x (msortbu y)) (count x y))))
+    (= (zcount x (msortbu y)) (zcount x y))))
 (check-sat)

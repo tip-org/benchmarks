@@ -2,6 +2,12 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(define-fun-rec
+  zcount
+    ((x Int) (y (list Int))) Nat
+    (match y
+      (case nil Z)
+      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
 (define-fun
   sort2
     ((x Int) (y Int)) (list Int)
@@ -17,12 +23,6 @@
    (match x
      (case nil (as nil (list a)))
      (case (cons y xs) (evens xs)))))
-(define-fun-rec
-  count
-    ((x Int) (y (list Int))) Nat
-    (match y
-      (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs)))))
 (define-fun-rec
   (par (a)
     (append
@@ -75,5 +75,5 @@
           (case (cons x2 x3) (bmerge (bsort (evens x)) (bsort (odds x))))))))
 (assert-not
   (forall ((x Int) (y (list Int)))
-    (= (count x (bsort y)) (count x y))))
+    (= (zcount x (bsort y)) (zcount x y))))
 (check-sat)

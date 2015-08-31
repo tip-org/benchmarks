@@ -25,11 +25,11 @@
          (case nil y)
          (case (cons z xs) (cons z (append xs y)))))))
 (define-fun-rec
-  (par (t t2)
+  (par (a b)
     (concatMap
-       ((x (=> t (list t2))) (y (list t))) (list t2)
+       ((x (=> a (list b))) (y (list a))) (list b)
        (match y
-         (case nil (as nil (list t2)))
+         (case nil (as nil (list b)))
          (case (cons z xs) (append (@ x z) (concatMap x xs)))))))
 (define-fun-rec
   (par (a)

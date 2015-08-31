@@ -1,13 +1,8 @@
 -- Rotate expressed using a snoc instead of append
 module SnocRotate where
 
-import Prelude hiding (length, (++))
-
-import Tip
-import Data.Typeable
-
-import Nat (Nat(..))
-import List (length)
+import Tip.Prelude
+import qualified Prelude as P
 
 rotate :: Nat -> [a] -> [a]
 rotate Z     xs     = xs
@@ -20,10 +15,6 @@ snoc x (y:ys) = y:snoc x ys
 
 prop_snoc :: [a] -> Equality [a]
 prop_snoc xs = rotate (length xs) xs === xs
-
-(++) :: [a] -> [a] -> [a]
-[]     ++ ys = ys
-(x:xs) ++ ys = x : (xs ++ ys)
 
 prop_snoc_self :: Nat -> [a] -> Equality [a]
 prop_snoc_self n xs = rotate n (xs ++ xs) === rotate n xs ++ rotate n xs

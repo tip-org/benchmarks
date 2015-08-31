@@ -1,14 +1,12 @@
 -- Escaping and unescaping
 module Escape where
 
-import Tip
-
-import Prelude hiding (all)
+import Tip.Prelude
+import qualified Prelude as P
 
 --------------------------------------------------------------------------------
 
 data Token = A | B | C | D | ESC | P | Q | R
- deriving ( Eq, Ord, Show )
 
 escape :: [Token] -> [Token]
 escape []                   = []
@@ -28,10 +26,6 @@ code P   = A
 code Q   = B
 code R   = C
 code x   = x
-
-all :: (a -> Bool) -> [a] -> Bool
-all p [] = True
-all p (x:xs) = p x && all p xs
 
 isEsc :: Token -> Bool
 isEsc ESC = True

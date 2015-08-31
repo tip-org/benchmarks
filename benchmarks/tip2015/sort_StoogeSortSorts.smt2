@@ -12,6 +12,15 @@
            (case nil (as nil (list a)))
            (case (cons z xs) (cons z (ztake (- x 1) xs))))))))
 (define-fun-rec
+  zordered
+    ((x (list Int))) Bool
+    (match x
+      (case nil true)
+      (case (cons y z)
+        (match z
+          (case nil true)
+          (case (cons y2 xs) (and (<= y y2) (zordered z)))))))
+(define-fun-rec
   (par (a)
     (zlength
        ((x (list a))) Int
@@ -26,7 +35,7 @@
          (= x 0) y
          (match y
            (case nil (as nil (list a)))
-           (case (cons z xs) (zdrop (- x 1) xs)))))))
+           (case (cons z xs1) (zdrop (- x 1) xs1)))))))
 (define-fun
   (par (a)
     (zsplitAt
@@ -39,15 +48,6 @@
       (<= x y) (cons x (cons y (as nil (list Int))))
       (cons y (cons x (as nil (list Int))))))
 (define-fun-rec
-  ordered
-    ((x (list Int))) Bool
-    (match x
-      (case nil true)
-      (case (cons y z)
-        (match z
-          (case nil true)
-          (case (cons y2 xs) (and (<= y y2) (ordered z)))))))
-(define-fun-rec
   (par (a)
     (append
        ((x (list a)) (y (list a))) (list a)
@@ -55,13 +55,13 @@
          (case nil y)
          (case (cons z xs) (cons z (append xs y)))))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (reverse
-       ((x (list t))) (list t)
+       ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list t)))
+         (case nil (as nil (list a)))
          (case (cons y xs)
-           (append (reverse xs) (cons y (as nil (list t)))))))))
+           (append (reverse xs) (cons y (as nil (list a)))))))))
 (define-funs-rec
   ((stooge1sort2 ((x (list Int))) (list Int))
    (stoogesort ((x (list Int))) (list Int))
@@ -80,5 +80,5 @@
                (stooge1sort2 (stooge1sort1 (stooge1sort2 x)))))))))
    (match (zsplitAt (div (zlength x) 3) x)
      (case (Pair2 ys zs) (append ys (stoogesort zs))))))
-(assert-not (forall ((x (list Int))) (ordered (stoogesort x))))
+(assert-not (forall ((x (list Int))) (zordered (stoogesort x))))
 (check-sat)

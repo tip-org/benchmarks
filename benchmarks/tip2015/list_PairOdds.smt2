@@ -15,12 +15,12 @@
              (case nil (as nil (list (Pair t t))))
              (case (cons y2 xs) (cons (Pair2 y y2) (pairs xs)))))))))
 (define-fun-rec
-  (par (t t2)
+  (par (a b)
     (map2
-       ((f (=> t2 t)) (x (list t2))) (list t)
-       (match x
-         (case nil (as nil (list t)))
-         (case (cons y z) (cons (@ f y) (map2 f z)))))))
+       ((x (=> a b)) (y (list a))) (list b)
+       (match y
+         (case nil (as nil (list b)))
+         (case (cons z xs) (cons (@ x z) (map2 x xs)))))))
 (define-funs-rec
   ((par (a) (evens ((x (list a))) (list a)))
    (par (a) (odds ((x (list a))) (list a))))
@@ -31,8 +31,8 @@
      (case nil (as nil (list a)))
      (case (cons y xs) (evens xs)))))
 (assert-not
-  (par (t)
-    (forall ((xs (list t)))
-      (= (map2 (lambda ((x (Pair t t))) (snd x)) (pairs xs))
+  (par (b)
+    (forall ((xs (list b)))
+      (= (map2 (lambda ((x (Pair b b))) (snd x)) (pairs xs))
         (odds xs)))))
 (check-sat)

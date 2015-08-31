@@ -23,9 +23,9 @@
           (case (cons x3 x4)
             (ite (<= z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (length
-       ((x (list t))) Nat
+       ((x (list a))) Nat
        (match x
          (case nil Z)
          (case (cons y xs) (S (length xs)))))))

@@ -1,38 +1,38 @@
 ; The implementation of these integers correspond to those in the
 ; Agda standard library, which is proved to be a commutative ring
-(declare-datatypes () ((Nat (Zero) (Succ (pred Nat)))))
-(declare-datatypes () ((Z (P (P_0 Nat)) (N (N_0 Nat)))))
+(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Integer (P (P_0 Nat)) (N (N_0 Nat)))))
 (define-fun-rec
-  plus
+  plus2
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Zero y)
-      (case (Succ n) (Succ (plus n y)))))
+      (case Z y)
+      (case (S n) (S (plus2 n y)))))
 (define-fun-rec
   minus
-    ((x Nat) (y Nat)) Z
+    ((x Nat) (y Nat)) Integer
     (match x
-      (case Zero
+      (case Z
         (match y
-          (case Zero (P Zero))
-          (case (Succ n) (N n))))
-      (case (Succ m)
+          (case Z (P Z))
+          (case (S n) (N n))))
+      (case (S m)
         (match y
-          (case Zero (P x))
-          (case (Succ o) (minus m o))))))
+          (case Z (P x))
+          (case (S o) (minus m o))))))
 (define-fun
-  plus2
-    ((x Z) (y Z)) Z
+  plus
+    ((x Integer) (y Integer)) Integer
     (match x
       (case (P m)
         (match y
-          (case (P n) (P (plus m n)))
-          (case (N o) (minus m (Succ o)))))
+          (case (P n) (P (plus2 m n)))
+          (case (N o) (minus m (S o)))))
       (case (N m2)
         (match y
-          (case (P n2) (minus n2 (Succ m2)))
-          (case (N n3) (N (Succ (plus m2 n3))))))))
+          (case (P n2) (minus n2 (S m2)))
+          (case (N n3) (N (S (plus2 m2 n3))))))))
 (assert-not
-  (forall ((x Z) (y Z) (z Z))
-    (= (plus2 x (plus2 y z)) (plus2 (plus2 x y) z))))
+  (forall ((x Integer) (y Integer) (z Integer))
+    (= (plus x (plus y z)) (plus (plus x y) z))))
 (check-sat)

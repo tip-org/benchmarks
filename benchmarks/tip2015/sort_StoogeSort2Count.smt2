@@ -27,24 +27,24 @@
          (= x 0) y
          (match y
            (case nil (as nil (list a)))
-           (case (cons z xs) (zdrop (- x 1) xs)))))))
+           (case (cons z xs1) (zdrop (- x 1) xs1)))))))
 (define-fun
   (par (a)
     (zsplitAt
        ((x Int) (y (list a))) (Pair (list a) (list a))
        (Pair2 (ztake x y) (zdrop x y)))))
+(define-fun-rec
+  zcount
+    ((x Int) (y (list Int))) Nat
+    (match y
+      (case nil Z)
+      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
 (define-fun
   sort2
     ((x Int) (y Int)) (list Int)
     (ite
       (<= x y) (cons x (cons y (as nil (list Int))))
       (cons y (cons x (as nil (list Int))))))
-(define-fun-rec
-  count
-    ((x Int) (y (list Int))) Nat
-    (match y
-      (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs)))))
 (define-fun-rec
   (par (a)
     (append
@@ -72,5 +72,5 @@
      (case (Pair2 ys zs) (append ys (stoogesort2 zs))))))
 (assert-not
   (forall ((x Int) (y (list Int)))
-    (= (count x (stoogesort2 y)) (count x y))))
+    (= (zcount x (stoogesort2 y)) (zcount x y))))
 (check-sat)

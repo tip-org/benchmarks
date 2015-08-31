@@ -87,7 +87,7 @@
     ((x Nat) (y (list Nat))) (list Nat)
     (match y
       (case nil (as nil (list Nat)))
-      (case (cons z ys) (ite (equal x z) ys (cons z (delete x ys))))))
+      (case (cons z xs) (ite (equal x z) xs (cons z (delete x xs))))))
 (define-fun-rec
   isPermutation
     ((x (list Nat)) (y (list Nat))) Bool

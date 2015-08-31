@@ -5,14 +5,14 @@
   ((Tree (TNode (TNode_0 (Tree a)) (TNode_1 a) (TNode_2 (Tree a)))
      (TNil))))
 (define-fun-rec
-  ordered
+  zordered
     ((x (list Int))) Bool
     (match x
       (case nil true)
       (case (cons y z)
         (match z
           (case nil true)
-          (case (cons y2 xs) (and (<= y y2) (ordered z)))))))
+          (case (cons y2 xs) (and (<= y y2) (zordered z)))))))
 (define-fun-rec
   (par (a)
     (flatten
@@ -37,5 +37,5 @@
   tsort
     ((x (list Int))) (list Int)
     (flatten (toTree x) (as nil (list Int))))
-(assert-not (forall ((x (list Int))) (ordered (tsort x))))
+(assert-not (forall ((x (list Int))) (zordered (tsort x))))
 (check-sat)

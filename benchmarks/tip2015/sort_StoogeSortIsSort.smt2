@@ -26,7 +26,7 @@
          (= x 0) y
          (match y
            (case nil (as nil (list a)))
-           (case (cons z xs) (zdrop (- x 1) xs)))))))
+           (case (cons z xs1) (zdrop (- x 1) xs1)))))))
 (define-fun
   (par (a)
     (zsplitAt
@@ -59,13 +59,13 @@
          (case nil y)
          (case (cons z xs) (cons z (append xs y)))))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (reverse
-       ((x (list t))) (list t)
+       ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list t)))
+         (case nil (as nil (list a)))
          (case (cons y xs)
-           (append (reverse xs) (cons y (as nil (list t)))))))))
+           (append (reverse xs) (cons y (as nil (list a)))))))))
 (define-funs-rec
   ((stooge1sort2 ((x (list Int))) (list Int))
    (stoogesort ((x (list Int))) (list Int))

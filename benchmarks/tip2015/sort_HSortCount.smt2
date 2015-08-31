@@ -6,6 +6,12 @@
   ((Heap (Node (Node_0 (Heap a)) (Node_1 a) (Node_2 (Heap a)))
      (Nil))))
 (define-fun-rec
+  zcount
+    ((x Int) (y (list Int))) Nat
+    (match y
+      (case nil Z)
+      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
+(define-fun-rec
   toHeap2
     ((x (list Int))) (list (Heap Int))
     (match x
@@ -51,13 +57,7 @@
       (case (Node q y q2) (cons y (toList (hmerge q q2))))
       (case Nil (as nil (list Int)))))
 (define-fun hsort ((x (list Int))) (list Int) (toList (toHeap x)))
-(define-fun-rec
-  count
-    ((x Int) (y (list Int))) Nat
-    (match y
-      (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs)))))
 (assert-not
   (forall ((x Int) (y (list Int)))
-    (= (count x (hsort y)) (count x y))))
+    (= (zcount x (hsort y)) (zcount x y))))
 (check-sat)

@@ -1,45 +1,10 @@
-{-# LANGUAGE ScopedTypeVariables #-}
 module Tree where
 
-import Tip
-import Prelude hiding (Eq(..), Ord(..), map, all, elem, null, length, even, (++), concatMap)
-import Nat
-import qualified Prelude
-
-type OrdA = Int
-
-(>), (<=), (==) :: Int -> Int -> Bool
-(<=) = (Prelude.<=)
-(>)  = (Prelude.>)
-(==) = (Prelude.==)
-
-concatMap f [] = []
-concatMap f (x:xs) = f x ++ concatMap f xs
-delete :: Int -> [Int] -> [Int]
-delete x [] = []
-delete x (y:ys)
-  | x == y = ys
-  | otherwise = y:delete x ys
-
-map f xs = [ f x | x <- xs ]
-all p [] = True
-all p (x:xs) = p x && all p xs
-x `elem` [] = False
-x `elem` (y:ys) = x == y || x `elem` ys
-null [] = True
-null _ = False
-length [] = Z
-length (_:xs) = S (length xs)
-even Z = True
-even (S Z) = False
-even (S (S x)) = even x
-[] ++ xs = xs
-(x:xs) ++ ys = x:(xs ++ ys)
-
---------------------------------------------------------------------------------
+import Tip.Prelude
+import qualified Prelude as P
 
 data Tree a = Node (Tree a) a (Tree a) | Nil
- 
+
 --------------------------------------------------------------------------------
 
 flatten0 :: Tree a -> [a]
@@ -81,13 +46,13 @@ swap :: Int -> Int -> Tree Int -> Tree Int
 swap a b Nil          = Nil
 swap a b (Node p x q) = Node (swap a b p) x' (swap a b q)
  where
-  x' | x == a    = b
-     | x == b    = a
+  x' | x P.== a  = b
+     | x P.== b  = a
      | otherwise = x
 
 prop_SwapAB p a b =
-  a `elem` flatten0 p ==>
-  b `elem` flatten0 p ==>
-  a `elem` flatten0 (swap a b p) .&&.
-  b `elem` flatten0 (swap a b p)
+  a `zelem` flatten0 p ==>
+  b `zelem` flatten0 p ==>
+  a `zelem` flatten0 (swap a b p) .&&.
+  b `zelem` flatten0 (swap a b p)
 

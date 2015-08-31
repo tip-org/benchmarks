@@ -12,9 +12,9 @@
       (case nil false)
       (case (cons y xs) (or y (or2 xs)))))
 (define-fun
-  (par (t)
+  (par (a)
     (null
-       ((x (list t))) Bool
+       ((x (list a))) Bool
        (match x
          (case nil true)
          (case (cons y z) false)))))
@@ -40,13 +40,13 @@
   (par (a b)
     (fst ((x (Pair a b))) a (match x (case (Pair2 y z) y)))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (filter
-       ((p (=> t Bool)) (x (list t))) (list t)
-       (match x
-         (case nil (as nil (list t)))
-         (case (cons y z)
-           (ite (@ p y) (cons y (filter p z)) (filter p z)))))))
+       ((x (=> a Bool)) (y (list a))) (list a)
+       (match y
+         (case nil (as nil (list a)))
+         (case (cons z xs)
+           (ite (@ x z) (cons z (filter x xs)) (filter x xs)))))))
 (define-fun-rec
   (par (a)
     (append

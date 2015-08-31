@@ -4,6 +4,12 @@
   ((Expr (Var (Var_0 Int))
      (Lam (Lam_0 Int) (Lam_1 Expr)) (App (App_0 Expr) (App_1 Expr)))))
 (define-fun-rec
+  zelem
+    ((x Int) (y (list Int))) Bool
+    (match y
+      (case nil false)
+      (case (cons z ys) (or (= x z) (zelem x ys)))))
+(define-fun-rec
   new_maximum
     ((x Int) (y (list Int))) Int
     (match y
@@ -12,19 +18,13 @@
         (ite (<= x z) (new_maximum z ys) (new_maximum x ys)))))
 (define-fun new ((x (list Int))) Int (+ (new_maximum 0 x) 1))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (filter
-       ((p (=> t Bool)) (x (list t))) (list t)
-       (match x
-         (case nil (as nil (list t)))
-         (case (cons y z)
-           (ite (@ p y) (cons y (filter p z)) (filter p z)))))))
-(define-fun-rec
-  elem
-    ((x Int) (y (list Int))) Bool
-    (match y
-      (case nil false)
-      (case (cons z ys) (or (= x z) (elem x ys)))))
+       ((x (=> a Bool)) (y (list a))) (list a)
+       (match y
+         (case nil (as nil (list a)))
+         (case (cons z xs)
+           (ite (@ x z) (cons z (filter x xs)) (filter x xs)))))))
 (define-fun-rec
   (par (a)
     (append
@@ -39,7 +39,7 @@
       (case (Var y) (cons y (as nil (list Int))))
       (case (Lam z b)
         (filter (lambda ((x2 Int)) (distinct z x2)) (free b)))
-      (case (App c b2) (append (free c) (free b2)))))
+      (case (App a2 b2) (append (free a2) (free b2)))))
 (define-fun-rec
   subst
     ((x Int) (y Expr) (z Expr)) Expr
@@ -50,15 +50,15 @@
           (ite
             (= x y3) z
             (ite
-              (elem y3 (free y)) (subst x y (Lam z2 (subst y3 (Var z2) a)))
+              (zelem y3 (free y)) (subst x y (Lam z2 (subst y3 (Var z2) a)))
               (Lam y3 (subst x y a))))))
       (case (App c b2) (App (subst x y c) (subst x y b2)))))
 (assert-not
   (forall ((x Int) (e Expr) (a Expr) (y Int))
-    (=> (elem x (free a))
+    (=> (zelem x (free a))
       (=
-        (elem y
+        (zelem y
           (append (filter (lambda ((z Int)) (distinct z x)) (free a))
             (free e)))
-        (elem y (free (subst x e a)))))))
+        (zelem y (free (subst x e a)))))))
 (check-sat)

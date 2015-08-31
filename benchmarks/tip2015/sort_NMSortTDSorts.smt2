@@ -3,6 +3,15 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
+  zordered
+    ((x (list Int))) Bool
+    (match x
+      (case nil true)
+      (case (cons y z)
+        (match z
+          (case nil true)
+          (case (cons y2 xs) (and (<= y y2) (zordered z)))))))
+(define-fun-rec
   (par (a)
     (take
        ((x Nat) (y (list a))) (list a)
@@ -12,15 +21,6 @@
            (match y
              (case nil (as nil (list a)))
              (case (cons x2 x3) (cons x2 (take z x3)))))))))
-(define-fun-rec
-  ordered
-    ((x (list Int))) Bool
-    (match x
-      (case nil true)
-      (case (cons y z)
-        (match z
-          (case nil true)
-          (case (cons y2 xs) (and (<= y y2) (ordered z)))))))
 (define-fun-rec
   lmerge
     ((x (list Int)) (y (list Int))) (list Int)
@@ -32,9 +32,9 @@
           (case (cons x3 x4)
             (ite (<= z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (length
-       ((x (list t))) Nat
+       ((x (list a))) Nat
        (match x
          (case nil Z)
          (case (cons y xs) (S (length xs)))))))
@@ -68,5 +68,5 @@
           (case (cons x2 x3)
             (let ((k (half (length x))))
               (lmerge (nmsorttd (take k x)) (nmsorttd (drop k x)))))))))
-(assert-not (forall ((x (list Int))) (ordered (nmsorttd x))))
+(assert-not (forall ((x (list Int))) (zordered (nmsorttd x))))
 (check-sat)

@@ -8,6 +8,27 @@
   ((R (Nil)
      (Eps) (Atom (Atom_0 A)) (Plus (Plus_0 R) (Plus_1 R))
      (Seq (Seq_0 R) (Seq_1 R)) (Star (Star_0 R)))))
+(define-fun-rec
+  (par (a)
+    (split2
+       ((x a) (y (list (Pair (list a) (list a)))))
+       (list (Pair (list a) (list a)))
+       (match y
+         (case nil (as nil (list (Pair (list a) (list a)))))
+         (case (cons z x2)
+           (match z
+             (case (Pair2 xs ys)
+               (cons (Pair2 (cons x xs) ys) (split2 x x2)))))))))
+(define-fun-rec
+  (par (a)
+    (split
+       ((x (list a))) (list (Pair (list a) (list a)))
+       (match x
+         (case nil
+           (cons (Pair2 (as nil (list a)) (as nil (list a)))
+             (as nil (list (Pair (list a) (list a))))))
+         (case (cons y s)
+           (cons (Pair2 (as nil (list a)) x) (split2 y (split s))))))))
 (define-fun
   seq
     ((x R) (y R)) R
@@ -32,6 +53,12 @@
           (case default (Plus x y))
           (case Nil x)))
       (case Nil y)))
+(define-fun-rec
+  or2
+    ((x (list Bool))) Bool
+    (match x
+      (case nil false)
+      (case (cons y xs) (or y (or2 xs)))))
 (define-fun
   eqA
     ((x A) (y A)) Bool
@@ -71,36 +98,16 @@
       (case nil (eps x))
       (case (cons z xs) (recognise (step x z) xs))))
 (define-fun-rec
-  recognisePair
-    ((x R) (y R) (z (list (Pair (list A) (list A))))) Bool
-    (match z
-      (case nil false)
-      (case (cons x2 xs)
-        (match x2
+  prop_RecSeq
+    ((p R) (q R) (x (list (Pair (list A) (list A))))) (list Bool)
+    (match x
+      (case nil (as nil (list Bool)))
+      (case (cons y z)
+        (match y
           (case (Pair2 s1 s2)
-            (or (and (recognise x s1) (recognise y s2))
-              (recognisePair x y xs)))))))
-(define-fun-rec
-  (par (a b)
-    (consfst
-       ((x a) (y (list (Pair (list a) b)))) (list (Pair (list a) b))
-       (match y
-         (case nil (as nil (list (Pair (list a) b))))
-         (case (cons z ys)
-           (match z
-             (case (Pair2 xs y2)
-               (cons (Pair2 (cons x xs) y2) (consfst x ys)))))))))
-(define-fun-rec
-  (par (a)
-    (split
-       ((x (list a))) (list (Pair (list a) (list a)))
-       (match x
-         (case nil
-           (cons (Pair2 (as nil (list a)) (as nil (list a)))
-             (as nil (list (Pair (list a) (list a))))))
-         (case (cons y s)
-           (cons (Pair2 (as nil (list a)) x) (consfst y (split s))))))))
+            (cons (and (recognise p s1) (recognise q s2))
+              (prop_RecSeq p q z)))))))
 (assert-not
   (forall ((p R) (q R) (s (list A)))
-    (= (recognise (Seq p q) s) (recognisePair p q (split s)))))
+    (= (recognise (Seq p q) s) (or2 (prop_RecSeq p q (split s))))))
 (check-sat)

@@ -16,11 +16,11 @@
              (case (cons z xs) (cons z (weird_concat (cons xs xss))))))))))
 (define-fun-rec
   (par (a b)
-    (fmap
+    (map2
        ((x (=> a b)) (y (list a))) (list b)
        (match y
          (case nil (as nil (list b)))
-         (case (cons z xs) (cons (@ x z) (fmap x xs)))))))
+         (case (cons z xs) (cons (@ x z) (map2 x xs)))))))
 (define-fun-rec
   (par (a)
     (append
@@ -38,5 +38,5 @@
 (assert-not
   (par (a b)
     (forall ((f (=> a (list b))) (xs (list a)))
-      (= (weird_concat (fmap f xs)) (bind xs f)))))
+      (= (weird_concat (map2 f xs)) (bind xs f)))))
 (check-sat)

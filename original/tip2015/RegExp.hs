@@ -1,19 +1,11 @@
 -- Regular expressions using Brzozowski derivatives (see the step function)
 -- The plus and seq functions are smart constructors.
-{-# LANGUAGE TemplateHaskell, DeriveDataTypeable #-}
 module RegExp where
 
-import Control.Monad ( liftM, liftM2 )
-import Tip
-import Data.Typeable
-import Prelude hiding (seq, null, reverse, (++))
-import List ((++), reverse)
+import Tip.Prelude hiding (eqList)
+import qualified Prelude as P
 
 --------------------------------------------------------------------------------
-
-null :: [a] -> Bool
-null [] = True
-null _  = False
 
 data R
   = Nil
@@ -22,11 +14,8 @@ data R
   | R `Plus` R
   | R `Seq` R
   | Star R
- deriving ( Eq, Ord, Show, Typeable )
 
-data A = X | Y deriving (Eq, Ord, Show, Typeable)
-
-instance Arbitrary A where arbitrary = elements [X, Y]
+data A = X | Y
 
 plus, seq :: R -> R -> R
 Nil `plus` q   = q
@@ -123,19 +112,11 @@ prop_RecPlus p q s =
   recognise (p `Plus` q) s === (recognise p s || recognise q s)
 
 prop_RecSeq p q s =
-  recognise (p `Seq` q) s === recognisePair p q (split s)
-
-recognisePair :: R -> R -> [([A], [A])] -> Bool
-recognisePair p q [] = False
-recognisePair p q ((s1,s2):xs) = (recognise p s1 && recognise q s2) || recognisePair p q xs
+  recognise (p `Seq` q) s === or [ recognise p s1 && recognise q s2  | (s1,s2) <- split s ]
 
 split :: [a] -> [([a], [a])]
 split []    = [([],[])]
-split (x:s) = ([],x:s): consfst x (split s)
-
-consfst :: a -> [([a], b)] -> [([a], b)]
-consfst x [] = []
-consfst x ((xs, y):ys) = (x:xs, y):consfst x ys
+split (x:s) = ([],x:s):[ (x:xs,ys) | (xs,ys) <- split s ]
 
 prop_RecStar p s =
   recognise (Star p) s === (null s || recognise (p `Seq` Star p) s)
@@ -154,29 +135,4 @@ deeps (Star p)     = deeps p
 
 prop_Deeps p s =
   recognise (Star p) s === recognise (Star (deeps p)) s
-
---------------------------------------------------------------------------------
-
-instance Arbitrary R where
-  arbitrary = sized arbR
-   where
-    arbR n = frequency
-             [ (n, liftM2 Plus (arbR n2) (arbR n2))
-             , (n, liftM2 Seq (arbR n2) (arbR n2))
-             , (n, liftM  Star  (arbR n2))
-             , (1, return Nil)
-             , (1, return Eps)
-             , (1, liftM  Atom arbitrary)
-             ]
-     where
-      n2 = n `div` 2
-
-  shrink (p `Plus` q) = [p,q] ++ [p' `Plus` q | p' <- shrink p] ++ [p `Plus` q' | q' <- shrink q]
-  shrink (p `Seq` q) = [p,q] ++ [p' `Seq` q | p' <- shrink p] ++ [p `Seq` q' | q' <- shrink q]
-  shrink (Star p)  = [Eps,p] ++ [Star p' | p' <- shrink p]
-  shrink Nil       = []
-  shrink Eps       = [Nil]
-  shrink (Atom a)  = [Eps,Nil] ++ [Atom a' | a' <- shrink a]
-
---------------------------------------------------------------------------------
 

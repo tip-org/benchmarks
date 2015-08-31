@@ -6,6 +6,12 @@
   ((Form (& (&_0 Form) (&_1 Form))
      (Not (Not_0 Form)) (Var (Var_0 Int)))))
 (define-fun-rec
+  zelem
+    ((x Int) (y (list Int))) Bool
+    (match y
+      (case nil false)
+      (case (cons z ys) (or (= x z) (zelem x ys)))))
+(define-fun-rec
   or2
     ((x (list Bool))) Bool
     (match x
@@ -30,29 +36,15 @@
           (case (Pair2 y2 x3)
             (ite x3 (cons (= x y2) (models3 x x2)) (models3 x x2)))))))
 (define-fun-rec
-  (par (t t2)
+  (par (a b)
     (map2
-       ((f (=> t2 t)) (x (list t2))) (list t)
-       (match x
-         (case nil (as nil (list t)))
-         (case (cons y z) (cons (@ f y) (map2 f z)))))))
+       ((x (=> a b)) (y (list a))) (list b)
+       (match y
+         (case nil (as nil (list b)))
+         (case (cons z xs) (cons (@ x z) (map2 x xs)))))))
 (define-fun
   (par (a b)
     (fst ((x (Pair a b))) a (match x (case (Pair2 y z) y)))))
-(define-fun-rec
-  (par (t)
-    (filter
-       ((p (=> t Bool)) (x (list t))) (list t)
-       (match x
-         (case nil (as nil (list t)))
-         (case (cons y z)
-           (ite (@ p y) (cons y (filter p z)) (filter p z)))))))
-(define-fun-rec
-  elem
-    ((x Int) (y (list Int))) Bool
-    (match y
-      (case nil false)
-      (case (cons z ys) (or (= x z) (elem x ys)))))
 (define-fun-rec
   okay
     ((x (list (Pair Int Bool)))) Bool
@@ -62,8 +54,16 @@
         (match y
           (case (Pair2 z c)
             (and
-              (not (elem z (map2 (lambda ((x2 (Pair Int Bool))) (fst x2)) m)))
+              (not (zelem z (map2 (lambda ((x2 (Pair Int Bool))) (fst x2)) m)))
               (okay m)))))))
+(define-fun-rec
+  (par (a)
+    (filter
+       ((x (=> a Bool)) (y (list a))) (list a)
+       (match y
+         (case nil (as nil (list a)))
+         (case (cons z xs)
+           (ite (@ x z) (cons z (filter x xs)) (filter x xs)))))))
 (define-fun-rec
   (par (a)
     (append
@@ -112,9 +112,9 @@
      (case nil (models2 q x))
      (case (cons z x2) (cons z (models5 q x x2))))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (all
-       ((x (=> t Bool)) (y (list t))) Bool
+       ((x (=> a Bool)) (y (list a))) Bool
        (match y
          (case nil true)
          (case (cons z xs) (and (@ x z) (all x xs)))))))

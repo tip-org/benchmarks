@@ -26,7 +26,13 @@
          (= x 0) y
          (match y
            (case nil (as nil (list a)))
-           (case (cons z xs) (zdrop (- x 1) xs)))))))
+           (case (cons z xs1) (zdrop (- x 1) xs1)))))))
+(define-fun-rec
+  zcount
+    ((x Int) (y (list Int))) Nat
+    (match y
+      (case nil Z)
+      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
 (define-fun-rec
   lmerge
     ((x (list Int)) (y (list Int))) (list Int)
@@ -48,13 +54,7 @@
           (case (cons x2 x3)
             (let ((k (div (zlength x) 2)))
               (lmerge (msorttd (ztake k x)) (msorttd (zdrop k x)))))))))
-(define-fun-rec
-  count
-    ((x Int) (y (list Int))) Nat
-    (match y
-      (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs)))))
 (assert-not
   (forall ((x Int) (y (list Int)))
-    (= (count x (msorttd y)) (count x y))))
+    (= (zcount x (msorttd y)) (zcount x y))))
 (check-sat)

@@ -4,6 +4,12 @@
 (declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
+  zcount
+    ((x Int) (y (list Int))) Nat
+    (match y
+      (case nil Z)
+      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
+(define-fun-rec
   third
     ((x Nat)) Nat
     (match x
@@ -32,9 +38,9 @@
       (<= x y) (cons x (cons y (as nil (list Int))))
       (cons y (cons x (as nil (list Int))))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (length
-       ((x (list t))) Nat
+       ((x (list a))) Nat
        (match x
          (case nil Z)
          (case (cons y xs) (S (length xs)))))))
@@ -54,12 +60,6 @@
        ((x Nat) (y (list a))) (Pair (list a) (list a))
        (Pair2 (take x y) (drop x y)))))
 (define-fun-rec
-  count
-    ((x Int) (y (list Int))) Nat
-    (match y
-      (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (count x xs)) (count x xs)))))
-(define-fun-rec
   (par (a)
     (append
        ((x (list a)) (y (list a))) (list a)
@@ -67,13 +67,13 @@
          (case nil y)
          (case (cons z xs) (cons z (append xs y)))))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (reverse
-       ((x (list t))) (list t)
+       ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list t)))
+         (case nil (as nil (list a)))
          (case (cons y xs)
-           (append (reverse xs) (cons y (as nil (list t)))))))))
+           (append (reverse xs) (cons y (as nil (list a)))))))))
 (define-funs-rec
   ((nstooge1sort2 ((x (list Int))) (list Int))
    (nstoogesort ((x (list Int))) (list Int))
@@ -94,5 +94,5 @@
      (case (Pair2 ys zs) (append ys (nstoogesort zs))))))
 (assert-not
   (forall ((x Int) (y (list Int)))
-    (= (count x (nstoogesort y)) (count x y))))
+    (= (zcount x (nstoogesort y)) (zcount x y))))
 (check-sat)

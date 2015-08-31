@@ -2,6 +2,15 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
+  zordered
+    ((x (list Int))) Bool
+    (match x
+      (case nil true)
+      (case (cons y z)
+        (match z
+          (case nil true)
+          (case (cons y2 xs) (and (<= y y2) (zordered z)))))))
+(define-fun-rec
   risers
     ((x (list Int))) (list (list Int))
     (match x
@@ -17,15 +26,6 @@
                 (case nil (as nil (list (list Int))))
                 (case (cons ys yss) (cons (cons y ys) yss)))
               (cons (cons y (as nil (list Int))) (risers z))))))))
-(define-fun-rec
-  ordered
-    ((x (list Int))) Bool
-    (match x
-      (case nil true)
-      (case (cons y z)
-        (match z
-          (case nil true)
-          (case (cons y2 xs) (and (<= y y2) (ordered z)))))))
 (define-fun-rec
   lmerge
     ((x (list Int)) (y (list Int))) (list Int)
@@ -56,5 +56,5 @@
           (case (cons z x2) (mergingbu2 (pairwise x)))))))
 (define-fun
   msortbu2 ((x (list Int))) (list Int) (mergingbu2 (risers x)))
-(assert-not (forall ((x (list Int))) (ordered (msortbu2 x))))
+(assert-not (forall ((x (list Int))) (zordered (msortbu2 x))))
 (check-sat)

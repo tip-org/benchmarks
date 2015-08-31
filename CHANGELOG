@@ -1,5 +1,8 @@
 version 0.3:
 * add preconditions to heap properties
+* use Tip.Prelude. this changes the name of some function names in the
+  benchmark suite
+* add new simple benchmarks about Nat and List functions
 
 version 0.2 (released 2015-06-24):
 * use define-fun, define-fun-rec and declare-const

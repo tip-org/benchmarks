@@ -1,9 +1,8 @@
 -- Nicomachus' theorem
 module Nicomachus where
 
-import Prelude hiding ((+),(*),sum)
-import Nat hiding (sig)
-import Tip
+import Tip.Prelude hiding (sum)
+import qualified Prelude as P
 
 sum :: Nat -> Nat
 sum Z     = Z

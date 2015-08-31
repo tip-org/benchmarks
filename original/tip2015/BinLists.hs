@@ -1,45 +1,15 @@
 -- Property about natural numbers with binary presentation
-{-# LANGUAGE DeriveDataTypeable, TemplateHaskell #-}
 module BinLists where
 
-import Prelude hiding ((+), (*), (++), (&&),(||),not)
+import Tip.Prelude
+import qualified Prelude as P
 
-import Tip
-import Data.Typeable
-
-import Control.Applicative
-
-data Bin = One | ZeroAnd Bin | OneAnd Bin deriving (Show, Eq, Ord, Typeable)
-
-data Nat = Z | S Nat deriving (Show,Eq,Ord,Typeable)
-
-{-
-
-toNat :: Bin -> Nat
-toNat = toNatFrom (S Z)
-
-toNatFrom :: Nat -> Bin -> Nat
-toNatFrom k One = k
-toNatFrom k (ZeroAnd xs) = toNatFrom (k + k) xs
-toNatFrom k (OneAnd xs) = k + toNatFrom (k + k) xs
-
--}
+data Bin = One | ZeroAnd Bin | OneAnd Bin
 
 toNat :: Bin -> Nat
 toNat One = S Z
 toNat (ZeroAnd xs) = toNat xs + toNat xs
 toNat (OneAnd xs) = S (toNat xs + toNat xs)
-
-infixl 6 +
-infixl 7 *
-
-(+) :: Nat -> Nat -> Nat
-Z   + m = m
-S n + m = S (n + m)
-
-(*) :: Nat -> Nat -> Nat
-Z * _ = Z
-S n * m = m + (n * m)
 
 s :: Bin -> Bin
 s One = ZeroAnd One
@@ -83,24 +53,4 @@ prop_times_assoc x y z = x `times` (y `times` z) === (x `times` y) `times` z
 
 prop_distrib :: Bin -> Bin -> Bin -> Equality Bin
 prop_distrib x y z = x `times` (y `plus` z) === (x `times` y) `plus` (x `times` z)
-
-instance Arbitrary Bin where
-  arbitrary = sized arbBin
-    where
-      arbBin sz = frequency
-        [ (1, return One)
-        , (sz, ZeroAnd <$> arbBin (sz `div` 2))
-        , (sz, OneAnd <$> arbBin (sz `div` 2))
-        ]
-
-instance Enum Nat where
-  toEnum 0 = Z
-  toEnum n = S (toEnum (pred n))
-  fromEnum Z = 0
-  fromEnum (S n) = succ (fromEnum n)
-
-instance Arbitrary Nat where
-  arbitrary = sized $ \sz -> do
-    x <- choose (0,round (sqrt (toEnum sz :: Double)))
-    return (toEnum x)
 

@@ -18,6 +18,12 @@
          (case nil 0)
          (case (cons y xs) (+ 1 (zlength xs)))))))
 (define-fun-rec
+  zelem
+    ((x Int) (y (list Int))) Bool
+    (match y
+      (case nil false)
+      (case (cons z ys) (or (= x z) (zelem x ys)))))
+(define-fun-rec
   (par (a)
     (zdrop
        ((x Int) (y (list a))) (list a)
@@ -25,14 +31,27 @@
          (= x 0) y
          (match y
            (case nil (as nil (list a)))
-           (case (cons z xs) (zdrop (- x 1) xs)))))))
+           (case (cons z xs1) (zdrop (- x 1) xs1)))))))
+(define-fun-rec
+  zdelete
+    ((x Int) (y (list Int))) (list Int)
+    (match y
+      (case nil (as nil (list Int)))
+      (case (cons z ys) (ite (= x z) ys (cons z (zdelete x ys))))))
 (define-fun
-  (par (t)
+  (par (a)
     (null
-       ((x (list t))) Bool
+       ((x (list a))) Bool
        (match x
          (case nil true)
          (case (cons y z) false)))))
+(define-fun-rec
+  zisPermutation
+    ((x (list Int)) (y (list Int))) Bool
+    (match x
+      (case nil (null y))
+      (case (cons z xs)
+        (and (zelem z y) (zisPermutation xs (zdelete z y))))))
 (define-fun-rec
   lmerge
     ((x (list Int)) (y (list Int))) (list Int)
@@ -54,25 +73,6 @@
           (case (cons x2 x3)
             (let ((k (div (zlength x) 2)))
               (lmerge (msorttd (ztake k x)) (msorttd (zdrop k x)))))))))
-(define-fun-rec
-  elem
-    ((x Int) (y (list Int))) Bool
-    (match y
-      (case nil false)
-      (case (cons z ys) (or (= x z) (elem x ys)))))
-(define-fun-rec
-  delete
-    ((x Int) (y (list Int))) (list Int)
-    (match y
-      (case nil (as nil (list Int)))
-      (case (cons z ys) (ite (= x z) ys (cons z (delete x ys))))))
-(define-fun-rec
-  isPermutation
-    ((x (list Int)) (y (list Int))) Bool
-    (match x
-      (case nil (null y))
-      (case (cons z xs)
-        (and (elem z y) (isPermutation xs (delete z y))))))
 (assert-not
-  (forall ((x (list Int))) (isPermutation (msorttd x) x)))
+  (forall ((x (list Int))) (zisPermutation (msorttd x) x)))
 (check-sat)

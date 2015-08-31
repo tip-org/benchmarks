@@ -15,13 +15,13 @@
       (case nil (as nil (list Int)))
       (case (cons y xs) (insert2 y (isort xs)))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (filter
-       ((p (=> t Bool)) (x (list t))) (list t)
-       (match x
-         (case nil (as nil (list t)))
-         (case (cons y z)
-           (ite (@ p y) (cons y (filter p z)) (filter p z)))))))
+       ((x (=> a Bool)) (y (list a))) (list a)
+       (match y
+         (case nil (as nil (list a)))
+         (case (cons z xs)
+           (ite (@ x z) (cons z (filter x xs)) (filter x xs)))))))
 (define-fun-rec
   (par (a)
     (append

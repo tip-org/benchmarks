@@ -3,11 +3,11 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
   (par (a b)
-    (fmap
+    (map2
        ((x (=> a b)) (y (list a))) (list b)
        (match y
          (case nil (as nil (list b)))
-         (case (cons z xs) (cons (@ x z) (fmap x xs)))))))
+         (case (cons z xs) (cons (@ x z) (map2 x xs)))))))
 (define-fun-rec
   (par (a)
     (append
@@ -32,5 +32,5 @@
 (assert-not
   (par (a b)
     (forall ((f (=> a (list b))) (xs (list a)))
-      (= (concat2 (fmap f xs)) (bind xs f)))))
+      (= (concat2 (map2 f xs)) (bind xs f)))))
 (check-sat)

@@ -2,8 +2,8 @@
 -- Challenge 1, submitted by Thomas Genet
 module RelaxedPrefix where
 
-import Prelude hiding (or, (++))
-import Tip
+import Tip.Prelude
+import qualified Prelude as P
 
 data It = A | B | C
 
@@ -12,10 +12,6 @@ eq A A = True
 eq B B = True
 eq C C = True
 eq _ _ = False
-
-(++) :: [It] -> [It] -> [It]
-[] ++ xs = xs
-(x:xs) ++ ys = x:(xs++ys)
 
 isPrefix :: [It] -> [It] -> Bool
 isPrefix [] _ = True
@@ -35,11 +31,6 @@ isRelaxedPrefix (x:xs) (y:ys)
 
 spec :: [It] -> [It] -> Bool
 spec xs ys = or [ isPrefix xs' ys | xs' <- xs:removeOne xs ]
-
-or :: [Bool] -> Bool
-or [] = False
-or (True:_) = True
-or (False:xs) = or xs
 
 removeOne :: [It] -> [[It]]
 removeOne [] = []

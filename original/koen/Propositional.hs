@@ -1,42 +1,8 @@
 -- Propositional solver
 module Propositional where
 
-import Tip
-import Prelude hiding (Eq(..), Ord(..), map, all, elem, null, length, even, or, (++), filter)
-import Nat
-import qualified Prelude
-
-type OrdA = Int
-
-(>), (<=), (==), (/=) :: Int -> Int -> Bool
-(<=) = (Prelude.<=)
-(>)  = (Prelude.>)
-(==) = (Prelude.==)
-(/=) = (Prelude./=)
-
-delete :: Int -> [Int] -> [Int]
-delete x [] = []
-delete x (y:ys)
-  | x == y = ys
-  | otherwise = y:delete x ys
-
-[] ++ xs = xs
-(x:xs) ++ ys = x:(xs ++ ys)
-filter p xs = [ x | x <- xs, p x ]
-map f xs = [ f x | x <- xs ]
-all p [] = True
-all p (x:xs) = p x && all p xs
-or [] = False
-or (x:xs) = x || or xs
-x `elem` [] = False
-x `elem` (y:ys) = x == y || x `elem` ys
-null [] = True
-null _ = False
-length [] = Z
-length (_:xs) = S (length xs)
-even Z = True
-even (S Z) = False
-even (S (S x)) = even x
+import Tip.Prelude
+import qualified Prelude as P
 
 --------------------------------------------------------------------------------
 
@@ -63,13 +29,13 @@ models (Not (Not p)) m =
   models p m
 
 models (Var x) m =
-  [ (x,True) : filter ((x/=).fst) m
-  | not (or [x == y | (y, False) <- m])
+  [ (x,True) : filter ((x P./=).fst) m
+  | not (or [x P.== y | (y, False) <- m])
   ]
 
 models (Not (Var x)) m =
-  [ (x,False) : filter ((x/=).fst) m
-  | not (or [x == y | (y, True) <- m])
+  [ (x,False) : filter ((x P./=).fst) m
+  | not (or [x P.== y | (y, True) <- m])
   ]
 
 valid :: Form -> Bool
@@ -84,19 +50,19 @@ prop_AndIdempotent p =
   valid (p :&: p) === valid p
 
 prop_AndImplication p q =
-  valid (p :&: q) === True ==> valid q === True
+  valid (p :&: q) ==> valid q
 
 --------------------------------------------------------------------------------
 
 okay :: Val -> Bool
 okay []        = True
-okay ((x,b):m) = not (x `elem` map fst m) && okay m
+okay ((x,b):m) = not (x `zelem` map fst m) && okay m
 
 prop_Okay p =
   all okay (models p []) === True
 
 (|=) :: Val -> Form -> Bool
-m |= Var x     = or [ x == y | (y, True) <- m ]
+m |= Var x     = or [ x P.== y | (y, True) <- m ]
 m |= Not p     = not (m |= p)
 m |= (p :&: q) = m |= p && m |= q
 

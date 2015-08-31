@@ -4,6 +4,18 @@
 (declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
+  zelem
+    ((x Int) (y (list Int))) Bool
+    (match y
+      (case nil false)
+      (case (cons z ys) (or (= x z) (zelem x ys)))))
+(define-fun-rec
+  zdelete
+    ((x Int) (y (list Int))) (list Int)
+    (match y
+      (case nil (as nil (list Int)))
+      (case (cons z ys) (ite (= x z) ys (cons z (zdelete x ys))))))
+(define-fun-rec
   twoThirds
     ((x Nat)) Nat
     (match x
@@ -44,25 +56,26 @@
       (<= x y) (cons x (cons y (as nil (list Int))))
       (cons y (cons x (as nil (list Int))))))
 (define-fun
-  (par (t)
+  (par (a)
     (null
-       ((x (list t))) Bool
+       ((x (list a))) Bool
        (match x
          (case nil true)
          (case (cons y z) false)))))
 (define-fun-rec
-  (par (t)
+  zisPermutation
+    ((x (list Int)) (y (list Int))) Bool
+    (match x
+      (case nil (null y))
+      (case (cons z xs)
+        (and (zelem z y) (zisPermutation xs (zdelete z y))))))
+(define-fun-rec
+  (par (a)
     (length
-       ((x (list t))) Nat
+       ((x (list a))) Nat
        (match x
          (case nil Z)
          (case (cons y xs) (S (length xs)))))))
-(define-fun-rec
-  elem
-    ((x Int) (y (list Int))) Bool
-    (match y
-      (case nil false)
-      (case (cons z ys) (or (= x z) (elem x ys)))))
 (define-fun-rec
   (par (a)
     (drop
@@ -78,19 +91,6 @@
     (splitAt
        ((x Nat) (y (list a))) (Pair (list a) (list a))
        (Pair2 (take x y) (drop x y)))))
-(define-fun-rec
-  delete
-    ((x Int) (y (list Int))) (list Int)
-    (match y
-      (case nil (as nil (list Int)))
-      (case (cons z ys) (ite (= x z) ys (cons z (delete x ys))))))
-(define-fun-rec
-  isPermutation
-    ((x (list Int)) (y (list Int))) Bool
-    (match x
-      (case nil (null y))
-      (case (cons z xs)
-        (and (elem z y) (isPermutation xs (delete z y))))))
 (define-fun-rec
   (par (a)
     (append
@@ -117,5 +117,5 @@
    (match (splitAt (third (length x)) x)
      (case (Pair2 ys zs) (append ys (nstoogesort2 zs))))))
 (assert-not
-  (forall ((x (list Int))) (isPermutation (nstoogesort2 x) x)))
+  (forall ((x (list Int))) (zisPermutation (nstoogesort2 x) x)))
 (check-sat)

@@ -74,8 +74,8 @@
     ((x Nat) (y (list Nat))) Nat
     (match y
       (case nil Z)
-      (case (cons z xs)
-        (ite (equal x z) (S (count x xs)) (count x xs)))))
+      (case (cons z ys)
+        (ite (equal x z) (S (count x ys)) (count x ys)))))
 (assert-not
   (forall ((x Nat) (y (list Nat)))
     (= (count x (hsort y)) (count x y))))

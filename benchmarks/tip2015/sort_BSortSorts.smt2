@@ -1,21 +1,21 @@
 ; Bitonic sort
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(define-fun
-  sort2
-    ((x Int) (y Int)) (list Int)
-    (ite
-      (<= x y) (cons x (cons y (as nil (list Int))))
-      (cons y (cons x (as nil (list Int))))))
 (define-fun-rec
-  ordered
+  zordered
     ((x (list Int))) Bool
     (match x
       (case nil true)
       (case (cons y z)
         (match z
           (case nil true)
-          (case (cons y2 xs) (and (<= y y2) (ordered z)))))))
+          (case (cons y2 xs) (and (<= y y2) (zordered z)))))))
+(define-fun
+  sort2
+    ((x Int) (y Int)) (list Int)
+    (ite
+      (<= x y) (cons x (cons y (as nil (list Int))))
+      (cons y (cons x (as nil (list Int))))))
 (define-funs-rec
   ((par (a) (evens ((x (list a))) (list a)))
    (par (a) (odds ((x (list a))) (list a))))
@@ -75,5 +75,5 @@
         (match z
           (case nil (cons y (as nil (list Int))))
           (case (cons x2 x3) (bmerge (bsort (evens x)) (bsort (odds x))))))))
-(assert-not (forall ((x (list Int))) (ordered (bsort x))))
+(assert-not (forall ((x (list Int))) (zordered (bsort x))))
 (check-sat)

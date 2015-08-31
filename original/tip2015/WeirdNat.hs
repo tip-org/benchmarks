@@ -1,8 +1,8 @@
 -- Weird functions over natural numbers
 module WeirdNat where
 
-import Nat
-import Tip
+import Tip.Prelude
+import qualified Prelude
 
 add3 :: Nat -> Nat -> Nat -> Nat
 add3 Z Z     z = z
@@ -10,6 +10,7 @@ add3 Z (S y) z = S (add3 Z y z)
 add3 (S x) y z = S (add3 x y z)
 
 -- Property about trinary addition function
+prop_add3_spec   x y z = add3 x y z === x + (y + z)
 prop_add3_rot    x y z = add3 x y z === add3 y x z
 prop_add3_rrot   x y z = add3 x y z === add3 z x y
 prop_add3_comm12 x y z = add3 x y z === add3 y x z
@@ -25,6 +26,7 @@ add3acc Z (S y) z = add3acc Z y (S z)
 add3acc (S x) y z = add3acc x (S y) z
 
 -- Property about accumulative trinary addition function
+prop_add3acc_spec   x y z = add3acc x y z === x + (y + z)
 prop_add3acc_rot    x y z = add3acc x y z === add3acc y x z
 prop_add3acc_rrot   x y z = add3acc x y z === add3acc z x y
 prop_add3acc_comm12 x y z = add3acc x y z === add3acc y x z
@@ -43,6 +45,7 @@ op (S a) b Z     d = op a b b d
 
 -- Property about a 4-adic operation over natural numbers
 -- op a b c d = a * b + c + d
+prop_op_spec a b c d = op a b c d === a * b + c + d
 prop_op_comm_comm a b c d = op a b c d === op b a d c
 prop_op_assoc a b c d e = op (op a b Z Z) c d e === op a (op b c Z Z) d e
 prop_op_assoc2 x a b c d = op (op x a a a) b c d === op a (op b x b b) c d
@@ -73,6 +76,7 @@ mul3 (S x) (S y) (S z) =
 -- Property about a trinary multiplication function, defined in terms of an
 -- trinary addition function
 -- mul3 x y z = xyz + (xy + xz + yz) + (x + y + z) + 1
+prop_mul3_spec   x y z = mul3 x y z === x * y * z
 prop_mul3_rot    x y z = mul3 x y z === mul3 y x z
 prop_mul3_rrot   x y z = mul3 x y z === mul3 z x y
 prop_mul3_comm12 x y z = mul3 x y z === mul3 y x z
@@ -97,6 +101,7 @@ mul3acc (S x) (S y) (S z) =
 -- Property about a trinary multiplication function, defined in terms of an
 -- accumulative trinary addition function
 -- mul3acc x y z = xyz + (xy + xz + yz) + (x + y + z) + 1
+prop_mul3acc_spec   x y z = mul3acc x y z === x * y * z
 prop_mul3acc_rot    x y z = mul3acc x y z === mul3acc y x z
 prop_mul3acc_rrot   x y z = mul3acc x y z === mul3acc z x y
 prop_mul3acc_comm12 x y z = mul3acc x y z === mul3acc y x z

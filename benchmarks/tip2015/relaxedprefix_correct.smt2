@@ -22,7 +22,7 @@
     ((x (list Bool))) Bool
     (match x
       (case nil false)
-      (case (cons y z) (or y (or2 z)))))
+      (case (cons y xs) (or y (or2 xs)))))
 (define-fun
   eq
     ((x It) (y It)) Bool

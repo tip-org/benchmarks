@@ -12,6 +12,15 @@
       (case nil false)
       (case (cons y xs) (or y (or2 xs)))))
 (define-fun-rec
+  models4
+    ((x Int) (y (list (Pair Int Bool)))) (list Bool)
+    (match y
+      (case nil (as nil (list Bool)))
+      (case (cons z x2)
+        (match z
+          (case (Pair2 y2 x3)
+            (ite x3 (models4 x x2) (cons (= x y2) (models4 x x2))))))))
+(define-fun-rec
   models3
     ((x Int) (y (list (Pair Int Bool)))) (list Bool)
     (match y
@@ -19,18 +28,18 @@
       (case (cons z x2)
         (match z
           (case (Pair2 y2 x3)
-            (ite x3 (models3 x x2) (cons (= x y2) (models3 x x2))))))))
+            (ite x3 (cons (= x y2) (models3 x x2)) (models3 x x2)))))))
 (define-fun
   (par (a b)
     (fst ((x (Pair a b))) a (match x (case (Pair2 y z) y)))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (filter
-       ((p (=> t Bool)) (x (list t))) (list t)
-       (match x
-         (case nil (as nil (list t)))
-         (case (cons y z)
-           (ite (@ p y) (cons y (filter p z)) (filter p z)))))))
+       ((x (=> a Bool)) (y (list a))) (list a)
+       (match y
+         (case nil (as nil (list a)))
+         (case (cons z xs)
+           (ite (@ x z) (cons z (filter x xs)) (filter x xs)))))))
 (define-fun-rec
   (par (a)
     (append
@@ -38,22 +47,6 @@
        (match x
          (case nil y)
          (case (cons z xs) (cons z (append xs y)))))))
-(define-fun-rec
-  (par (t)
-    (all
-       ((x (=> t Bool)) (y (list t))) Bool
-       (match y
-         (case nil true)
-         (case (cons z xs) (and (@ x z) (all x xs)))))))
-(define-fun-rec
-  =3
-    ((x Int) (y (list (Pair Int Bool)))) (list Bool)
-    (match y
-      (case nil (as nil (list Bool)))
-      (case (cons z x2)
-        (match z
-          (case (Pair2 y2 x3)
-            (ite x3 (cons (= x y2) (=3 x x2)) (=3 x x2)))))))
 (define-funs-rec
   ((models
       ((x Form) (y (list (Pair Int Bool))))
@@ -61,7 +54,7 @@
    (models2
       ((q Form) (x (list (list (Pair Int Bool)))))
       (list (list (Pair Int Bool))))
-   (models4
+   (models5
       ((q Form) (x (list (list (Pair Int Bool))))
        (y (list (list (Pair Int Bool)))))
       (list (list (Pair Int Bool)))))
@@ -74,7 +67,7 @@
          (case (Not p3) (models p3 y))
          (case (Var x2)
            (ite
-             (not (or2 (=3 x2 y)))
+             (not (or2 (models3 x2 y)))
              (cons
                (cons (Pair2 x2 false)
                  (filter (lambda ((x3 (Pair Int Bool))) (distinct x2 (fst x3))) y))
@@ -82,7 +75,7 @@
              (as nil (list (list (Pair Int Bool))))))))
      (case (Var x4)
        (ite
-         (not (or2 (models3 x4 y)))
+         (not (or2 (models4 x4 y)))
          (cons
            (cons (Pair2 x4 true)
              (filter (lambda ((x5 (Pair Int Bool))) (distinct x4 (fst x5))) y))
@@ -90,17 +83,24 @@
          (as nil (list (list (Pair Int Bool)))))))
    (match x
      (case nil (as nil (list (list (Pair Int Bool)))))
-     (case (cons y z) (models4 q z (models q y))))
+     (case (cons y z) (models5 q z (models q y))))
    (match y
      (case nil (models2 q x))
-     (case (cons z x2) (cons z (models4 q x x2))))))
+     (case (cons z x2) (cons z (models5 q x x2))))))
+(define-fun-rec
+  (par (a)
+    (all
+       ((x (=> a Bool)) (y (list a))) Bool
+       (match y
+         (case nil true)
+         (case (cons z xs) (and (@ x z) (all x xs)))))))
 (define-fun-rec
   =2
     ((x (list (Pair Int Bool))) (y Form)) Bool
     (match y
       (case (& p q) (and (=2 x p) (=2 x q)))
       (case (Not p2) (not (=2 x p2)))
-      (case (Var z) (or2 (=3 z x)))))
+      (case (Var z) (or2 (models3 z x)))))
 (assert-not
   (forall ((p Form))
     (all (lambda ((x (list (Pair Int Bool)))) (=2 x p))
