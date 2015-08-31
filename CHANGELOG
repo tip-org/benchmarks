@@ -1,3 +1,6 @@
+version 0.3:
+* add preconditions to heap properties
+
 version 0.2 (released 2015-06-24):
 * use define-fun, define-fun-rec and declare-const
 * use correct syntax for lets
