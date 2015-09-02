@@ -270,8 +270,8 @@ prop_84 xs ys zs
 -- One way to prove this is to first show "Nick's lemma":
 -- len xs = len ys ==> zip xs ys ++ zip as bs = zip (xs ++ as) (ys ++ bs)
 prop_85 xs ys
-  = (len xs === len ys) ==>
-    (zip (rev xs) (rev ys) === rev (zip xs ys))
+  = -- (len xs === len ys) ==>
+    (zip (rev xs) (rev ys) === rev (zip xs ys :: [(Nat,Nat)]))
 
 prop_86 x y xs
   = x < y ==> (elem x (ins y xs) === elem x xs)

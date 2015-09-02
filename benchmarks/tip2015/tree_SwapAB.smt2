@@ -3,23 +3,36 @@
 (declare-datatypes (a)
   ((Tree (Node (Node_0 (Tree a)) (Node_1 a) (Node_2 (Tree a)))
      (Nil))))
+(declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
-  zelem
-    ((x Int) (y (list Int))) Bool
-    (match y
-      (case nil false)
-      (case (cons z ys) (or (= x z) (zelem x ys)))))
+  equal
+    ((x Nat) (y Nat)) Bool
+    (match x
+      (case Z
+        (match y
+          (case Z true)
+          (case (S z) false)))
+      (case (S x2)
+        (match y
+          (case Z false)
+          (case (S y2) (equal x2 y2))))))
 (define-fun-rec
   swap
-    ((x Int) (y Int) (z (Tree Int))) (Tree Int)
+    ((x Nat) (y Nat) (z (Tree Nat))) (Tree Nat)
     (match z
-      (case (Node p x2 q)
+      (case (Node q x2 q2)
         (ite
-          (= x2 x) (Node (swap x y p) y (swap x y q))
+          (equal x2 x) (Node (swap x y q) y (swap x y q2))
           (ite
-            (= x2 y) (Node (swap x y p) x (swap x y q))
-            (Node (swap x y p) x2 (swap x y q)))))
-      (case Nil (as Nil (Tree Int)))))
+            (equal x2 y) (Node (swap x y q) x (swap x y q2))
+            (Node (swap x y q) x2 (swap x y q2)))))
+      (case Nil (as Nil (Tree Nat)))))
+(define-fun-rec
+  elem
+    ((x Nat) (y (list Nat))) Bool
+    (match y
+      (case nil false)
+      (case (cons z ys) (or (equal x z) (elem x ys)))))
 (define-fun-rec
   (par (a)
     (append
@@ -32,14 +45,13 @@
     (flatten0
        ((x (Tree a))) (list a)
        (match x
-         (case (Node p y q)
-           (append (append (flatten0 p) (cons y (as nil (list a))))
-             (flatten0 q)))
+         (case (Node q y q2)
+           (append (append (flatten0 q) (cons y (as nil (list a))))
+             (flatten0 q2)))
          (case Nil (as nil (list a)))))))
 (assert-not
-  (forall ((p (Tree Int)) (a Int) (b Int))
-    (=> (zelem a (flatten0 p))
-      (=> (zelem b (flatten0 p))
-        (and (zelem a (flatten0 (swap a b p)))
-          (zelem b (flatten0 (swap a b p))))))))
+  (forall ((q (Tree Nat)) (a Nat) (b Nat))
+    (=> (elem a (flatten0 q))
+      (and (elem a (flatten0 (swap a b q)))
+        (elem b (flatten0 (swap a b q)))))))
 (check-sat)

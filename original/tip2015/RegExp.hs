@@ -1,11 +1,10 @@
--- Regular expressions using Brzozowski derivatives (see the step function)
--- The plus and seq functions are smart constructors.
+-- Regular expressions specification
 module RegExp where
 
 import Tip.Prelude hiding (eqList)
 import qualified Prelude as P
 
---------------------------------------------------------------------------------
+data A = X | Y
 
 data R
   = Nil
@@ -15,19 +14,6 @@ data R
   | R `Seq` R
   | Star R
 
-data A = X | Y
-
-plus, seq :: R -> R -> R
-Nil `plus` q   = q
-p   `plus` Nil = p
-p   `plus` q   = p `Plus` q
-
-Nil `seq` q   = Nil
-p   `seq` Nil = Nil
-Eps `seq` q   = q
-p   `seq` Eps = p
-p   `seq` q   = p `Seq` q
-
 eps :: R -> Bool
 eps Eps       = True
 eps (p `Plus` q) = eps p || eps q
@@ -35,104 +21,41 @@ eps (p `Seq` q) = eps p && eps q
 eps (Star _)  = True
 eps _         = False
 
-epsR :: R -> R
-epsR p | eps p     = Eps
-       | otherwise = Nil
-
-step :: R -> A -> R
-step (Atom a)  x | a `eqA` x = Eps
-step (p `Plus` q) x          = step p x `plus` step q x
-step (p `Seq` q) x          = (step p x `seq` q) `plus` (epsR p `seq` step q x)
-step (Star p)  x          = step p x `seq` Star p
-step _         x          = Nil
-
-recognise :: R -> [A] -> Bool
-recognise p []     = eps p
-recognise p (x:xs) = recognise (step p x) xs
-
---------------------------------------------------------------------------------
-
-rev :: R -> R
-rev (a `Plus` b) = rev a `Plus` rev b
-rev (a `Seq` b)  = rev b `Seq` rev a
-rev (Star a)     = Star (rev a)
-rev a            = a
-
---------------------------------------------------------------------------------
-
-prop_Reverse :: R -> [A] -> Equality Bool
-prop_Reverse r s = recognise (rev r) s === recognise r (reverse s)
-
-prop_PlusIdempotent :: R -> [A] -> Equality Bool
-prop_PlusIdempotent p s =
-  recognise (p `Plus` p) s === recognise p s
-
-prop_PlusCommutative :: R -> R -> [A] -> Equality Bool
-prop_PlusCommutative p q s =
-  recognise (p `Plus` q) s === recognise (q `Plus` p) s
-
-prop_PlusAssociative :: R -> R -> R -> [A] -> Equality Bool
-prop_PlusAssociative p q r s =
-  recognise (p `Plus` (q `Plus` r)) s === recognise ((p `Plus` q) `Plus` r) s
-
-prop_SeqAssociative :: R -> R -> R -> [A] -> Equality Bool
-prop_SeqAssociative p q r s =
-  recognise (p `Seq` (q `Seq` r)) s === recognise ((p `Seq` q) `Seq` r) s
-
-prop_SeqDistrPlus :: R -> R -> R -> [A] -> Equality Bool
-prop_SeqDistrPlus p q r s =
-  recognise (p `Seq` (q `Plus` r)) s === recognise ((p `Seq` q) `Plus` (p `Seq` r)) s
-
-prop_Star :: R -> [A] -> Equality Bool
-prop_Star p s =
-  recognise (Star p) s === recognise (Eps `Plus` (p `Seq` Star p)) s
-
---------------------------------------------------------------------------------
-
 eqA :: A -> A -> Bool
 X `eqA` X = True
 Y `eqA` Y = True
 _ `eqA` _ = False
 
-eqList :: [A] -> [A] -> Bool
-[] `eqList` [] = True
-(x:xs) `eqList` (y:ys) = x `eqA` y && xs `eqList` ys
-_ `eqList` _ = False
+reck :: R -> [A] -> Bool
+reck Eps       []  = True
+reck (Atom a)  [b] = a `eqA` b
+reck (p `Plus` q) s = reck p s || reck q s
+reck (p `Seq`  q) s = or [ reck p l && reck q r | (l,r) <- splits s ]
+reck (Star p)  []  = True
+reck (Star p)  s   | not (eps p) = reck (p `Seq` Star p) s
+reck _ _  = False
 
-prop_RecAtom a s =
-  recognise (Atom a) s === (s `eqList` [a])
+okay :: R -> Bool
+okay (p `Plus` q) = okay p && okay q
+okay (p `Seq` q)  = okay p && okay q
+okay (Star p)     = okay p && not (eps p)
+okay _            = True
 
-prop_RecEps s =
-  recognise Eps s === null s
+splits :: [a] -> [([a],[a])]
+splits []     = [([],[])]
+splits (x:xs) = ([],x:xs) : [ (x:as,bs) | (as,bs) <- splits xs ]
 
-prop_RecNil s =
-  recognise Nil s === False
+sat_reck_comm p q s        = reck (p `Seq` q) s === reck (q `Seq` p) s
+sat_reck_star_plus p q s   = reck (Star (p `Plus` q)) s === reck (Star p `Plus` Star q) s
+sat_reck_star_seq p q s    = reck (Star (p `Seq` q)) s === reck (Star p `Seq` Star q) s
+sat_reck_switcheroo p q s  = reck (p `Plus` q) s === reck (p `Seq` q) s
+sat_reck_bad_assoc p q r s = reck (p `Plus` (q `Seq` r)) s === reck ((p `Plus` q) `Seq` r) s
 
-prop_RecPlus p q s =
-  recognise (p `Plus` q) s === (recognise p s || recognise q s)
-
-prop_RecSeq p q s =
-  recognise (p `Seq` q) s === or [ recognise p s1 && recognise q s2  | (s1,s2) <- split s ]
-
-split :: [a] -> [([a], [a])]
-split []    = [([],[])]
-split (x:s) = ([],x:s):[ (x:xs,ys) | (xs,ys) <- split s ]
-
-prop_RecStar p s =
-  recognise (Star p) s === (null s || recognise (p `Seq` Star p) s)
-
---------------------------------------------------------------------------------
-
-deeps :: R -> R
-deeps Nil          = Nil
-deeps Eps          = Nil
-deeps (Atom a)     = Atom a
-deeps (p `Plus` q)    = deeps p `Plus` deeps q
-deeps (p `Seq` q)
-  | eps p && eps q = deeps p `Plus` deeps q
-  | otherwise      = p `Seq` q
-deeps (Star p)     = deeps p
-
-prop_Deeps p s =
-  recognise (Star p) s === recognise (Star (deeps p)) s
+sat_reck_xyy    p = question (reck p [X,Y,Y])
+sat_reck_xyxy   p = question (reck p [X,Y,X,Y])
+sat_reck_xxyy   p = question (reck p [X,X,Y,Y])
+sat_reck_xyyx   p = question (reck p [X,Y,Y,X])
+sat_reck_xyxyx  p = question (reck p [X,Y,X,Y,X])
+sat_reck_xyxyy  p = question (reck p [X,Y,X,Y,Y])
+sat_reck_xyxyxy p = question (reck p [X,Y,X,Y,X,Y])
 

@@ -19,13 +19,6 @@
              (case (cons x3 x4) (cons (Pair2 z x3) (zip x2 x4)))))))))
 (define-fun-rec
   (par (a)
-    (len
-       ((x (list a))) Nat
-       (match x
-         (case nil Z)
-         (case (cons y xs) (S (len xs)))))))
-(define-fun-rec
-  (par (a)
     (append
        ((x (list a)) (y (list a))) (list a)
        (match x
@@ -39,8 +32,6 @@
          (case nil (as nil (list a)))
          (case (cons y xs) (append (rev xs) (cons y (as nil (list a)))))))))
 (assert-not
-  (par (a b)
-    (forall ((xs (list a)) (ys (list b)))
-      (=> (= (len xs) (len ys))
-        (= (zip (rev xs) (rev ys)) (rev (zip xs ys)))))))
+  (forall ((xs (list Nat)) (ys (list Nat)))
+    (= (zip (rev xs) (rev ys)) (rev (zip xs ys)))))
 (check-sat)

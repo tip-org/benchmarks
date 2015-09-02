@@ -42,17 +42,17 @@ prop_Flatten3 p =
 
 --------------------------------------------------------------------------------
 
-swap :: Int -> Int -> Tree Int -> Tree Int
+-- swap :: Int -> Int -> Tree Int -> Tree Int
 swap a b Nil          = Nil
 swap a b (Node p x q) = Node (swap a b p) x' (swap a b q)
  where
-  x' | x P.== a  = b
-     | x P.== b  = a
+  x' | x == a  = b
+     | x == b  = a
      | otherwise = x
 
 prop_SwapAB p a b =
-  a `zelem` flatten0 p ==>
-  b `zelem` flatten0 p ==>
-  a `zelem` flatten0 (swap a b p) .&&.
-  b `zelem` flatten0 (swap a b p)
+  a `elem` flatten0 p ==>
+--  b `elem` flatten0 p ==>
+  a `elem` flatten0 (swap a b p) .&&.
+  b `elem` flatten0 (swap a b p)
 
