@@ -153,12 +153,12 @@ sat_comm p q s        = recognise (p `seq` q) s === recognise (q `seq` p) s
 sat_star_plus p q s   = recognise (Star (p `plus` q)) s === recognise (Star p `plus` Star q) s
 sat_star_conj p q s   = recognise (Star (p `conj` q)) s === recognise (Star p `conj` Star q) s
 sat_star_seq p q s    = recognise (Star (p `seq` q)) s === recognise (Star p `seq` Star q) s
-sat_switcheroo1 p q s = recognise (p `plus` q) s === recognise (p `seq` q) s
-sat_switcheroo2 p q s = recognise (p `conj` q) s === recognise (p `seq` q) s
-sat_switcheroo3 p q s = recognise (p `plus` q) s === recognise (p `conj` q) s
-sat_bad_assoc1 p q r s = recognise (p `plus` (q `seq` r)) s === recognise ((p `plus` q) `seq` r) s
-sat_bad_assoc2 p q r s = recognise (p `conj` (q `seq` r)) s === recognise ((p `conj` q) `seq` r) s
-sat_bad_assoc3 p q r s = recognise (p `plus` (q `conj` r)) s === recognise ((p `plus` q) `conj` r) s
+sat_switcheroo_a p q s = recognise (p `plus` q) s === recognise (p `seq` q) s
+sat_switcheroo_b p q s = recognise (p `conj` q) s === recognise (p `seq` q) s
+sat_switcheroo_c p q s = recognise (p `plus` q) s === recognise (p `conj` q) s
+sat_bad_assoc_a p q r s = recognise (p `plus` (q `seq` r)) s === recognise ((p `plus` q) `seq` r) s
+sat_bad_assoc_b p q r s = recognise (p `conj` (q `seq` r)) s === recognise ((p `conj` q) `seq` r) s
+sat_bad_assoc_c p q r s = recognise (p `plus` (q `conj` r)) s === recognise ((p `plus` q) `conj` r) s
 
 sat_xyy    p = question (recognise p [X,Y,Y])
 sat_xyxy   p = question (recognise p [X,Y,X,Y])

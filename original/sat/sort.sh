@@ -1,0 +1,13 @@
+cpp Sort.hs -DSORT=isort       > ISort.hs
+cpp Sort.hs -DSORT=bubsort     > Bubsort.hs
+cpp Sort.hs -DSORT=hsort       > HSort.hs
+cpp Sort.hs -DSORT=msortbu2    > MSortBU2.hs
+cpp Sort.hs -DSORT=msortbu     > MSortBU.hs
+cpp Sort.hs -DSORT=msorttd     > MSortTD.hs
+cpp Sort.hs -DSORT=eomsorttd   > EOMSortTD.hs
+cpp Sort.hs -DSORT=bsort       > BSort.hs
+cpp Sort.hs -DSORT=qsort       > QSort.hs
+cpp Sort.hs -DSORT=ssort       > SSort.hs
+cpp Sort.hs -DSORT=tsort       > TSort.hs
+cpp Sort.hs -DSORT=stoogesort  > Stoogesort.hs
+cpp Sort.hs -DSORT=stoogesort2 > Stoogesort2.hs

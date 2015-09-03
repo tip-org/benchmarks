@@ -68,7 +68,7 @@ astep (Suc n) x = case step x of
 four = (Suc (Suc (Suc (Suc Zero))))
 five = Suc four
 
-sat_why_4 y = question (varFree y .&&. astep four (y `Ap` Var) === Just (Var `Ap` (y `Ap` Var)))
-sat_why_5 y = question (varFree y .&&. astep five (y `Ap` Var) === Just (Var `Ap` (y `Ap` Var)))
-sat_why n y = question (varFree y .&&. astep n    (y `Ap` Var) === Just (Var `Ap` (y `Ap` Var)))
+sat_4_why y   = question (varFree y .&&. astep four (y `Ap` Var) === Just (Var `Ap` (y `Ap` Var)))
+sat_5_why y   = question (varFree y .&&. astep five (y `Ap` Var) === Just (Var `Ap` (y `Ap` Var)))
+sat_n_why n y = question (varFree y .&&. astep n    (y `Ap` Var) === Just (Var `Ap` (y `Ap` Var)))
 

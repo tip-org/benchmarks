@@ -1,4 +1,4 @@
-*tar*
+*\.tar*
 benchmarks-cvc4/
 benchmarks-why3/
 Commentify
