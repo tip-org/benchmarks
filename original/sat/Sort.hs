@@ -135,8 +135,11 @@ xs     `lmerge` [] = xs
 
 --------------------------------------------------------------------------------
 
+singletons []     = []
+singletons (x:xs) = [x]:singletons xs
+
 -- msortbu :: Ord a => [a] -> [a]
-msortbu = mergingbu . map (:[])
+msortbu = mergingbu . singletons
 
 -- mergingbu :: Ord a => [[a]] -> [a]
 mergingbu []   = []
@@ -215,7 +218,17 @@ sort2 x y | x <= y    = [x,y]
 
 -- qsort :: Ord a => [a] -> [a]
 qsort []     = []
-qsort (x:xs) = qsort (filter (<=x) xs) ++ [x] ++ qsort (filter (>x) xs)
+qsort (x:xs) = qsort (filter_le x xs) ++ [x] ++ qsort (filter_gt x xs)
+
+filter_le x (y:ys)
+  | y <= x    = y:filter_le x ys
+  | otherwise = filter_le x ys
+filter_le _ [] = []
+
+filter_gt x (y:ys)
+  | y > x     = y:filter_gt x ys
+  | otherwise = filter_gt x ys
+filter_gt _ [] = []
 
 -- QuickSort
 
@@ -335,10 +348,20 @@ stooge2sort2 xs = stoogesort2 ys ++ zs
 #define n17 (S n16)
 #define n18 (S n17)
 #define n19 (S n18)
+#define n20 (S n19)
+#define n21 (S n20)
+#define n22 (S n21)
+#define n23 (S n22)
+#define n24 (S n23)
+#define n25 (S n24)
+#define n26 (S n25)
+#define n27 (S n26)
+#define n28 (S n27)
+#define n29 (S n28)
 
-#define INJ(num) sat_inj_##num xs ys = question (SORT xs === SORT ys .&&. xs =/= ys                    .&&. length xs >= num)
-#define NUB(num) sat_nub_##num xs ys = question (SORT xs === SORT ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs >= num)
-#define UNQ(num) sat_unq_##num xs ys = question (SORT xs === SORT ys .&&. xs =/= ys .&&. unique xs     .&&. length xs >= num)
+#define INJ(num) sat_inj_##num xs ys = question (SORT xs === SORT ys .&&. xs =/= ys                    .&&. length xs === num .&&. length ys === num)
+#define NUB(num) sat_nub_##num xs ys = question (SORT xs === SORT ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs === num .&&. length ys === num)
+#define UNQ(num) sat_unq_##num xs ys = question (SORT xs === SORT ys .&&. xs =/= ys .&&. unique xs     .&&. length xs === num .&&. length ys === num)
 
 INJ(n02)
 INJ(n03)
@@ -354,6 +377,20 @@ INJ(n12)
 INJ(n13)
 INJ(n14)
 INJ(n15)
+INJ(n16)
+INJ(n17)
+INJ(n18)
+INJ(n19)
+INJ(n20)
+INJ(n21)
+INJ(n22)
+INJ(n23)
+INJ(n24)
+INJ(n25)
+INJ(n26)
+INJ(n27)
+INJ(n28)
+INJ(n29)
 
 NUB(n02)
 NUB(n03)
@@ -363,6 +400,11 @@ NUB(n06)
 NUB(n07)
 NUB(n08)
 NUB(n09)
+NUB(n10)
+NUB(n11)
+NUB(n12)
+NUB(n13)
+NUB(n14)
 
 UNQ(n02)
 UNQ(n03)
@@ -372,3 +414,8 @@ UNQ(n06)
 UNQ(n07)
 UNQ(n08)
 UNQ(n09)
+UNQ(n10)
+UNQ(n11)
+UNQ(n12)
+UNQ(n13)
+UNQ(n14)

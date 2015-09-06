@@ -25,15 +25,6 @@
       (case (cons z ys)
         (ite (le z x) (ssort_minimum z ys) (ssort_minimum x ys)))))
 (define-fun-rec
-  ge
-    ((x Nat) (y Nat)) Bool
-    (match y
-      (case Z true)
-      (case (S z)
-        (match x
-          (case Z false)
-          (case (S x2) (ge x2 z))))))
-(define-fun-rec
   equal
     ((x Nat) (y Nat)) Bool
     (match x
@@ -74,5 +65,7 @@
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (ssort xs) (ssort ys))
       (or (= xs ys)
-        (or (not (unique xs)) (not (ge (length xs) (S (S (S (S Z)))))))))))
+        (or (not (unique xs))
+          (or (distinct (length xs) (S (S (S (S Z)))))
+            (distinct (length ys) (S (S (S (S Z)))))))))))
 (check-sat)

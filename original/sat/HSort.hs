@@ -141,8 +141,11 @@ xs `lmerge` [] = xs
 
 --------------------------------------------------------------------------------
 
+singletons [] = []
+singletons (x:xs) = [x]:singletons xs
+
 -- msortbu :: Ord a => [a] -> [a]
-msortbu = mergingbu . map (:[])
+msortbu = mergingbu . singletons
 
 -- mergingbu :: Ord a => [[a]] -> [a]
 mergingbu [] = []
@@ -221,7 +224,17 @@ sort2 x y | x <= y = [x,y]
 
 -- qsort :: Ord a => [a] -> [a]
 qsort [] = []
-qsort (x:xs) = qsort (filter (<=x) xs) ++ [x] ++ qsort (filter (>x) xs)
+qsort (x:xs) = qsort (filter_le x xs) ++ [x] ++ qsort (filter_gt x xs)
+
+filter_le x (y:ys)
+  | y <= x = y:filter_le x ys
+  | otherwise = filter_le x ys
+filter_le _ [] = []
+
+filter_gt x (y:ys)
+  | y > x = y:filter_gt x ys
+  | otherwise = filter_gt x ys
+filter_gt _ [] = []
 
 -- QuickSort
 
@@ -319,36 +332,50 @@ stooge2sort2 xs = stoogesort2 ys ++ zs
 -- Stooge sort, using thirds on natural numbers
 
 --------------------------------------------------------------------------------
-# 343 "Sort.hs"
-sat_inj_n02 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S Z)))
-sat_inj_n03 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S Z))))
-sat_inj_n04 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S Z)))))
-sat_inj_n05 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S (S Z))))))
-sat_inj_n06 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S (S (S Z)))))))
-sat_inj_n07 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S (S (S (S Z))))))))
-sat_inj_n08 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S (S (S (S (S Z)))))))))
-sat_inj_n09 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S (S (S (S (S (S Z))))))))))
-sat_inj_n10 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S (S (S (S (S (S (S Z)))))))))))
-sat_inj_n11 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))
-sat_inj_n12 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))
-sat_inj_n13 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))
-sat_inj_n14 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))
-sat_inj_n15 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs >= (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))
+# 366 "Sort.hs"
+sat_inj_n02 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S Z)) .&&. length ys === (S (S Z)))
+sat_inj_n03 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S Z))) .&&. length ys === (S (S (S Z))))
+sat_inj_n04 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S Z)))) .&&. length ys === (S (S (S (S Z)))))
+sat_inj_n05 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S Z))))) .&&. length ys === (S (S (S (S (S Z))))))
+sat_inj_n06 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S Z)))))) .&&. length ys === (S (S (S (S (S (S Z)))))))
+sat_inj_n07 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S Z))))))) .&&. length ys === (S (S (S (S (S (S (S Z))))))))
+sat_inj_n08 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S Z)))))))) .&&. length ys === (S (S (S (S (S (S (S (S Z)))))))))
+sat_inj_n09 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S Z))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S Z))))))))))
+sat_inj_n10 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S Z)))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S Z)))))))))))
+sat_inj_n11 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S Z))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))
+sat_inj_n12 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))
+sat_inj_n13 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))
+sat_inj_n14 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))
+sat_inj_n15 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))
+sat_inj_n16 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))
+sat_inj_n17 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))
+sat_inj_n18 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))))
+sat_inj_n19 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))
+sat_inj_n20 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))))))
+sat_inj_n21 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))))
+sat_inj_n22 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))))))))
+sat_inj_n23 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))))))
+sat_inj_n24 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))))))))))
+sat_inj_n25 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))))))))
+sat_inj_n26 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))))))))))))
+sat_inj_n27 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))))))))))
+sat_inj_n28 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))))))))))))))))
+sat_inj_n29 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. length xs === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))))))))))))
 
-sat_nub_n02 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs >= (S (S Z)))
-sat_nub_n03 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs >= (S (S (S Z))))
-sat_nub_n04 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs >= (S (S (S (S Z)))))
-sat_nub_n05 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs >= (S (S (S (S (S Z))))))
-sat_nub_n06 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs >= (S (S (S (S (S (S Z)))))))
-sat_nub_n07 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs >= (S (S (S (S (S (S (S Z))))))))
-sat_nub_n08 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs >= (S (S (S (S (S (S (S (S Z)))))))))
-sat_nub_n09 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs >= (S (S (S (S (S (S (S (S (S Z))))))))))
+sat_nub_n02 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs === (S (S Z)) .&&. length ys === (S (S Z)))
+sat_nub_n03 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs === (S (S (S Z))) .&&. length ys === (S (S (S Z))))
+sat_nub_n04 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs === (S (S (S (S Z)))) .&&. length ys === (S (S (S (S Z)))))
+sat_nub_n05 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs === (S (S (S (S (S Z))))) .&&. length ys === (S (S (S (S (S Z))))))
+sat_nub_n06 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs === (S (S (S (S (S (S Z)))))) .&&. length ys === (S (S (S (S (S (S Z)))))))
+sat_nub_n07 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs === (S (S (S (S (S (S (S Z))))))) .&&. length ys === (S (S (S (S (S (S (S Z))))))))
+sat_nub_n08 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs === (S (S (S (S (S (S (S (S Z)))))))) .&&. length ys === (S (S (S (S (S (S (S (S Z)))))))))
+sat_nub_n09 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. nub xs === xs .&&. length xs === (S (S (S (S (S (S (S (S (S Z))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S Z))))))))))
 
-sat_unq_n02 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs >= (S (S Z)))
-sat_unq_n03 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs >= (S (S (S Z))))
-sat_unq_n04 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs >= (S (S (S (S Z)))))
-sat_unq_n05 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs >= (S (S (S (S (S Z))))))
-sat_unq_n06 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs >= (S (S (S (S (S (S Z)))))))
-sat_unq_n07 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs >= (S (S (S (S (S (S (S Z))))))))
-sat_unq_n08 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs >= (S (S (S (S (S (S (S (S Z)))))))))
-sat_unq_n09 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs >= (S (S (S (S (S (S (S (S (S Z))))))))))
+sat_unq_n02 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs === (S (S Z)) .&&. length ys === (S (S Z)))
+sat_unq_n03 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs === (S (S (S Z))) .&&. length ys === (S (S (S Z))))
+sat_unq_n04 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs === (S (S (S (S Z)))) .&&. length ys === (S (S (S (S Z)))))
+sat_unq_n05 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs === (S (S (S (S (S Z))))) .&&. length ys === (S (S (S (S (S Z))))))
+sat_unq_n06 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs === (S (S (S (S (S (S Z)))))) .&&. length ys === (S (S (S (S (S (S Z)))))))
+sat_unq_n07 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs === (S (S (S (S (S (S (S Z))))))) .&&. length ys === (S (S (S (S (S (S (S Z))))))))
+sat_unq_n08 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs === (S (S (S (S (S (S (S (S Z)))))))) .&&. length ys === (S (S (S (S (S (S (S (S Z)))))))))
+sat_unq_n09 xs ys = question (hsort xs === hsort ys .&&. xs =/= ys .&&. unique xs .&&. length xs === (S (S (S (S (S (S (S (S (S Z))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S Z))))))))))

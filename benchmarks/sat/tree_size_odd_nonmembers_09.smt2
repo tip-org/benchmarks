@@ -69,18 +69,18 @@
           (case Z true)
           (case (S x2) (gt z x2))))))
 (define-fun-rec
-  member
+  member2
     ((x Nat) (y (Tree Nat))) Bool
     (match y
       (case (B l z r)
-        (ite (lt x z) (member x l) (=> (gt x z) (member x r))))
+        (ite (lt x z) (member2 x l) (=> (gt x z) (member2 x r))))
       (case E false)))
 (define-fun-rec
   notMembers
     ((x (list Nat)) (y (Tree Nat))) Bool
     (match x
       (case nil true)
-      (case (cons z xs) (and (not (member z y)) (notMembers xs y)))))
+      (case (cons z xs) (and (not (member2 z y)) (notMembers xs y)))))
 (define-fun-rec
   equal
     ((x Nat) (y Nat)) Bool

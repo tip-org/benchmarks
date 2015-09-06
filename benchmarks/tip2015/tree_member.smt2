@@ -31,11 +31,11 @@
           (case Z true)
           (case (S x2) (gt z x2))))))
 (define-fun-rec
-  member
+  member2
     ((x Nat) (y (Tree Nat))) Bool
     (match y
       (case (B l z r)
-        (ite (lt x z) (member x l) (=> (gt x z) (member x r))))
+        (ite (lt x z) (member2 x l) (=> (gt x z) (member2 x r))))
       (case E false)))
 (define-fun-rec
   equal
@@ -74,5 +74,5 @@
 (define-fun ordered ((x (Tree Nat))) Bool (uniqsorted (flatten x)))
 (assert-not
   (forall ((x Nat) (t (Tree Nat)))
-    (=> (ordered t) (= (elem x (flatten t)) (member x t)))))
+    (=> (ordered t) (= (elem x (flatten t)) (member2 x t)))))
 (check-sat)

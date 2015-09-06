@@ -2,12 +2,13 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
-  (par (a b)
-    (map2
-       ((x (=> a b)) (y (list a))) (list b)
-       (match y
-         (case nil (as nil (list b)))
-         (case (cons z xs) (cons (@ x z) (map2 x xs)))))))
+  (par (t)
+    (singletons
+       ((x (list t))) (list (list t))
+       (match x
+         (case nil (as nil (list (list t))))
+         (case (cons y xs)
+           (cons (cons y (as nil (list t))) (singletons xs)))))))
 (define-fun-rec
   (par (a)
     (length
@@ -53,19 +54,7 @@
           (case nil xs)
           (case (cons z x2) (mergingbu (pairwise x)))))))
 (define-fun
-  msortbu
-    ((x (list Nat))) (list Nat)
-    (mergingbu
-      (map2 (lambda ((y Nat)) (cons y (as nil (list Nat)))) x)))
-(define-fun-rec
-  ge
-    ((x Nat) (y Nat)) Bool
-    (match y
-      (case Z true)
-      (case (S z)
-        (match x
-          (case Z false)
-          (case (S x2) (ge x2 z))))))
+  msortbu ((x (list Nat))) (list Nat) (mergingbu (singletons x)))
 (define-fun-rec
   equal
     ((x Nat) (y Nat)) Bool
@@ -96,5 +85,6 @@
     (or (distinct (msortbu xs) (msortbu ys))
       (or (= xs ys)
         (or (distinct (nub xs) xs)
-          (not (ge (length xs) (S (S (S (S (S (S Z)))))))))))))
+          (or (distinct (length xs) (S (S (S (S (S (S Z)))))))
+            (distinct (length ys) (S (S (S (S (S (S Z)))))))))))))
 (check-sat)

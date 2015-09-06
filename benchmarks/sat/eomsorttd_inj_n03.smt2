@@ -27,15 +27,6 @@
           (case nil x)
           (case (cons x3 x4)
             (ite (le z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
-(define-fun-rec
-  ge
-    ((x Nat) (y Nat)) Bool
-    (match y
-      (case Z true)
-      (case (S z)
-        (match x
-          (case Z false)
-          (case (S x2) (ge x2 z))))))
 (define-funs-rec
   ((par (a) (evens ((x (list a))) (list a)))
    (par (a) (odds ((x (list a))) (list a))))
@@ -58,5 +49,7 @@
 (assert-not
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (eomsorttd xs) (eomsorttd ys))
-      (or (= xs ys) (not (ge (length xs) (S (S (S Z)))))))))
+      (or (= xs ys)
+        (or (distinct (length xs) (S (S (S Z))))
+          (distinct (length ys) (S (S (S Z)))))))))
 (check-sat)

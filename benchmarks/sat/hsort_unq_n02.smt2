@@ -67,15 +67,6 @@
       (case Nil (as nil (list Nat)))))
 (define-fun hsort ((x (list Nat))) (list Nat) (toList (toHeap x)))
 (define-fun-rec
-  ge
-    ((x Nat) (y Nat)) Bool
-    (match y
-      (case Z true)
-      (case (S z)
-        (match x
-          (case Z false)
-          (case (S x2) (ge x2 z))))))
-(define-fun-rec
   equal
     ((x Nat) (y Nat)) Bool
     (match x
@@ -103,5 +94,7 @@
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (hsort xs) (hsort ys))
       (or (= xs ys)
-        (or (not (unique xs)) (not (ge (length xs) (S (S Z)))))))))
+        (or (not (unique xs))
+          (or (distinct (length xs) (S (S Z)))
+            (distinct (length ys) (S (S Z)))))))))
 (check-sat)

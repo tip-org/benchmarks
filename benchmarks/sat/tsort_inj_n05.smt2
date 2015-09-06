@@ -21,15 +21,6 @@
           (case Z false)
           (case (S x2) (le z x2))))))
 (define-fun-rec
-  ge
-    ((x Nat) (y Nat)) Bool
-    (match y
-      (case Z true)
-      (case (S z)
-        (match x
-          (case Z false)
-          (case (S x2) (ge x2 z))))))
-(define-fun-rec
   (par (a)
     (flatten
        ((x (Tree a)) (y (list a))) (list a)
@@ -56,5 +47,7 @@
 (assert-not
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (tsort xs) (tsort ys))
-      (or (= xs ys) (not (ge (length xs) (S (S (S (S (S Z)))))))))))
+      (or (= xs ys)
+        (or (distinct (length xs) (S (S (S (S (S Z))))))
+          (distinct (length ys) (S (S (S (S (S Z)))))))))))
 (check-sat)

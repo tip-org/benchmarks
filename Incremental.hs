@@ -1,4 +1,4 @@
-module Incremental where
+module Main where
 
 import System.Directory
 import System.FilePath
@@ -36,25 +36,41 @@ timeIt m =
      return (t,r)
 
 main = do
-  dir:cmd:args <- getArgs
+  all_args@(bad:dir:timelimit:cmd:args) <- getArgs
   files <- filter ((".smt2" ==) . takeExtension) <$> getDirectoryContents dir
 
-  let log :: FilePath -> Maybe Double -> IO ()
+  let is_ok = case bad of
+        "-" -> const True
+        _   -> not . (bad `isInfixOf`)
+
+      log_filename = (concatMap (++ "_") (cmd:args))
+
+      log :: FilePath -> Maybe Double -> IO ()
       log f maybe_time =
         do let time_str = case maybe_time of
                             Just t  -> printf "%0.5f" t
                             Nothing -> "-"
-           appendFile (concatMap (++ "_") (cmd:args)) (f ++ "," ++ time_str ++ "\n")
+           appendFile log_filename (f ++ "," ++ time_str ++ "\n")
+
+  b <- doesFileExist log_filename
+  if b then removeFile log_filename
+       else return ()
+
+  putStrLn (unwords all_args)
+  putStrLn log_filename
 
   let process []     = return ()
       process (f:fs) =
         do putStrLn f
-           (t,r) <- timeIt (rawSystem "timeout" ("60":cmd:(dir++f):args))
-           putStrLn (printf "%0.5fs" t ++ ", " ++ show r)
-           case r of
-             ExitSuccess -> do log f (Just t)
-                               process fs
-             _           -> do sequence_ [ log fl Nothing | fl <- f:fs ]
+           (t,(exc,out,err)) <- timeIt (readProcessWithExitCode "timeout" (timelimit:cmd:(dir </> f):args) "")
+           putStrLn (printf "%0.5fs" t ++ ", " ++ show exc)
+           putStrLn out
+           putStrLn err
+           case exc of
+             ExitSuccess | is_ok out
+               -> do log f (Just t)
+                     process fs
+             _ -> do sequence_ [ log fl Nothing | fl <- f:fs ]
 
   mapM_ process (incrementalGroups files)
 

@@ -27,22 +27,19 @@
           (case Z true)
           (case (S x2) (gt z x2))))))
 (define-fun-rec
-  ge
-    ((x Nat) (y Nat)) Bool
+  filter_le
+    ((x Nat) (y (list Nat))) (list Nat)
     (match y
-      (case Z true)
-      (case (S z)
-        (match x
-          (case Z false)
-          (case (S x2) (ge x2 z))))))
+      (case nil (as nil (list Nat)))
+      (case (cons z ys)
+        (ite (le z x) (cons z (filter_le x ys)) (filter_le x ys)))))
 (define-fun-rec
-  (par (a)
-    (filter
-       ((x (=> a Bool)) (y (list a))) (list a)
-       (match y
-         (case nil (as nil (list a)))
-         (case (cons z xs)
-           (ite (@ x z) (cons z (filter x xs)) (filter x xs)))))))
+  filter_gt
+    ((x Nat) (y (list Nat))) (list Nat)
+    (match y
+      (case nil (as nil (list Nat)))
+      (case (cons z ys)
+        (ite (gt z x) (cons z (filter_gt x ys)) (filter_gt x ys)))))
 (define-fun-rec
   equal
     ((x Nat) (y Nat)) Bool
@@ -81,12 +78,13 @@
       (case nil (as nil (list Nat)))
       (case (cons y xs)
         (append
-          (append (qsort (filter (lambda ((z Nat)) (le z y)) xs))
-            (cons y (as nil (list Nat))))
-          (qsort (filter (lambda ((x2 Nat)) (gt x2 y)) xs))))))
+          (append (qsort (filter_le y xs)) (cons y (as nil (list Nat))))
+          (qsort (filter_gt y xs))))))
 (assert-not
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (qsort xs) (qsort ys))
       (or (= xs ys)
-        (or (not (unique xs)) (not (ge (length xs) (S (S Z)))))))))
+        (or (not (unique xs))
+          (or (distinct (length xs) (S (S Z)))
+            (distinct (length ys) (S (S Z)))))))))
 (check-sat)
