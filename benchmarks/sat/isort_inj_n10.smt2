@@ -34,8 +34,6 @@
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (isort xs) (isort ys))
       (or (= xs ys)
-        (or
-          (distinct (length xs) (S (S (S (S (S (S (S (S (S (S Z)))))))))))
-          (distinct (length ys)
-            (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))
+        (distinct (length xs)
+          (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))
 (check-sat)

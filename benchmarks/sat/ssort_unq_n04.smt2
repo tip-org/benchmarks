@@ -65,7 +65,5 @@
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (ssort xs) (ssort ys))
       (or (= xs ys)
-        (or (not (unique xs))
-          (or (distinct (length xs) (S (S (S (S Z)))))
-            (distinct (length ys) (S (S (S (S Z)))))))))))
+        (or (not (unique xs)) (distinct (length xs) (S (S (S (S Z))))))))))
 (check-sat)

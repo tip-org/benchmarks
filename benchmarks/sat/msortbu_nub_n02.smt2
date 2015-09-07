@@ -84,7 +84,5 @@
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (msortbu xs) (msortbu ys))
       (or (= xs ys)
-        (or (distinct (nub xs) xs)
-          (or (distinct (length xs) (S (S Z)))
-            (distinct (length ys) (S (S Z)))))))))
+        (or (distinct (nub xs) xs) (distinct (length xs) (S (S Z))))))))
 (check-sat)

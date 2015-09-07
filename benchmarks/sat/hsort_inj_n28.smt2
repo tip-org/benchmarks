@@ -70,36 +70,8 @@
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (hsort xs) (hsort ys))
       (or (= xs ys)
-        (or
-          (distinct (length xs)
-            (S
-              (S
-                (S
-                  (S
-                    (S
-                      (S
-                        (S
-                          (S
-                            (S
-                              (S
-                                (S
-                                  (S
-                                    (S
-                                      (S
-                                        (S
-                                          (S
-                                            (S
-                                              (S
-                                                (S
-                                                  (S
-                                                    (S
-                                                      (S
-                                                        (S
-                                                          (S
-                                                            (S
-                                                              (S
-                                                                (S (S Z)))))))))))))))))))))))))))))
-          (distinct (length ys)
+        (distinct (length xs)
+          (S
             (S
               (S
                 (S
@@ -127,6 +99,5 @@
                                                             (S
                                                               (S
                                                                 (S
-                                                                  (S
-                                                                    Z))))))))))))))))))))))))))))))))))
+                                                                  Z)))))))))))))))))))))))))))))))))
 (check-sat)

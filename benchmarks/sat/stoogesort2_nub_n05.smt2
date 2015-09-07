@@ -128,6 +128,5 @@
     (or (distinct (stoogesort2 xs) (stoogesort2 ys))
       (or (= xs ys)
         (or (distinct (nub xs) xs)
-          (or (distinct (length xs) (S (S (S (S (S Z))))))
-            (distinct (length ys) (S (S (S (S (S Z))))))))))))
+          (distinct (length xs) (S (S (S (S (S Z)))))))))))
 (check-sat)

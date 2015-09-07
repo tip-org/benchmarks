@@ -59,7 +59,5 @@
 (assert-not
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (qsort xs) (qsort ys))
-      (or (= xs ys)
-        (or (distinct (length xs) (S (S Z)))
-          (distinct (length ys) (S (S Z))))))))
+      (or (= xs ys) (distinct (length xs) (S (S Z)))))))
 (check-sat)

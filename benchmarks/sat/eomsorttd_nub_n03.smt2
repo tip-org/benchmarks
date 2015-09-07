@@ -76,6 +76,5 @@
     (or (distinct (eomsorttd xs) (eomsorttd ys))
       (or (= xs ys)
         (or (distinct (nub xs) xs)
-          (or (distinct (length xs) (S (S (S Z))))
-            (distinct (length ys) (S (S (S Z))))))))))
+          (distinct (length xs) (S (S (S Z)))))))))
 (check-sat)

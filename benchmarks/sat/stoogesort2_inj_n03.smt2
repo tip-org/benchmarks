@@ -101,7 +101,5 @@
 (assert-not
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (stoogesort2 xs) (stoogesort2 ys))
-      (or (= xs ys)
-        (or (distinct (length xs) (S (S (S Z))))
-          (distinct (length ys) (S (S (S Z)))))))))
+      (or (= xs ys) (distinct (length xs) (S (S (S Z))))))))
 (check-sat)

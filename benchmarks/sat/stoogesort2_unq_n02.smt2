@@ -126,7 +126,5 @@
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (stoogesort2 xs) (stoogesort2 ys))
       (or (= xs ys)
-        (or (not (unique xs))
-          (or (distinct (length xs) (S (S Z)))
-            (distinct (length ys) (S (S Z)))))))))
+        (or (not (unique xs)) (distinct (length xs) (S (S Z))))))))
 (check-sat)

@@ -37,7 +37,8 @@ timeIt m =
 
 main = do
   all_args@(bad:dir:timelimit:cmd:args) <- getArgs
-  files <- filter ((".smt2" ==) . takeExtension) <$> getDirectoryContents dir
+  files <- filter ((\ ext -> ".smt2" == ext || ".bin" == ext) . takeExtension)
+                 <$> getDirectoryContents dir
 
   let is_ok = case bad of
         "-" -> const True

@@ -73,6 +73,5 @@
     (or (distinct (tsort xs) (tsort ys))
       (or (= xs ys)
         (or (not (unique xs))
-          (or (distinct (length xs) (S (S (S (S (S Z))))))
-            (distinct (length ys) (S (S (S (S (S Z))))))))))))
+          (distinct (length xs) (S (S (S (S (S Z)))))))))))
 (check-sat)

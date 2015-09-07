@@ -95,7 +95,5 @@
   (forall ((xs (list Nat)) (ys (list Nat)))
     (or (distinct (msorttd xs) (msorttd ys))
       (or (= xs ys)
-        (or (not (unique xs))
-          (or (distinct (length xs) (S (S Z)))
-            (distinct (length ys) (S (S Z)))))))))
+        (or (not (unique xs)) (distinct (length xs) (S (S Z))))))))
 (check-sat)
