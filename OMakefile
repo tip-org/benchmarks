@@ -36,15 +36,15 @@ create(prop_base, orig_dir, dest_dir, source, target_base) =
 
 		mkdir(-p $(dirname $(tip)))
 		.SUBDIRS: $(dirname $(source))
-			$(tip): $(source) $(commentify) $(tip-tools)
+			$(tip): $(source) $(commentify)
 				($(commentify) $< "$(prop)" "; " "; " ""; tip-ghc $< --prop "$(prop)") > $@
 
 		mkdir(-p $(dirname $(smt2)))
-		$(smt2): $(tip) $(tip-tools)
+		$(smt2): $(tip)
 			($(commentify) $< "$(prop)" "; " "; " ""; tip $< --smtlib) > $@
 
 		mkdir(-p $(dirname $(why3)))
-		$(why3): $(tip) $(tip-tools)
+		$(why3): $(tip)
 			($(commentify) $< "$(prop)" "(* " " * " " *)"; tip $< --why) > $@
 
 		check: $(why3)

@@ -1,10 +1,8 @@
 ulimit -Sv 7000000
-TIMEOUT=1
-ghc --make Incremental.hs -o Incremental
-./Incremental Done. benchmarks-feat/sat $TIMEOUT runghc
-mv runghc_ log_feat
-./Incremental - benchmarks-lazysc/sat $TIMEOUT runghc
-mv runghc_ log_lazysc
+TIMEOUT=60
+ghc --make Incremental.hs -o Incremental || exit
+./Incremental Done. benchmarks-feat/sat $TIMEOUT _feat
+./Incremental - benchmarks-lazysc/sat $TIMEOUT _lazysc
 ./Incremental - benchmarks/sat $TIMEOUT hbmc -q
 ./Incremental - benchmarks/sat $TIMEOUT hbmc -q       --memo=False
 ./Incremental - benchmarks/sat $TIMEOUT hbmc -q       --merge=False

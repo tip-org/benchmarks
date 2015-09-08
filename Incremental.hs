@@ -53,17 +53,23 @@ main = do
                             Nothing -> "-"
            appendFile log_filename (f ++ "," ++ time_str ++ "\n")
 
-  b <- doesFileExist log_filename
-  if b then removeFile log_filename
-       else return ()
-
-  putStrLn (unwords all_args)
   putStrLn log_filename
+  print all_args
+
+  b <- doesFileExist log_filename
+  existing <-
+     if b then do s <- readFile log_filename
+                  return [ f | l <- lines s, let (f,',':_) = break (== ',') l ]
+          else return []
 
   let process []     = return ()
+      process (f:fs) | f `elem` existing = process fs
       process (f:fs) =
         do putStrLn f
-           (t,(exc,out,err)) <- timeIt (readProcessWithExitCode "timeout" (timelimit:cmd:(dir </> f):args) "")
+           let full_cmd = case cmd of
+                 '_':_ -> (timelimit:(dir </> f):args)
+                 _     -> (timelimit:cmd:(dir </> f):args)
+           (t,(exc,out,err)) <- timeIt (readProcessWithExitCode "timeout" full_cmd "")
            putStrLn (printf "%0.5fs" t ++ ", " ++ show exc)
            putStrLn out
            putStrLn err
