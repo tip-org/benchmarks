@@ -155,3 +155,4 @@ create(sat_,   sat,        sat,        Stoogesort2.hs,          stoogesort2)
 # create(sat_,   sat,        sat,        Expr.hs,                 expr_show)
 
 create(target_,   sat,        sat,        ExprSimp.hs,                 expr_simp)
+create(target_,   sat,        sat,        Graph.hs,                    graph)
