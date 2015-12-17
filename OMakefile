@@ -158,3 +158,4 @@ create(target_,   sat,        sat,        ExprSimp.hs,                 expr_simp
 create(target_,   sat,        sat,        Graph.hs,                    graph)
 create(target_,   sat,        sat,        Imp.hs,                      imp)
 create(target_,   sat,        sat,        Parse.hs,                    parse)
+create(target_,   sat,        sat,        Pathfind.hs,                 maze)
