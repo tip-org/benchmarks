@@ -27,8 +27,8 @@
       (case default false)
       (case Eps true)
       (case (Plus p q) (or (eps p) (eps q)))
-      (case (And p2 q2) (and (eps p2) (eps q2)))
-      (case (Seq p3 q3) (and (eps p3) (eps q3)))
+      (case (And r q2) (and (eps r) (eps q2)))
+      (case (Seq p2 q3) (and (eps p2) (eps q3)))
       (case (Star y) true)))
 (define-fun epsR ((x R)) R (ite (eps x) Eps Nil))
 (define-fun-rec
@@ -38,10 +38,10 @@
       (case default Nil)
       (case (Atom a) (ite (eqA a y) Eps Nil))
       (case (Plus p q) (Plus (step p y) (step q y)))
-      (case (And p2 q2) (And (step p2 y) (step q2 y)))
-      (case (Seq p3 q3)
-        (Plus (Seq (step p3 y) q3) (Seq (epsR p3) (step q3 y))))
-      (case (Star p4) (Seq (step p4 y) x))))
+      (case (And r q2) (And (step r y) (step q2 y)))
+      (case (Seq p2 q3)
+        (Plus (Seq (step p2 y) q3) (Seq (epsR p2) (step q3 y))))
+      (case (Star p3) (Seq (step p3 y) x))))
 (define-fun-rec
   recognise
     ((x R) (y (list A))) Bool
@@ -56,10 +56,10 @@
       (case Eps Nil)
       (case (Atom a) x)
       (case (Plus p q) (Plus (deeps p) (deeps q)))
-      (case (And p2 q2) (And (deeps p2) (deeps q2)))
-      (case (Seq p3 q3)
-        (ite (and (eps p3) (eps q3)) (Plus (deeps p3) (deeps q3)) x))
-      (case (Star p4) (deeps p4))))
+      (case (And r q2) (And (deeps r) (deeps q2)))
+      (case (Seq p2 q3)
+        (ite (and (eps p2) (eps q3)) (Plus (deeps p2) (deeps q3)) x))
+      (case (Star p3) (deeps p3))))
 (assert-not
   (forall ((p R) (s (list A)))
     (= (recognise (Star p) s) (recognise (Star (deeps p)) s))))

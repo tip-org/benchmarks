@@ -22,9 +22,6 @@
   (par (a)
     (reverse
        ((x (list a))) (list a) (reverse_go x (as nil (list a))))))
-(define-fun
-  n14
-    () Nat (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z)))))))))))))))
 (define-fun-rec
   (par (a)
     (length
@@ -170,6 +167,12 @@
       (and (and2 (nq2 (transpose x))) (and2 (nq2 (bothdiags x))))))
 (assert-not
   (forall ((xs (list (list Bool))))
-    (or (not (isMatrix n14 xs))
-      (or (not (nq xs)) (not (equal (count (concat2 xs)) n14))))))
+    (or
+      (not
+        (isMatrix (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))
+          xs))
+      (or (not (nq xs))
+        (not
+          (equal (count (concat2 xs))
+            (S (S (S (S (S (S (S (S (S (S (S (S (S (S Z))))))))))))))))))))
 (check-sat)

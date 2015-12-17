@@ -35,10 +35,10 @@ sat_cnf_not_comm e x y =
     )
 
 tt = True
-f  = False
+__ = False
 
-cnf (And x y) = disj x && cnf y
-cnf x         = disj x
+cn__(And x y) = disj x && cn__y
+cn__x         = disj x
 
 disj (Or x y) = atom x && disj y
 disj x        = atom x
@@ -51,140 +51,140 @@ var _       = False
 
 sat_cnf_one_two e =
   question
-    (    cnf e
+    (    cn__e
     .&&. not (eval [tt,tt] e)
-    .&&.     (eval [f ,tt] e)
-    .&&.     (eval [tt,f ] e)
-    .&&. not (eval [f ,f ] e))
+    .&&.     (eval [__,tt] e)
+    .&&.     (eval [tt,__] e)
+    .&&. not (eval [__,__] e))
 
 sat_cnf_one_three e =
   question
-    (    cnf e
+    (    cn__e
     .&&. not (eval [tt,tt,tt] e)
-    .&&. not (eval [tt,tt,f ] e)
-    .&&. not (eval [tt,f ,tt] e)
-    .&&.     (eval [tt,f ,f ] e)
-    .&&. not (eval [f ,tt,tt] e)
-    .&&.     (eval [f ,tt,f ] e)
-    .&&.     (eval [f ,f ,tt] e)
-    .&&. not (eval [f ,f ,f ] e))
+    .&&. not (eval [tt,tt,__] e)
+    .&&. not (eval [tt,__,tt] e)
+    .&&.     (eval [tt,__,__] e)
+    .&&. not (eval [__,tt,tt] e)
+    .&&.     (eval [__,tt,__] e)
+    .&&.     (eval [__,__,tt] e)
+    .&&. not (eval [__,__,__] e))
 
 sat_cnf_xor_three e =
   question
-    (    cnf e
+    (    cn__e
     .&&.     (eval [tt,tt,tt] e)
-    .&&. not (eval [tt,tt,f ] e)
-    .&&. not (eval [tt,f ,tt] e)
-    .&&.     (eval [tt,f ,f ] e)
-    .&&. not (eval [f ,tt,tt] e)
-    .&&.     (eval [f ,tt,f ] e)
-    .&&.     (eval [f ,f ,tt] e)
-    .&&. not (eval [f ,f ,f ] e))
+    .&&. not (eval [tt,tt,__] e)
+    .&&. not (eval [tt,__,tt] e)
+    .&&.     (eval [tt,__,__] e)
+    .&&. not (eval [__,tt,tt] e)
+    .&&.     (eval [__,tt,__] e)
+    .&&.     (eval [__,__,tt] e)
+    .&&. not (eval [__,__,__] e))
 
 sat_cnf_one_four e =
   question
-    (    cnf e
+    (    cn__e
     .&&. not (eval [tt,tt,tt,tt] e)
-    .&&. not (eval [tt,tt,tt,f ] e)
-    .&&. not (eval [tt,tt,f ,tt] e)
-    .&&. not (eval [tt,tt,f ,f ] e)
-    .&&. not (eval [tt,f ,tt,tt] e)
-    .&&. not (eval [tt,f ,tt,f ] e)
-    .&&. not (eval [tt,f ,f ,tt] e)
-    .&&.     (eval [tt,f ,f ,f ] e)
-    .&&. not (eval [f ,tt,tt,tt] e)
-    .&&. not (eval [f ,tt,tt,f ] e)
-    .&&. not (eval [f ,tt,f ,tt] e)
-    .&&.     (eval [f ,tt,f ,f ] e)
-    .&&. not (eval [f ,f ,tt,tt] e)
-    .&&.     (eval [f ,f ,tt,f ] e)
-    .&&.     (eval [f ,f ,f ,tt] e)
-    .&&. not (eval [f ,f ,f ,f ] e))
+    .&&. not (eval [tt,tt,tt,__] e)
+    .&&. not (eval [tt,tt,__,tt] e)
+    .&&. not (eval [tt,tt,__,__] e)
+    .&&. not (eval [tt,__,tt,tt] e)
+    .&&. not (eval [tt,__,tt,__] e)
+    .&&. not (eval [tt,__,__,tt] e)
+    .&&.     (eval [tt,__,__,__] e)
+    .&&. not (eval [__,tt,tt,tt] e)
+    .&&. not (eval [__,tt,tt,__] e)
+    .&&. not (eval [__,tt,__,tt] e)
+    .&&.     (eval [__,tt,__,__] e)
+    .&&. not (eval [__,__,tt,tt] e)
+    .&&.     (eval [__,__,tt,__] e)
+    .&&.     (eval [__,__,__,tt] e)
+    .&&. not (eval [__,__,__,__] e))
 
 sat_cnf_two_four e =
   question
-    (    cnf e
+    (    cn__e
     .&&. not (eval [tt,tt,tt,tt] e)
-    .&&. not (eval [tt,tt,tt,f ] e)
-    .&&. not (eval [tt,tt,f ,tt] e)
-    .&&.     (eval [tt,tt,f ,f ] e)
-    .&&. not (eval [tt,f ,tt,tt] e)
-    .&&.     (eval [tt,f ,tt,f ] e)
-    .&&.     (eval [tt,f ,f ,tt] e)
-    .&&. not (eval [tt,f ,f ,f ] e)
-    .&&. not (eval [f ,tt,tt,tt] e)
-    .&&.     (eval [f ,tt,tt,f ] e)
-    .&&.     (eval [f ,tt,f ,tt] e)
-    .&&. not (eval [f ,tt,f ,f ] e)
-    .&&.     (eval [f ,f ,tt,tt] e)
-    .&&. not (eval [f ,f ,tt,f ] e)
-    .&&. not (eval [f ,f ,f ,tt] e)
-    .&&. not (eval [f ,f ,f ,f ] e))
+    .&&. not (eval [tt,tt,tt,__] e)
+    .&&. not (eval [tt,tt,__,tt] e)
+    .&&.     (eval [tt,tt,__,__] e)
+    .&&. not (eval [tt,__,tt,tt] e)
+    .&&.     (eval [tt,__,tt,__] e)
+    .&&.     (eval [tt,__,__,tt] e)
+    .&&. not (eval [tt,__,__,__] e)
+    .&&. not (eval [__,tt,tt,tt] e)
+    .&&.     (eval [__,tt,tt,__] e)
+    .&&.     (eval [__,tt,__,tt] e)
+    .&&. not (eval [__,tt,__,__] e)
+    .&&.     (eval [__,__,tt,tt] e)
+    .&&. not (eval [__,__,tt,__] e)
+    .&&. not (eval [__,__,__,tt] e)
+    .&&. not (eval [__,__,__,__] e))
 
 sat_one_two e =
   question
     (    not (eval [tt,tt] e)
-    .&&.     (eval [f ,tt] e)
-    .&&.     (eval [tt,f ] e)
-    .&&. not (eval [f ,f ] e))
+    .&&.     (eval [__,tt] e)
+    .&&.     (eval [tt,__] e)
+    .&&. not (eval [__,__] e))
 
 sat_one_three e =
   question
     (    not (eval [tt,tt,tt] e)
-    .&&. not (eval [tt,tt,f ] e)
-    .&&. not (eval [tt,f ,tt] e)
-    .&&.     (eval [tt,f ,f ] e)
-    .&&. not (eval [f ,tt,tt] e)
-    .&&.     (eval [f ,tt,f ] e)
-    .&&.     (eval [f ,f ,tt] e)
-    .&&. not (eval [f ,f ,f ] e))
+    .&&. not (eval [tt,tt,__] e)
+    .&&. not (eval [tt,__,tt] e)
+    .&&.     (eval [tt,__,__] e)
+    .&&. not (eval [__,tt,tt] e)
+    .&&.     (eval [__,tt,__] e)
+    .&&.     (eval [__,__,tt] e)
+    .&&. not (eval [__,__,__] e))
 
 sat_xor_three e =
   question
     (        (eval [tt,tt,tt] e)
-    .&&. not (eval [tt,tt,f ] e)
-    .&&. not (eval [tt,f ,tt] e)
-    .&&.     (eval [tt,f ,f ] e)
-    .&&. not (eval [f ,tt,tt] e)
-    .&&.     (eval [f ,tt,f ] e)
-    .&&.     (eval [f ,f ,tt] e)
-    .&&. not (eval [f ,f ,f ] e))
+    .&&. not (eval [tt,tt,__] e)
+    .&&. not (eval [tt,__,tt] e)
+    .&&.     (eval [tt,__,__] e)
+    .&&. not (eval [__,tt,tt] e)
+    .&&.     (eval [__,tt,__] e)
+    .&&.     (eval [__,__,tt] e)
+    .&&. not (eval [__,__,__] e))
 
 sat_one_four e =
   question
     (    not (eval [tt,tt,tt,tt] e)
-    .&&. not (eval [tt,tt,tt,f ] e)
-    .&&. not (eval [tt,tt,f ,tt] e)
-    .&&. not (eval [tt,tt,f ,f ] e)
-    .&&. not (eval [tt,f ,tt,tt] e)
-    .&&. not (eval [tt,f ,tt,f ] e)
-    .&&. not (eval [tt,f ,f ,tt] e)
-    .&&.     (eval [tt,f ,f ,f ] e)
-    .&&. not (eval [f ,tt,tt,tt] e)
-    .&&. not (eval [f ,tt,tt,f ] e)
-    .&&. not (eval [f ,tt,f ,tt] e)
-    .&&.     (eval [f ,tt,f ,f ] e)
-    .&&. not (eval [f ,f ,tt,tt] e)
-    .&&.     (eval [f ,f ,tt,f ] e)
-    .&&.     (eval [f ,f ,f ,tt] e)
-    .&&. not (eval [f ,f ,f ,f ] e))
+    .&&. not (eval [tt,tt,tt,__] e)
+    .&&. not (eval [tt,tt,__,tt] e)
+    .&&. not (eval [tt,tt,__,__] e)
+    .&&. not (eval [tt,__,tt,tt] e)
+    .&&. not (eval [tt,__,tt,__] e)
+    .&&. not (eval [tt,__,__,tt] e)
+    .&&.     (eval [tt,__,__,__] e)
+    .&&. not (eval [__,tt,tt,tt] e)
+    .&&. not (eval [__,tt,tt,__] e)
+    .&&. not (eval [__,tt,__,tt] e)
+    .&&.     (eval [__,tt,__,__] e)
+    .&&. not (eval [__,__,tt,tt] e)
+    .&&.     (eval [__,__,tt,__] e)
+    .&&.     (eval [__,__,__,tt] e)
+    .&&. not (eval [__,__,__,__] e))
 
 sat_two_four e =
   question
     (    not (eval [tt,tt,tt,tt] e)
-    .&&. not (eval [tt,tt,tt,f ] e)
-    .&&. not (eval [tt,tt,f ,tt] e)
-    .&&.     (eval [tt,tt,f ,f ] e)
-    .&&. not (eval [tt,f ,tt,tt] e)
-    .&&.     (eval [tt,f ,tt,f ] e)
-    .&&.     (eval [tt,f ,f ,tt] e)
-    .&&. not (eval [tt,f ,f ,f ] e)
-    .&&. not (eval [f ,tt,tt,tt] e)
-    .&&.     (eval [f ,tt,tt,f ] e)
-    .&&.     (eval [f ,tt,f ,tt] e)
-    .&&. not (eval [f ,tt,f ,f ] e)
-    .&&.     (eval [f ,f ,tt,tt] e)
-    .&&. not (eval [f ,f ,tt,f ] e)
-    .&&. not (eval [f ,f ,f ,tt] e)
-    .&&. not (eval [f ,f ,f ,f ] e))
+    .&&. not (eval [tt,tt,tt,__] e)
+    .&&. not (eval [tt,tt,__,tt] e)
+    .&&.     (eval [tt,tt,__,__] e)
+    .&&. not (eval [tt,__,tt,tt] e)
+    .&&.     (eval [tt,__,tt,__] e)
+    .&&.     (eval [tt,__,__,tt] e)
+    .&&. not (eval [tt,__,__,__] e)
+    .&&. not (eval [__,tt,tt,tt] e)
+    .&&.     (eval [__,tt,tt,__] e)
+    .&&.     (eval [__,tt,__,tt] e)
+    .&&. not (eval [__,tt,__,__] e)
+    .&&.     (eval [__,__,tt,tt] e)
+    .&&. not (eval [__,__,tt,__] e)
+    .&&. not (eval [__,__,__,tt] e)
+    .&&. not (eval [__,__,__,__] e))
 

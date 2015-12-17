@@ -16,14 +16,14 @@
     (flatten
        ((x (Tree a)) (y (list a))) (list a)
        (match x
-         (case (TNode q z q2) (flatten q (cons z (flatten q2 y))))
+         (case (TNode q z r) (flatten q (cons z (flatten r y))))
          (case TNil y)))))
 (define-fun-rec
   add
     ((x Int) (y (Tree Int))) (Tree Int)
     (match y
-      (case (TNode q z q2)
-        (ite (<= x z) (TNode (add x q) z q2) (TNode q z (add x q2))))
+      (case (TNode q z r)
+        (ite (<= x z) (TNode (add x q) z r) (TNode q z (add x r))))
       (case TNil (TNode (as TNil (Tree Int)) x (as TNil (Tree Int))))))
 (define-fun-rec
   toTree

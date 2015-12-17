@@ -38,7 +38,7 @@
       (case (cons q y)
         (match y
           (case nil (cons q (as nil (list (Heap Int)))))
-          (case (cons q2 qs) (cons (hmerge q q2) (hpairwise qs)))))))
+          (case (cons r qs) (cons (hmerge q r) (hpairwise qs)))))))
 (define-fun-rec
   hmerging
     ((x (list (Heap Int)))) (Heap Int)
@@ -54,7 +54,7 @@
   toList
     ((x (Heap Int))) (list Int)
     (match x
-      (case (Node q y q2) (cons y (toList (hmerge q q2))))
+      (case (Node q y r) (cons y (toList (hmerge q r))))
       (case Nil (as nil (list Int)))))
 (define-fun hsort ((x (list Int))) (list Int) (toList (toHeap x)))
 (assert-not

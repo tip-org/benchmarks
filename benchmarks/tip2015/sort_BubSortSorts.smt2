@@ -14,17 +14,18 @@
 (define-fun-rec
   bubble
     ((x (list Int))) (Pair Bool (list Int))
-    (match x
-      (case nil (Pair2 false (as nil (list Int))))
-      (case (cons y z)
-        (match z
-          (case nil (Pair2 false (cons y (as nil (list Int)))))
-          (case (cons y2 xs)
-            (ite
-              (<= y y2)
-              (match (bubble z) (case (Pair2 b2 zs) (Pair2 b2 (cons y zs))))
-              (match (bubble (cons y xs))
-                (case (Pair2 c ys) (Pair2 true (cons y2 ys))))))))))
+    (let ((y (Pair2 false x)))
+      (match x
+        (case nil y)
+        (case (cons z x2)
+          (match x2
+            (case nil y)
+            (case (cons y2 xs)
+              (ite
+                (<= z y2)
+                (match (bubble x2) (case (Pair2 b2 zs) (Pair2 b2 (cons z zs))))
+                (match (bubble (cons z xs))
+                  (case (Pair2 c ys) (Pair2 true (cons y2 ys)))))))))))
 (define-fun-rec
   bubsort
     ((x (list Int))) (list Int)

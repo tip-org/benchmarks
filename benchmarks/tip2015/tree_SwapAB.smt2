@@ -20,12 +20,12 @@
   swap
     ((x Nat) (y Nat) (z (Tree Nat))) (Tree Nat)
     (match z
-      (case (Node q x2 q2)
+      (case (Node q x2 r)
         (ite
-          (equal x2 x) (Node (swap x y q) y (swap x y q2))
+          (equal x2 x) (Node (swap x y q) y (swap x y r))
           (ite
-            (equal x2 y) (Node (swap x y q) x (swap x y q2))
-            (Node (swap x y q) x2 (swap x y q2)))))
+            (equal x2 y) (Node (swap x y q) x (swap x y r))
+            (Node (swap x y q) x2 (swap x y r)))))
       (case Nil (as Nil (Tree Nat)))))
 (define-fun-rec
   elem
@@ -45,9 +45,9 @@
     (flatten0
        ((x (Tree a))) (list a)
        (match x
-         (case (Node q y q2)
+         (case (Node q y r)
            (append (append (flatten0 q) (cons y (as nil (list a))))
-             (flatten0 q2)))
+             (flatten0 r)))
          (case Nil (as nil (list a)))))))
 (assert-not
   (forall ((q (Tree Nat)) (a Nat) (b Nat))

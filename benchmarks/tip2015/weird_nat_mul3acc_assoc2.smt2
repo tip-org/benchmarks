@@ -25,30 +25,22 @@
             (match z
               (case Z Z)
               (case (S x4)
-                (match x2
-                  (case Z
-                    (match x3
-                      (case Z
-                        (match x4
-                          (case Z (S Z))
-                          (case (S x5)
-                            (S
-                              (add3acc (mul3acc Z Z x4)
-                                (add3acc (mul3acc (S Z) Z x4)
-                                  (mul3acc Z (S Z) x4) (mul3acc Z Z (S Z)))
-                                (add3acc Z Z x4))))))
-                      (case (S x6)
-                        (S
-                          (add3acc (mul3acc Z x3 x4)
-                            (add3acc (mul3acc (S Z) x3 x4)
-                              (mul3acc Z (S Z) x4) (mul3acc Z x3 (S Z)))
-                            (add3acc Z x3 x4))))))
-                  (case (S x7)
-                    (S
-                      (add3acc (mul3acc x2 x3 x4)
-                        (add3acc (mul3acc (S Z) x3 x4)
-                          (mul3acc x2 (S Z) x4) (mul3acc x2 x3 (S Z)))
-                        (add3acc x2 x3 x4))))))))))))
+                (let
+                  ((x5
+                      (S
+                        (add3acc (mul3acc x2 x3 x4)
+                          (add3acc (mul3acc (S Z) x3 x4)
+                            (mul3acc x2 (S Z) x4) (mul3acc x2 x3 (S Z)))
+                          (add3acc x2 x3 x4)))))
+                  (match x2
+                    (case Z
+                      (match x3
+                        (case Z
+                          (match x4
+                            (case Z (S Z))
+                            (case (S x6) x5)))
+                        (case (S x7) x5)))
+                    (case (S x8) x5))))))))))
 (assert-not
   (forall ((x1 Nat) (x2 Nat) (x3acc Nat) (x4 Nat) (x5 Nat))
     (= (mul3acc (mul3acc x1 x2 x3acc) x4 x5)

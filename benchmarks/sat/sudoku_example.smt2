@@ -263,14 +263,15 @@
   ((match y
      (case nil (isSolutionOf2 x))
      (case (cons z x2)
-       (match z
-         (case (Pair2 x3 x4)
-           (match x3
-             (case Nothing (isSolutionOf3 x x2))
-             (case (Just n1)
-               (match x4
-                 (case Nothing (isSolutionOf3 x x2))
-                 (case (Just n2) (cons (eqCell n1 n2) (isSolutionOf3 x x2))))))))))
+       (let ((x3 (isSolutionOf3 x x2)))
+         (match z
+           (case (Pair2 x4 x5)
+             (match x4
+               (case Nothing x3)
+               (case (Just n1)
+                 (match x5
+                   (case Nothing x3)
+                   (case (Just n2) (cons (eqCell n1 n2) (isSolutionOf3 x x2)))))))))))
    (match x
      (case nil (as nil (list Bool)))
      (case (cons y z)

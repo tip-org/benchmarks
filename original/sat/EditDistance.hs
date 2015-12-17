@@ -73,7 +73,7 @@ edits :: [Edit] -> String -> String
 edits (e:es) s = edits es (edit e s)
 edits []     s = s
 
--- test es = question (edits es [A,P,A,B,E,P,A] === [B,A,R,B,A,P,A,P,P,A])
+test es = question (edits es [A,P,A,B,E,P,A] === [B,A,R,B,A,P,A,P,P,A])
 
 -- test es = question (edits es [H,A,S,K,E,L,L] === [T,R,A,S,E,L,L])
 
@@ -86,7 +86,7 @@ edits []     s = s
 -- test a b c d = question (edits [a,b,c,d] [K,I,T,T,E,N] === [S,I,T,T,I,N,G])
 -- test a b c d e = question (edits [a,b,c,d,e] [K,I,T,T,E,N] === [S,I,T,T,I,N,G])
 
-test a b = question (edits [a,b] [K,I,T,T,E,N] === [M,I,T,T,E,N,S])
+-- test a b = question (edits [a,b] [K,I,T,T,E,N] === [M,I,T,T,E,N,S])
 
 -- test a b c d e = question (edits [a,b,c,d,e] [K,I,T,T,E,N] === [M,I,T,T,E,N,S])
 

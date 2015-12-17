@@ -54,16 +54,15 @@
         (match y
           (case nil x)
           (case (cons x3 x4)
-            (match x2
-              (case nil
-                (match x4
-                  (case nil (sort2 z x3))
-                  (case (cons x5 x6)
-                    (stitch (bmerge (evens (cons z (as nil (list Int)))) (evens y))
-                      (bmerge (odds (cons z (as nil (list Int)))) (odds y))))))
-              (case (cons x7 x8)
-                (stitch (bmerge (evens x) (evens y))
-                  (bmerge (odds x) (odds y))))))))))
+            (let
+              ((x5
+                  (stitch (bmerge (evens x) (evens y)) (bmerge (odds x) (odds y)))))
+              (match x2
+                (case nil
+                  (match x4
+                    (case nil (sort2 z x3))
+                    (case (cons x6 x7) x5)))
+                (case (cons x8 x9) x5))))))))
 (define-fun-rec
   bsort
     ((x (list Int))) (list Int)

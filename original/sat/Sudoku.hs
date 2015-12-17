@@ -123,6 +123,7 @@ sat_blank s   = question (isSudoku s .&&. isOkay s .&&. isSolved s)
 
 sat_example s = question (isSudoku s .&&. s `isSolutionOf` example)
 
+-- from http://www.telegraph.co.uk/news/science/science-news/9360022/Worlds-hardest-sudoku-the-answer.html
 sat_difficult s = question (isSudoku s .&&. s `isSolutionOf` difficult)
 
 example :: Sudoku
@@ -139,7 +140,6 @@ example =
     , [Nothing,Nothing,Just C7, Just C6, Just C9, Nothing,Nothing,Just C4, Just C3]
     ]
 
--- from http://www.telegraph.co.uk/news/science/science-news/9360022/Worlds-hardest-sudoku-the-answer.html
 difficult :: Sudoku
 difficult =
   Sudoku

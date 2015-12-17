@@ -17,8 +17,8 @@
          (case nil (as nil (list (Pair (list a) (list a)))))
          (case (cons z x2)
            (match z
-             (case (Pair2 as2 bs)
-               (cons (Pair2 (cons x as2) bs) (splits2 x x2)))))))))
+             (case (Pair2 bs cs)
+               (cons (Pair2 (cons x bs) cs) (splits2 x x2)))))))))
 (define-fun-rec
   (par (a)
     (splits
@@ -78,7 +78,7 @@
       (case default false)
       (case Eps true)
       (case (Plus p q) (or (eps p) (eps q)))
-      (case (Seq p2 q2) (and (eps p2) (eps q2)))
+      (case (Seq r q2) (and (eps r) (eps q2)))
       (case (Star y) true)))
 (define-fun epsR ((x R)) R (ite (eps x) Eps Nil))
 (define-fun-rec
@@ -88,17 +88,17 @@
       (case default Nil)
       (case (Atom a) (ite (eqA a y) Eps Nil))
       (case (Plus p q) (plus (step p y) (step q y)))
-      (case (Seq p2 q2)
-        (plus (seq (step p2 y) q2) (seq (epsR p2) (step q2 y))))
-      (case (Star p3) (seq (step p3 y) x))))
+      (case (Seq r q2)
+        (plus (seq (step r y) q2) (seq (epsR r) (step q2 y))))
+      (case (Star p2) (seq (step p2 y) x))))
 (define-fun-rec
   okay
     ((x R)) Bool
     (match x
       (case default true)
       (case (Plus p q) (and (okay p) (okay q)))
-      (case (Seq p2 q2) (and (okay p2) (okay q2)))
-      (case (Star p3) (and (okay p3) (not (eps p3))))))
+      (case (Seq r q2) (and (okay r) (okay q2)))
+      (case (Star p2) (and (okay p2) (not (eps p2))))))
 (define-funs-rec
   ((reck ((x R) (y (list A))) Bool)
    (reck2
@@ -117,11 +117,11 @@
              (case nil (eqA b c))
              (case (cons x4 x5) false)))))
      (case (Plus p q) (or (reck p y) (reck q y)))
-     (case (Seq p2 q2) (or2 (reck2 p2 q2 (splits y))))
-     (case (Star p3)
+     (case (Seq r q2) (or2 (reck2 r q2 (splits y))))
+     (case (Star p2)
        (match y
          (case nil true)
-         (case (cons x6 x7) (and (not (eps p3)) (reck (Seq p3 x) y))))))
+         (case (cons x6 x7) (and (not (eps p2)) (reck (Seq p2 x) y))))))
    (match x
      (case nil (as nil (list Bool)))
      (case (cons y z)

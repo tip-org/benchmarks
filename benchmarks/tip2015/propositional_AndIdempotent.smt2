@@ -69,9 +69,9 @@
      (case (& p q) (models2 q (models p y)))
      (case (Not z)
        (match z
-         (case (& p2 q2)
-           (append (models (Not p2) y) (models (& p2 (Not q2)) y)))
-         (case (Not p3) (models p3 y))
+         (case (& r q2)
+           (append (models (Not r) y) (models (& r (Not q2)) y)))
+         (case (Not p2) (models p2 y))
          (case (Var x2)
            (ite
              (not (or2 (models3 x2 y)))

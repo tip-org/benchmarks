@@ -62,9 +62,9 @@
      (case (& p q) (models2 q (models p y)))
      (case (Not z)
        (match z
-         (case (& p2 q2)
-           (append (models (Not p2) y) (models (& p2 (Not q2)) y)))
-         (case (Not p3) (models p3 y))
+         (case (& r q2)
+           (append (models (Not r) y) (models (& r (Not q2)) y)))
+         (case (Not p2) (models p2 y))
          (case (Var x2)
            (ite
              (not (or2 (models3 x2 y)))
@@ -99,7 +99,7 @@
     ((x (list (Pair Int Bool))) (y Form)) Bool
     (match y
       (case (& p q) (and (=2 x p) (=2 x q)))
-      (case (Not p2) (not (=2 x p2)))
+      (case (Not r) (not (=2 x r)))
       (case (Var z) (or2 (models3 z x)))))
 (assert-not
   (forall ((p Form))

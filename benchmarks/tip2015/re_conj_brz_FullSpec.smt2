@@ -18,8 +18,8 @@
          (case nil (as nil (list (Pair (list a) (list a)))))
          (case (cons z x2)
            (match z
-             (case (Pair2 as2 bs)
-               (cons (Pair2 (cons x as2) bs) (splits2 x x2)))))))))
+             (case (Pair2 bs cs)
+               (cons (Pair2 (cons x bs) cs) (splits2 x x2)))))))))
 (define-fun-rec
   (par (a)
     (splits
@@ -55,8 +55,8 @@
       (case default false)
       (case Eps true)
       (case (Plus p q) (or (eps p) (eps q)))
-      (case (And p2 q2) (and (eps p2) (eps q2)))
-      (case (Seq p3 q3) (and (eps p3) (eps q3)))
+      (case (And r q2) (and (eps r) (eps q2)))
+      (case (Seq p2 q3) (and (eps p2) (eps q3)))
       (case (Star y) true)))
 (define-fun epsR ((x R)) R (ite (eps x) Eps Nil))
 (define-fun-rec
@@ -66,17 +66,18 @@
       (case default Nil)
       (case (Atom a) (ite (eqA a y) Eps Nil))
       (case (Plus p q) (Plus (step p y) (step q y)))
-      (case (And p2 q2) (And (step p2 y) (step q2 y)))
-      (case (Seq p3 q3)
-        (Plus (Seq (step p3 y) q3) (Seq (epsR p3) (step q3 y))))
-      (case (Star p4) (Seq (step p4 y) x))))
+      (case (And r q2) (And (step r y) (step q2 y)))
+      (case (Seq p2 q3)
+        (Plus (Seq (step p2 y) q3) (Seq (epsR p2) (step q3 y))))
+      (case (Star p3) (Seq (step p3 y) x))))
 (define-fun-rec
   okay
     ((x R)) Bool
     (match x
       (case default true)
       (case (Plus p q) (and (okay p) (okay q)))
-      (case (Seq p2 q2) (and (okay p2) (okay q2)))
+      (case (And r q2) (and (okay r) (okay q2)))
+      (case (Seq p2 q3) (and (okay p2) (okay q3)))
       (case (Star p3) (and (okay p3) (not (eps p3))))))
 (define-funs-rec
   ((reck ((x R) (y (list A))) Bool)
@@ -96,12 +97,12 @@
              (case nil (eqA b c))
              (case (cons x4 x5) false)))))
      (case (Plus p q) (or (reck p y) (reck q y)))
-     (case (And p2 q2) (and (reck p2 y) (reck q2 y)))
-     (case (Seq p3 q3) (or2 (reck2 p3 q3 (splits y))))
-     (case (Star p4)
+     (case (And r q2) (and (reck r y) (reck q2 y)))
+     (case (Seq p2 q3) (or2 (reck2 p2 q3 (splits y))))
+     (case (Star p3)
        (match y
          (case nil true)
-         (case (cons x6 x7) (and (not (eps p4)) (reck (Seq p4 x) y))))))
+         (case (cons x6 x7) (and (not (eps p3)) (reck (Seq p3 x) y))))))
    (match x
      (case nil (as nil (list Bool)))
      (case (cons y z)

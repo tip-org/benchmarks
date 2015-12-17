@@ -85,7 +85,7 @@ prop_eq_refl x = x == x === True
 
 prop_lt_ne x y = y < x ==> x /= y
 
--- | Very simple questions about natural numbers
+-- Very simple questions about natural numbers
 sat_minus_comm x y        = x - y === y - x
 sat_minus_assoc x y z     = (x - y) - z === x - (y - z)
 sat_plus_idem x           = x + x === x

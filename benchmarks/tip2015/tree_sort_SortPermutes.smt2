@@ -21,7 +21,7 @@
     (flatten
        ((x (Tree a)) (y (list a))) (list a)
        (match x
-         (case (Node q z q2) (flatten q (cons z (flatten q2 y))))
+         (case (Node q z r) (flatten q (cons z (flatten r y))))
          (case Nil y)))))
 (define-fun-rec
   equal
@@ -46,8 +46,8 @@
   add
     ((x Nat) (y (Tree Nat))) (Tree Nat)
     (match y
-      (case (Node q z q2)
-        (ite (le x z) (Node (add x q) z q2) (Node q z (add x q2))))
+      (case (Node q z r)
+        (ite (le x z) (Node (add x q) z r) (Node q z (add x r))))
       (case Nil (Node (as Nil (Tree Nat)) x (as Nil (Tree Nat))))))
 (define-fun-rec
   toTree

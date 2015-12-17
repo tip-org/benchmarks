@@ -25,27 +25,21 @@
             (match z
               (case Z Z)
               (case (S x4)
-                (match x2
-                  (case Z
-                    (match x3
-                      (case Z
-                        (match x4
-                          (case Z (S Z))
-                          (case (S x5)
-                            (S
-                              (add3 (mul3 Z Z x4)
-                                (add3 (mul3 (S Z) Z x4) (mul3 Z (S Z) x4) (mul3 Z Z (S Z)))
-                                (add3 Z Z x4))))))
-                      (case (S x6)
-                        (S
-                          (add3 (mul3 Z x3 x4)
-                            (add3 (mul3 (S Z) x3 x4) (mul3 Z (S Z) x4) (mul3 Z x3 (S Z)))
-                            (add3 Z x3 x4))))))
-                  (case (S x7)
-                    (S
-                      (add3 (mul3 x2 x3 x4)
-                        (add3 (mul3 (S Z) x3 x4) (mul3 x2 (S Z) x4) (mul3 x2 x3 (S Z)))
-                        (add3 x2 x3 x4))))))))))))
+                (let
+                  ((x5
+                      (S
+                        (add3 (mul3 x2 x3 x4)
+                          (add3 (mul3 (S Z) x3 x4) (mul3 x2 (S Z) x4) (mul3 x2 x3 (S Z)))
+                          (add3 x2 x3 x4)))))
+                  (match x2
+                    (case Z
+                      (match x3
+                        (case Z
+                          (match x4
+                            (case Z (S Z))
+                            (case (S x6) x5)))
+                        (case (S x7) x5)))
+                    (case (S x8) x5))))))))))
 (assert-not
   (forall ((x1 Nat) (x2 Nat) (x3 Nat) (x4 Nat) (x5 Nat))
     (= (mul3 x1 (mul3 x2 x3 x4) x5) (mul3 x1 x2 (mul3 x3 x4 x5)))))

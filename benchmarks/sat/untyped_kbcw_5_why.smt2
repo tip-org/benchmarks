@@ -27,19 +27,20 @@
     (match x
       (case default (as Nothing (Maybe Term)))
       (case (Ap y z)
-        (match y
-          (case default (par2 y z (step y) (step z)))
-          (case (Ap x2 x3)
-            (match x2
-              (case default (par2 y z (step y) (step z)))
-              (case (Ap x4 f)
-                (match x4
-                  (case default (par2 y z (step y) (step z)))
-                  (case B (Just (Ap f (Ap x3 z))))
-                  (case C (Just (Ap (Ap f z) x3)))))
-              (case K (Just x3))
-              (case W (Just (Ap (Ap x3 z) z)))))
-          (case I (Just z))))))
+        (let ((x2 (par2 y z (step y) (step z))))
+          (match y
+            (case default x2)
+            (case (Ap x3 x4)
+              (match x3
+                (case default x2)
+                (case (Ap x5 f)
+                  (match x5
+                    (case default x2)
+                    (case B (Just (Ap f (Ap x4 z))))
+                    (case C (Just (Ap (Ap f z) x4)))))
+                (case K (Just x4))
+                (case W (Just (Ap (Ap x4 z) z)))))
+            (case I (Just z)))))))
 (define-fun four () Nat (Suc (Suc (Suc (Suc Zero)))))
 (define-fun five () Nat (Suc four))
 (define-fun-rec
