@@ -11,36 +11,23 @@
      (Pair (first Expr) (second Expr)) (Fst (Fst_0 Expr) (Fst_1 Ty))
      (Snd (Snd_0 Ty) (Snd_1 Expr)))))
 (define-fun-rec
-  nf
-    ((x Expr)) Bool
-    (match x
-      (case (App y z x2)
-        (match y
-          (case default (and (nf y) (nf z)))
-          (case (Lam x3) false)))
-      (case (Lam e) (nf e))
-      (case (Var x4) true)
-      (case (Pair u v) (and (nf u) (nf v)))
-      (case (Fst e2 x5) (nf e2))
-      (case (Snd x6 e3) (nf e3))))
-(define-fun
   pnf
     ((x Expr)) Bool
     (match x
       (case (App y z x2)
         (match y
-          (case default (and (nf y) (nf z)))
+          (case default (and (pnf y) (pnf z)))
           (case (Lam x3) false)))
-      (case (Lam e) (nf e))
+      (case (Lam e) (pnf e))
       (case (Var x4) true)
-      (case (Pair u v) (and (nf u) (nf v)))
+      (case (Pair u v) (and (pnf u) (pnf v)))
       (case (Fst x5 x6)
         (match x5
-          (case default (nf x5))
+          (case default (pnf x5))
           (case (Pair x7 x8) false)))
       (case (Snd x9 x10)
         (match x10
-          (case default (nf x10))
+          (case default (pnf x10))
           (case (Pair x11 x12) false)))))
 (define-fun-rec
   (par (a)

@@ -114,6 +114,8 @@ create(prop_,  koen,       tip2015,    Tree.hs,                 tree)
 
 create(sat_,   sat,        sat,        Type.hs,                 type)
 create(sat_,   sat,        sat,        TypePair.hs,             typepair)
+create(sat_,   sat,        sat,        TypeEither.hs,           typeeither)
+create(sat_,   sat,        sat,        TypeBoth.hs,             typeboth)
 
 create(sat_,   sat,        sat,        UntypedKSBCW.hs,         untyped_ksbcw)
 create(sat_,   sat,        sat,        UntypedKSBC.hs,          untyped_ksbc)
@@ -156,6 +158,8 @@ create(target_,   sat,        sat,        Imp.hs,                 imp)
 create(target_,   sat,        sat,        Parse.hs,               parse)
 create(target_,   sat,        sat,        Pathfind.hs,            maze)
 
+create(sat_,      sat,        sat,        Ferry.hs,               ferry)
+create(sat_,      sat,        sat,        Prop.hs,                prop)
 create(sat_,      sat,        sat,        RedBlackBuggy.hs,       red_black)
 create(sat_,      sat,        sat,        Turing.hs,              turing)
 create(sat_,      grammars,   sat,        Kaleidoscope.hs,        kaleidoscope)

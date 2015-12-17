@@ -2,14 +2,15 @@
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes ()
   ((Ty (Arr (Arr_0 Ty) (Arr_1 Ty))
-     (A) (B) (C) (Prod (Prod_0 Ty) (Prod_1 Ty)))))
+     (A) (B) (C) (Either (Either_0 Ty) (Either_1 Ty)))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (declare-datatypes (a) ((Maybe (Nothing) (Just (Just_0 a)))))
 (declare-datatypes ()
   ((Expr (App (App_0 Expr) (App_1 Expr) (App_2 Ty))
      (Lam (Lam_0 Expr)) (Var (Var_0 Nat))
-     (Pair (first Expr) (second Expr)) (Fst (Fst_0 Expr) (Fst_1 Ty))
-     (Snd (Snd_0 Ty) (Snd_1 Expr)))))
+     (Case (Case_0 Expr)
+       (Case_1 Ty) (Case_2 Ty) (Case_3 Expr) (Case_4 Expr))
+     (Inl (Inl_0 Expr)) (Inr (Inr_0 Expr)))))
 (define-fun-rec
   pnf
     ((x Expr)) Bool
@@ -20,15 +21,13 @@
           (case (Lam x3) false)))
       (case (Lam e) (pnf e))
       (case (Var x4) true)
-      (case (Pair u v) (and (pnf u) (pnf v)))
-      (case (Fst x5 x6)
+      (case (Case x5 x6 x7 x8 x9)
         (match x5
-          (case default (pnf x5))
-          (case (Pair x7 x8) false)))
-      (case (Snd x9 x10)
-        (match x10
-          (case default (pnf x10))
-          (case (Pair x11 x12) false)))))
+          (case default (and (pnf x5) (and (pnf x8) (pnf x9))))
+          (case (Inl x10) false)
+          (case (Inr x11) false)))
+      (case (Inl e2) (pnf e2))
+      (case (Inr e3) (pnf e3))))
 (define-fun-rec
   (par (a)
     (index
@@ -59,10 +58,10 @@
         (match y
           (case default false)
           (case C true)))
-      (case (Prod c x2)
+      (case (Either c x2)
         (match y
           (case default false)
-          (case (Prod b2 y3) (and (eqType c b2) (eqType x2 y3)))))))
+          (case (Either b2 y3) (and (eqType c b2) (eqType x2 y3)))))))
 (define-fun-rec
   tc
     ((x (list Ty)) (y Expr) (z Ty)) Bool
@@ -76,16 +75,21 @@
         (match (index x x3)
           (case Nothing false)
           (case (Just tx3) (eqType tx3 z))))
-      (case (Pair u v)
+      (case (Case s ta tb a2 b2)
+        (and (tc x s (Either ta tb))
+          (and (tc (cons ta x) a2 z) (tc (cons tb x) b2 z))))
+      (case (Inl e2)
         (match z
           (case default false)
-          (case (Prod tu tv) (and (tc x u tu) (tc x v tv)))))
-      (case (Fst e2 tr) (tc x e2 (Prod z tr)))
-      (case (Snd tl e3) (tc x e3 (Prod tl z)))))
+          (case (Either t2 x4) (tc x e2 t2))))
+      (case (Inr e3)
+        (match z
+          (case default false)
+          (case (Either x5 t3) (tc x e3 t3))))))
 (assert-not
   (forall ((e Expr))
     (or (not (pnf e))
       (not
         (tc (as nil (list Ty))
-          e (Arr (Arr (Prod A B) C) (Arr A (Arr B C))))))))
+          e (Arr (Either A (Either B C)) (Either (Either A B) C)))))))
 (check-sat)

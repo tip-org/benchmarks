@@ -36,11 +36,11 @@ pnf :: Expr -> Bool
 pnf (Fst Pair{} _) = False
 pnf (Snd _ Pair{}) = False
 pnf (App Lam{} _ _) = False
-pnf (App e x _) = nf e && nf x
-pnf (Pair u v)  = nf u && nf v
-pnf (Fst e _)   = nf e
-pnf (Snd _ e)   = nf e
-pnf (Lam e)     = nf e
+pnf (App e x _) = pnf e && pnf x
+pnf (Pair u v)  = pnf u && pnf v
+pnf (Fst e _)   = pnf e
+pnf (Snd _ e)   = pnf e
+pnf (Lam e)     = pnf e
 pnf Var{}       = True
 
 

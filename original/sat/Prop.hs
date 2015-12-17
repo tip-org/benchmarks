@@ -37,8 +37,8 @@ sat_cnf_not_comm e x y =
 tt = True
 __ = False
 
-cn__(And x y) = disj x && cn__y
-cn__x         = disj x
+cnf (And x y) = disj x && cnf y
+cnf x         = disj x
 
 disj (Or x y) = atom x && disj y
 disj x        = atom x
@@ -51,7 +51,7 @@ var _       = False
 
 sat_cnf_one_two e =
   question
-    (    cn__e
+    (    cnf e
     .&&. not (eval [tt,tt] e)
     .&&.     (eval [__,tt] e)
     .&&.     (eval [tt,__] e)
@@ -59,7 +59,7 @@ sat_cnf_one_two e =
 
 sat_cnf_one_three e =
   question
-    (    cn__e
+    (    cnf e
     .&&. not (eval [tt,tt,tt] e)
     .&&. not (eval [tt,tt,__] e)
     .&&. not (eval [tt,__,tt] e)
@@ -71,7 +71,7 @@ sat_cnf_one_three e =
 
 sat_cnf_xor_three e =
   question
-    (    cn__e
+    (    cnf e
     .&&.     (eval [tt,tt,tt] e)
     .&&. not (eval [tt,tt,__] e)
     .&&. not (eval [tt,__,tt] e)
@@ -83,7 +83,7 @@ sat_cnf_xor_three e =
 
 sat_cnf_one_four e =
   question
-    (    cn__e
+    (    cnf e
     .&&. not (eval [tt,tt,tt,tt] e)
     .&&. not (eval [tt,tt,tt,__] e)
     .&&. not (eval [tt,tt,__,tt] e)
@@ -103,7 +103,7 @@ sat_cnf_one_four e =
 
 sat_cnf_two_four e =
   question
-    (    cn__e
+    (    cnf e
     .&&. not (eval [tt,tt,tt,tt] e)
     .&&. not (eval [tt,tt,tt,__] e)
     .&&. not (eval [tt,tt,__,tt] e)
