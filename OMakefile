@@ -129,10 +129,6 @@ create(sat_,   sat,        sat,        Scale.hs,                scale)
 create(sat_,   sat,        sat,        Sudoku.hs,               sudoku)
 create(sat_,   sat,        sat,        NQueens.hs,              nqueens)
 
-#
-# create(sat_,   grammars,   sat,        Kaleidoscope.hs,         kaleidoscope)
-# create(sat_,   sat,        sat,        RedBlackBuggy.hs,        red_black)
-# create(sat_,   sat,        sat,        Turing.hs,               turing)
 # create(sat_,   sat,        sat,        Tree.hs,                 tree)
 
 create(sat_,   sat,        sat,        ISort.hs,                isort)
@@ -154,8 +150,12 @@ create(sat_,   sat,        sat,        Stoogesort2.hs,          stoogesort2)
 #
 # create(sat_,   sat,        sat,        Expr.hs,                 expr_show)
 
-create(target_,   sat,        sat,        ExprSimp.hs,                 expr_simp)
-create(target_,   sat,        sat,        Graph.hs,                    graph)
-create(target_,   sat,        sat,        Imp.hs,                      imp)
-create(target_,   sat,        sat,        Parse.hs,                    parse)
-create(target_,   sat,        sat,        Pathfind.hs,                 maze)
+create(target_,   sat,        sat,        ExprSimp.hs,            expr_simp)
+create(target_,   sat,        sat,        Graph.hs,               graph)
+create(target_,   sat,        sat,        Imp.hs,                 imp)
+create(target_,   sat,        sat,        Parse.hs,               parse)
+create(target_,   sat,        sat,        Pathfind.hs,            maze)
+
+create(sat_,      sat,        sat,        RedBlackBuggy.hs,       red_black)
+create(sat_,      sat,        sat,        Turing.hs,              turing)
+create(sat_,      grammars,   sat,        Kaleidoscope.hs,        kaleidoscope)
