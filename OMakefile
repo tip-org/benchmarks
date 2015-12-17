@@ -110,8 +110,6 @@ create(prop_,  koen,       tip2015,    Sort.hs,                 sort)
 create(prop_,  koen,       tip2015,    Subst.hs,                subst)
 create(prop_,  koen,       tip2015,    Tree.hs,                 tree)
 
-# create(prop_,  sat,        tip2015,    Tree.hs,                 tree)
-
 create(sat_,   sat,        sat,        Type.hs,                 type)
 create(sat_,   sat,        sat,        TypePair.hs,             typepair)
 create(sat_,   sat,        sat,        TypeEither.hs,           typeeither)
@@ -131,8 +129,6 @@ create(sat_,   sat,        sat,        Scale.hs,                scale)
 create(sat_,   sat,        sat,        Sudoku.hs,               sudoku)
 create(sat_,   sat,        sat,        NQueens.hs,              nqueens)
 
-# create(sat_,   sat,        sat,        Tree.hs,                 tree)
-
 create(sat_,   sat,        sat,        ISort.hs,                isort)
 create(sat_,   sat,        sat,        Bubsort.hs,              bubsort)
 create(sat_,   sat,        sat,        HSort.hs,                hsort)
@@ -147,10 +143,6 @@ create(sat_,   sat,        sat,        TSort.hs,                tsort)
 create(sat_,   sat,        sat,        Stoogesort.hs,           stoogesort)
 create(sat_,   sat,        sat,        Stoogesort2.hs,          stoogesort2)
 
-# create(sat_,   sat,        sat,        Calc.hs,                 calc)
-# create(sat_,   sat,        sat,        Prop.hs,                 prop)
-#
-# create(sat_,   sat,        sat,        Expr.hs,                 expr_show)
 
 create(target_,   sat,        sat,        ExprSimp.hs,            expr_simp)
 create(target_,   sat,        sat,        Graph.hs,               graph)
@@ -163,3 +155,9 @@ create(sat_,      sat,        sat,        Prop.hs,                prop)
 create(sat_,      sat,        sat,        RedBlackBuggy.hs,       red_black)
 create(sat_,      sat,        sat,        Turing.hs,              turing)
 create(sat_,      grammars,   sat,        Kaleidoscope.hs,        kaleidoscope)
+
+# create(sat_,   sat,        sat,        Calc.hs,                 calc)
+# create(sat_,   sat,        sat,        Tree.hs,                 tree)
+# create(prop_,  sat,        tip2015,    Tree.hs,                 tree)
+
+
