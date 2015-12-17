@@ -268,10 +268,10 @@ prop_84 xs ys zs
            zip (take (len ys) xs) ys ++ zip (drop (len ys) xs) zs)
 
 -- One way to prove this is to first show "Nick's lemma":
--- len xs = len ys ==> zip xs as ++ zip ys bs = zip (xs ++ as) (ys ++ bs)
+-- len xs = len ys ==> zip xs ys ++ zip as bs = zip (xs ++ as) (ys ++ bs)
 prop_85 xs ys
   = (len xs === len ys) ==>
-    (zip (rev xs) (rev ys) === rev (zip xs ys :: [(Nat,Nat)]))
+    (zip (rev xs) (rev ys) === rev (zip xs ys))
 
 prop_86 x y xs
   = x < y ==> (elem x (ins y xs) === elem x xs)

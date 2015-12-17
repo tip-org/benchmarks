@@ -39,7 +39,8 @@
          (case nil (as nil (list a)))
          (case (cons y xs) (append (rev xs) (cons y (as nil (list a)))))))))
 (assert-not
-  (forall ((xs (list Nat)) (ys (list Nat)))
-    (=> (= (len xs) (len ys))
-      (= (zip (rev xs) (rev ys)) (rev (zip xs ys))))))
+  (par (a b)
+    (forall ((xs (list a)) (ys (list b)))
+      (=> (= (len xs) (len ys))
+        (= (zip (rev xs) (rev ys)) (rev (zip xs ys)))))))
 (check-sat)
