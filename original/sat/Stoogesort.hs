@@ -1,3 +1,9 @@
+# 1 "Sort.hs"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "Sort.hs"
 {-# LANGUAGE ScopedTypeVariables #-}
 module Sort where
 
@@ -5,9 +11,9 @@ import Tip.Prelude hiding (isort,insert,(<=),(<),(==),(>),(>=),(/=))
 import qualified Prelude as P
 
 (<=) = zle
-(<)  = zlt
+(<) = zlt
 (>=) = zge
-(>)  = zgt
+(>) = zgt
 (==) = zeq
 (/=) = zne
 
@@ -27,7 +33,7 @@ twoThirds (S (S (S n))) = S (S (twoThirds n))
 --------------------------------------------------------------------------------
 
 -- bubsort :: Ord a => [a] -> [a]
-bubsort xs | b         = bubsort ys
+bubsort xs | b = bubsort ys
            | otherwise = xs
  where
   (b,ys) = bubble xs
@@ -35,11 +41,11 @@ bubsort xs | b         = bubsort ys
 -- bubble :: Ord a => [a] -> (Bool,[a])
 bubble (x:y:xs) = (not c||b, x':ys)
  where
-  c      = x <= y
+  c = x <= y
   x'     = if c then x else y
   y'     = if c then y else x
   (b,ys) = bubble (y':xs)
-bubble xs       = (False,xs)
+bubble xs = (False,xs)
 
 --------------------------------------------------------------------------------
 
@@ -53,26 +59,26 @@ hsort = toList . toHeap
 data Heap a = Node (Heap a) a (Heap a) | Nil
 
 -- hmerge :: Ord a => Heap a -> Heap a -> Heap a
-Nil        `hmerge` q          = q
-p          `hmerge` Nil        = p
+Nil `hmerge` q = q
+p `hmerge` Nil = p
 Node p x q `hmerge` Node r y s
-  | x <= y                    = Node (q `hmerge` Node r y s) x p
-  | otherwise                 = Node (Node p x q `hmerge` s) y r
+  | x <= y = Node (q `hmerge` Node r y s) x p
+  | otherwise = Node (Node p x q `hmerge` s) y r
 
 -- toHeap :: Ord a => [a] -> Heap a
 toHeap xs = hmerging [ Node Nil x Nil | x <- xs ]
 
 -- hmerging :: Ord a => [Heap a] -> Heap a
-hmerging []  = Nil
+hmerging [] = Nil
 hmerging [p] = p
-hmerging ps  = hmerging (hpairwise ps)
+hmerging ps = hmerging (hpairwise ps)
 
 -- hpairwise :: Ord a => [Heap a] -> [Heap a]
 hpairwise (p:q:qs) = (p `hmerge` q) : hpairwise qs
-hpairwise ps       = ps
+hpairwise ps = ps
 
 -- toList :: Ord a => Heap a -> [a]
-toList Nil          = []
+toList Nil = []
 toList (Node p x q) = x : toList (p `hmerge` q)
 
 --------------------------------------------------------------------------------
@@ -85,12 +91,12 @@ sort :: [Int] -> [Int]
 sort = isort
 
 -- isort :: Ord a => [a] -> [a]
-isort []     = []
+isort [] = []
 isort (x:xs) = insert x (isort xs)
 
 -- insert :: Ord a => a -> [a] -> [a]
-insert x []                 = [x]
-insert x (y:xs) | x <= y    = x : y : xs
+insert x [] = [x]
+insert x (y:xs) | x <= y = x : y : xs
                 | otherwise = y : insert x xs
 
 --------------------------------------------------------------------------------
@@ -104,37 +110,37 @@ msortbu2 = mergingbu2 . risers
 
 {-
 risers :: Ord a => [a] -> [[a]]
-risers []     = []
-risers [x]    = [[x]]
+risers [] = []
+risers [x] = [[x]]
 risers (x:xs) = case risers xs of
                   (y:ys):yss | x <= y -> (x:y:ys):yss
-                  yss                 -> [x]:yss
+                  yss -> [x]:yss
 -}
 
 -- risers :: Ord a => [a] -> [[a]]
-risers []       = []
-risers [x]      = [[x]]
+risers [] = []
+risers [x] = [[x]]
 risers (x:y:xs)
-  | x <= y      = case risers (y:xs) of
+  | x <= y = case risers (y:xs) of
                     -- TODO remove default case
                     ys:yss -> (x:ys):yss
                     _ -> []
-  | otherwise   = [x] : risers (y:xs)
+  | otherwise = [x] : risers (y:xs)
 
 -- mergingbu2 :: Ord a => [[a]] -> [a]
-mergingbu2 []   = []
+mergingbu2 [] = []
 mergingbu2 [xs] = xs
-mergingbu2 xss  = mergingbu2 (pairwise xss)
+mergingbu2 xss = mergingbu2 (pairwise xss)
 
 pairwise (xs:ys:xss) = xs `lmerge` ys : pairwise xss
-pairwise xss         = xss
+pairwise xss = xss
 
 -- lmerge :: Ord a => [a] -> [a] -> [a]
-[]     `lmerge` ys = ys
-xs     `lmerge` [] = xs
+[] `lmerge` ys = ys
+xs `lmerge` [] = xs
 (x:xs) `lmerge` (y:ys)
-  | x <= y        = x : xs `lmerge` (y:ys)
-  | otherwise     = y : (x:xs) `lmerge` ys
+  | x <= y = x : xs `lmerge` (y:ys)
+  | otherwise = y : (x:xs) `lmerge` ys
 
 --------------------------------------------------------------------------------
 
@@ -142,25 +148,25 @@ xs     `lmerge` [] = xs
 
 --------------------------------------------------------------------------------
 
-singletons []     = []
+singletons [] = []
 singletons (x:xs) = [x]:singletons xs
 
 -- msortbu :: Ord a => [a] -> [a]
 msortbu = mergingbu . singletons
 
 -- mergingbu :: Ord a => [[a]] -> [a]
-mergingbu []   = []
+mergingbu [] = []
 mergingbu [xs] = xs
-mergingbu xss  = mergingbu (pairwise xss)
+mergingbu xss = mergingbu (pairwise xss)
 
 --------------------------------------------------------------------------------
 
 -- Bottom-up merge sort
 
 -- msorttd :: Ord a => [a] -> [a]
-msorttd []  = []
+msorttd [] = []
 msorttd [x] = [x]
-msorttd xs  = msorttd (take k xs) `lmerge` msorttd (drop k xs)
+msorttd xs = msorttd (take k xs) `lmerge` msorttd (drop k xs)
  where
   k = half (length xs)
 
@@ -168,34 +174,34 @@ msorttd xs  = msorttd (take k xs) `lmerge` msorttd (drop k xs)
 
 --------------------------------------------------------------------------------
 
-eomsorttd []  = []
+eomsorttd [] = []
 eomsorttd [x] = [x]
-eomsorttd xs  = eomsorttd (evens xs) `lmerge` eomsorttd (odds xs)
+eomsorttd xs = eomsorttd (evens xs) `lmerge` eomsorttd (odds xs)
 
 -- Top-down merge sort, using the even and odd elements of the list
 
 --------------------------------------------------------------------------------
 
 -- bsort :: Ord a => [a] -> [a]
-bsort []  = []
+bsort [] = []
 bsort [x] = [x]
-bsort xs  = bmerge (bsort (evens xs)) (bsort (odds xs))
+bsort xs = bmerge (bsort (evens xs)) (bsort (odds xs))
 
 {-# NOINLINE evens #-}
 evens :: [a] -> [a]
 evens (x:xs) = x : odds xs
-evens []     = []
+evens [] = []
 
 {-# NOINLINE odds #-}
 odds :: [a] -> [a]
 odds (x:xs) = evens xs
-odds []     = []
+odds [] = []
 
 -- bmerge :: Ord a => [a] -> [a] -> [a]
-bmerge []  bs  = []
-bmerge as  []  = as
+bmerge [] bs = []
+bmerge as [] = as
 bmerge [a] [b] = sort2 a b
-bmerge as  bs  = stitch cs0 cs1
+bmerge as bs = stitch cs0 cs1
  where
   as0 = evens as
   as1 = odds as
@@ -205,16 +211,16 @@ bmerge as  bs  = stitch cs0 cs1
   cs1 = bmerge as1 bs1
 
 -- stitch :: Ord a => [a] -> [a] -> [a]
-stitch []     ys = ys
+stitch [] ys = ys
 stitch (x:xs) ys = x : pairs xs ys
 
 -- pairs :: Ord a => [a] -> [a] -> [a]
-pairs []     ys     = ys
-pairs xs     []     = xs
+pairs [] ys = ys
+pairs xs [] = xs
 pairs (x:xs) (y:ys) = sort2 x y ++ pairs xs ys
 
 -- sort2 :: Ord a => a -> a -> [a]
-sort2 x y | x <= y    = [x,y]
+sort2 x y | x <= y = [x,y]
           | otherwise = [y,x]
 
 --------------------------------------------------------------------------------
@@ -224,16 +230,16 @@ sort2 x y | x <= y    = [x,y]
 --------------------------------------------------------------------------------
 
 -- qsort :: Ord a => [a] -> [a]
-qsort []     = []
+qsort [] = []
 qsort (x:xs) = qsort (filter_le x xs) ++ [x] ++ qsort (filter_gt x xs)
 
 filter_le x (y:ys)
-  | y <= x    = y:filter_le x ys
+  | y <= x = y:filter_le x ys
   | otherwise = filter_le x ys
 filter_le _ [] = []
 
 filter_gt x (y:ys)
-  | y > x     = y:filter_gt x ys
+  | y > x = y:filter_gt x ys
   | otherwise = filter_gt x ys
 filter_gt _ [] = []
 
@@ -264,16 +270,16 @@ tsort = ($[]) . flatten . toTree
 data Tree a = TNode (Tree a) a (Tree a) | TNil
 
 -- toTree :: Ord a => [a] -> Tree a
-toTree []     = TNil
+toTree [] = TNil
 toTree (x:xs) = add x (toTree xs)
 
 -- add :: Ord a => a -> Tree a -> Tree a
-add x TNil                      = TNode TNil x TNil
-add x (TNode p y q) | x <= y    = TNode (add x p) y q
+add x TNil = TNode TNil x TNil
+add x (TNode p y q) | x <= y = TNode (add x p) y q
                     | otherwise = TNode p y (add x q)
 
 -- flatten :: Tree a -> [a] -> [a]
-flatten TNil          ys = ys
+flatten TNil ys = ys
 flatten (TNode p x q) ys = flatten p (x : flatten q ys)
 
 --------------------------------------------------------------------------------
@@ -333,48 +339,13 @@ stooge2sort2 xs = stoogesort2 ys ++ zs
 -- Stooge sort, using thirds on natural numbers
 
 --------------------------------------------------------------------------------
-
-
-#define n00 Z
-#define n01 (S n00)
-#define n02 (S n01)
-#define n03 (S n02)
-#define n04 (S n03)
-#define n05 (S n04)
-#define n06 (S n05)
-#define n07 (S n06)
-#define n08 (S n07)
-#define n09 (S n08)
-#define n10 (S n09)
-#define n11 (S n10)
-#define n12 (S n11)
-#define n13 (S n12)
-#define n14 (S n13)
-#define n15 (S n14)
-#define n16 (S n15)
-#define n17 (S n16)
-#define n18 (S n17)
-#define n19 (S n18)
-#define n20 (S n19)
-#define n21 (S n20)
-#define n22 (S n21)
-#define n23 (S n22)
-#define n24 (S n23)
-#define n25 (S n24)
-#define n26 (S n25)
-#define n27 (S n26)
-#define n28 (S n27)
-#define n29 (S n28)
-
-#define UNQ(num) sat_unq_##num xs ys = question (SORT xs === SORT ys .&&. xs =/= ys .&&. zunique xs     .&&. length xs === num .&&. length ys === num)
-
-UNQ(n02)
-UNQ(n03)
-UNQ(n04)
-UNQ(n05)
-UNQ(n06)
-UNQ(n07)
-UNQ(n08)
-UNQ(n09)
-UNQ(n10)
-
+# 371 "Sort.hs"
+sat_unq_n02 xs ys = question (stoogesort xs === stoogesort ys .&&. xs =/= ys .&&. zunique xs .&&. length xs === (S (S Z)) .&&. length ys === (S (S Z)))
+sat_unq_n03 xs ys = question (stoogesort xs === stoogesort ys .&&. xs =/= ys .&&. zunique xs .&&. length xs === (S (S (S Z))) .&&. length ys === (S (S (S Z))))
+sat_unq_n04 xs ys = question (stoogesort xs === stoogesort ys .&&. xs =/= ys .&&. zunique xs .&&. length xs === (S (S (S (S Z)))) .&&. length ys === (S (S (S (S Z)))))
+sat_unq_n05 xs ys = question (stoogesort xs === stoogesort ys .&&. xs =/= ys .&&. zunique xs .&&. length xs === (S (S (S (S (S Z))))) .&&. length ys === (S (S (S (S (S Z))))))
+sat_unq_n06 xs ys = question (stoogesort xs === stoogesort ys .&&. xs =/= ys .&&. zunique xs .&&. length xs === (S (S (S (S (S (S Z)))))) .&&. length ys === (S (S (S (S (S (S Z)))))))
+sat_unq_n07 xs ys = question (stoogesort xs === stoogesort ys .&&. xs =/= ys .&&. zunique xs .&&. length xs === (S (S (S (S (S (S (S Z))))))) .&&. length ys === (S (S (S (S (S (S (S Z))))))))
+sat_unq_n08 xs ys = question (stoogesort xs === stoogesort ys .&&. xs =/= ys .&&. zunique xs .&&. length xs === (S (S (S (S (S (S (S (S Z)))))))) .&&. length ys === (S (S (S (S (S (S (S (S Z)))))))))
+sat_unq_n09 xs ys = question (stoogesort xs === stoogesort ys .&&. xs =/= ys .&&. zunique xs .&&. length xs === (S (S (S (S (S (S (S (S (S Z))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S Z))))))))))
+sat_unq_n10 xs ys = question (stoogesort xs === stoogesort ys .&&. xs =/= ys .&&. zunique xs .&&. length xs === (S (S (S (S (S (S (S (S (S (S Z)))))))))) .&&. length ys === (S (S (S (S (S (S (S (S (S (S Z)))))))))))
