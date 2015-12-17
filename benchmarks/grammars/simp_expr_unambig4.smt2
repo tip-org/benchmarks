@@ -15,14 +15,14 @@
    (lin ((x E)) (list Tok)))
   ((match x
      (case (Plus y z)
-       (append (append (cons C (as nil (list Tok))) (lin x))
-         (cons D (as nil (list Tok)))))
+       (append (cons C (as nil (list Tok)))
+         (append (lin x) (cons D (as nil (list Tok))))))
      (case EX (cons X (as nil (list Tok))))
      (case EY (cons Y (as nil (list Tok)))))
    (match x
      (case (Plus a b)
-       (append (append (linTerm a) (cons Pl (as nil (list Tok))))
-         (linTerm b)))
+       (append (linTerm a)
+         (append (cons Pl (as nil (list Tok))) (linTerm b))))
      (case EX (cons X (as nil (list Tok))))
      (case EY (cons Y (as nil (list Tok)))))))
 (assert-not

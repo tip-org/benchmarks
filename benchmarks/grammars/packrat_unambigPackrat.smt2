@@ -17,16 +17,16 @@
     ((x A2)) (list Tok)
     (match x
       (case (SA a)
-        (append (append (cons X (as nil (list Tok))) (linA a))
-          (cons Y (as nil (list Tok)))))
+        (append (cons X (as nil (list Tok)))
+          (append (linA a) (cons Y (as nil (list Tok))))))
       (case ZA (cons X (cons Z (cons Y (as nil (list Tok))))))))
 (define-fun-rec
   linB
     ((x B2)) (list Tok)
     (match x
       (case (SB b)
-        (append (append (cons X (as nil (list Tok))) (linB b))
-          (cons Y (cons Y (as nil (list Tok))))))
+        (append (cons X (as nil (list Tok)))
+          (append (linB b) (cons Y (cons Y (as nil (list Tok)))))))
       (case ZB (cons X (cons Z (cons Y (cons Y (as nil (list Tok)))))))))
 (define-fun
   linS

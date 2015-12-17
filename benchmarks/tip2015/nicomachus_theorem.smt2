@@ -23,7 +23,7 @@
     ((x Nat)) Nat
     (match x
       (case Z Z)
-      (case (S n) (plus (cubes n) (mult (mult x x) x)))))
+      (case (S n) (plus (cubes n) (mult x (mult x x))))))
 (assert-not
   (forall ((n Nat)) (= (cubes n) (mult (sum n) (sum n)))))
 (check-sat)

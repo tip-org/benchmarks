@@ -35,5 +35,5 @@
       (case (S n) (plus y (mult n y)))))
 (assert-not
   (forall ((a Nat) (b Nat) (c Nat) (d Nat))
-    (= (op a b c d) (plus (plus (mult a b) c) d))))
+    (= (op a b c d) (plus (mult a b) (plus c d)))))
 (check-sat)

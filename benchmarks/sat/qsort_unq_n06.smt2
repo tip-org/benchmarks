@@ -47,9 +47,8 @@
     (match x
       (case nil (as nil (list Int)))
       (case (cons y xs)
-        (append
-          (append (qsort (filter_le y xs)) (cons y (as nil (list Int))))
-          (qsort (filter_gt y xs))))))
+        (append (qsort (filter_le y xs))
+          (append (cons y (as nil (list Int))) (qsort (filter_gt y xs)))))))
 (assert-not
   (forall ((xs (list Int)) (ys (list Int)))
     (or (distinct (qsort xs) (qsort ys))

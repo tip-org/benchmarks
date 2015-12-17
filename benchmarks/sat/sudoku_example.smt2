@@ -352,17 +352,17 @@
                (match z
                  (case nil (as nil (list (list a))))
                  (case (cons xs3 xss)
-                   (cons (append (append xs1 xs2) xs3) (group3 xss)))))))))))
+                   (cons (append xs1 (append xs2 xs3)) (group3 xss)))))))))))
 (define-fun
   blocks3x3
     ((x (list (list (Maybe Cell))))) (list (list (Maybe Cell)))
-    (append (append (group3 (blocks3x32 x)) (group3 (blocks3x33 x)))
-      (group3 (blocks3x34 x))))
+    (append (group3 (blocks3x32 x))
+      (append (group3 (blocks3x33 x)) (group3 (blocks3x34 x)))))
 (define-fun
   blocks
     ((x (list (list (Maybe Cell))))) (list (list (Maybe Cell)))
-    (append (append (blocks2 x) (blocks2 (transpose x)))
-      (blocks3x3 x)))
+    (append (blocks2 x)
+      (append (blocks2 (transpose x)) (blocks3x3 x))))
 (define-fun-rec
   and2
     ((x (list Bool))) Bool

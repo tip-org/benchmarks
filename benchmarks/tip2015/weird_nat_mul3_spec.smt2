@@ -54,5 +54,5 @@
                     (case (S x8) x5))))))))))
 (assert-not
   (forall ((x Nat) (y Nat) (z Nat))
-    (= (mul3 x y z) (mult (mult x y) z))))
+    (= (mul3 x y z) (mult x (mult y z)))))
 (check-sat)

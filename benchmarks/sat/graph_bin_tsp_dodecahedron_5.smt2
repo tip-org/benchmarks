@@ -96,8 +96,8 @@
       (case nil (as nil (list (Pair Nat Nat))))
       (case (cons z x2)
         (cons
-          (Pair2 (plus (plus (plus x x) x) z)
-            (plus (plus (plus x x) x) (S z)))
+          (Pair2 (plus x (plus x (plus x z)))
+            (plus x (plus x (plus x (S z)))))
           (dodeca6 x x2)))))
 (define-fun-rec
   dodeca5
@@ -105,7 +105,7 @@
     (match y
       (case nil (as nil (list (Pair Nat Nat))))
       (case (cons z x2)
-        (cons (Pair2 (plus (plus x x) z) (plus (plus (plus x x) x) z))
+        (cons (Pair2 (plus x (plus x z)) (plus x (plus x (plus x z))))
           (dodeca5 x x2)))))
 (define-fun-rec
   dodeca4
@@ -113,14 +113,14 @@
     (match y
       (case nil (as nil (list (Pair Nat Nat))))
       (case (cons z x2)
-        (cons (Pair2 (plus x (S z)) (plus (plus x x) z)) (dodeca4 x x2)))))
+        (cons (Pair2 (plus x (S z)) (plus x (plus x z))) (dodeca4 x x2)))))
 (define-fun-rec
   dodeca3
     ((x Nat) (y (list Nat))) (list (Pair Nat Nat))
     (match y
       (case nil (as nil (list (Pair Nat Nat))))
       (case (cons z x2)
-        (cons (Pair2 (plus x z) (plus (plus x x) z)) (dodeca3 x x2)))))
+        (cons (Pair2 (plus x z) (plus x (plus x z))) (dodeca3 x x2)))))
 (define-fun-rec
   dodeca2
     ((x Nat) (y (list Nat))) (list (Pair Nat Nat))
@@ -236,18 +236,15 @@
     (not
       (btour q
         (let ((pn (S (S (S (S Z))))))
-          (append
-            (append
-              (append
+          (append (cons (Pair2 pn Z) (dodeca (enumFromTo Z pn)))
+            (append (dodeca2 (S pn) (enumFromTo Z (S pn)))
+              (append (dodeca3 (S pn) (enumFromTo Z (S pn)))
                 (append
-                  (append (cons (Pair2 pn Z) (dodeca (enumFromTo Z pn)))
-                    (dodeca2 (S pn) (enumFromTo Z (S pn))))
-                  (dodeca3 (S pn) (enumFromTo Z (S pn))))
-                (cons (Pair2 (S pn) (plus (plus (S pn) (S pn)) pn))
-                  (dodeca4 (S pn) (enumFromTo Z pn))))
-              (dodeca5 (S pn) (enumFromTo Z (S pn))))
-            (cons
-              (Pair2 (plus (plus (plus (S pn) (S pn)) (S pn)) pn)
-                (plus (plus (S pn) (S pn)) (S pn)))
-              (dodeca6 (S pn) (enumFromTo Z pn)))))))))
+                  (cons (Pair2 (S pn) (plus (S pn) (plus (S pn) pn)))
+                    (dodeca4 (S pn) (enumFromTo Z pn)))
+                  (append (dodeca5 (S pn) (enumFromTo Z (S pn)))
+                    (cons
+                      (Pair2 (plus (S pn) (plus (S pn) (plus (S pn) pn)))
+                        (plus (S pn) (plus (S pn) (S pn))))
+                      (dodeca6 (S pn) (enumFromTo Z pn)))))))))))))
 (check-sat)

@@ -53,6 +53,6 @@
 (assert-not
   (forall ((x It) (xs (list It)) (ys (list It)) (zs (list It)))
     (isRelaxedPrefix
-      (append (append xs (cons x (as nil (list It)))) ys)
-      (append (append xs ys) zs))))
+      (append xs (append (cons x (as nil (list It))) ys))
+      (append xs (append ys zs)))))
 (check-sat)

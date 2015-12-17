@@ -15,12 +15,10 @@
     ((x E)) (list Tok)
     (match x
       (case (Plus a b)
-        (append
-          (append
-            (append (append (cons C (as nil (list Tok))) (lin a))
-              (cons D (cons Pl (cons C (as nil (list Tok))))))
-            (lin b))
-          (cons D (as nil (list Tok)))))
+        (append (cons C (as nil (list Tok)))
+          (append (lin a)
+            (append (cons D (cons Pl (cons C (as nil (list Tok)))))
+              (append (lin b) (cons D (as nil (list Tok))))))))
       (case EX (cons X (as nil (list Tok))))
       (case EY (cons Y (as nil (list Tok))))))
 (assert-not

@@ -71,8 +71,8 @@
        (match x
          (case Empty (as nil (list a)))
          (case (Node a2 l r)
-           (append (append (flatten l) (cons a2 (as nil (list a))))
-             (flatten r)))))))
+           (append (flatten l)
+             (append (cons a2 (as nil (list a))) (flatten r))))))))
 (define-fun-rec
   allLe
     ((x Nat) (y (Tree Nat))) Bool

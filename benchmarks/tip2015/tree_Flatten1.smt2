@@ -30,8 +30,8 @@
        ((x (Tree a))) (list a)
        (match x
          (case (Node p y q)
-           (append (append (flatten0 p) (cons y (as nil (list a))))
-             (flatten0 q)))
+           (append (flatten0 p)
+             (append (cons y (as nil (list a))) (flatten0 q))))
          (case Nil (as nil (list a)))))))
 (assert-not
   (par (a)

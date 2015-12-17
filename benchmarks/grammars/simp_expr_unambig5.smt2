@@ -23,8 +23,8 @@
     ((x E)) (list Tok)
     (match x
       (case (Plus a b)
-        (append (append (linTerm a) (cons Pl (as nil (list Tok))))
-          (lin b)))
+        (append (linTerm a)
+          (append (cons Pl (as nil (list Tok))) (lin b))))
       (case (Term t) (linTerm t))))
 (assert-not
   (forall ((u E) (v E)) (=> (= (lin u) (lin v)) (= u v))))
