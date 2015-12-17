@@ -78,8 +78,8 @@ prop_perm_elem x xs ys   = x `elem` xs ==> xs `isPermutation` ys ==> x `elem` ys
 
 prop_deleteAll_count x xs = deleteAll x xs === delete x xs ==> count x xs <= S Z
 
--- prop_elem x xs = x `elem` xs ==> exists (\ i -> maybe False (x ==) (index xs i))
--- prop_elem_map y f xs = y `elem` map f xs ==> exists (\ x -> f x === y .&. y `elem` xs)
+-- rop_elem x xs = x `elem` xs ==> exists (\ i -> maybe False (x ==) (index xs i))
+-- rop_elem_map y f xs = y `elem` map f xs ==> exists (\ x -> f x === y .&. y `elem` xs)
 
 -- Same as above, but with ints
 
@@ -97,6 +97,6 @@ prop_z_perm_elem x xs ys   = x `zelem` xs ==> xs `zisPermutation` ys ==> x `zele
 
 prop_z_deleteAll_count x xs = zdeleteAll x xs === zdelete x xs ==> zcount x xs <= S Z
 
--- prop_z_elem x xs = x `zelem` xs ==> exists (\ i -> maybe False (x `zeq`) (index xs i))
--- prop_z_elem_map y f xs = y `zelem` map f xs ==> exists (\ x -> f x === y .&. y `zelem` xs)
+-- rop_z_elem x xs = x `zelem` xs ==> exists (\ i -> maybe False (x `zeq`) (index xs i))
+-- rop_z_elem_map y f xs = y `zelem` map f xs ==> exists (\ x -> f x === y .&. y `zelem` xs)
 

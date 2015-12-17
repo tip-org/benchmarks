@@ -41,6 +41,7 @@ reck _ _  = False
 okay :: R -> Bool
 okay (p `Plus` q) = okay p && okay q
 okay (p `Seq` q)  = okay p && okay q
+okay (p `And` q)  = okay p && okay q
 okay (Star p)     = okay p && not (eps p)
 okay _            = True
 

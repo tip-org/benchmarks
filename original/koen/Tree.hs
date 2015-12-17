@@ -52,7 +52,7 @@ swap a b (Node p x q) = Node (swap a b p) x' (swap a b q)
 
 prop_SwapAB p a b =
   a `elem` flatten0 p ==>
---  b `elem` flatten0 p ==>
+  b `elem` flatten0 p ==>
   a `elem` flatten0 (swap a b p) .&&.
   b `elem` flatten0 (swap a b p)
 

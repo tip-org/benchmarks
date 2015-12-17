@@ -52,6 +52,7 @@
 (assert-not
   (forall ((q (Tree Nat)) (a Nat) (b Nat))
     (=> (elem a (flatten0 q))
-      (and (elem a (flatten0 (swap a b q)))
-        (elem b (flatten0 (swap a b q)))))))
+      (=> (elem b (flatten0 q))
+        (and (elem a (flatten0 (swap a b q)))
+          (elem b (flatten0 (swap a b q))))))))
 (check-sat)

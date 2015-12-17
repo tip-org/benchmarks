@@ -47,7 +47,11 @@ sat_two_parses t1 t2 =
      linS t2 === [I,Saw,The,Butterfly,In,The,Kaleidoscope] .&&.
      t1 =/= t2)
 
-sat_ambiguity s t1 t2 =
+sat_ambiguity_witness s t1 t2 =
   question
     (t1 =/= t2 .&&. linS t1 === s .&&. linS t2 === s)
+
+sat_ambiguity t1 t2 =
+  question
+    (t1 =/= t2 .&&. linS t1 === linS t2)
 

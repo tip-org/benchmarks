@@ -2,9 +2,9 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Tok (X) (Y) (Z))))
-(declare-datatypes () ((B2 (SB (SB_0 B2)) (ZB))))
-(declare-datatypes () ((A2 (SA (SA_0 A2)) (ZA))))
-(declare-datatypes () ((S (A (A_0 A2)) (B (B_0 B2)))))
+(declare-datatypes () ((B (SB (SB_0 B)) (ZB))))
+(declare-datatypes () ((A (SA (SA_0 A)) (ZA))))
+(declare-datatypes () ((S (A2 (A_0 A)) (B2 (B_0 B)))))
 (define-fun-rec
   (par (a)
     (append
@@ -14,7 +14,7 @@
          (case (cons z xs) (cons z (append xs y)))))))
 (define-fun-rec
   linA
-    ((x A2)) (list Tok)
+    ((x A)) (list Tok)
     (match x
       (case (SA a)
         (append (append (cons X (as nil (list Tok))) (linA a))
@@ -22,7 +22,7 @@
       (case ZA (cons X (cons Z (cons Y (as nil (list Tok))))))))
 (define-fun-rec
   linB
-    ((x B2)) (list Tok)
+    ((x B)) (list Tok)
     (match x
       (case (SB b)
         (append (append (cons X (as nil (list Tok))) (linB b))
@@ -32,8 +32,8 @@
   linS
     ((x S)) (list Tok)
     (match x
-      (case (A a) (linA a))
-      (case (B b) (linB b))))
+      (case (A2 a) (linA a))
+      (case (B2 b) (linB b))))
 (assert-not
   (forall ((u S) (v S)) (=> (= (linS u) (linS v)) (= u v))))
 (check-sat)
