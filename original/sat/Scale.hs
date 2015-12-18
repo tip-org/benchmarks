@@ -115,71 +115,9 @@ allCases = [(False,O1),(False,O2),(False,O3),(False,O4)
            ,(True,O5),(True,O6),(True,O7),(True,O8),(True,O9),(True,O10),(True,O11),(True,O12)
            ]
 
--- sat_solution s = question (depth (S (S (S Z))) s .&&. isSolution s)
+sat_solution t
+   = question (isSolution t)
 
-sat_solution
-   -- a1 a2 a3 a4 a5 a6 a7 a8
-   d1 d2 d3 d4 e1 e2 e3 e4
-   dd1 dd2 dd3 dd4 dd5 dd6
-   ee1 ee2 ee3 ee4 ee5 ee6
-   aa1 aa4
-   aa2 aa5
-   aa3 aa6
+sat_symmetric_solution t1 t2 t3
+   = question (isSolution (Weigh [O1,O2,O3,O4] [O5,O6,O7,O8] t1 t2 t3))
 
-   ab1 ab4
-   ab2 ab5
-   ab3 ab6
-
-   ac1 ac4
-   ac2 ac5
-   ac3 ac6
-   ba1 oa1 ba4 oa4 ba7 oa7
-   ba2 oa2 ba5 oa5 ba8 oa8
-   ba3 oa3 ba6 oa6 ba9 oa9
-   bb1 ob1 bb4 ob4 bb7 ob7
-   bb2 ob2 bb5 ob5 bb8 ob8
-   bb3 ob3 bb6 ob6 bb9 ob9
-   bc1 oc1 bc4 oc4 bc7 oc7
-   bc2 oc2 bc5 oc5 bc8 oc8
-   bc3 oc3 bc6 oc6 bc9 oc9
-   =
-   question (isSolution
-              (Weigh [d1,d2,d3,d4] [e1,e2,e3,e4]
-                (Weigh [dd1,dd2] [ee1,ee2]
-                  (Weigh [aa1] [aa4] (Answer ba1 oa1) (Answer ba4 oa4) (Answer ba7 oa7))
-                  (Weigh [aa2] [aa5] (Answer ba2 oa2) (Answer ba5 oa5) (Answer ba8 oa8))
-                  (Weigh [aa3] [aa6] (Answer ba3 oa3) (Answer ba6 oa6) (Answer ba9 oa9)))
-                (Weigh [dd3,dd4] [ee3,ee4]
-                  (Weigh [ab1] [ab4] (Answer bb1 ob1) (Answer bb4 ob4) (Answer bb7 ob7))
-                  (Weigh [ab2] [ab5] (Answer bb2 ob2) (Answer bb5 ob5) (Answer bb8 ob8))
-                  (Weigh [ab3] [ab6] (Answer bb3 ob3) (Answer bb6 ob6) (Answer bb9 ob9)))
-                (Weigh [dd5,dd6] [ee5,ee6]
-                  (Weigh [ac1] [ac4] (Answer bc1 oc1) (Answer bc4 oc4) (Answer bc7 oc7))
-                  (Weigh [ac2] [ac5] (Answer bc2 oc2) (Answer bc5 oc5) (Answer bc8 oc8))
-                  (Weigh [ac3] [ac6] (Answer bc3 oc3) (Answer bc6 oc6) (Answer bc9 oc9)))))
-
-{-
-allCases :: [(Bool,Object)]
-allCases = [(False,O1),(False,O2),(False,O3),(False,O4)
-           --,(False,O5),(False,O6),(False,O7),(False,O8)
-           --,(False,O9),(False,O10),(False,O11),(False,O12)
-           ,(True,O1),(True,O2),(True,O3),(True,O4)
-           --,(True,O5),(True,O6),(True,O7),(True,O8)
-           --,(True,O9),(True,O10),(True,O11),(True,O12)
-           ]
-
-prop s = question (depth (S (S Z)) s .&&. isSolution s)
--}
-
-{-
-allCases :: [(Bool,Object)]
-allCases = [(False,O1),(False,O2),(False,O3),(False,O4)
-           --,(False,O5),(False,O6),(False,O7),(False,O8)
-           --,(False,O9),(False,O10),(False,O11),(False,O12)
-           --,(True,O1),(True,O2),(True,O3),(True,O4)
-           ,(True,O5),(True,O6),(True,O7),(True,O8)
-           --,(True,O9),(True,O10),(True,O11),(True,O12)
-           ]
-
-prop s = depth (S (S Z)) s === True ==> isSolution s === False
--}
