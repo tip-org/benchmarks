@@ -1,9 +1,9 @@
 VERSION = 0.2
 
 all: all-benchmarks
-	tar vczf tip-benchmarks-$(VERSION).tar.gz benchmarks/**/*.smt2
-	tar vczf tip-benchmarks-$(VERSION)-why3.tar.gz benchmarks-why3/**/*.mlw
-	tar vczf tip-benchmarks-$(VERSION)-cvc4.tar.gz benchmarks-cvc4/**/*.smt2
+	tar vczf tip-benchmarks-$(VERSION).tar.gz LICENSE benchmarks/**/*.smt2
+	tar vczf tip-benchmarks-$(VERSION)-why3.tar.gz LICENSE benchmarks-why3/**/*.mlw
+	tar vczf tip-benchmarks-$(VERSION)-cvc4.tar.gz LICENSE benchmarks-cvc4/**/*.smt2
 
 commentify = $(file Commentify)
 Commentify: Commentify.hs
