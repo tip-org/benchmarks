@@ -1,6 +1,7 @@
 module Fermat where
 
-import Tip.Prelude
-import qualified Prelude as P
+import Tip
 
-prop_last n x y z = S x ^ S (S (S n)) + S y ^ S (S (S n)) =/= S z ^ S (S (S n))
+prop_last :: Int -> Int -> Int -> Int -> Equality Int
+prop_last n x y z =
+  (1+x) ^ (3+n) + (1+y) ^ (3+n) =/= (1+z) ^ (3+n)
