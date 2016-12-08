@@ -1,10 +1,7 @@
 module Rotate where
 
-import Tip.Prelude
-import Prelude ()
-
-rotate :: Nat -> [a] -> [a]
-rotate Z     xs     = xs
-rotate _     []     = []
-rotate (S n) (x:xs) = rotate n (xs ++ [x])
+rotate :: Int -> [a] -> [a]
+rotate 0 xs     = xs
+rotate _ []     = []
+rotate n (x:xs) = rotate (n-1) (xs ++ [x])
 
