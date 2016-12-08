@@ -1,17 +1,17 @@
 -- Nicomachus' theorem
 module Nicomachus where
 
-import Tip.Prelude hiding (sum)
-import qualified Prelude as P
+import Tip
+import Prelude hiding (sum)
 
-sum :: Nat -> Nat
-sum Z     = Z
-sum (S n) = sum n + S n
+sum :: Int -> Int
+sum 0 = 0
+sum n = sum (n-1) + n
 
-cubes :: Nat -> Nat
-cubes Z     = Z
-cubes (S n) = cubes n + (S n * S n * S n)
+cubes :: Int -> Int
+cubes 0 = 0
+cubes n = cubes (n-1) + (n*n*n)
 
-prop_theorem :: Nat -> Equality Nat
+prop_theorem :: Int -> Equality Int
 prop_theorem n = cubes n === sum n * sum n
 

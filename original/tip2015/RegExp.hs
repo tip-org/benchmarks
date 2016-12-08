@@ -2,8 +2,8 @@
 -- The plus and seq functions are smart constructors.
 module RegExp where
 
-import Tip.Prelude hiding (eqList)
-import qualified Prelude as P
+import Tip
+import Prelude hiding (seq)
 
 --------------------------------------------------------------------------------
 

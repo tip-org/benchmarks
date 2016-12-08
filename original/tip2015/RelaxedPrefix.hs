@@ -2,31 +2,21 @@
 -- Challenge 1, submitted by Thomas Genet
 module RelaxedPrefix where
 
-import Tip.Prelude
-import qualified Prelude as P
+import Tip
 
 data It = A | B | C
-
-eq :: It -> It -> Bool
-eq A A = True
-eq B B = True
-eq C C = True
-eq _ _ = False
 
 isPrefix :: [It] -> [It] -> Bool
 isPrefix [] _ = True
 isPrefix _ [] = False
-isPrefix (x:xs) (y:ys) =
-  case x `eq` y of
-    True -> isPrefix xs ys
-    False -> False
+isPrefix (x:xs) (y:ys) = x == y && isPrefix xs ys
 
 isRelaxedPrefix :: [It] -> [It] -> Bool
 isRelaxedPrefix [] _ = True
 isRelaxedPrefix [_] _ = True
 isRelaxedPrefix _ [] = False
 isRelaxedPrefix (x:xs) (y:ys)
-  | x `eq` y = isRelaxedPrefix xs ys
+  | x == y = isRelaxedPrefix xs ys
   | otherwise = isPrefix xs (y:ys)
 
 spec :: [It] -> [It] -> Bool

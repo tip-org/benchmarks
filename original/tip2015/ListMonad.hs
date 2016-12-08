@@ -1,8 +1,8 @@
 -- List monad laws
 module ListMonad where
 
-import Tip.Prelude
-import qualified Prelude as P
+import Tip
+import Prelude hiding ((>>=), return)
 
 (>>=) :: [a] -> (a -> [b]) -> [b]
 (x:xs) >>= f = f x ++ (xs >>= f)

@@ -2,35 +2,39 @@
 -- Agda standard library, which is proved to be a commutative ring
 module Integers where
 
-import Tip.Prelude hiding (neg,(-))
+import Tip hiding (neg)
+import Prelude hiding (Integer,neg,(-),toInteger)
 import qualified Prelude as P
 
-data Integer = P Nat | N Nat
+data Integer = P Int | N Int
 
 -- Natural subtraction
-(-) :: Nat -> Nat -> Integer
-Z   - Z     = P Z
-S m - Z     = P (S m)
-Z   - S n   = N n
-S m - S n   = m - n
+(-) :: Int -> Int -> Integer
+0 - 0 = P 0
+m - 0 = P m
+0 - n = N n
+m - n = pred m - pred n
+
+pred :: Int -> Int
+pred x = x P.- 1
 
 {-# NOINLINE neg #-}
 neg :: Integer -> Integer
-neg (P (S n)) = N n
-neg (P Z)     = P Z
-neg (N n)     = P (S n)
+neg (P 0) = P 0
+neg (P n) = N (pred n)
+neg (N n) = P (1+n)
 
 -- Integer addition
 {-# NOINLINE plus #-}
 plus :: Integer -> Integer -> Integer
-N m `plus` N n = N (S (m + n))
-N m `plus` P n = n - S m
-P m `plus` N n = m - S n
+N m `plus` N n = N (1 + m + n)
+N m `plus` P n = n - (1 + m)
+P m `plus` N n = m - (1 + n)
 P m `plus` P n = P (m + n)
 
 {-# NOINLINE zero #-}
 zero :: Integer
-zero = P Z
+zero = P 0
 
 prop_add_ident_left :: Integer -> Equality Integer
 prop_add_ident_left x = x === zero `plus` x
@@ -55,13 +59,13 @@ prop_add_inv_right x = x `plus` neg x === zero
 (-.) :: Integer -> Integer -> Integer
 N m -. N n = n - m
 N m -. P n = N (n + m)
-P m -. N n = P (S (n + m))
+P m -. N n = P (1 + n + m)
 P m -. P n = m - n
 
 {-# NOINLINE absVal #-}
-absVal :: Integer -> Nat
+absVal :: Integer -> Int
 absVal (P n) = n
-absVal (N n) = S n
+absVal (N n) = 1+n
 
 data Sign = Pos | Neg
 
@@ -81,10 +85,10 @@ sign (P _) = Pos
 sign (N _) = Neg
 
 {-# NOINLINE toInteger #-}
-toInteger :: Sign -> Nat -> Integer
-Pos `toInteger` n     = P n
-Neg `toInteger` Z     = P Z
-Neg `toInteger` (S m) = N m
+toInteger :: Sign -> Int -> Integer
+Pos `toInteger` n = P n
+Neg `toInteger` 0 = P 0
+Neg `toInteger` m = N (pred m)
 
 -- Integer multiplication
 {-# NOINLINE times #-}
@@ -93,7 +97,7 @@ i `times` j = (sign i `timesSign` sign j) `toInteger` (absVal i * absVal j)
 
 {-# NOINLINE one #-}
 one :: Integer
-one = P (S Z)
+one = P 1
 
 prop_mul_ident_left :: Integer -> Equality Integer
 prop_mul_ident_left x = x === one `times` x

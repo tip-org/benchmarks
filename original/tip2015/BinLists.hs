@@ -1,15 +1,14 @@
 -- Property about natural numbers with binary presentation
 module BinLists where
 
-import Tip.Prelude
-import qualified Prelude as P
+import Tip
 
 data Bin = One | ZeroAnd Bin | OneAnd Bin
 
-toNat :: Bin -> Nat
-toNat One = S Z
+toNat :: Bin -> Int
+toNat One = 1
 toNat (ZeroAnd xs) = toNat xs + toNat xs
-toNat (OneAnd xs) = S (toNat xs + toNat xs)
+toNat (OneAnd xs) = 1 + toNat xs + toNat xs
 
 s :: Bin -> Bin
 s One = ZeroAnd One
@@ -30,10 +29,10 @@ times One xs = xs
 times (ZeroAnd xs) ys = ZeroAnd (times xs ys)
 times (OneAnd xs) ys = plus (ZeroAnd (times xs ys)) ys
 
-prop_s :: Bin -> Equality Nat
-prop_s n = toNat (s n) === S (toNat n)
+prop_s :: Bin -> Equality Int
+prop_s n = toNat (s n) === 1 + toNat n
 
-prop_plus :: Bin -> Bin -> Equality Nat
+prop_plus :: Bin -> Bin -> Equality Int
 prop_plus x y = toNat (x `plus` y) === toNat x + toNat y
 
 prop_plus_comm :: Bin -> Bin -> Equality Bin
@@ -42,7 +41,7 @@ prop_plus_comm x y = x `plus` y === y `plus` x
 prop_plus_assoc :: Bin -> Bin -> Bin -> Equality Bin
 prop_plus_assoc x y z = x `plus` (y `plus` z) === (x `plus` y) `plus` z
 
-prop_times :: Bin -> Bin -> Equality Nat
+prop_times :: Bin -> Bin -> Equality Int
 prop_times x y = toNat (x `times` y) === toNat x * toNat y
 
 prop_times_comm :: Bin -> Bin -> Equality Bin

@@ -65,21 +65,23 @@ section
 	create(prop_,  tip2015,    tip2015,    Sort_TreeSort.hs,        tree_sort_nat)
 	create(prop_,  tip2015,    tip2015,    Sort_HeapSort.hs,        heap_nat)
 
+	create(prop_,  tip2015,    tip2015,    Integers.hs,             int)
+	create(prop_,  tip2015,    tip2015,    BinLists.hs,             bin_nat)
+
 create(prop_,  tip2015,    tip2015,    Escape.hs,               escape)
 create(prop_,  tip2015,    tip2015,    Sort_TreeSort.hs,        tree_sort_int)
 create(prop_,  tip2015,    tip2015,    Sort_HeapSort.hs,        heap_int)
-#
-#create(prop_,  tip2015,    tip2015,    Integers.hs,             int)
-#create(prop_,  tip2015,    tip2015,    BinLists.hs,             bin)
-#create(prop_,  tip2015,    tip2015,    Nicomachus.hs,           nicomachus)
-#create(prop_,  tip2015,    tip2015,    RegExp.hs,               regexp)
-#create(prop_,  tip2015,    tip2015,    ListMonad.hs,            list)
-#create(prop_,  tip2015,    tip2015,    RelaxedPrefix.hs,        relaxedprefix)
-#create(prop_,  tip2015,    tip2015,    Seq.hs,                  polyrec_seq)
-#
+
+create(prop_,  tip2015,    tip2015,    BinLists.hs,             bin)
+create(prop_,  tip2015,    tip2015,    Nicomachus.hs,           nicomachus)
+create(prop_,  tip2015,    tip2015,    RegExp.hs,               regexp)
+create(prop_,  tip2015,    tip2015,    ListMonad.hs,            list)
+create(prop_,  tip2015,    tip2015,    RelaxedPrefix.hs,        relaxedprefix)
+create(prop_,  tip2015,    tip2015,    Seq.hs,                  polyrec_seq)
+
 #create(prop_T, prod,       prod,       Properties.hs,           prop)
 #create(prop_,  isaplanner, isaplanner, Properties.hs,           prop)
-#
+
 create(prop_,  grammars,   grammars,   SimpleExpr1.hs,          simp_expr)
 create(prop_,  grammars,   grammars,   SimpleExpr2.hs,          simp_expr)
 create(prop_,  grammars,   grammars,   SimpleExpr3.hs,          simp_expr)
