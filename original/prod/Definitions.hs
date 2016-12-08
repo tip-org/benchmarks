@@ -6,9 +6,8 @@
 -}
 module Definitions where
 
-import Prelude (Eq,Ord,Show,iterate,(!!),fmap,return,Bool(..))
+import Prelude (Eq,Ord,Show,Bool(..))
 import Tip
-import Data.Typeable
 
 -- Booleans
 
@@ -25,12 +24,12 @@ not False = True
 
 -- Nats
 
-data Nat = Z | S Nat deriving (Eq,Show,Typeable,Ord)
+data Nat = Z | S Nat deriving (Eq,Show,Ord)
 
-instance Arbitrary Nat where
-    arbitrary =
-        let nats = iterate S Z
-        in  (nats !!) `fmap` choose (0,5)
+-- instance Arbitrary Nat where
+--     arbitrary =
+--         let nats = iterate S Z
+--         in  (nats !!) `fmap` choose (0,5)
 
 {-
 instance Partial Nat where

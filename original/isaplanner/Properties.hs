@@ -4,10 +4,8 @@
 {-# LANGUAGE TypeOperators #-}
 module Properties where
 
-import Prelude (Bool(..),error,toEnum,fromEnum,pred,succ,sqrt,round
-               ,Enum,Eq,Ord,Show,return,(.),undefined)
+import Prelude (Bool(..),Eq,Ord,Show,(.))
 import Tip
-import Data.Typeable
 import Definitions
 
 prop_01 n xs

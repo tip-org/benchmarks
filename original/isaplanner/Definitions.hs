@@ -1,36 +1,14 @@
 {-# LANGUAGE DeriveDataTypeable,FlexibleInstances #-}
 module Definitions where
 
-import Prelude (Eq,Ord,Show,iterate,(!!),fmap,Bool(..),div,return,(.),Maybe(..))
+import Prelude (Eq,Ord,Show,Bool(..),(.),Maybe(..))
 import Tip
-import Data.Typeable
 
 data Nat = Z | S Nat
-  deriving (Eq,Show,Typeable,Ord)
-
-instance Arbitrary Nat where
-  arbitrary =
-    let nats = iterate S Z
-    in (nats !!) `fmap` choose (0,5)
-
-instance CoArbitrary Nat where
-  coarbitrary Z     = variant 0
-  coarbitrary (S x) = variant (-1) . coarbitrary x
+  deriving (Eq,Show,Ord)
 
 data Tree a = Leaf | Node (Tree a) a (Tree a)
-  deriving (Eq,Ord,Show,Typeable)
-
-instance Arbitrary a => Arbitrary (Tree a) where
-  arbitrary = sized arbTree
-    where
-      arbTree 0 = return Leaf
-      arbTree n = frequency
-        [(1,return Leaf)
-        ,(n,do let n' = n `div` 2
-               l <- arbTree n'
-               x <- arbitrary
-               r <- arbTree n'
-               return (Node l x r))]
+  deriving (Eq,Ord,Show)
 
 -- Boolean functions
 

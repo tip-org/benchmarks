@@ -67,6 +67,8 @@ section
 
 	create(prop_,  tip2015,    tip2015,    Integers.hs,             int)
 	create(prop_,  tip2015,    tip2015,    BinLists.hs,             bin_nat)
+	create(prop_,  koen,       tip2015,    List.hs,                 list_nat)
+	create(prop_,  koen,       tip2015,    Sort.hs,                 sort_nat)
 
 create(prop_,  tip2015,    tip2015,    Escape.hs,               escape)
 create(prop_,  tip2015,    tip2015,    Sort_TreeSort.hs,        tree_sort_int)
@@ -79,8 +81,8 @@ create(prop_,  tip2015,    tip2015,    ListMonad.hs,            list)
 create(prop_,  tip2015,    tip2015,    RelaxedPrefix.hs,        relaxedprefix)
 create(prop_,  tip2015,    tip2015,    Seq.hs,                  polyrec_seq)
 
-#create(prop_T, prod,       prod,       Properties.hs,           prop)
-#create(prop_,  isaplanner, isaplanner, Properties.hs,           prop)
+create(prop_T, prod,       prod,       Properties.hs,           prop)
+create(prop_,  isaplanner, isaplanner, Properties.hs,           prop)
 
 create(prop_,  grammars,   grammars,   SimpleExpr1.hs,          simp_expr)
 create(prop_,  grammars,   grammars,   SimpleExpr2.hs,          simp_expr)
@@ -88,10 +90,10 @@ create(prop_,  grammars,   grammars,   SimpleExpr3.hs,          simp_expr)
 create(prop_,  grammars,   grammars,   SimpleExpr4.hs,          simp_expr)
 create(prop_,  grammars,   grammars,   SimpleExpr5.hs,          simp_expr)
 create(prop_,  grammars,   grammars,   Packrat.hs,              packrat)
-#
-#create(prop_,  koen,       tip2015,    List.hs,                 list)
-#create(prop_,  koen,       tip2015,    McCarthy91.hs,           mccarthy91)
-#create(prop_,  koen,       tip2015,    Propositional.hs,        propositional)
-#create(prop_,  koen,       tip2015,    Sort.hs,                 sort)
-#create(prop_,  koen,       tip2015,    Subst.hs,                subst)
-#create(prop_,  koen,       tip2015,    Tree.hs,                 tree)
+
+create(prop_,  koen,       tip2015,    List.hs,                 list)
+create(prop_,  koen,       tip2015,    McCarthy91.hs,           mccarthy91)
+create(prop_,  koen,       tip2015,    Propositional.hs,        propositional)
+create(prop_,  koen,       tip2015,    Sort.hs,                 sort)
+create(prop_,  koen,       tip2015,    Subst.hs,                subst)
+create(prop_,  koen,       tip2015,    Tree.hs,                 tree)

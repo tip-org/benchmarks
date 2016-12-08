@@ -4,7 +4,6 @@
 module Properties where
 
 import Tip
-import Data.Typeable
 import Prelude(Bool(..))
 import Definitions
 

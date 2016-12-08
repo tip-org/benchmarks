@@ -1,8 +1,7 @@
 -- Propositional solver
 module Propositional where
 
-import Tip.Prelude
-import qualified Prelude as P
+import Tip hiding (Not)
 
 --------------------------------------------------------------------------------
 
@@ -29,13 +28,13 @@ models (Not (Not p)) m =
   models p m
 
 models (Var x) m =
-  [ (x,True) : filter ((x P./=).fst) m
-  | not (or [x P.== y | (y, False) <- m])
+  [ (x,True) : inline filter ((x /=).fst) m
+  | not (or [x == y | (y, False) <- m])
   ]
 
 models (Not (Var x)) m =
-  [ (x,False) : filter ((x P./=).fst) m
-  | not (or [x P.== y | (y, True) <- m])
+  [ (x,False) : inline filter ((x /=).fst) m
+  | not (or [x == y | (y, True) <- m])
   ]
 
 valid :: Form -> Bool
@@ -56,15 +55,15 @@ prop_AndImplication p q =
 
 okay :: Val -> Bool
 okay []        = True
-okay ((x,b):m) = not (x `zelem` map fst m) && okay m
+okay ((x,b):m) = not (x `elem` inline map fst m) && okay m
 
 prop_Okay p =
-  all okay (models p []) === True
+  inline all okay (models p []) === True
 
 (|=) :: Val -> Form -> Bool
-m |= Var x     = or [ x P.== y | (y, True) <- m ]
+m |= Var x     = or [ x == y | (y, True) <- m ]
 m |= Not p     = not (m |= p)
 m |= (p :&: q) = m |= p && m |= q
 
 prop_Sound p =
-  all (|= p) (models p []) === True
+  inline all (|= p) (models p []) === True
