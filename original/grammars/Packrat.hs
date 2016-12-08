@@ -8,8 +8,7 @@
 -- Pearl), Bryan Ford ICFP 2012
 module Packrat where
 
-import Prelude ()
-import Tip.Prelude hiding (Nat(Z))
+import Tip
 
 {-
 

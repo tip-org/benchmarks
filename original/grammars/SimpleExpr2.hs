@@ -1,8 +1,7 @@
 -- Show function for a simple expression language
 module SimpleExpr2 where
 
-import Prelude ()
-import Tip.Prelude
+import Tip
 
 data E = E `Plus` E | EX | EY
 
