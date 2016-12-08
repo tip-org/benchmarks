@@ -62,10 +62,12 @@ section
 	create(prop_,  tip2015,    tip2015,    ModRotate.hs,            rotate)
 	create(prop_,  tip2015,    tip2015,    SnocRotate.hs,           rotate)
 	create(prop_,  tip2015,    tip2015,    SelfRotate.hs,           rotate)
-#
-#create(prop_,  tip2015,    tip2015,    Escape.hs,               escape)
-#create(prop_,  tip2015,    tip2015,    Sort_TreeSort.hs,        tree_sort)
-#create(prop_,  tip2015,    tip2015,    Sort_HeapSort.hs,        heap)
+	create(prop_,  tip2015,    tip2015,    Sort_TreeSort.hs,        tree_sort_nat)
+	create(prop_,  tip2015,    tip2015,    Sort_HeapSort.hs,        heap_nat)
+
+create(prop_,  tip2015,    tip2015,    Escape.hs,               escape)
+create(prop_,  tip2015,    tip2015,    Sort_TreeSort.hs,        tree_sort_int)
+create(prop_,  tip2015,    tip2015,    Sort_HeapSort.hs,        heap_int)
 #
 #create(prop_,  tip2015,    tip2015,    Integers.hs,             int)
 #create(prop_,  tip2015,    tip2015,    BinLists.hs,             bin)

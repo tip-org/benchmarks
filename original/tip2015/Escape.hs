@@ -1,8 +1,7 @@
 -- Escaping and unescaping
 module Escape where
 
-import Tip.Prelude
-import qualified Prelude as P
+import Tip
 
 --------------------------------------------------------------------------------
 
@@ -40,5 +39,5 @@ prop_Injective xs ys =
   escape xs === escape ys ==> xs === ys
 
 prop_NoSpecial xs =
-  all ok (escape xs) === True
+  inline all ok (escape xs) === True
 
