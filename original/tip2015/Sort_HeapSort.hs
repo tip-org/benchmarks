@@ -1,6 +1,6 @@
 -- Skew heaps
 {-# LANGUAGE ScopedTypeVariables #-}
-module Sort_QuickSort where
+module Sort_HeapSort where
 
 import Tip.Prelude hiding (insert)
 import qualified Prelude as P
@@ -100,4 +100,3 @@ prop_SortPermutes' (xs :: [Nat]) =
   hsort xs `isPermutation` xs === True
 
 --------------------------------------------------------------------------------
-
