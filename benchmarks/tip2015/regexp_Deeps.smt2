@@ -5,8 +5,8 @@
 (declare-datatypes () ((A (X) (Y))))
 (declare-datatypes ()
   ((R (Nil)
-     (Eps) (Atom (Atom_0 A)) (Plus (Plus_0 R) (Plus_1 R))
-     (Seq (Seq_0 R) (Seq_1 R)) (Star (Star_0 R)))))
+     (Eps) (Atom (proj1-Atom A)) (Plus (proj1-Plus R) (proj2-Plus R))
+     (Seq (proj1-Seq R) (proj2-Seq R)) (Star (proj1-Star R)))))
 (define-fun
   seq
     ((x R) (y R)) R
@@ -50,7 +50,7 @@
       (case default false)
       (case Eps true)
       (case (Plus p q) (or (eps p) (eps q)))
-      (case (Seq p2 q2) (and (eps p2) (eps q2)))
+      (case (Seq r q2) (and (eps r) (eps q2)))
       (case (Star y) true)))
 (define-fun epsR ((x R)) R (ite (eps x) Eps Nil))
 (define-fun-rec
@@ -60,9 +60,9 @@
       (case default Nil)
       (case (Atom a) (ite (eqA a y) Eps Nil))
       (case (Plus p q) (plus (step p y) (step q y)))
-      (case (Seq p2 q2)
-        (plus (seq (step p2 y) q2) (seq (epsR p2) (step q2 y))))
-      (case (Star p3) (seq (step p3 y) x))))
+      (case (Seq r q2)
+        (plus (seq (step r y) q2) (seq (epsR r) (step q2 y))))
+      (case (Star p2) (seq (step p2 y) x))))
 (define-fun-rec
   recognise
     ((x R) (y (list A))) Bool
@@ -77,9 +77,9 @@
       (case Eps Nil)
       (case (Atom a) x)
       (case (Plus p q) (Plus (deeps p) (deeps q)))
-      (case (Seq p2 q2)
-        (ite (and (eps p2) (eps q2)) (Plus (deeps p2) (deeps q2)) x))
-      (case (Star p3) (deeps p3))))
+      (case (Seq r q2)
+        (ite (and (eps r) (eps q2)) (Plus (deeps r) (deeps q2)) x))
+      (case (Star p2) (deeps p2))))
 (assert-not
   (forall ((p R) (s (list A)))
     (= (recognise (Star p) s) (recognise (Star (deeps p)) s))))

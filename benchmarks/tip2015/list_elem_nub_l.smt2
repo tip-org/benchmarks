@@ -1,38 +1,32 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
-  equal
-    ((x Nat) (y Nat)) Bool
-    (match x
-      (case Z
-        (match y
-          (case Z true)
-          (case (S z) false)))
-      (case (S x2)
-        (match y
-          (case Z false)
-          (case (S y2) (equal x2 y2))))))
+  (par (a)
+    (filter
+       ((p (=> a Bool)) (x (list a))) (list a)
+       (match x
+         (case nil (as nil (list a)))
+         (case (cons y xs)
+           (ite (@ p y) (cons y (filter p xs)) (filter p xs)))))))
 (define-fun-rec
-  elem
-    ((x Nat) (y (list Nat))) Bool
-    (match y
-      (case nil false)
-      (case (cons z ys) (or (equal x z) (elem x ys)))))
+  (par (a)
+    (nubBy
+       ((x (=> a (=> a Bool))) (y (list a))) (list a)
+       (match y
+         (case nil (as nil (list a)))
+         (case (cons z xs)
+           (cons z
+             (nubBy x (filter (lambda ((y2 a)) (not (@ (@ x z) y2))) xs))))))))
 (define-fun-rec
-  deleteAll
-    ((x Nat) (y (list Nat))) (list Nat)
-    (match y
-      (case nil (as nil (list Nat)))
-      (case (cons z xs)
-        (ite (equal x z) (deleteAll x xs) (cons z (deleteAll x xs))))))
-(define-fun-rec
-  nub
-    ((x (list Nat))) (list Nat)
-    (match x
-      (case nil (as nil (list Nat)))
-      (case (cons y xs) (cons y (deleteAll y (nub xs))))))
+  (par (a)
+    (elem
+       ((x a) (y (list a))) Bool
+       (match y
+         (case nil false)
+         (case (cons z xs) (or (= z x) (elem x xs)))))))
 (assert-not
-  (forall ((x Nat) (xs (list Nat)))
-    (=> (elem x xs) (elem x (nub xs)))))
+  (par (a)
+    (forall ((x a) (xs (list a)))
+      (=> (elem x xs)
+        (elem x (nubBy (lambda ((y a)) (lambda ((z a)) (= y z))) xs))))))
 (check-sat)

@@ -16,7 +16,7 @@
       (case (S z)
         (match y
           (case Z Z)
-          (case (S x2) (S (acc_plus z (acc_plus x2 (acc_alt_mul z x2)))))))))
+          (case (S x2) (acc_plus x (acc_plus x2 (acc_alt_mul z x2))))))))
 (assert-not
   (forall ((x Nat) (y Nat) (z Nat))
     (= (acc_alt_mul x (acc_alt_mul y z))

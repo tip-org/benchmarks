@@ -12,12 +12,18 @@
       (case Q true)
       (case R true)))
 (define-fun
-  isEsc
+  ok
     ((x Token)) Bool
+    (or (not (isSpecial x))
+      (match x
+        (case default false)
+        (case ESC true))))
+(define-fun-rec
+  formula
+    ((x (list Token))) Bool
     (match x
-      (case default false)
-      (case ESC true)))
-(define-fun ok ((x Token)) Bool (or (not (isSpecial x)) (isEsc x)))
+      (case nil true)
+      (case (cons y xs) (and (ok y) (formula xs)))))
 (define-fun
   code
     ((x Token)) Token
@@ -36,14 +42,5 @@
         (ite
           (isSpecial y) (cons ESC (cons (code y) (escape xs)))
           (cons y (escape xs))))))
-(define-fun-rec
-  (par (a)
-    (all
-       ((x (=> a Bool)) (y (list a))) Bool
-       (match y
-         (case nil true)
-         (case (cons z xs) (and (@ x z) (all x xs)))))))
-(assert-not
-  (forall ((xs (list Token)))
-    (all (lambda ((x Token)) (ok x)) (escape xs))))
+(assert-not (forall ((xs (list Token))) (formula (escape xs))))
 (check-sat)

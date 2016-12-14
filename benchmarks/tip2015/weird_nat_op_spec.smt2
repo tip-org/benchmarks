@@ -8,26 +8,28 @@
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z y)
-      (case (S n) (S (plus n y)))))
+      (case (S z) (S (plus z y)))))
 (define-fun-rec
-  op
-    ((x Nat) (y Nat) (z Nat) (x2 Nat)) Nat
-    (match x
-      (case Z
-        (match z
-          (case Z x2)
-          (case (S x3) (op Z y x3 (S x2)))))
-      (case (S x4)
-        (match z
-          (case Z (op x4 y y x2))
-          (case (S c) (op x y c (S x2)))))))
-(define-fun-rec
-  mult
+  times
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z Z)
-      (case (S n) (plus y (mult n y)))))
+      (case (S z) (plus y (times z y)))))
+(define-fun-rec
+  op
+    ((x Nat) (y Nat) (z Nat) (x2 Nat)) Nat
+    (let
+      ((fail
+          (match z
+            (case Z (match x (case (S x4) (op x4 y y x2))))
+            (case (S x3) (op x y x3 (S x2))))))
+      (match x
+        (case Z
+          (match z
+            (case Z x2)
+            (case (S x6) fail)))
+        (case (S x5) fail))))
 (assert-not
   (forall ((a Nat) (b Nat) (c Nat) (d Nat))
-    (= (op a b c d) (plus (plus (mult a b) c) d))))
+    (= (op a b c d) (plus (plus (times a b) c) d))))
 (check-sat)

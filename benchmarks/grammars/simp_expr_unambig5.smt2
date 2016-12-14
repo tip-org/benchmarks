@@ -4,7 +4,7 @@
 (declare-datatypes () ((Tok (C) (D) (X) (Y) (Pl))))
 (declare-datatypes () ((T (TX) (TY))))
 (declare-datatypes ()
-  ((E (Plus (Plus_0 T) (Plus_1 E)) (Term (Term_0 T)))))
+  ((E (Plus (proj1-Plus T) (proj2-Plus E)) (Term (proj1-Term T)))))
 (define-fun
   linTerm
     ((x T)) (list Tok)
@@ -13,18 +13,17 @@
       (case TY (cons Y (as nil (list Tok))))))
 (define-fun-rec
   (par (a)
-    (append
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
-         (case (cons z xs) (cons z (append xs y)))))))
+         (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   lin
     ((x E)) (list Tok)
     (match x
       (case (Plus a b)
-        (append (append (linTerm a) (cons Pl (as nil (list Tok))))
-          (lin b)))
+        (++ (linTerm a) (++ (cons Pl (as nil (list Tok))) (lin b))))
       (case (Term t) (linTerm t))))
 (assert-not
   (forall ((u E) (v E)) (=> (= (lin u) (lin v)) (= u v))))

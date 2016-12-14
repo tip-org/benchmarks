@@ -2,41 +2,42 @@
 ; Andrew Ireland and Alan Bundy, JAR 1996
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+(define-fun x ((y Bool) (z Bool)) Bool (ite y true z))
 (define-fun-rec
-  le
-    ((x Nat) (y Nat)) Bool
-    (match x
-      (case Z true)
-      (case (S z)
-        (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
-(define-fun-rec
-  insert2
-    ((x Nat) (y (list Nat))) (list Nat)
+  ==
+    ((y Nat) (z Nat)) Bool
     (match y
-      (case nil (cons x (as nil (list Nat))))
-      (case (cons z xs)
-        (ite (le x z) (cons x y) (cons z (insert2 x xs))))))
-(define-fun-rec
-  equal
-    ((x Nat) (y Nat)) Bool
-    (match x
       (case Z
-        (match y
+        (match z
           (case Z true)
-          (case (S z) false)))
-      (case (S x2)
-        (match y
+          (case (S x2) false)))
+      (case (S x3)
+        (match z
           (case Z false)
-          (case (S y2) (equal x2 y2))))))
+          (case (S y2) (== x3 y2))))))
 (define-fun-rec
   elem
-    ((x Nat) (y (list Nat))) Bool
-    (match y
+    ((y Nat) (z (list Nat))) Bool
+    (match z
       (case nil false)
-      (case (cons z xs) (or (equal x z) (elem x xs)))))
+      (case (cons x2 xs) (x (== y x2) (elem y xs)))))
+(define-fun-rec
+  <=2
+    ((y Nat) (z Nat)) Bool
+    (match y
+      (case Z true)
+      (case (S x2)
+        (match z
+          (case Z false)
+          (case (S x3) (<=2 x2 x3))))))
+(define-fun-rec
+  insert2
+    ((y Nat) (z (list Nat))) (list Nat)
+    (match z
+      (case nil (cons y (as nil (list Nat))))
+      (case (cons x2 xs)
+        (ite (<=2 y x2) (cons y z) (cons x2 (insert2 y xs))))))
 (assert-not
-  (forall ((x Nat) (y (list Nat))) (elem x (insert2 x y))))
+  (forall ((y Nat) (z (list Nat))) (elem y (insert2 y z))))
 (check-sat)

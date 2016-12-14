@@ -1,6 +1,7 @@
 ; Property about natural numbers with binary presentation
 (declare-datatypes ()
-  ((Bin (One) (ZeroAnd (ZeroAnd_0 Bin)) (OneAnd (OneAnd_0 Bin)))))
+  ((Bin (One)
+     (ZeroAnd (proj1-ZeroAnd Bin)) (OneAnd (proj1-OneAnd Bin)))))
 (define-fun-rec
   s ((x Bin)) Bin
     (match x
@@ -27,8 +28,8 @@
     ((x Bin) (y Bin)) Bin
     (match x
       (case One y)
-      (case (ZeroAnd xs) (ZeroAnd (times xs y)))
-      (case (OneAnd ys) (plus (ZeroAnd (times ys y)) y))))
+      (case (ZeroAnd xs1) (ZeroAnd (times xs1 y)))
+      (case (OneAnd xs12) (plus (ZeroAnd (times xs12 y)) y))))
 (assert-not
   (forall ((x Bin) (y Bin) (z Bin))
     (= (times x (times y z)) (times (times x y) z))))

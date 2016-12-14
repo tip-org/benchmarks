@@ -2,24 +2,27 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun
-  sort2
-    ((x Int) (y Int)) (list Int)
-    (ite
-      (<= x y) (cons x (cons y (as nil (list Int))))
-      (cons y (cons x (as nil (list Int))))))
+  (par (a)
+    (sort2
+       ((x a) (y a)) (list a)
+       (ite
+         (<= x y) (cons x (cons y (as nil (list a))))
+         (cons y (cons x (as nil (list a))))))))
 (define-fun-rec
-  insert2
-    ((x Int) (y (list Int))) (list Int)
-    (match y
-      (case nil (cons x (as nil (list Int))))
-      (case (cons z xs)
-        (ite (<= x z) (cons x y) (cons z (insert2 x xs))))))
+  (par (a)
+    (insert2
+       ((x a) (y (list a))) (list a)
+       (match y
+         (case nil (cons x (as nil (list a))))
+         (case (cons z xs)
+           (ite (<= x z) (cons x y) (cons z (insert2 x xs))))))))
 (define-fun-rec
-  isort
-    ((x (list Int))) (list Int)
-    (match x
-      (case nil (as nil (list Int)))
-      (case (cons y xs) (insert2 y (isort xs)))))
+  (par (a)
+    (isort
+       ((x (list a))) (list a)
+       (match x
+         (case nil (as nil (list a)))
+         (case (cons y xs) (insert2 y (isort xs)))))))
 (define-funs-rec
   ((par (a) (evens ((x (list a))) (list a)))
    (par (a) (odds ((x (list a))) (list a))))
@@ -31,53 +34,57 @@
      (case (cons y xs) (evens xs)))))
 (define-fun-rec
   (par (a)
-    (append
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
-         (case (cons z xs) (cons z (append xs y)))))))
+         (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
-  pairs
-    ((x (list Int)) (y (list Int))) (list Int)
-    (match x
-      (case nil y)
-      (case (cons z x2)
-        (match y
-          (case nil x)
-          (case (cons x3 x4) (append (sort2 z x3) (pairs x2 x4)))))))
+  (par (a)
+    (pairs
+       ((x (list a)) (y (list a))) (list a)
+       (match x
+         (case nil y)
+         (case (cons z x2)
+           (match y
+             (case nil x)
+             (case (cons x3 x4) (++ (sort2 z x3) (pairs x2 x4)))))))))
 (define-fun
-  stitch
-    ((x (list Int)) (y (list Int))) (list Int)
-    (match x
-      (case nil y)
-      (case (cons z xs) (cons z (pairs xs y)))))
+  (par (a)
+    (stitch
+       ((x (list a)) (y (list a))) (list a)
+       (match x
+         (case nil y)
+         (case (cons z xs) (cons z (pairs xs y)))))))
 (define-fun-rec
-  bmerge
-    ((x (list Int)) (y (list Int))) (list Int)
-    (match x
-      (case nil (as nil (list Int)))
-      (case (cons z x2)
-        (match y
-          (case nil x)
-          (case (cons x3 x4)
-            (match x2
-              (case nil
-                (match x4
-                  (case nil (sort2 z x3))
-                  (case (cons x5 x6)
-                    (stitch (bmerge (evens (cons z (as nil (list Int)))) (evens y))
-                      (bmerge (odds (cons z (as nil (list Int)))) (odds y))))))
-              (case (cons x7 x8)
-                (stitch (bmerge (evens x) (evens y))
-                  (bmerge (odds x) (odds y))))))))))
+  (par (a)
+    (bmerge
+       ((x (list a)) (y (list a))) (list a)
+       (match x
+         (case nil (as nil (list a)))
+         (case (cons z x2)
+           (match y
+             (case nil x)
+             (case (cons x3 x4)
+               (let
+                 ((fail
+                     (stitch (bmerge (evens x) (evens y)) (bmerge (odds x) (odds y)))))
+                 (match x2
+                   (case nil
+                     (match x4
+                       (case nil (sort2 z x3))
+                       (case (cons x5 x6) fail)))
+                   (case (cons x7 x8) fail))))))))))
 (define-fun-rec
-  bsort
-    ((x (list Int))) (list Int)
-    (match x
-      (case nil (as nil (list Int)))
-      (case (cons y z)
-        (match z
-          (case nil (cons y (as nil (list Int))))
-          (case (cons x2 x3) (bmerge (bsort (evens x)) (bsort (odds x))))))))
+  (par (a)
+    (bsort
+       ((x (list a))) (list a)
+       (match x
+         (case nil (as nil (list a)))
+         (case (cons y z)
+           (match z
+             (case nil (cons y (as nil (list a))))
+             (case (cons x2 x3)
+               (bmerge (bsort (evens x)) (bsort (odds x))))))))))
 (assert-not (forall ((x (list Int))) (= (bsort x) (isort x))))
 (check-sat)

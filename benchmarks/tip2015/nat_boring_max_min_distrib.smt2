@@ -1,23 +1,24 @@
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
-  min2
-    ((x Nat) (y Nat)) Nat
+  le
+    ((x Nat) (y Nat)) Bool
     (match x
-      (case Z Z)
+      (case Z true)
       (case (S z)
         (match y
-          (case Z Z)
-          (case (S x2) (S (min2 z x2)))))))
-(define-fun-rec
-  max2
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case Z y)
-      (case (S z)
-        (match y
-          (case Z x)
-          (case (S x2) (S (max2 z x2)))))))
+          (case Z false)
+          (case (S x2) (le z x2))))))
 (assert-not
   (forall ((x Nat) (y Nat) (z Nat))
-    (= (min2 x (max2 y z)) (max2 (min2 x y) (min2 x z)))))
+    (= (let ((y2 (ite (le y z) z y))) (ite (le x y2) x y2))
+      (ite
+        (le x z)
+        (@
+          (let ((x3 (ite (le x y) x y)))
+            (lambda ((y4 Nat)) (ite (le x3 y4) y4 x3)))
+          x)
+        (@
+          (let ((x2 (ite (le x y) x y)))
+            (lambda ((y3 Nat)) (ite (le x2 y3) y3 x2)))
+          z)))))
 (check-sat)

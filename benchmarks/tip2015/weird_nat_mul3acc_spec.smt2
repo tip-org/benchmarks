@@ -9,13 +9,13 @@
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z y)
-      (case (S n) (S (plus n y)))))
+      (case (S z) (S (plus z y)))))
 (define-fun-rec
-  mult
+  times
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z Z)
-      (case (S n) (plus y (mult n y)))))
+      (case (S z) (plus y (times z y)))))
 (define-fun-rec
   add3acc
     ((x Nat) (y Nat) (z Nat)) Nat
@@ -23,7 +23,7 @@
       (case Z
         (match y
           (case Z z)
-          (case (S y2) (add3acc Z y2 (S z)))))
+          (case (S x3) (add3acc Z x3 (S z)))))
       (case (S x2) (add3acc x2 (S y) z))))
 (define-fun-rec
   mul3acc
@@ -37,31 +37,17 @@
             (match z
               (case Z Z)
               (case (S x4)
-                (match x2
-                  (case Z
-                    (match x3
-                      (case Z
-                        (match x4
-                          (case Z (S Z))
-                          (case (S x5)
-                            (S
-                              (add3acc (mul3acc Z Z x4)
-                                (add3acc (mul3acc (S Z) Z x4)
-                                  (mul3acc Z (S Z) x4) (mul3acc Z Z (S Z)))
-                                (add3acc Z Z x4))))))
-                      (case (S x6)
-                        (S
-                          (add3acc (mul3acc Z x3 x4)
-                            (add3acc (mul3acc (S Z) x3 x4)
-                              (mul3acc Z (S Z) x4) (mul3acc Z x3 (S Z)))
-                            (add3acc Z x3 x4))))))
-                  (case (S x7)
-                    (S
-                      (add3acc (mul3acc x2 x3 x4)
-                        (add3acc (mul3acc (S Z) x3 x4)
-                          (mul3acc x2 (S Z) x4) (mul3acc x2 x3 (S Z)))
-                        (add3acc x2 x3 x4))))))))))))
+                (let
+                  ((fail
+                      (plus (S Z)
+                        (add3acc (mul3acc x2 x3 x4)
+                          (add3acc (mul3acc (S Z) x3 x4)
+                            (mul3acc x2 (S Z) x4) (mul3acc x2 x3 (S Z)))
+                          (add3acc x y z)))))
+                  (ite
+                    (= x2 Z) (ite (= x3 Z) (ite (= x4 Z) (S Z) fail) fail)
+                    fail)))))))))
 (assert-not
   (forall ((x Nat) (y Nat) (z Nat))
-    (= (mul3acc x y z) (mult (mult x y) z))))
+    (= (mul3acc x y z) (times (times x y) z))))
 (check-sat)

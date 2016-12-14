@@ -2,34 +2,10 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes (a)
-  ((Tree (TNode (TNode_0 (Tree a)) (TNode_1 a) (TNode_2 (Tree a)))
+  ((Tree
+     (TNode (proj1-TNode (Tree a))
+       (proj2-TNode a) (proj3-TNode (Tree a)))
      (TNil))))
-(define-fun-rec
-  zelem
-    ((x Int) (y (list Int))) Bool
-    (match y
-      (case nil false)
-      (case (cons z ys) (or (= x z) (zelem x ys)))))
-(define-fun-rec
-  zdelete
-    ((x Int) (y (list Int))) (list Int)
-    (match y
-      (case nil (as nil (list Int)))
-      (case (cons z ys) (ite (= x z) ys (cons z (zdelete x ys))))))
-(define-fun
-  (par (a)
-    (null
-       ((x (list a))) Bool
-       (match x
-         (case nil true)
-         (case (cons y z) false)))))
-(define-fun-rec
-  zisPermutation
-    ((x (list Int)) (y (list Int))) Bool
-    (match x
-      (case nil (null y))
-      (case (cons z xs)
-        (and (zelem z y) (zisPermutation xs (zdelete z y))))))
 (define-fun-rec
   (par (a)
     (flatten
@@ -38,21 +14,52 @@
          (case (TNode p z q) (flatten p (cons z (flatten q y))))
          (case TNil y)))))
 (define-fun-rec
-  add
-    ((x Int) (y (Tree Int))) (Tree Int)
-    (match y
-      (case (TNode p z q)
-        (ite (<= x z) (TNode (add x p) z q) (TNode p z (add x q))))
-      (case TNil (TNode (as TNil (Tree Int)) x (as TNil (Tree Int))))))
+  (par (a)
+    (elem
+       ((x a) (y (list a))) Bool
+       (match y
+         (case nil false)
+         (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
-  toTree
-    ((x (list Int))) (Tree Int)
-    (match x
-      (case nil (as TNil (Tree Int)))
-      (case (cons y xs) (add y (toTree xs)))))
+  (par (a)
+    (deleteBy
+       ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
+       (match z
+         (case nil (as nil (list a)))
+         (case (cons y2 ys)
+           (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
+(define-fun-rec
+  (par (a)
+    (isPermutation
+       ((x (list a)) (y (list a))) Bool
+       (match x
+         (case nil
+           (match y
+             (case nil true)
+             (case (cons z x2) false)))
+         (case (cons x3 xs)
+           (and (elem x3 y)
+             (isPermutation xs
+               (deleteBy (lambda ((x4 a)) (lambda ((x5 a)) (= x4 x5)))
+                 x3 y))))))))
+(define-fun-rec
+  (par (a)
+    (add
+       ((x a) (y (Tree a))) (Tree a)
+       (match y
+         (case (TNode p z q)
+           (ite (<= x z) (TNode (add x p) z q) (TNode p z (add x q))))
+         (case TNil (TNode (as TNil (Tree a)) x (as TNil (Tree a))))))))
+(define-fun-rec
+  (par (a)
+    (toTree
+       ((x (list a))) (Tree a)
+       (match x
+         (case nil (as TNil (Tree a)))
+         (case (cons y xs) (add y (toTree xs)))))))
 (define-fun
-  tsort
-    ((x (list Int))) (list Int)
-    (flatten (toTree x) (as nil (list Int))))
-(assert-not (forall ((x (list Int))) (zisPermutation (tsort x) x)))
+  (par (a)
+    (tsort
+       ((x (list a))) (list a) (flatten (toTree x) (as nil (list a))))))
+(assert-not (forall ((x (list Int))) (isPermutation (tsort x) x)))
 (check-sat)

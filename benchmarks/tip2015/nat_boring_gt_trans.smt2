@@ -1,13 +1,14 @@
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
-  gt
+  lt
     ((x Nat) (y Nat)) Bool
-    (match x
+    (match y
       (case Z false)
       (case (S z)
-        (match y
+        (match x
           (case Z true)
-          (case (S x2) (gt z x2))))))
+          (case (S n) (lt n z))))))
+(define-fun gt ((x Nat) (y Nat)) Bool (lt y x))
 (assert-not
   (forall ((x Nat) (y Nat) (z Nat))
     (=> (gt x y) (=> (gt y z) (gt x z)))))

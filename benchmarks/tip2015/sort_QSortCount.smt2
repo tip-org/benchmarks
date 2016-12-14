@@ -1,39 +1,40 @@
 ; QuickSort
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
-(define-fun-rec
-  zcount
-    ((x Int) (y (list Int))) Nat
-    (match y
-      (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
 (define-fun-rec
   (par (a)
     (filter
-       ((x (=> a Bool)) (y (list a))) (list a)
-       (match y
+       ((p (=> a Bool)) (x (list a))) (list a)
+       (match x
          (case nil (as nil (list a)))
-         (case (cons z xs)
-           (ite (@ x z) (cons z (filter x xs)) (filter x xs)))))))
+         (case (cons y xs)
+           (ite (@ p y) (cons y (filter p xs)) (filter p xs)))))))
 (define-fun-rec
   (par (a)
-    (append
+    (count
+       ((x a) (y (list a))) Int
+       (match y
+         (case nil 0)
+         (case (cons z ys)
+           (ite (= x z) (+ 1 (count x ys)) (count x ys)))))))
+(define-fun-rec
+  (par (a)
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
-         (case (cons z xs) (cons z (append xs y)))))))
+         (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
-  qsort
-    ((x (list Int))) (list Int)
-    (match x
-      (case nil (as nil (list Int)))
-      (case (cons y xs)
-        (append
-          (append (qsort (filter (lambda ((z Int)) (<= z y)) xs))
-            (cons y (as nil (list Int))))
-          (qsort (filter (lambda ((x2 Int)) (> x2 y)) xs))))))
+  (par (a)
+    (qsort
+       ((x (list a))) (list a)
+       (match x
+         (case nil (as nil (list a)))
+         (case (cons y xs)
+           (++ (qsort (filter (lambda ((z a)) (<= z y)) xs))
+             (++ (cons y (as nil (list a)))
+               (qsort (filter (lambda ((x2 a)) (> x2 y)) xs)))))))))
 (assert-not
   (forall ((x Int) (y (list Int)))
-    (= (zcount x (qsort y)) (zcount x y))))
+    (= (count x (qsort y)) (count x y))))
 (check-sat)

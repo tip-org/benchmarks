@@ -2,7 +2,7 @@
 ; Andrew Ireland and Alan Bundy, JAR 1996
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
 (define-fun-rec
   (par (a)
     (length
@@ -21,13 +21,13 @@
           (case (S z) (even z))))))
 (define-fun-rec
   (par (a)
-    (append
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
-         (case (cons z xs) (cons z (append xs y)))))))
+         (case (cons z xs) (cons z (++ xs y)))))))
 (assert-not
   (par (a)
     (forall ((x (list a)) (y (list a)))
-      (= (even (length (append x y))) (even (length (append y x)))))))
+      (= (even (length (++ x y))) (even (length (++ y x)))))))
 (check-sat)

@@ -1,24 +1,23 @@
 ; Property from "Productive Use of Failure in Inductive Proof",
 ; Andrew Ireland and Alan Bundy, JAR 1996
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
 (define-fun-rec
-  plus
+  +2
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z y)
-      (case (S z) (S (plus z y)))))
+      (case (S z) (S (+2 z y)))))
 (define-fun-rec
-  mult2
+  mult
     ((x Nat) (y Nat) (z Nat)) Nat
     (match x
       (case Z z)
-      (case (S x2) (mult2 x2 y (plus y z)))))
+      (case (S x2) (mult x2 y (+2 y z)))))
 (define-fun-rec
-  mult
+  *2
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z Z)
-      (case (S z) (plus y (mult z y)))))
-(assert-not
-  (forall ((x Nat) (y Nat)) (= (mult x y) (mult2 x y Z))))
+      (case (S z) (+2 y (*2 z y)))))
+(assert-not (forall ((x Nat) (y Nat)) (= (*2 x y) (mult x y Z))))
 (check-sat)

@@ -1,36 +1,37 @@
+(declare-datatypes (a b)
+  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
-(define-fun-rec
-  (par (a)
-    (select3
-       ((x a) (y (list (Pair a (list a))))) (list (Pair a (list a)))
-       (match y
-         (case nil (as nil (list (Pair a (list a)))))
-         (case (cons z x2)
-           (match z
-             (case (Pair2 y2 ys)
-               (cons (Pair2 y2 (cons x ys)) (select3 x x2)))))))))
 (define-fun-rec
   (par (a)
     (select2
-       ((x (list a))) (list (Pair a (list a)))
+       ((x a) (y (list (pair a (list a))))) (list (pair a (list a)))
+       (match y
+         (case nil (as nil (list (pair a (list a)))))
+         (case (cons z x2)
+           (match z
+             (case (pair2 y2 ys)
+               (cons (pair2 y2 (cons x ys)) (select2 x x2)))))))))
+(define-fun-rec
+  (par (a)
+    (select3
+       ((x (list a))) (list (pair a (list a)))
        (match x
-         (case nil (as nil (list (Pair a (list a)))))
-         (case (cons y xs) (cons (Pair2 y xs) (select3 y (select2 xs))))))))
+         (case nil (as nil (list (pair a (list a)))))
+         (case (cons y xs) (cons (pair2 y xs) (select2 y (select3 xs))))))))
 (define-fun-rec
   (par (a b)
     (map2
-       ((x (=> a b)) (y (list a))) (list b)
-       (match y
+       ((f (=> a b)) (x (list a))) (list b)
+       (match x
          (case nil (as nil (list b)))
-         (case (cons z xs) (cons (@ x z) (map2 x xs)))))))
-(define-fun
-  (par (a b)
-    (fst ((x (Pair a b))) a (match x (case (Pair2 y z) y)))))
+         (case (cons y xs) (cons (@ f y) (map2 f xs)))))))
 (assert-not
   (par (b)
     (forall ((xs (list b)))
-      (= (map2 (lambda ((x (Pair b (list b)))) (fst x)) (select2 xs))
+      (=
+        (map2
+          (lambda ((x (pair b (list b)))) (match x (case (pair2 y z) y)))
+          (select3 xs))
         xs))))
 (check-sat)

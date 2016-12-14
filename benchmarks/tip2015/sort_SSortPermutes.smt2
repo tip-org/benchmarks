@@ -2,44 +2,52 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
-  zelem
-    ((x Int) (y (list Int))) Bool
-    (match y
-      (case nil false)
-      (case (cons z ys) (or (= x z) (zelem x ys)))))
-(define-fun-rec
-  zdelete
-    ((x Int) (y (list Int))) (list Int)
-    (match y
-      (case nil (as nil (list Int)))
-      (case (cons z ys) (ite (= x z) ys (cons z (zdelete x ys))))))
-(define-fun-rec
-  ssort_minimum
-    ((x Int) (y (list Int))) Int
-    (match y
-      (case nil x)
-      (case (cons z ys)
-        (ite (<= z x) (ssort_minimum z ys) (ssort_minimum x ys)))))
-(define-fun-rec
-  ssort
-    ((x (list Int))) (list Int)
-    (match x
-      (case nil (as nil (list Int)))
-      (case (cons y ys)
-        (let ((m (ssort_minimum y ys))) (cons m (ssort (zdelete m x)))))))
-(define-fun
   (par (a)
-    (null
-       ((x (list a))) Bool
-       (match x
-         (case nil true)
-         (case (cons y z) false)))))
+    (ssort-minimum1
+       ((x a) (y (list a))) a
+       (match y
+         (case nil x)
+         (case (cons y1 ys1)
+           (ite (<= y1 x) (ssort-minimum1 y1 ys1) (ssort-minimum1 x ys1)))))))
 (define-fun-rec
-  zisPermutation
-    ((x (list Int)) (y (list Int))) Bool
-    (match x
-      (case nil (null y))
-      (case (cons z xs)
-        (and (zelem z y) (zisPermutation xs (zdelete z y))))))
-(assert-not (forall ((x (list Int))) (zisPermutation (ssort x) x)))
+  (par (a)
+    (elem
+       ((x a) (y (list a))) Bool
+       (match y
+         (case nil false)
+         (case (cons z xs) (or (= z x) (elem x xs)))))))
+(define-fun-rec
+  (par (a)
+    (deleteBy
+       ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
+       (match z
+         (case nil (as nil (list a)))
+         (case (cons y2 ys)
+           (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
+(define-fun-rec
+  (par (a)
+    (isPermutation
+       ((x (list a)) (y (list a))) Bool
+       (match x
+         (case nil
+           (match y
+             (case nil true)
+             (case (cons z x2) false)))
+         (case (cons x3 xs)
+           (and (elem x3 y)
+             (isPermutation xs
+               (deleteBy (lambda ((x4 a)) (lambda ((x5 a)) (= x4 x5)))
+                 x3 y))))))))
+(define-fun-rec
+  (par (a)
+    (ssort
+       ((x (list a))) (list a)
+       (match x
+         (case nil (as nil (list a)))
+         (case (cons y ys)
+           (let ((m (ssort-minimum1 y ys)))
+             (cons m
+               (ssort
+                 (deleteBy (lambda ((z a)) (lambda ((x2 a)) (= z x2))) m x)))))))))
+(assert-not (forall ((x (list Int))) (isPermutation (ssort x) x)))
 (check-sat)

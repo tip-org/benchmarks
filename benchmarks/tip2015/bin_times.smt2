@@ -1,26 +1,20 @@
 ; Property about natural numbers with binary presentation
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (declare-datatypes ()
-  ((Bin (One) (ZeroAnd (ZeroAnd_0 Bin)) (OneAnd (OneAnd_0 Bin)))))
+  ((Bin (One)
+     (ZeroAnd (proj1-ZeroAnd Bin)) (OneAnd (proj1-OneAnd Bin)))))
+(define-fun-rec
+  toNat
+    ((x Bin)) Int
+    (match x
+      (case One 1)
+      (case (ZeroAnd xs) (+ (toNat xs) (toNat xs)))
+      (case (OneAnd ys) (+ (+ 1 (toNat ys)) (toNat ys)))))
 (define-fun-rec
   s ((x Bin)) Bin
     (match x
       (case One (ZeroAnd One))
       (case (ZeroAnd xs) (OneAnd xs))
       (case (OneAnd ys) (ZeroAnd (s ys)))))
-(define-fun-rec
-  plus2
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case Z y)
-      (case (S n) (S (plus2 n y)))))
-(define-fun-rec
-  toNat
-    ((x Bin)) Nat
-    (match x
-      (case One (S Z))
-      (case (ZeroAnd xs) (plus2 (toNat xs) (toNat xs)))
-      (case (OneAnd ys) (S (plus2 (toNat ys) (toNat ys))))))
 (define-fun-rec
   plus
     ((x Bin) (y Bin)) Bin
@@ -41,15 +35,9 @@
     ((x Bin) (y Bin)) Bin
     (match x
       (case One y)
-      (case (ZeroAnd xs) (ZeroAnd (times xs y)))
-      (case (OneAnd ys) (plus (ZeroAnd (times ys y)) y))))
-(define-fun-rec
-  mult
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case Z Z)
-      (case (S n) (plus2 y (mult n y)))))
+      (case (ZeroAnd xs1) (ZeroAnd (times xs1 y)))
+      (case (OneAnd xs12) (plus (ZeroAnd (times xs12 y)) y))))
 (assert-not
   (forall ((x Bin) (y Bin))
-    (= (toNat (times x y)) (mult (toNat x) (toNat y)))))
+    (= (toNat (times x y)) (* (toNat x) (toNat y)))))
 (check-sat)

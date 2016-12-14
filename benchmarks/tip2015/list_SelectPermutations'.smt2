@@ -1,60 +1,50 @@
+(declare-datatypes (a b)
+  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
-(define-fun-rec
-  zcount
-    ((x Int) (y (list Int))) Nat
-    (match y
-      (case nil Z)
-      (case (cons z xs) (ite (= x z) (S (zcount x xs)) (zcount x xs)))))
-(define-fun-rec
-  (par (a)
-    (select3
-       ((x a) (y (list (Pair a (list a))))) (list (Pair a (list a)))
-       (match y
-         (case nil (as nil (list (Pair a (list a)))))
-         (case (cons z x2)
-           (match z
-             (case (Pair2 y2 ys)
-               (cons (Pair2 y2 (cons x ys)) (select3 x x2)))))))))
 (define-fun-rec
   (par (a)
     (select2
-       ((x (list a))) (list (Pair a (list a)))
+       ((x a) (y (list (pair a (list a))))) (list (pair a (list a)))
+       (match y
+         (case nil (as nil (list (pair a (list a)))))
+         (case (cons z x2)
+           (match z
+             (case (pair2 y2 ys)
+               (cons (pair2 y2 (cons x ys)) (select2 x x2)))))))))
+(define-fun-rec
+  (par (a)
+    (select3
+       ((x (list a))) (list (pair a (list a)))
        (match x
-         (case nil (as nil (list (Pair a (list a)))))
-         (case (cons y xs) (cons (Pair2 y xs) (select3 y (select2 xs))))))))
+         (case nil (as nil (list (pair a (list a)))))
+         (case (cons y xs) (cons (pair2 y xs) (select2 y (select3 xs))))))))
 (define-fun-rec
-  prop_SelectPermutations
-    ((x (list (Pair Int (list Int))))) (list (list Int))
-    (match x
-      (case nil (as nil (list (list Int))))
-      (case (cons y z)
-        (match y
-          (case (Pair2 y2 ys)
-            (cons (cons y2 ys) (prop_SelectPermutations z)))))))
+  (par (a)
+    (formula
+       ((x (list (pair a (list a))))) (list (list a))
+       (match x
+         (case nil (as nil (list (list a))))
+         (case (cons y z)
+           (match y (case (pair2 y2 ys) (cons (cons y2 ys) (formula z)))))))))
 (define-fun-rec
-  equal
-    ((x Nat) (y Nat)) Bool
-    (match x
-      (case Z
-        (match y
-          (case Z true)
-          (case (S z) false)))
-      (case (S x2)
-        (match y
-          (case Z false)
-          (case (S y2) (equal x2 y2))))))
+  (par (a)
+    (count
+       ((x a) (y (list a))) Int
+       (match y
+         (case nil 0)
+         (case (cons z ys)
+           (ite (= x z) (+ 1 (count x ys)) (count x ys)))))))
 (define-fun-rec
   (par (a)
     (all
-       ((x (=> a Bool)) (y (list a))) Bool
-       (match y
+       ((p (=> a Bool)) (x (list a))) Bool
+       (match x
          (case nil true)
-         (case (cons z xs) (and (@ x z) (all x xs)))))))
+         (case (cons y xs) (and (@ p y) (all p xs)))))))
 (assert-not
-  (forall ((xs (list Int)) (z Int))
-    (all (lambda ((x (list Int))) (equal (zcount z xs) (zcount z x)))
-      (prop_SelectPermutations (select2 xs)))))
+  (par (a)
+    (forall ((xs (list a)) (z a))
+      (all (lambda ((x (list a))) (= (count z xs) (count z x)))
+        (formula (select3 xs))))))
 (check-sat)

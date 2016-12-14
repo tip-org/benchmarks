@@ -1,6 +1,6 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
 (define-fun-rec
   min2
     ((x Nat) (y Nat)) Nat
@@ -9,7 +9,7 @@
       (case (S z)
         (match y
           (case Z Z)
-          (case (S y2) (S (min2 z y2)))))))
+          (case (S y1) (S (min2 z y1)))))))
 (assert-not
   (forall ((a Nat) (b Nat) (c Nat))
     (= (min2 (min2 a b) c) (min2 a (min2 b c)))))

@@ -1,7 +1,8 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes (a)
-  ((Tree (Node (Node_0 (Tree a)) (Node_1 a) (Node_2 (Tree a)))
+  ((Tree
+     (Node (proj1-Node (Tree a)) (proj2-Node a) (proj3-Node (Tree a)))
      (Nil))))
 (define-fun-rec
   (par (a)
@@ -19,30 +20,29 @@
              (case Nil (flatten1 ps))))))))
 (define-fun-rec
   (par (a)
-    (append
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
-         (case (cons z xs) (cons z (append xs y)))))))
+         (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a b)
     (concatMap
-       ((x (=> a (list b))) (y (list a))) (list b)
-       (match y
+       ((f (=> a (list b))) (x (list a))) (list b)
+       (match x
          (case nil (as nil (list b)))
-         (case (cons z xs) (append (@ x z) (concatMap x xs)))))))
+         (case (cons y xs) (++ (@ f y) (concatMap f xs)))))))
 (define-fun-rec
   (par (a)
     (flatten0
        ((x (Tree a))) (list a)
        (match x
          (case (Node p y q)
-           (append (append (flatten0 p) (cons y (as nil (list a))))
-             (flatten0 q)))
+           (++ (flatten0 p) (++ (cons y (as nil (list a))) (flatten0 q))))
          (case Nil (as nil (list a)))))))
 (assert-not
-  (par (a)
-    (forall ((ps (list (Tree a))))
+  (par (b)
+    (forall ((ps (list (Tree b))))
       (= (flatten1 ps)
-        (concatMap (lambda ((x (Tree a))) (flatten0 x)) ps)))))
+        (concatMap (lambda ((x (Tree b))) (flatten0 x)) ps)))))
 (check-sat)

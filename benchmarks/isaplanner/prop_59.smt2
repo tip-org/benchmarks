@@ -2,7 +2,7 @@
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
 (define-fun-rec
   last
     ((x (list Nat))) Nat
@@ -14,13 +14,12 @@
           (case (cons x2 x3) (last z))))))
 (define-fun-rec
   (par (a)
-    (append
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
-         (case (cons z xs) (cons z (append xs y)))))))
+         (case (cons z xs) (cons z (++ xs y)))))))
 (assert-not
   (forall ((xs (list Nat)) (ys (list Nat)))
-    (=> (= ys (as nil (list Nat)))
-      (= (last (append xs ys)) (last xs)))))
+    (=> (= ys (as nil (list Nat))) (= (last (++ xs ys)) (last xs)))))
 (check-sat)

@@ -1,26 +1,20 @@
 ; Property about natural numbers with binary presentation
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (declare-datatypes ()
-  ((Bin (One) (ZeroAnd (ZeroAnd_0 Bin)) (OneAnd (OneAnd_0 Bin)))))
+  ((Bin (One)
+     (ZeroAnd (proj1-ZeroAnd Bin)) (OneAnd (proj1-OneAnd Bin)))))
+(define-fun-rec
+  toNat
+    ((x Bin)) Int
+    (match x
+      (case One 1)
+      (case (ZeroAnd xs) (+ (toNat xs) (toNat xs)))
+      (case (OneAnd ys) (+ (+ 1 (toNat ys)) (toNat ys)))))
 (define-fun-rec
   s ((x Bin)) Bin
     (match x
       (case One (ZeroAnd One))
       (case (ZeroAnd xs) (OneAnd xs))
       (case (OneAnd ys) (ZeroAnd (s ys)))))
-(define-fun-rec
-  plus2
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case Z y)
-      (case (S n) (S (plus2 n y)))))
-(define-fun-rec
-  toNat
-    ((x Bin)) Nat
-    (match x
-      (case One (S Z))
-      (case (ZeroAnd xs) (plus2 (toNat xs) (toNat xs)))
-      (case (OneAnd ys) (S (plus2 (toNat ys) (toNat ys))))))
 (define-fun-rec
   plus
     ((x Bin) (y Bin)) Bin
@@ -38,5 +32,5 @@
           (case (OneAnd ys2) (ZeroAnd (s (plus x2 ys2))))))))
 (assert-not
   (forall ((x Bin) (y Bin))
-    (= (toNat (plus x y)) (plus2 (toNat x) (toNat y)))))
+    (= (toNat (plus x y)) (+ (toNat x) (toNat y)))))
 (check-sat)

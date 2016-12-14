@@ -2,33 +2,41 @@
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
-  zordered
-    ((x (list Int))) Bool
-    (match x
-      (case nil true)
-      (case (cons y z)
-        (match z
-          (case nil true)
-          (case (cons y2 xs) (and (<= y y2) (zordered z)))))))
+  (par (a)
+    (ssort-minimum1
+       ((x a) (y (list a))) a
+       (match y
+         (case nil x)
+         (case (cons y1 ys1)
+           (ite (<= y1 x) (ssort-minimum1 y1 ys1) (ssort-minimum1 x ys1)))))))
 (define-fun-rec
-  zdelete
-    ((x Int) (y (list Int))) (list Int)
-    (match y
-      (case nil (as nil (list Int)))
-      (case (cons z ys) (ite (= x z) ys (cons z (zdelete x ys))))))
+  (par (a)
+    (ordered-ordered1
+       ((x (list a))) Bool
+       (match x
+         (case nil true)
+         (case (cons y z)
+           (match z
+             (case nil true)
+             (case (cons y2 xs) (and (<= y y2) (ordered-ordered1 z)))))))))
 (define-fun-rec
-  ssort_minimum
-    ((x Int) (y (list Int))) Int
-    (match y
-      (case nil x)
-      (case (cons z ys)
-        (ite (<= z x) (ssort_minimum z ys) (ssort_minimum x ys)))))
+  (par (a)
+    (deleteBy
+       ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
+       (match z
+         (case nil (as nil (list a)))
+         (case (cons y2 ys)
+           (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
-  ssort
-    ((x (list Int))) (list Int)
-    (match x
-      (case nil (as nil (list Int)))
-      (case (cons y ys)
-        (let ((m (ssort_minimum y ys))) (cons m (ssort (zdelete m x)))))))
-(assert-not (forall ((x (list Int))) (zordered (ssort x))))
+  (par (a)
+    (ssort
+       ((x (list a))) (list a)
+       (match x
+         (case nil (as nil (list a)))
+         (case (cons y ys)
+           (let ((m (ssort-minimum1 y ys)))
+             (cons m
+               (ssort
+                 (deleteBy (lambda ((z a)) (lambda ((x2 a)) (= z x2))) m x)))))))))
+(assert-not (forall ((x (list Int))) (ordered-ordered1 (ssort x))))
 (check-sat)

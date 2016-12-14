@@ -1,12 +1,13 @@
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
-  ge
+  le
     ((x Nat) (y Nat)) Bool
-    (match y
+    (match x
       (case Z true)
       (case (S z)
-        (match x
+        (match y
           (case Z false)
-          (case (S x2) (ge x2 z))))))
+          (case (S x2) (le z x2))))))
+(define-fun ge ((x Nat) (y Nat)) Bool (le y x))
 (assert-not (forall ((x Nat)) (ge x x)))
 (check-sat)

@@ -5,10 +5,7 @@
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z Z)
-      (case (S n)
-        (match y
-          (case Z x)
-          (case (S m) (minus n m))))))
+      (case (S z) (match y (case (S y2) (minus z y2))))))
 (define-fun-rec
   lt
     ((x Nat) (y Nat)) Bool
@@ -34,11 +31,11 @@
           (case Z
             (match y
               (case Z Z)
-              (case (S n) (minus z y))))
-          (case (S m)
+              (case (S x5) (minus z y))))
+          (case (S x3)
             (match y
-              (case Z (go m x2 z))
-              (case (S k) (go m k z))))))))
+              (case Z (go x3 x2 z))
+              (case (S x4) (go x3 x4 z))))))))
 (define-fun mod_structural ((x Nat) (y Nat)) Nat (go x Z y))
 (assert-not
   (forall ((m Nat) (n Nat)) (= (mod2 m n) (mod_structural m n))))

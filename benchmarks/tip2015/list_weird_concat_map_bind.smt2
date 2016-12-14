@@ -17,26 +17,26 @@
 (define-fun-rec
   (par (a b)
     (map2
-       ((x (=> a b)) (y (list a))) (list b)
-       (match y
+       ((f (=> a b)) (x (list a))) (list b)
+       (match x
          (case nil (as nil (list b)))
-         (case (cons z xs) (cons (@ x z) (map2 x xs)))))))
+         (case (cons y xs) (cons (@ f y) (map2 f xs)))))))
 (define-fun-rec
   (par (a)
-    (append
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
-         (case (cons z xs) (cons z (append xs y)))))))
+         (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a b)
-    (bind
+    (>>=
        ((x (list a)) (y (=> a (list b)))) (list b)
        (match x
          (case nil (as nil (list b)))
-         (case (cons z xs) (append (@ y z) (bind xs y)))))))
+         (case (cons z xs) (++ (@ y z) (>>= xs y)))))))
 (assert-not
   (par (a b)
     (forall ((f (=> a (list b))) (xs (list a)))
-      (= (weird_concat (map2 f xs)) (bind xs f)))))
+      (= (weird_concat (map2 f xs)) (>>= xs f)))))
 (check-sat)

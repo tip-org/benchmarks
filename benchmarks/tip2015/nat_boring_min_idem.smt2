@@ -1,12 +1,12 @@
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
-  min2
-    ((x Nat) (y Nat)) Nat
+  le
+    ((x Nat) (y Nat)) Bool
     (match x
-      (case Z Z)
+      (case Z true)
       (case (S z)
         (match y
-          (case Z Z)
-          (case (S x2) (S (min2 z x2)))))))
-(assert-not (forall ((x Nat)) (= (min2 x x) x)))
+          (case Z false)
+          (case (S x2) (le z x2))))))
+(assert-not (forall ((x Nat)) (= (ite (le x x) x x) x)))
 (check-sat)

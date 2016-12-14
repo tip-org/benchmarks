@@ -2,33 +2,34 @@
 ; Andrew Ireland and Alan Bundy, JAR 1996
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+(define-fun x ((y Bool) (z Bool)) Bool (ite y true z))
 (define-fun-rec
-  equal
-    ((x Nat) (y Nat)) Bool
-    (match x
+  ==
+    ((y Nat) (z Nat)) Bool
+    (match y
       (case Z
-        (match y
+        (match z
           (case Z true)
-          (case (S z) false)))
-      (case (S x2)
-        (match y
+          (case (S x2) false)))
+      (case (S x3)
+        (match z
           (case Z false)
-          (case (S y2) (equal x2 y2))))))
+          (case (S y2) (== x3 y2))))))
 (define-fun-rec
   elem
-    ((x Nat) (y (list Nat))) Bool
-    (match y
+    ((y Nat) (z (list Nat))) Bool
+    (match z
       (case nil false)
-      (case (cons z xs) (or (equal x z) (elem x xs)))))
+      (case (cons x2 xs) (x (== y x2) (elem y xs)))))
 (define-fun-rec
   union2
-    ((x (list Nat)) (y (list Nat))) (list Nat)
-    (match x
-      (case nil y)
-      (case (cons z xs)
-        (ite (elem z y) (union2 xs y) (cons z (union2 xs y))))))
+    ((y (list Nat)) (z (list Nat))) (list Nat)
+    (match y
+      (case nil z)
+      (case (cons x2 xs)
+        (ite (elem x2 z) (union2 xs z) (cons x2 (union2 xs z))))))
 (assert-not
-  (forall ((x Nat) (y (list Nat)) (z (list Nat)))
-    (=> (elem x y) (elem x (union2 z y)))))
+  (forall ((y Nat) (z (list Nat)) (z2 (list Nat)))
+    (=> (elem y z) (elem y (union2 z2 z)))))
 (check-sat)

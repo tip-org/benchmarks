@@ -14,13 +14,13 @@
              (case (cons x2 x3) (cons y (butlast z)))))))))
 (define-fun-rec
   (par (a)
-    (append
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
-         (case (cons z xs) (cons z (append xs y)))))))
+         (case (cons z xs) (cons z (++ xs y)))))))
 (assert-not
   (par (a)
     (forall ((xs (list a)) (x a))
-      (= (butlast (append xs (cons x (as nil (list a))))) xs))))
+      (= (butlast (++ xs (cons x (as nil (list a))))) xs))))
 (check-sat)

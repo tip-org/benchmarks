@@ -7,13 +7,13 @@
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z y)
-      (case (S n) (S (plus n y)))))
+      (case (S z) (S (plus z y)))))
 (define-fun-rec
-  mult
+  times
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z Z)
-      (case (S n) (plus y (mult n y)))))
+      (case (S z) (plus y (times z y)))))
 (define-fun-rec
   acc_plus
     ((x Nat) (y Nat)) Nat
@@ -28,7 +28,7 @@
       (case (S z)
         (match y
           (case Z Z)
-          (case (S x2) (S (acc_plus z (acc_plus x2 (acc_alt_mul z x2)))))))))
+          (case (S x2) (acc_plus x (acc_plus x2 (acc_alt_mul z x2))))))))
 (assert-not
-  (forall ((x Nat) (y Nat)) (= (acc_alt_mul x y) (mult x y))))
+  (forall ((x Nat) (y Nat)) (= (acc_alt_mul x y) (times x y))))
 (check-sat)

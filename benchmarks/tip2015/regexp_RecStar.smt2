@@ -5,8 +5,8 @@
 (declare-datatypes () ((A (X) (Y))))
 (declare-datatypes ()
   ((R (Nil)
-     (Eps) (Atom (Atom_0 A)) (Plus (Plus_0 R) (Plus_1 R))
-     (Seq (Seq_0 R) (Seq_1 R)) (Star (Star_0 R)))))
+     (Eps) (Atom (proj1-Atom A)) (Plus (proj1-Plus R) (proj2-Plus R))
+     (Seq (proj1-Seq R) (proj2-Seq R)) (Star (proj1-Star R)))))
 (define-fun
   seq
     ((x R) (y R)) R
@@ -32,13 +32,6 @@
           (case Nil x)))
       (case Nil y)))
 (define-fun
-  (par (a)
-    (null
-       ((x (list a))) Bool
-       (match x
-         (case nil true)
-         (case (cons y z) false)))))
-(define-fun
   eqA
     ((x A) (y A)) Bool
     (match x
@@ -57,7 +50,7 @@
       (case default false)
       (case Eps true)
       (case (Plus p q) (or (eps p) (eps q)))
-      (case (Seq p2 q2) (and (eps p2) (eps q2)))
+      (case (Seq r q2) (and (eps r) (eps q2)))
       (case (Star y) true)))
 (define-fun epsR ((x R)) R (ite (eps x) Eps Nil))
 (define-fun-rec
@@ -67,9 +60,9 @@
       (case default Nil)
       (case (Atom a) (ite (eqA a y) Eps Nil))
       (case (Plus p q) (plus (step p y) (step q y)))
-      (case (Seq p2 q2)
-        (plus (seq (step p2 y) q2) (seq (epsR p2) (step q2 y))))
-      (case (Star p3) (seq (step p3 y) x))))
+      (case (Seq r q2)
+        (plus (seq (step r y) q2) (seq (epsR r) (step q2 y))))
+      (case (Star p2) (seq (step p2 y) x))))
 (define-fun-rec
   recognise
     ((x R) (y (list A))) Bool
@@ -79,5 +72,9 @@
 (assert-not
   (forall ((p R) (s (list A)))
     (= (recognise (Star p) s)
-      (or (null s) (recognise (Seq p (Star p)) s)))))
+      (or
+        (match s
+          (case nil true)
+          (case (cons x y) false))
+        (recognise (Seq p (Star p)) s)))))
 (check-sat)

@@ -2,8 +2,9 @@
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes (a)
   ((Tree (Leaf)
-     (Node (Node_0 (Tree a)) (Node_1 a) (Node_2 (Tree a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+     (Node (proj1-Node (Tree a))
+       (proj2-Node a) (proj3-Node (Tree a))))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
 (define-fun-rec
   (par (a)
     (mirror
@@ -29,5 +30,5 @@
          (case (Node l y r) (S (max2 (height l) (height r))))))))
 (assert-not
   (par (a)
-    (forall ((b (Tree a))) (= (height (mirror b)) (height b)))))
+    (forall ((a1 (Tree a))) (= (height (mirror a1)) (height a1)))))
 (check-sat)

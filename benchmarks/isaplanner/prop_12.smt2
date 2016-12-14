@@ -2,7 +2,7 @@
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
 (define-fun-rec
   (par (a b)
     (map2
@@ -21,7 +21,7 @@
              (case nil (as nil (list a)))
              (case (cons x2 x3) (drop z x3))))))))
 (assert-not
-  (par (a b)
-    (forall ((n Nat) (f (=> b a)) (xs (list b)))
+  (par (b a)
+    (forall ((n Nat) (f (=> a b)) (xs (list a)))
       (= (drop n (map2 f xs)) (map2 f (drop n xs))))))
 (check-sat)

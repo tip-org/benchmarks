@@ -3,20 +3,21 @@
 ;
 ; One way to prove this is to first show "Nick's lemma":
 ; len xs = len ys ==> zip xs ys ++ zip as bs = zip (xs ++ as) (ys ++ bs)
+(declare-datatypes (a b)
+  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes (a b) ((Pair (Pair2 (first a) (second b)))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
 (define-fun-rec
   (par (a b)
     (zip
-       ((x (list a)) (y (list b))) (list (Pair a b))
+       ((x (list a)) (y (list b))) (list (pair a b))
        (match x
-         (case nil (as nil (list (Pair a b))))
+         (case nil (as nil (list (pair a b))))
          (case (cons z x2)
            (match y
-             (case nil (as nil (list (Pair a b))))
-             (case (cons x3 x4) (cons (Pair2 z x3) (zip x2 x4)))))))))
+             (case nil (as nil (list (pair a b))))
+             (case (cons x3 x4) (cons (pair2 z x3) (zip x2 x4)))))))))
 (define-fun-rec
   (par (a)
     (len
@@ -26,18 +27,18 @@
          (case (cons y xs) (S (len xs)))))))
 (define-fun-rec
   (par (a)
-    (append
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
-         (case (cons z xs) (cons z (append xs y)))))))
+         (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a)
     (rev
        ((x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
-         (case (cons y xs) (append (rev xs) (cons y (as nil (list a)))))))))
+         (case (cons y xs) (++ (rev xs) (cons y (as nil (list a)))))))))
 (assert-not
   (par (a b)
     (forall ((xs (list a)) (ys (list b)))

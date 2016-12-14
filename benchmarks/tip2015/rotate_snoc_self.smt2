@@ -18,17 +18,16 @@
          (case (S z)
            (match y
              (case nil (as nil (list a)))
-             (case (cons x2 x3) (rotate z (snoc x2 x3)))))))))
+             (case (cons z2 xs1) (rotate z (snoc z2 xs1)))))))))
 (define-fun-rec
   (par (a)
-    (append
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
-         (case (cons z xs) (cons z (append xs y)))))))
+         (case (cons z xs) (cons z (++ xs y)))))))
 (assert-not
   (par (a)
     (forall ((n Nat) (xs (list a)))
-      (= (rotate n (append xs xs))
-        (append (rotate n xs) (rotate n xs))))))
+      (= (rotate n (++ xs xs)) (++ (rotate n xs) (rotate n xs))))))
 (check-sat)

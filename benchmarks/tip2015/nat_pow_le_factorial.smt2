@@ -5,13 +5,13 @@
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z y)
-      (case (S n) (S (plus n y)))))
+      (case (S z) (S (plus z y)))))
 (define-fun-rec
-  mult
+  times
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z Z)
-      (case (S n) (plus y (mult n y)))))
+      (case (S z) (plus y (times z y)))))
 (define-fun-rec
   lt
     ((x Nat) (y Nat)) Bool
@@ -22,20 +22,19 @@
           (case Z true)
           (case (S n) (lt n z))))))
 (define-fun-rec
+  formula-pow
+    ((x Nat) (y Nat)) Nat
+    (match y
+      (case Z (S Z))
+      (case (S z) (times x (formula-pow x z)))))
+(define-fun-rec
   factorial
     ((x Nat)) Nat
     (match x
       (case Z (S Z))
-      (case (S n) (mult x (factorial n)))))
-(define-fun ^1 () Nat (S Z))
-(define-fun-rec
-  pow
-    ((x Nat) (y Nat)) Nat
-    (match y
-      (case Z ^1)
-      (case (S m) (mult x (pow x m)))))
+      (case (S y) (times x (factorial y)))))
 (assert-not
   (forall ((n Nat))
-    (lt (pow (S (S Z)) (S (S (S (S n)))))
-      (factorial (S (S (S (S n))))))))
+    (lt (formula-pow (S (S Z)) (plus (S (S (S (S Z)))) n))
+      (factorial (plus (S (S (S (S Z)))) n)))))
 (check-sat)

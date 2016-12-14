@@ -2,7 +2,16 @@
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes (a)
   ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+(define-fun-rec
+  x-
+    ((x Nat) (y Nat)) Nat
+    (match x
+      (case Z Z)
+      (case (S z)
+        (match y
+          (case Z x)
+          (case (S x2) (x- z x2))))))
 (define-fun-rec
   (par (a)
     (take
@@ -13,15 +22,6 @@
            (match y
              (case nil (as nil (list a)))
              (case (cons x2 x3) (cons x2 (take z x3)))))))))
-(define-fun-rec
-  minus
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case Z Z)
-      (case (S z)
-        (match y
-          (case Z x)
-          (case (S x2) (minus z x2))))))
 (define-fun-rec
   (par (a)
     (len
@@ -41,20 +41,20 @@
              (case (cons x2 x3) (drop z x3))))))))
 (define-fun-rec
   (par (a)
-    (append
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
-         (case (cons z xs) (cons z (append xs y)))))))
+         (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a)
     (rev
        ((x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
-         (case (cons y xs) (append (rev xs) (cons y (as nil (list a)))))))))
+         (case (cons y xs) (++ (rev xs) (cons y (as nil (list a)))))))))
 (assert-not
   (par (a)
     (forall ((i Nat) (xs (list a)))
-      (= (rev (take i xs)) (drop (minus (len xs) i) (rev xs))))))
+      (= (rev (take i xs)) (drop (x- (len xs) i) (rev xs))))))
 (check-sat)

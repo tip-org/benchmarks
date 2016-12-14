@@ -5,7 +5,7 @@
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z y)
-      (case (S n) (S (plus n y)))))
+      (case (S z) (S (plus z y)))))
 (define-fun-rec
   acc_plus
     ((x Nat) (y Nat)) Nat
