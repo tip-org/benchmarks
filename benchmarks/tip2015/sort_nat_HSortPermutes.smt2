@@ -1,4 +1,4 @@
-; Heap sort (using skew heaps)
+; Heap sort (using skew heaps, efficient list-to-heap conversion)
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))

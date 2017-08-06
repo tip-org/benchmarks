@@ -1,4 +1,4 @@
-; Heap sort (using skew heaps, efficient list-to-heap conversion)
+; Heap sort (using skew heaps, simple list-to-heap conversion)
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
@@ -8,12 +8,6 @@
      (Node :source Sort.Node (proj1-Node Heap)
        (proj2-Node Nat) (proj3-Node Heap))
      (Nil :source Sort.Nil))))
-(define-fun-rec
-  toHeap :let
-    ((x (list Nat))) (list Heap)
-    (match x
-      (case nil (_ nil Heap))
-      (case (cons y z) (cons (Node Nil y Nil) (toHeap z)))))
 (define-fun-rec
   le
     ((x Nat) (y Nat)) Bool
@@ -44,35 +38,23 @@
           (case Nil x)))
       (case Nil y)))
 (define-fun-rec
-  hpairwise :source Sort.hpairwise
-    ((x (list Heap))) (list Heap)
-    (match x
-      (case nil (_ nil Heap))
-      (case (cons q y)
-        (match y
-          (case nil (cons q (_ nil Heap)))
-          (case (cons r qs) (cons (hmerge q r) (hpairwise qs)))))))
-(define-fun-rec
-  hmerging :source Sort.hmerging
-    ((x (list Heap))) Heap
-    (match x
-      (case nil Nil)
-      (case (cons q y)
-        (match y
-          (case nil q)
-          (case (cons z x2) (hmerging (hpairwise x)))))))
-(define-fun
-  toHeap2 :source Sort.toHeap
-    ((x (list Nat))) Heap (hmerging (toHeap x)))
-(define-fun-rec
   toList :source Sort.toList
     ((x Heap)) (list Nat)
     (match x
       (case (Node q y r) (cons y (toList (hmerge q r))))
       (case Nil (_ nil Nat))))
 (define-fun
-  hsort :source Sort.hsort
+  hinsert :source Sort.hinsert
+    ((x Nat) (y Heap)) Heap (hmerge (Node Nil x Nil) y))
+(define-fun-rec
+  toHeap2 :source Sort.toHeap2
+    ((x (list Nat))) Heap
+    (match x
+      (case nil Nil)
+      (case (cons y xs) (hinsert y (toHeap2 xs)))))
+(define-fun
+  hsort2 :source Sort.hsort2
     ((x (list Nat))) (list Nat) (toList (toHeap2 x)))
 (prove
-  :source Sort.prop_HSortSorts
-  (forall ((xs (list Nat))) (ordered (hsort xs))))
+  :source Sort.prop_HSort2Sorts
+  (forall ((xs (list Nat))) (ordered (hsort2 xs))))

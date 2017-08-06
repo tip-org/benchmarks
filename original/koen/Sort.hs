@@ -75,11 +75,27 @@ toList (Node p x q) = x : toList (p `hmerge` q)
 
 --------------------------------------------------------------------------------
 
--- Heap sort (using skew heaps)
+-- Heap sort (using skew heaps, efficient list-to-heap conversion)
 prop_HSortSorts xs = ordered (hsort xs) === True
 prop_HSortCount x xs = count x (hsort xs) === count x xs
 prop_HSortPermutes xs = hsort xs `isPermutation` xs === True
 prop_HSortIsSort xs = hsort xs === sort xs
+
+hsort2 :: [Int] -> [Int]
+hsort2 = toList . toHeap2
+
+hinsert :: Int -> Heap -> Heap
+hinsert x h = hmerge (Node Nil x Nil) h
+
+toHeap2 :: [Int] -> Heap
+toHeap2 [] = Nil
+toHeap2 (x:xs) = hinsert x (toHeap2 xs)
+
+-- Heap sort (using skew heaps, simple list-to-heap conversion)
+prop_HSort2Sorts xs = ordered (hsort2 xs) === True
+prop_HSort2Count x xs = count x (hsort2 xs) === count x xs
+prop_HSort2Permutes xs = hsort2 xs `isPermutation` xs === True
+prop_HSort2IsSort xs = hsort2 xs === sort xs
 
 --------------------------------------------------------------------------------
 
