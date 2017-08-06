@@ -8,7 +8,7 @@
     (filter :source Definitions.filter
        ((x (=> a Bool)) (y (list a))) (list a)
        (match y
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons z xs)
            (ite (@ x z) (cons z (filter x xs)) (filter x xs)))))))
 (define-fun-rec
@@ -23,8 +23,8 @@
     (rev :source Definitions.rev
        ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
-         (case (cons y xs) (++ (rev xs) (cons y (as nil (list a)))))))))
+         (case nil (_ nil a))
+         (case (cons y xs) (++ (rev xs) (cons y (_ nil a))))))))
 (prove
   :source Properties.prop_73
   (par (a)

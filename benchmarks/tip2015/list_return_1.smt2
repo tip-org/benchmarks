@@ -14,10 +14,10 @@
     (>>= :source ListMonad.>>=
        ((x (list a)) (y (=> a (list b)))) (list b)
        (match x
-         (case nil (as nil (list b)))
+         (case nil (_ nil b))
          (case (cons z xs) (++ (@ y z) (>>= xs y)))))))
 (prove
   :source ListMonad.prop_return_1
   (par (a b)
     (forall ((x a) (f (=> a (list b))))
-      (= (>>= (cons x (as nil (list a))) f) (@ f x)))))
+      (= (>>= (cons x (_ nil a)) f) (@ f x)))))

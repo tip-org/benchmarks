@@ -22,15 +22,14 @@
    (lin :source SimpleExpr4.lin ((x E)) (list Tok)))
   ((match x
      (case (Plus y z)
-       (++ (cons C (as nil (list Tok)))
-         (++ (lin x) (cons D (as nil (list Tok))))))
-     (case EX (cons X (as nil (list Tok))))
-     (case EY (cons Y (as nil (list Tok)))))
+       (++ (cons C (_ nil Tok)) (++ (lin x) (cons D (_ nil Tok)))))
+     (case EX (cons X (_ nil Tok)))
+     (case EY (cons Y (_ nil Tok))))
    (match x
      (case (Plus a b)
-       (++ (linTerm a) (++ (cons Pl (as nil (list Tok))) (linTerm b))))
-     (case EX (cons X (as nil (list Tok))))
-     (case EY (cons Y (as nil (list Tok)))))))
+       (++ (linTerm a) (++ (cons Pl (_ nil Tok)) (linTerm b))))
+     (case EX (cons X (_ nil Tok)))
+     (case EY (cons Y (_ nil Tok))))))
 (prove
   :source SimpleExpr4.prop_unambig4
   (forall ((u E) (v E)) (=> (= (lin u) (lin v)) (= u v))))

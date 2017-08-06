@@ -6,7 +6,7 @@
     (map :let :source Prelude.map
        ((f (=> a b)) (x (list a))) (list b)
        (match x
-         (case nil (as nil (list b)))
+         (case nil (_ nil b))
          (case (cons y xs) (cons (@ f y) (map f xs)))))))
 (define-fun-rec
   (par (a)

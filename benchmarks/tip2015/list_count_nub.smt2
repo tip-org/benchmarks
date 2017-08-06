@@ -6,7 +6,7 @@
     (filter :let :source Prelude.filter
        ((p (=> a Bool)) (x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y xs)
            (ite (@ p y) (cons y (filter p xs)) (filter p xs)))))))
 (define-fun-rec
@@ -14,7 +14,7 @@
     (nubBy :source Data.List.nubBy
        ((x (=> a (=> a Bool))) (y (list a))) (list a)
        (match y
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons z xs)
            (cons z
              (nubBy x (filter (lambda ((y2 a)) (not (@ (@ x z) y2))) xs))))))))

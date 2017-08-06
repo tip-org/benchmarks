@@ -35,4 +35,4 @@
   :source Properties.prop_76
   (forall ((n Nat) (m Nat) (xs (list Nat)))
     (=> (not (== n m))
-      (= (count n (++ xs (cons m (as nil (list Nat))))) (count n xs)))))
+      (= (count n (++ xs (cons m (_ nil Nat)))) (count n xs)))))

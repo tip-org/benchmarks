@@ -8,7 +8,7 @@
     (dropWhile :source Definitions.dropWhile
        ((x (=> a Bool)) (y (list a))) (list a)
        (match y
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons z xs) (ite (@ x z) (dropWhile x xs) y))))))
 (prove
   :source Properties.prop_35

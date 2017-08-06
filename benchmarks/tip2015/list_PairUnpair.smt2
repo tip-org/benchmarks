@@ -9,7 +9,7 @@
     (unpair :source List.unpair
        ((x (list (pair t t)))) (list t)
        (match x
-         (case nil (as nil (list t)))
+         (case nil (_ nil t))
          (case (cons y xys)
            (match y (case (pair2 z y2) (cons z (cons y2 (unpair xys))))))))))
 (define-fun-rec
@@ -17,10 +17,10 @@
     (pairs :source List.pairs
        ((x (list t))) (list (pair t t))
        (match x
-         (case nil (as nil (list (pair t t))))
+         (case nil (_ nil (pair t t)))
          (case (cons y z)
            (match z
-             (case nil (as nil (list (pair t t))))
+             (case nil (_ nil (pair t t)))
              (case (cons y2 xs) (cons (pair2 y y2) (pairs xs)))))))))
 (define-fun-rec
   (par (a)

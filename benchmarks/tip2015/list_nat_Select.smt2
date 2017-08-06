@@ -9,7 +9,7 @@
     (select :let
        ((x a) (y (list (pair a (list a))))) (list (pair a (list a)))
        (match y
-         (case nil (as nil (list (pair a (list a)))))
+         (case nil (_ nil (pair a (list a))))
          (case (cons z x2)
            (match z
              (case (pair2 y2 ys)
@@ -19,14 +19,14 @@
     (select2 :source List.select
        ((x (list a))) (list (pair a (list a)))
        (match x
-         (case nil (as nil (list (pair a (list a)))))
+         (case nil (_ nil (pair a (list a))))
          (case (cons y xs) (cons (pair2 y xs) (select y (select2 xs))))))))
 (define-fun-rec
   (par (a b)
     (map :let :source Prelude.map
        ((f (=> a b)) (x (list a))) (list b)
        (match x
-         (case nil (as nil (list b)))
+         (case nil (_ nil b))
          (case (cons y xs) (cons (@ f y) (map f xs)))))))
 (prove
   :source List.prop_Select

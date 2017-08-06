@@ -34,10 +34,10 @@
   |toList'| :source |Sort_HeapSort.toList'|
     ((x Int) (y Heap)) (list Int)
     (ite
-      (= x 0) (as nil (list Int))
+      (= x 0) (_ nil Int)
       (match y
         (case (Node p z q) (cons z (|toList'| (- x 1) (merge p q))))
-        (case Nil (as nil (list Int))))))
+        (case Nil (_ nil Int)))))
 (define-fun
   insert :source Sort_HeapSort.insert
     ((x Int) (y Heap)) Heap (merge (Node Nil x Nil) y))

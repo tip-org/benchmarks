@@ -46,10 +46,10 @@
     (match y
       (case (Node q z r)
         (ite (le x z) (Node (add x q) z r) (Node q z (add x r))))
-      (case Nil (Node (as Nil (Tree Nat)) x (as Nil (Tree Nat))))))
+      (case Nil (Node (_ Nil Nat) x (_ Nil Nat)))))
 (prove
   :source Sort_TreeSort.prop_AddDifferent
   (forall ((x Nat) (y Nat) (t (Tree Nat)))
     (=> (distinct x y)
-      (= (count y (flatten (add x t) (as nil (list Nat))))
-        (count y (flatten t (as nil (list Nat))))))))
+      (= (count y (flatten (add x t) (_ nil Nat)))
+        (count y (flatten t (_ nil Nat)))))))

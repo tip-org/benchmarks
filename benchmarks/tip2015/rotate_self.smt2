@@ -18,9 +18,8 @@
          (case Z y)
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
-             (case (cons z2 xs1)
-               (rotate z (++ xs1 (cons z2 (as nil (list a))))))))))))
+             (case nil (_ nil a))
+             (case (cons z2 xs1) (rotate z (++ xs1 (cons z2 (_ nil a)))))))))))
 (prove
   :source SelfRotate.prop_self
   (par (a)

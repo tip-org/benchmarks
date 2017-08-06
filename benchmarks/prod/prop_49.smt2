@@ -40,14 +40,14 @@
   insert :source Definitions.insert
     ((x Nat) (y (list Nat))) (list Nat)
     (match y
-      (case nil (cons x (as nil (list Nat))))
+      (case nil (cons x (_ nil Nat)))
       (case (cons z xs)
         (ite (<=2 x z) (cons x y) (cons z (insert x xs))))))
 (define-fun-rec
   isort :source Definitions.isort
     ((x (list Nat))) (list Nat)
     (match x
-      (case nil (as nil (list Nat)))
+      (case nil (_ nil Nat))
       (case (cons y xs) (insert y (isort xs)))))
 (prove
   :source Properties.prop_T49

@@ -22,10 +22,10 @@
     ((x E)) (list Tok)
     (match x
       (case (Plus a b)
-        (++ (cons C (as nil (list Tok)))
-          (++ (lin a) (++ (cons D (cons Pl (as nil (list Tok)))) (lin b)))))
-      (case EX (cons X (as nil (list Tok))))
-      (case EY (cons Y (as nil (list Tok))))))
+        (++ (cons C (_ nil Tok))
+          (++ (lin a) (++ (cons D (cons Pl (_ nil Tok))) (lin b)))))
+      (case EX (cons X (_ nil Tok)))
+      (case EY (cons Y (_ nil Tok)))))
 (prove
   :source SimpleExpr3.prop_unambig3
   (forall ((u E) (v E)) (=> (= (lin u) (lin v)) (= u v))))

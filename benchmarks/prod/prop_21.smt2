@@ -28,9 +28,8 @@
          (case Z y)
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
-             (case (cons x2 x3)
-               (rotate z (++ x3 (cons x2 (as nil (list a))))))))))))
+             (case nil (_ nil a))
+             (case (cons x2 x3) (rotate z (++ x3 (cons x2 (_ nil a)))))))))))
 (prove
   :source Properties.prop_T21
   (par (a)

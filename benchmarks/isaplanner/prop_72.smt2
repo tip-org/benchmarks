@@ -11,10 +11,10 @@
     (take :source Definitions.take
        ((x Nat) (y (list a))) (list a)
        (match x
-         (case Z (as nil (list a)))
+         (case Z (_ nil a))
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons x2 x3) (cons x2 (take z x3)))))))))
 (define-fun-rec
   (par (a)
@@ -31,7 +31,7 @@
          (case Z y)
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons x2 x3) (drop z x3))))))))
 (define-fun-rec
   |-2| :source Definitions.-
@@ -54,8 +54,8 @@
     (rev :source Definitions.rev
        ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
-         (case (cons y xs) (++ (rev xs) (cons y (as nil (list a)))))))))
+         (case nil (_ nil a))
+         (case (cons y xs) (++ (rev xs) (cons y (_ nil a))))))))
 (prove
   :source Properties.prop_72
   (par (a)

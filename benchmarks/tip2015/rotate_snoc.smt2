@@ -8,7 +8,7 @@
     (snoc :source SnocRotate.snoc
        ((x a) (y (list a))) (list a)
        (match y
-         (case nil (cons x (as nil (list a))))
+         (case nil (cons x (_ nil a)))
          (case (cons z ys) (cons z (snoc x ys)))))))
 (define-fun-rec
   (par (a)
@@ -18,7 +18,7 @@
          (case Z y)
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons z2 xs1) (rotate z (snoc z2 xs1)))))))))
 (define-fun-rec
   plus

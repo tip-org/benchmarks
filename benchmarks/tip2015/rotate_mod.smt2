@@ -51,9 +51,9 @@
     (take :source Prelude.take
        ((x Nat) (y (list a))) (list a)
        (ite
-         (le x Z) (as nil (list a))
+         (le x Z) (_ nil a)
          (match y
-           (case nil (as nil (list a)))
+           (case nil (_ nil a))
            (case (cons z xs)
              (match x (case (S x2) (cons z (take x2 xs))))))))))
 (define-fun-rec
@@ -63,7 +63,7 @@
        (ite
          (le x Z) y
          (match y
-           (case nil (as nil (list a)))
+           (case nil (_ nil a))
            (case (cons z xs1) (match x (case (S x2) (drop x2 xs1)))))))))
 (define-fun-rec
   (par (a)
@@ -80,9 +80,8 @@
          (case Z y)
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
-             (case (cons z2 xs1)
-               (rotate z (++ xs1 (cons z2 (as nil (list a))))))))))))
+             (case nil (_ nil a))
+             (case (cons z2 xs1) (rotate z (++ xs1 (cons z2 (_ nil a)))))))))))
 (prove
   :source ModRotate.prop_mod
   (par (a)

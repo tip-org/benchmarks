@@ -8,10 +8,10 @@
     (butlast :source Definitions.butlast
        ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y z)
            (match z
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons x2 x3) (cons y (butlast z)))))))))
 (define-fun-rec
   (par (a)
@@ -24,4 +24,4 @@
   :source Properties.prop_51
   (par (a)
     (forall ((xs (list a)) (x a))
-      (= (butlast (++ xs (cons x (as nil (list a))))) xs))))
+      (= (butlast (++ xs (cons x (_ nil a)))) xs))))

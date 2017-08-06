@@ -32,17 +32,16 @@
     (match y
       (case (Node p z q)
         (ite (<= x z) (Node (add x p) z q) (Node p z (add x q))))
-      (case Nil (Node (as Nil (Tree Int)) x (as Nil (Tree Int))))))
+      (case Nil (Node (_ Nil Int) x (_ Nil Int)))))
 (define-fun-rec
   toTree :source Sort_TreeSort.toTree
     ((x (list Int))) (Tree Int)
     (match x
-      (case nil (as Nil (Tree Int)))
+      (case nil (_ Nil Int))
       (case (cons y xs) (add y (toTree xs)))))
 (define-fun
   tsort :source Sort_TreeSort.tsort
-    ((x (list Int))) (list Int)
-    (flatten (toTree x) (as nil (list Int))))
+    ((x (list Int))) (list Int) (flatten (toTree x) (_ nil Int)))
 (prove
   :source Sort_TreeSort.prop_SortSorts
   (forall ((x (list Int))) (ordered-ordered1 (tsort x))))

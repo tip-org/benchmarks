@@ -12,10 +12,10 @@
   ((par (a) (evens :source List.evens ((x (list a))) (list a)))
    (par (a) (odds :source List.odds ((x (list a))) (list a))))
   ((match x
-     (case nil (as nil (list a)))
+     (case nil (_ nil a))
      (case (cons y xs) (cons y (odds xs))))
    (match x
-     (case nil (as nil (list a)))
+     (case nil (_ nil a))
      (case (cons y xs) (evens xs)))))
 (prove
   :source List.prop_Interleave

@@ -34,4 +34,4 @@
 (prove
   :source Properties.prop_28
   (forall ((x Nat) (xs (list Nat)))
-    (elem x (++ xs (cons x (as nil (list Nat)))))))
+    (elem x (++ xs (cons x (_ nil Nat))))))

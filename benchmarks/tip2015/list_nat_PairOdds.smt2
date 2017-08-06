@@ -9,26 +9,26 @@
     (pairs :source List.pairs
        ((x (list t))) (list (pair t t))
        (match x
-         (case nil (as nil (list (pair t t))))
+         (case nil (_ nil (pair t t)))
          (case (cons y z)
            (match z
-             (case nil (as nil (list (pair t t))))
+             (case nil (_ nil (pair t t)))
              (case (cons y2 xs) (cons (pair2 y y2) (pairs xs)))))))))
 (define-fun-rec
   (par (a b)
     (map :let :source Prelude.map
        ((f (=> a b)) (x (list a))) (list b)
        (match x
-         (case nil (as nil (list b)))
+         (case nil (_ nil b))
          (case (cons y xs) (cons (@ f y) (map f xs)))))))
 (define-funs-rec
   ((par (a) (evens :source List.evens ((x (list a))) (list a)))
    (par (a) (odds :source List.odds ((x (list a))) (list a))))
   ((match x
-     (case nil (as nil (list a)))
+     (case nil (_ nil a))
      (case (cons y xs) (cons y (odds xs))))
    (match x
-     (case nil (as nil (list a)))
+     (case nil (_ nil a))
      (case (cons y xs) (evens xs)))))
 (prove
   :source List.prop_PairOdds

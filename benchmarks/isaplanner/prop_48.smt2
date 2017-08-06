@@ -20,10 +20,10 @@
     (butlast :source Definitions.butlast
        ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y z)
            (match z
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons x2 x3) (cons y (butlast z)))))))))
 (define-fun-rec
   (par (a)
@@ -40,4 +40,4 @@
         (match xs
           (case nil true)
           (case (cons x y) false)))
-      (= (++ (butlast xs) (cons (last xs) (as nil (list Nat)))) xs))))
+      (= (++ (butlast xs) (cons (last xs) (_ nil Nat))) xs))))

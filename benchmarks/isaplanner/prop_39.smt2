@@ -33,5 +33,5 @@
 (prove
   :source Properties.prop_39
   (forall ((n Nat) (x Nat) (xs (list Nat)))
-    (= (+2 (count n (cons x (as nil (list Nat)))) (count n xs))
+    (= (+2 (count n (cons x (_ nil Nat))) (count n xs))
       (count n (cons x xs)))))

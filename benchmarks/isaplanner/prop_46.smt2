@@ -12,13 +12,13 @@
     (zip :source Definitions.zip
        ((x (list a)) (y (list b))) (list (pair a b))
        (match x
-         (case nil (as nil (list (pair a b))))
+         (case nil (_ nil (pair a b)))
          (case (cons z x2)
            (match y
-             (case nil (as nil (list (pair a b))))
+             (case nil (_ nil (pair a b)))
              (case (cons x3 x4) (cons (pair2 z x3) (zip x2 x4)))))))))
 (prove
   :source Properties.prop_46
   (par (b)
     (forall ((xs (list b)))
-      (= (zip (as nil (list Any)) xs) (as nil (list (pair Any b)))))))
+      (= (zip (_ nil Any) xs) (_ nil (pair Any b))))))

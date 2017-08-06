@@ -19,7 +19,7 @@
     (filter :let :source Prelude.filter
        ((p (=> a Bool)) (x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y xs)
            (ite (@ p y) (cons y (filter p xs)) (filter p xs)))))))
 (define-fun-rec
@@ -40,7 +40,7 @@
   free :source Subst.free
     ((x Expr)) (list Int)
     (match x
-      (case (Var y) (cons y (as nil (list Int))))
+      (case (Var y) (cons y (_ nil Int)))
       (case (Lam z b)
         (filter (lambda ((x2 Int)) (distinct z x2)) (free b)))
       (case (App a2 b2) (++ (free a2) (free b2)))))

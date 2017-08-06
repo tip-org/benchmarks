@@ -29,7 +29,7 @@
   delete :source Definitions.delete
     ((x Nat) (y (list Nat))) (list Nat)
     (match y
-      (case nil (as nil (list Nat)))
+      (case nil (_ nil Nat))
       (case (cons z xs)
         (ite (== x z) (delete x xs) (cons z (delete x xs))))))
 (define-fun-rec

@@ -26,18 +26,6 @@
           (case (S n) (lt n z))))))
 (define-fun-rec
   (par (a)
-    (lmerge :source Sort.lmerge
-       ((x (list a)) (y (list a))) (list a)
-       (match x
-         (case nil y)
-         (case (cons z x2)
-           (match y
-             (case nil x)
-             (case (cons x3 x4)
-               (ite
-                 (<= z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))))
-(define-fun-rec
-  (par (a)
     (length :source Prelude.length
        ((x (list a))) Nat
        (match x
@@ -53,30 +41,38 @@
           (case Z false)
           (case (S x2) (le z x2))))))
 (define-fun-rec
+  lmerge :source Sort.lmerge
+    ((x (list Nat)) (y (list Nat))) (list Nat)
+    (match x
+      (case nil y)
+      (case (cons z x2)
+        (match y
+          (case nil x)
+          (case (cons x3 x4)
+            (ite (le z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
+(define-fun-rec
   (par (a)
     (take :source Prelude.take
        ((x Nat) (y (list a))) (list a)
        (ite
-         (le x Z) (as nil (list a))
+         (le x Z) (_ nil a)
          (match y
-           (case nil (as nil (list a)))
+           (case nil (_ nil a))
            (case (cons z xs)
              (match x (case (S x2) (cons z (take x2 xs))))))))))
 (define-fun-rec
-  (par (a)
-    (insert :source Sort.insert
-       ((x a) (y (list a))) (list a)
-       (match y
-         (case nil (cons x (as nil (list a))))
-         (case (cons z xs)
-           (ite (<= x z) (cons x y) (cons z (insert x xs))))))))
+  insert :source Sort.insert
+    ((x Nat) (y (list Nat))) (list Nat)
+    (match y
+      (case nil (cons x (_ nil Nat)))
+      (case (cons z xs)
+        (ite (le x z) (cons x y) (cons z (insert x xs))))))
 (define-fun-rec
-  (par (a)
-    (isort :source Sort.sort
-       ((x (list a))) (list a)
-       (match x
-         (case nil (as nil (list a)))
-         (case (cons y xs) (insert y (isort xs)))))))
+  isort :source Sort.sort
+    ((x (list Nat))) (list Nat)
+    (match x
+      (case nil (_ nil Nat))
+      (case (cons y xs) (insert y (isort xs)))))
 (define-fun-rec
   idiv
     ((x Nat) (y Nat)) Nat (ite (lt x y) Z (S (idiv (minus x y) y))))
@@ -87,20 +83,19 @@
        (ite
          (le x Z) y
          (match y
-           (case nil (as nil (list a)))
+           (case nil (_ nil a))
            (case (cons z xs1) (match x (case (S x2) (drop x2 xs1)))))))))
 (define-fun-rec
-  (par (a)
-    (msorttd :source Sort.msorttd
-       ((x (list a))) (list a)
-       (match x
-         (case nil (as nil (list a)))
-         (case (cons y z)
-           (match z
-             (case nil (cons y (as nil (list a))))
-             (case (cons x2 x3)
-               (let ((k (idiv (length x) (S (S Z)))))
-                 (lmerge (msorttd (take k x)) (msorttd (drop k x)))))))))))
+  msorttd :source Sort.msorttd
+    ((x (list Nat))) (list Nat)
+    (match x
+      (case nil (_ nil Nat))
+      (case (cons y z)
+        (match z
+          (case nil (cons y (_ nil Nat)))
+          (case (cons x2 x3)
+            (let ((k (idiv (length x) (S (S Z)))))
+              (lmerge (msorttd (take k x)) (msorttd (drop k x)))))))))
 (prove
   :source Sort.prop_MSortTDIsSort
-  (forall ((x (list Nat))) (= (msorttd x) (isort x))))
+  (forall ((xs (list Nat))) (= (msorttd xs) (isort xs))))

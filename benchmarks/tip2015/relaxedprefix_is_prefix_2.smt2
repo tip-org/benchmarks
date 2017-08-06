@@ -40,5 +40,5 @@
 (prove
   :source RelaxedPrefix.prop_is_prefix_2
   (forall ((x It) (xs (list It)) (ys (list It)) (zs (list It)))
-    (isRelaxedPrefix (++ xs (++ (cons x (as nil (list It))) ys))
+    (isRelaxedPrefix (++ xs (++ (cons x (_ nil It)) ys))
       (++ xs (++ ys zs)))))

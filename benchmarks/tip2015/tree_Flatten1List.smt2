@@ -11,13 +11,13 @@
     (flatten1 :source Tree.flatten1
        ((x (list (Tree a)))) (list a)
        (match x
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y ps)
            (match y
              (case (Node z x2 q)
                (match z
                  (case (Node x3 x4 x5)
-                   (flatten1 (cons z (cons (Node (as Nil (Tree a)) x2 q) ps))))
+                   (flatten1 (cons z (cons (Node (_ Nil a) x2 q) ps))))
                  (case Nil (cons x2 (flatten1 (cons q ps))))))
              (case Nil (flatten1 ps))))))))
 (define-fun-rec
@@ -32,7 +32,7 @@
     (concatMap :let :source Prelude.concatMap
        ((f (=> a (list b))) (x (list a))) (list b)
        (match x
-         (case nil (as nil (list b)))
+         (case nil (_ nil b))
          (case (cons y xs) (++ (@ f y) (concatMap f xs)))))))
 (define-fun-rec
   (par (a)
@@ -40,8 +40,8 @@
        ((x (Tree a))) (list a)
        (match x
          (case (Node p y q)
-           (++ (flatten0 p) (++ (cons y (as nil (list a))) (flatten0 q))))
-         (case Nil (as nil (list a)))))))
+           (++ (flatten0 p) (++ (cons y (_ nil a)) (flatten0 q))))
+         (case Nil (_ nil a))))))
 (prove
   :source Tree.prop_Flatten1List
   (par (b)

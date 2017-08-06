@@ -10,16 +10,6 @@
       (case Z y)
       (case (S z) (S (plus z y)))))
 (define-fun-rec
-  (par (a)
-    (ordered-ordered1 :let :source SortUtils.ordered
-       ((x (list a))) Bool
-       (match x
-         (case nil true)
-         (case (cons y z)
-           (match z
-             (case nil true)
-             (case (cons y2 xs) (and (<= y y2) (ordered-ordered1 z)))))))))
-(define-fun-rec
   minus
     ((x Nat) (y Nat)) Nat
     (match x
@@ -33,18 +23,6 @@
       (match x
         (case Z Z)
         (case (S y) (plus (S Z) (nmsorttd-half1 (minus x (S (S Z)))))))))
-(define-fun-rec
-  (par (a)
-    (lmerge :source Sort.lmerge
-       ((x (list a)) (y (list a))) (list a)
-       (match x
-         (case nil y)
-         (case (cons z x2)
-           (match y
-             (case nil x)
-             (case (cons x3 x4)
-               (ite
-                 (<= z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))))
 (define-fun-rec
   (par (a)
     (length :source Prelude.length
@@ -62,13 +40,32 @@
           (case Z false)
           (case (S x2) (le z x2))))))
 (define-fun-rec
+  lmerge :source Sort.lmerge
+    ((x (list Nat)) (y (list Nat))) (list Nat)
+    (match x
+      (case nil y)
+      (case (cons z x2)
+        (match y
+          (case nil x)
+          (case (cons x3 x4)
+            (ite (le z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
+(define-fun-rec
+  ordered :source SortUtils.ordered
+    ((x (list Nat))) Bool
+    (match x
+      (case nil true)
+      (case (cons y z)
+        (match z
+          (case nil true)
+          (case (cons y2 xs) (and (le y y2) (ordered z)))))))
+(define-fun-rec
   (par (a)
     (take :source Prelude.take
        ((x Nat) (y (list a))) (list a)
        (ite
-         (le x Z) (as nil (list a))
+         (le x Z) (_ nil a)
          (match y
-           (case nil (as nil (list a)))
+           (case nil (_ nil a))
            (case (cons z xs)
              (match x (case (S x2) (cons z (take x2 xs))))))))))
 (define-fun-rec
@@ -78,20 +75,19 @@
        (ite
          (le x Z) y
          (match y
-           (case nil (as nil (list a)))
+           (case nil (_ nil a))
            (case (cons z xs1) (match x (case (S x2) (drop x2 xs1)))))))))
 (define-fun-rec
-  (par (a)
-    (nmsorttd :source Sort.nmsorttd
-       ((x (list a))) (list a)
-       (match x
-         (case nil (as nil (list a)))
-         (case (cons y z)
-           (match z
-             (case nil (cons y (as nil (list a))))
-             (case (cons x2 x3)
-               (let ((k (nmsorttd-half1 (length x))))
-                 (lmerge (nmsorttd (take k x)) (nmsorttd (drop k x)))))))))))
+  nmsorttd :source Sort.nmsorttd
+    ((x (list Nat))) (list Nat)
+    (match x
+      (case nil (_ nil Nat))
+      (case (cons y z)
+        (match z
+          (case nil (cons y (_ nil Nat)))
+          (case (cons x2 x3)
+            (let ((k (nmsorttd-half1 (length x))))
+              (lmerge (nmsorttd (take k x)) (nmsorttd (drop k x)))))))))
 (prove
   :source Sort.prop_NMSortTDSorts
-  (forall ((x (list Nat))) (ordered-ordered1 (nmsorttd x))))
+  (forall ((xs (list Nat))) (ordered (nmsorttd xs))))

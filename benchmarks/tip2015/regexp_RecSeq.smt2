@@ -20,7 +20,7 @@
        ((x a) (y (list (pair (list a) (list a)))))
        (list (pair (list a) (list a)))
        (match y
-         (case nil (as nil (list (pair (list a) (list a)))))
+         (case nil (_ nil (pair (list a) (list a))))
          (case (cons z x2)
            (match z
              (case (pair2 xs ys)
@@ -31,10 +31,10 @@
        ((x (list a))) (list (pair (list a) (list a)))
        (match x
          (case nil
-           (cons (pair2 (as nil (list a)) (as nil (list a)))
-             (as nil (list (pair (list a) (list a))))))
+           (cons (pair2 (_ nil a) (_ nil a))
+             (_ nil (pair (list a) (list a)))))
          (case (cons y s)
-           (cons (pair2 (as nil (list a)) x) (split y (split2 s))))))))
+           (cons (pair2 (_ nil a) x) (split y (split2 s))))))))
 (define-fun
   seq :source RegExp.seq
     ((x R) (y R)) R
@@ -108,7 +108,7 @@
   formula :let
     ((p R) (q R) (x (list (pair (list A) (list A))))) (list Bool)
     (match x
-      (case nil (as nil (list Bool)))
+      (case nil (_ nil Bool))
       (case (cons y z)
         (match y
           (case (pair2 s1 s2)

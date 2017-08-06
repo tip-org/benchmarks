@@ -11,17 +11,17 @@
     (take :source Definitions.take
        ((x Nat) (y (list a))) (list a)
        (match x
-         (case Z (as nil (list a)))
+         (case Z (_ nil a))
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons x2 x3) (cons x2 (take z x3)))))))))
 (define-fun-rec
   (par (a b)
     (map :source Definitions.map
        ((x (=> a b)) (y (list a))) (list b)
        (match y
-         (case nil (as nil (list b)))
+         (case nil (_ nil b))
          (case (cons z xs) (cons (@ x z) (map x xs)))))))
 (prove
   :source Properties.prop_41

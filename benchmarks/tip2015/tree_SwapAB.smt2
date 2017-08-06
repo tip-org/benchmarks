@@ -16,7 +16,7 @@
           (ite
             (= x2 y) (Node (swap x y p) x (swap x y q))
             (Node (swap x y p) x2 (swap x y q)))))
-      (case Nil (as Nil (Tree Int)))))
+      (case Nil (_ Nil Int))))
 (define-fun-rec
   (par (a)
     (elem :let :source Prelude.elem
@@ -37,8 +37,8 @@
        ((x (Tree a))) (list a)
        (match x
          (case (Node p y q)
-           (++ (flatten0 p) (++ (cons y (as nil (list a))) (flatten0 q))))
-         (case Nil (as nil (list a)))))))
+           (++ (flatten0 p) (++ (cons y (_ nil a)) (flatten0 q))))
+         (case Nil (_ nil a))))))
 (prove
   :source Tree.prop_SwapAB
   (forall ((p (Tree Int)) (a Int) (b Int))

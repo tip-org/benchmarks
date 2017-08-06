@@ -28,7 +28,7 @@
   ins1 :source Definitions.ins1
     ((x Nat) (y (list Nat))) (list Nat)
     (match y
-      (case nil (cons x (as nil (list Nat))))
+      (case nil (cons x (_ nil Nat)))
       (case (cons z xs) (ite (== x z) y (cons z (ins1 x xs))))))
 (prove
   :source Properties.prop_29

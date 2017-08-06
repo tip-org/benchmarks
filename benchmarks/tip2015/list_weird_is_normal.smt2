@@ -11,7 +11,7 @@
     (weird_concat :source ListMonad.weird_concat
        ((x (list (list a)))) (list a)
        (match x
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y xss)
            (match y
              (case nil (weird_concat xss))
@@ -28,7 +28,7 @@
     (concat :let :source Prelude.concat
        ((x (list (list a)))) (list a)
        (match x
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y xs) (++ y (concat xs)))))))
 (prove
   :source ListMonad.prop_weird_is_normal

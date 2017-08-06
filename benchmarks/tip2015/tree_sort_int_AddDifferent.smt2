@@ -30,10 +30,10 @@
     (match y
       (case (Node p z q)
         (ite (<= x z) (Node (add x p) z q) (Node p z (add x q))))
-      (case Nil (Node (as Nil (Tree Int)) x (as Nil (Tree Int))))))
+      (case Nil (Node (_ Nil Int) x (_ Nil Int)))))
 (prove
   :source Sort_TreeSort.prop_AddDifferent
   (forall ((x Int) (y Int) (t (Tree Int)))
     (=> (distinct x y)
-      (= (count y (flatten (add x t) (as nil (list Int))))
-        (count y (flatten t (as nil (list Int))))))))
+      (= (count y (flatten (add x t) (_ nil Int)))
+        (count y (flatten t (_ nil Int)))))))

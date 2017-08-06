@@ -25,4 +25,4 @@
 (prove
   :source Properties.prop_64
   (forall ((x Nat) (xs (list Nat)))
-    (= (last (++ xs (cons x (as nil (list Nat))))) x)))
+    (= (last (++ xs (cons x (_ nil Nat)))) x)))

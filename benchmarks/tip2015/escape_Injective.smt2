@@ -29,7 +29,7 @@
   escape :source Escape.escape
     ((x (list Token))) (list Token)
     (match x
-      (case nil (as nil (list Token)))
+      (case nil (_ nil Token))
       (case (cons y xs)
         (ite
           (isSpecial y) (cons ESC (cons (code y) (escape xs)))

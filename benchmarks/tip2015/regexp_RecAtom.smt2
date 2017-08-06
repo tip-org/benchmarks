@@ -89,4 +89,4 @@
 (prove
   :source RegExp.prop_RecAtom
   (forall ((a A) (s (list A)))
-    (= (recognise (Atom a) s) (eqList s (cons a (as nil (list A)))))))
+    (= (recognise (Atom a) s) (eqList s (cons a (_ nil A))))))

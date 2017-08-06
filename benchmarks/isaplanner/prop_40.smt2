@@ -11,12 +11,11 @@
     (take :source Definitions.take
        ((x Nat) (y (list a))) (list a)
        (match x
-         (case Z (as nil (list a)))
+         (case Z (_ nil a))
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons x2 x3) (cons x2 (take z x3)))))))))
 (prove
   :source Properties.prop_40
-  (par (a)
-    (forall ((xs (list a))) (= (take Z xs) (as nil (list a))))))
+  (par (a) (forall ((xs (list a))) (= (take Z xs) (_ nil a)))))

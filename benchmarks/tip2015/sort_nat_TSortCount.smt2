@@ -2,12 +2,12 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes (a)
-  ((Tree :source Sort.Tree
-     (TNode :source Sort.TNode (proj1-TNode (Tree a))
-       (proj2-TNode a) (proj3-TNode (Tree a)))
-     (TNil :source Sort.TNil))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes ()
+  ((Tree :source Sort.Tree
+     (TNode :source Sort.TNode (proj1-TNode Tree)
+       (proj2-TNode Nat) (proj3-TNode Tree))
+     (TNil :source Sort.TNil))))
 (define-fun-rec
   plus
     ((x Nat) (y Nat)) Nat
@@ -15,12 +15,20 @@
       (case Z y)
       (case (S z) (S (plus z y)))))
 (define-fun-rec
-  (par (a)
-    (flatten :source Sort.flatten
-       ((x (Tree a)) (y (list a))) (list a)
-       (match x
-         (case (TNode q z r) (flatten q (cons z (flatten r y))))
-         (case TNil y)))))
+  le
+    ((x Nat) (y Nat)) Bool
+    (match x
+      (case Z true)
+      (case (S z)
+        (match y
+          (case Z false)
+          (case (S x2) (le z x2))))))
+(define-fun-rec
+  flatten :source Sort.flatten
+    ((x Tree) (y (list Nat))) (list Nat)
+    (match x
+      (case (TNode q z r) (flatten q (cons z (flatten r y))))
+      (case TNil y)))
 (define-fun-rec
   (par (a)
     (count :source SortUtils.count
@@ -30,25 +38,22 @@
          (case (cons z ys)
            (ite (= x z) (plus (S Z) (count x ys)) (count x ys)))))))
 (define-fun-rec
-  (par (a)
-    (add :source Sort.add
-       ((x a) (y (Tree a))) (Tree a)
-       (match y
-         (case (TNode q z r)
-           (ite (<= x z) (TNode (add x q) z r) (TNode q z (add x r))))
-         (case TNil (TNode (as TNil (Tree a)) x (as TNil (Tree a))))))))
+  add :source Sort.add
+    ((x Nat) (y Tree)) Tree
+    (match y
+      (case (TNode q z r)
+        (ite (le x z) (TNode (add x q) z r) (TNode q z (add x r))))
+      (case TNil (TNode TNil x TNil))))
 (define-fun-rec
-  (par (a)
-    (toTree :source Sort.toTree
-       ((x (list a))) (Tree a)
-       (match x
-         (case nil (as TNil (Tree a)))
-         (case (cons y xs) (add y (toTree xs)))))))
+  toTree :source Sort.toTree
+    ((x (list Nat))) Tree
+    (match x
+      (case nil TNil)
+      (case (cons y xs) (add y (toTree xs)))))
 (define-fun
-  (par (a)
-    (tsort :source Sort.tsort
-       ((x (list a))) (list a) (flatten (toTree x) (as nil (list a))))))
+  tsort :source Sort.tsort
+    ((x (list Nat))) (list Nat) (flatten (toTree x) (_ nil Nat)))
 (prove
   :source Sort.prop_TSortCount
-  (forall ((x Nat) (y (list Nat)))
-    (= (count x (tsort y)) (count x y))))
+  (forall ((x Nat) (xs (list Nat)))
+    (= (count x (tsort xs)) (count x xs))))

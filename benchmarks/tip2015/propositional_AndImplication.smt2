@@ -21,7 +21,7 @@
   models7 :let
     ((x Int) (y (list (pair Int Bool)))) (list (pair Int Bool))
     (match y
-      (case nil (as nil (list (pair Int Bool))))
+      (case nil (_ nil (pair Int Bool)))
       (case (cons z xs)
         (ite
           (distinct x (match z (case (pair2 x2 y2) x2)))
@@ -30,7 +30,7 @@
   models6 :let
     ((x Int) (y (list (pair Int Bool)))) (list Bool)
     (match y
-      (case nil (as nil (list Bool)))
+      (case nil (_ nil Bool))
       (case (cons z x2)
         (match z
           (case (pair2 y2 x3)
@@ -39,7 +39,7 @@
   models5 :let
     ((x Int) (y (list (pair Int Bool)))) (list (pair Int Bool))
     (match y
-      (case nil (as nil (list (pair Int Bool))))
+      (case nil (_ nil (pair Int Bool)))
       (case (cons z xs)
         (ite
           (distinct x (match z (case (pair2 x2 y2) x2)))
@@ -48,7 +48,7 @@
   models4 :let
     ((x Int) (y (list (pair Int Bool)))) (list Bool)
     (match y
-      (case nil (as nil (list Bool)))
+      (case nil (_ nil Bool))
       (case (cons z x2)
         (match z
           (case (pair2 y2 x3)
@@ -82,16 +82,16 @@
            (ite
              (not (or2 (models4 x2 y)))
              (cons (cons (pair2 x2 false) (models5 x2 y))
-               (as nil (list (list (pair Int Bool)))))
-             (as nil (list (list (pair Int Bool))))))))
+               (_ nil (list (pair Int Bool))))
+             (_ nil (list (pair Int Bool)))))))
      (case (Var x3)
        (ite
          (not (or2 (models6 x3 y)))
          (cons (cons (pair2 x3 true) (models7 x3 y))
-           (as nil (list (list (pair Int Bool)))))
-         (as nil (list (list (pair Int Bool)))))))
+           (_ nil (list (pair Int Bool))))
+         (_ nil (list (pair Int Bool))))))
    (match x
-     (case nil (as nil (list (list (pair Int Bool)))))
+     (case nil (_ nil (list (pair Int Bool))))
      (case (cons y z) (models z q (models3 q y))))
    (match y
      (case nil (models2 q x))
@@ -99,7 +99,7 @@
 (define-fun
   valid :source Propositional.valid
     ((x Form)) Bool
-    (match (models3 (Not x) (as nil (list (pair Int Bool))))
+    (match (models3 (Not x) (_ nil (pair Int Bool)))
       (case nil true)
       (case (cons y z) false)))
 (prove

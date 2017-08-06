@@ -14,10 +14,10 @@
     (zip :source Definitions.zip
        ((x (list a)) (y (list b))) (list (pair a b))
        (match x
-         (case nil (as nil (list (pair a b))))
+         (case nil (_ nil (pair a b)))
          (case (cons z x2)
            (match y
-             (case nil (as nil (list (pair a b))))
+             (case nil (_ nil (pair a b)))
              (case (cons x3 x4) (cons (pair2 z x3) (zip x2 x4)))))))))
 (define-fun-rec
   (par (a)
@@ -27,7 +27,7 @@
          (case Z y)
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons x2 x3) (drop z x3))))))))
 (prove
   :source Properties.prop_58

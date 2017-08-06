@@ -39,14 +39,14 @@
   insort :source Definitions.insort
     ((x Nat) (y (list Nat))) (list Nat)
     (match y
-      (case nil (cons x (as nil (list Nat))))
+      (case nil (cons x (_ nil Nat)))
       (case (cons z xs)
         (ite (<=2 x z) (cons x y) (cons z (insort x xs))))))
 (define-fun-rec
   sort :source Definitions.sort
     ((x (list Nat))) (list Nat)
     (match x
-      (case nil (as nil (list Nat)))
+      (case nil (_ nil Nat))
       (case (cons y xs) (insort y (sort xs)))))
 (prove
   :source Properties.prop_53

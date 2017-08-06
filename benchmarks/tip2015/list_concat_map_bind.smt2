@@ -7,7 +7,7 @@
     (map :let :source Prelude.map
        ((f (=> a b)) (x (list a))) (list b)
        (match x
-         (case nil (as nil (list b)))
+         (case nil (_ nil b))
          (case (cons y xs) (cons (@ f y) (map f xs)))))))
 (define-fun-rec
   (par (a)
@@ -21,14 +21,14 @@
     (>>= :source ListMonad.>>=
        ((x (list a)) (y (=> a (list b)))) (list b)
        (match x
-         (case nil (as nil (list b)))
+         (case nil (_ nil b))
          (case (cons z xs) (++ (@ y z) (>>= xs y)))))))
 (define-fun-rec
   (par (a)
     (concat :let :source Prelude.concat
        ((x (list (list a)))) (list a)
        (match x
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y xs) (++ y (concat xs)))))))
 (prove
   :source ListMonad.prop_concat_map_bind

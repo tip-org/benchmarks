@@ -4,30 +4,36 @@
      (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
-  (par (a)
-    (ordered-ordered1 :let :source SortUtils.ordered
-       ((x (list a))) Bool
-       (match x
-         (case nil true)
-         (case (cons y z)
-           (match z
-             (case nil true)
-             (case (cons y2 xs) (and (<= y y2) (ordered-ordered1 z)))))))))
+  le
+    ((x Nat) (y Nat)) Bool
+    (match x
+      (case Z true)
+      (case (S z)
+        (match y
+          (case Z false)
+          (case (S x2) (le z x2))))))
 (define-fun-rec
-  (par (a)
-    (insert :source Sort.insert
-       ((x a) (y (list a))) (list a)
-       (match y
-         (case nil (cons x (as nil (list a))))
-         (case (cons z xs)
-           (ite (<= x z) (cons x y) (cons z (insert x xs))))))))
+  ordered :source SortUtils.ordered
+    ((x (list Nat))) Bool
+    (match x
+      (case nil true)
+      (case (cons y z)
+        (match z
+          (case nil true)
+          (case (cons y2 xs) (and (le y y2) (ordered z)))))))
 (define-fun-rec
-  (par (a)
-    (isort :source Sort.isort
-       ((x (list a))) (list a)
-       (match x
-         (case nil (as nil (list a)))
-         (case (cons y xs) (insert y (isort xs)))))))
+  insert :source Sort.insert
+    ((x Nat) (y (list Nat))) (list Nat)
+    (match y
+      (case nil (cons x (_ nil Nat)))
+      (case (cons z xs)
+        (ite (le x z) (cons x y) (cons z (insert x xs))))))
+(define-fun-rec
+  isort :source Sort.isort
+    ((x (list Nat))) (list Nat)
+    (match x
+      (case nil (_ nil Nat))
+      (case (cons y xs) (insert y (isort xs)))))
 (prove
   :source Sort.prop_ISortSorts
-  (forall ((x (list Nat))) (ordered-ordered1 (isort x))))
+  (forall ((xs (list Nat))) (ordered (isort xs))))

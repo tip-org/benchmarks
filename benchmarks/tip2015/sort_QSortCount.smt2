@@ -7,7 +7,7 @@
     (filter :let :source Prelude.filter
        ((p (=> a Bool)) (x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y xs)
            (ite (@ p y) (cons y (filter p xs)) (filter p xs)))))))
 (define-fun-rec
@@ -26,16 +26,15 @@
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
-  (par (a)
-    (qsort :source Sort.qsort
-       ((x (list a))) (list a)
-       (match x
-         (case nil (as nil (list a)))
-         (case (cons y xs)
-           (++ (qsort (filter (lambda ((z a)) (<= z y)) xs))
-             (++ (cons y (as nil (list a)))
-               (qsort (filter (lambda ((x2 a)) (> x2 y)) xs)))))))))
+  qsort :source Sort.qsort
+    ((x (list Int))) (list Int)
+    (match x
+      (case nil (_ nil Int))
+      (case (cons y xs)
+        (++ (qsort (filter (lambda ((z Int)) (<= z y)) xs))
+          (++ (cons y (_ nil Int))
+            (qsort (filter (lambda ((x2 Int)) (> x2 y)) xs)))))))
 (prove
   :source Sort.prop_QSortCount
-  (forall ((x Int) (y (list Int)))
-    (= (count x (qsort y)) (count x y))))
+  (forall ((x Int) (xs (list Int)))
+    (= (count x (qsort xs)) (count x xs))))

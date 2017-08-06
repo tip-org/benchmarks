@@ -46,17 +46,16 @@
     (match y
       (case (Node q z r)
         (ite (le x z) (Node (add x q) z r) (Node q z (add x r))))
-      (case Nil (Node (as Nil (Tree Nat)) x (as Nil (Tree Nat))))))
+      (case Nil (Node (_ Nil Nat) x (_ Nil Nat)))))
 (define-fun-rec
   toTree :source Sort_TreeSort.toTree
     ((x (list Nat))) (Tree Nat)
     (match x
-      (case nil (as Nil (Tree Nat)))
+      (case nil (_ Nil Nat))
       (case (cons y xs) (add y (toTree xs)))))
 (define-fun
   tsort :source Sort_TreeSort.tsort
-    ((x (list Nat))) (list Nat)
-    (flatten (toTree x) (as nil (list Nat))))
+    ((x (list Nat))) (list Nat) (flatten (toTree x) (_ nil Nat)))
 (prove
   :source Sort_TreeSort.prop_SortPermutes
   (forall ((x Nat) (y (list Nat)))

@@ -11,10 +11,10 @@
     (take :source Definitions.take
        ((x Nat) (y (list a))) (list a)
        (match x
-         (case Z (as nil (list a)))
+         (case Z (_ nil a))
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons x2 x3) (cons x2 (take z x3)))))))))
 (define-fun-rec
   (par (a)
@@ -28,10 +28,10 @@
     (butlast :source Definitions.butlast
        ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y z)
            (match z
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons x2 x3) (cons y (butlast z)))))))))
 (define-fun-rec
   |-2| :source Definitions.-

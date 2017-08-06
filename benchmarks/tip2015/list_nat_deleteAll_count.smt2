@@ -22,7 +22,7 @@
     (deleteBy :source Data.List.deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y2 ys)
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
@@ -30,7 +30,7 @@
     (deleteAll :source SortUtils.deleteAll
        ((x a) (y (list a))) (list a)
        (match y
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons z ys)
            (ite (= x z) (deleteAll x ys) (cons z (deleteAll x ys))))))))
 (define-fun-rec

@@ -31,7 +31,7 @@
   intersect :source Definitions.intersect
     ((x (list Nat)) (y (list Nat))) (list Nat)
     (match x
-      (case nil (as nil (list Nat)))
+      (case nil (_ nil Nat))
       (case (cons z xs)
         (ite (elem z y) (cons z (intersect xs y)) (intersect xs y)))))
 (define-fun

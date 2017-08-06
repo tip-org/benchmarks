@@ -9,7 +9,7 @@
     (select :let
        ((x a) (y (list (pair a (list a))))) (list (pair a (list a)))
        (match y
-         (case nil (as nil (list (pair a (list a)))))
+         (case nil (_ nil (pair a (list a))))
          (case (cons z x2)
            (match z
              (case (pair2 y2 ys)
@@ -19,14 +19,14 @@
     (select2 :source List.select
        ((x (list a))) (list (pair a (list a)))
        (match x
-         (case nil (as nil (list (pair a (list a)))))
+         (case nil (_ nil (pair a (list a))))
          (case (cons y xs) (cons (pair2 y xs) (select y (select2 xs))))))))
 (define-fun-rec
   (par (a)
     (formula :let
        ((x (list (pair a (list a))))) (list (list a))
        (match x
-         (case nil (as nil (list (list a))))
+         (case nil (_ nil (list a)))
          (case (cons y z)
            (match y (case (pair2 y2 ys) (cons (cons y2 ys) (formula z)))))))))
 (define-fun-rec

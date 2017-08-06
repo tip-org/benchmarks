@@ -13,5 +13,4 @@
 (prove
   :source Properties.prop_T31
   (par (a)
-    (forall ((x (list a)))
-      (= (qrev (qrev x (as nil (list a))) (as nil (list a))) x))))
+    (forall ((x (list a))) (= (qrev (qrev x (_ nil a)) (_ nil a)) x))))

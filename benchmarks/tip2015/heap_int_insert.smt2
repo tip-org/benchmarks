@@ -22,15 +22,15 @@
   |toList'| :source |Sort_HeapSort.toList'|
     ((x Int) (y Heap)) (list Int)
     (ite
-      (= x 0) (as nil (list Int))
+      (= x 0) (_ nil Int)
       (match y
         (case (Node p z q) (cons z (|toList'| (- x 1) (merge p q))))
-        (case Nil (as nil (list Int))))))
+        (case Nil (_ nil Int)))))
 (define-fun-rec
   listInsert :source Sort_HeapSort.listInsert
     ((x Int) (y (list Int))) (list Int)
     (match y
-      (case nil (cons x (as nil (list Int))))
+      (case nil (cons x (_ nil Int)))
       (case (cons z ys)
         (ite (<= x z) (cons x y) (cons z (listInsert x ys))))))
 (define-fun

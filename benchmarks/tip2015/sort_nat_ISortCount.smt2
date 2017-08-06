@@ -10,20 +10,27 @@
       (case Z y)
       (case (S z) (S (plus z y)))))
 (define-fun-rec
-  (par (a)
-    (insert :source Sort.insert
-       ((x a) (y (list a))) (list a)
-       (match y
-         (case nil (cons x (as nil (list a))))
-         (case (cons z xs)
-           (ite (<= x z) (cons x y) (cons z (insert x xs))))))))
+  le
+    ((x Nat) (y Nat)) Bool
+    (match x
+      (case Z true)
+      (case (S z)
+        (match y
+          (case Z false)
+          (case (S x2) (le z x2))))))
 (define-fun-rec
-  (par (a)
-    (isort :source Sort.isort
-       ((x (list a))) (list a)
-       (match x
-         (case nil (as nil (list a)))
-         (case (cons y xs) (insert y (isort xs)))))))
+  insert :source Sort.insert
+    ((x Nat) (y (list Nat))) (list Nat)
+    (match y
+      (case nil (cons x (_ nil Nat)))
+      (case (cons z xs)
+        (ite (le x z) (cons x y) (cons z (insert x xs))))))
+(define-fun-rec
+  isort :source Sort.isort
+    ((x (list Nat))) (list Nat)
+    (match x
+      (case nil (_ nil Nat))
+      (case (cons y xs) (insert y (isort xs)))))
 (define-fun-rec
   (par (a)
     (count :source SortUtils.count
@@ -34,5 +41,5 @@
            (ite (= x z) (plus (S Z) (count x ys)) (count x ys)))))))
 (prove
   :source Sort.prop_ISortCount
-  (forall ((x Nat) (y (list Nat)))
-    (= (count x (isort y)) (count x y))))
+  (forall ((x Nat) (xs (list Nat)))
+    (= (count x (isort xs)) (count x xs))))

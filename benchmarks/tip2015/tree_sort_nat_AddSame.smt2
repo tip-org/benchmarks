@@ -46,9 +46,9 @@
     (match y
       (case (Node q z r)
         (ite (le x z) (Node (add x q) z r) (Node q z (add x r))))
-      (case Nil (Node (as Nil (Tree Nat)) x (as Nil (Tree Nat))))))
+      (case Nil (Node (_ Nil Nat) x (_ Nil Nat)))))
 (prove
   :source Sort_TreeSort.prop_AddSame
   (forall ((x Nat) (t (Tree Nat)))
-    (= (count x (flatten (add x t) (as nil (list Nat))))
-      (plus (S Z) (count x (flatten t (as nil (list Nat))))))))
+    (= (count x (flatten (add x t) (_ nil Nat)))
+      (plus (S Z) (count x (flatten t (_ nil Nat)))))))

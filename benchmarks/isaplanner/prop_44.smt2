@@ -11,17 +11,17 @@
     (zip :source Definitions.zip
        ((x (list a)) (y (list b))) (list (pair a b))
        (match x
-         (case nil (as nil (list (pair a b))))
+         (case nil (_ nil (pair a b)))
          (case (cons z x2)
            (match y
-             (case nil (as nil (list (pair a b))))
+             (case nil (_ nil (pair a b)))
              (case (cons x3 x4) (cons (pair2 z x3) (zip x2 x4)))))))))
 (define-fun
   (par (a b)
     (zipConcat :source Definitions.zipConcat
        ((x a) (y (list a)) (z (list b))) (list (pair a b))
        (match z
-         (case nil (as nil (list (pair a b))))
+         (case nil (_ nil (pair a b)))
          (case (cons y2 ys) (cons (pair2 x y2) (zip y ys)))))))
 (prove
   :source Properties.prop_44

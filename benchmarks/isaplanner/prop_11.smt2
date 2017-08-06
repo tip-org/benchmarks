@@ -14,7 +14,7 @@
          (case Z y)
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons x2 x3) (drop z x3))))))))
 (prove
   :source Properties.prop_11

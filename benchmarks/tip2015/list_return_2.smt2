@@ -5,7 +5,7 @@
 (define-fun
   (par (a)
     (return :source ListMonad.return
-       ((x a)) (list a) (cons x (as nil (list a))))))
+       ((x a)) (list a) (cons x (_ nil a)))))
 (define-fun-rec
   (par (a)
     (++ :source Prelude.++
@@ -18,7 +18,7 @@
     (>>= :source ListMonad.>>=
        ((x (list a)) (y (=> a (list b)))) (list b)
        (match x
-         (case nil (as nil (list b)))
+         (case nil (_ nil b))
          (case (cons z xs) (++ (@ y z) (>>= xs y)))))))
 (prove
   :source ListMonad.prop_return_2

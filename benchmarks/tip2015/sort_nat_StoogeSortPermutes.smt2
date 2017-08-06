@@ -6,13 +6,6 @@
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
-(define-fun
-  (par (a)
-    (sort2 :source Sort.sort2
-       ((x a) (y a)) (list a)
-       (ite
-         (<= x y) (cons x (cons y (as nil (list a))))
-         (cons y (cons x (as nil (list a))))))))
 (define-fun-rec
   plus
     ((x Nat) (y Nat)) Nat
@@ -50,14 +43,20 @@
         (match y
           (case Z false)
           (case (S x2) (le z x2))))))
+(define-fun
+  sort2 :source Sort.sort2
+    ((x Nat) (y Nat)) (list Nat)
+    (ite
+      (le x y) (cons x (cons y (_ nil Nat)))
+      (cons y (cons x (_ nil Nat)))))
 (define-fun-rec
   (par (a)
     (take :source Prelude.take
        ((x Nat) (y (list a))) (list a)
        (ite
-         (le x Z) (as nil (list a))
+         (le x Z) (_ nil a)
          (match y
-           (case nil (as nil (list a)))
+           (case nil (_ nil a))
            (case (cons z xs)
              (match x (case (S x2) (cons z (take x2 xs))))))))))
 (define-fun-rec
@@ -77,7 +76,7 @@
        (ite
          (le x Z) y
          (match y
-           (case nil (as nil (list a)))
+           (case nil (_ nil a))
            (case (cons z xs1) (match x (case (S x2) (drop x2 xs1)))))))))
 (define-fun
   (par (a)
@@ -89,7 +88,7 @@
     (deleteBy :source Data.List.deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y2 ys)
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
@@ -118,8 +117,8 @@
     (reverse :let :source Prelude.reverse
        ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
-         (case (cons y xs) (++ (reverse xs) (cons y (as nil (list a)))))))))
+         (case nil (_ nil a))
+         (case (cons y xs) (++ (reverse xs) (cons y (_ nil a))))))))
 (define-funs-rec
   ((stooge1sort2 :source Sort.stooge1sort2
       ((x (list Nat))) (list Nat))
@@ -129,10 +128,10 @@
   ((match (splitAt (idiv (length x) (S (S (S Z)))) (reverse x))
      (case (pair2 ys2 zs2) (++ (stoogesort zs2) (reverse ys2))))
    (match x
-     (case nil (as nil (list Nat)))
+     (case nil (_ nil Nat))
      (case (cons y z)
        (match z
-         (case nil (cons y (as nil (list Nat))))
+         (case nil (cons y (_ nil Nat)))
          (case (cons y2 x2)
            (match x2
              (case nil (sort2 y y2))
@@ -142,4 +141,4 @@
      (case (pair2 ys2 zs1) (++ ys2 (stoogesort zs1))))))
 (prove
   :source Sort.prop_StoogeSortPermutes
-  (forall ((x (list Nat))) (isPermutation (stoogesort x) x)))
+  (forall ((xs (list Nat))) (isPermutation (stoogesort xs) xs)))

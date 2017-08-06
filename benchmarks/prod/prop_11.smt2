@@ -15,8 +15,8 @@
     (rev :source Definitions.rev
        ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
-         (case (cons y xs) (++ (rev xs) (cons y (as nil (list a)))))))))
+         (case nil (_ nil a))
+         (case (cons y xs) (++ (rev xs) (cons y (_ nil a))))))))
 (prove
   :source Properties.prop_T11
   (par (a)

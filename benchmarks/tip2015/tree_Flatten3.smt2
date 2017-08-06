@@ -15,7 +15,7 @@
            (match y
              (case (Node p x2 q) (flatten3 (Node p x2 (Node q z r))))
              (case Nil (cons z (flatten3 r)))))
-         (case Nil (as nil (list a)))))))
+         (case Nil (_ nil a))))))
 (define-fun-rec
   (par (a)
     (++ :source Prelude.++
@@ -29,8 +29,8 @@
        ((x (Tree a))) (list a)
        (match x
          (case (Node p y q)
-           (++ (flatten0 p) (++ (cons y (as nil (list a))) (flatten0 q))))
-         (case Nil (as nil (list a)))))))
+           (++ (flatten0 p) (++ (cons y (_ nil a)) (flatten0 q))))
+         (case Nil (_ nil a))))))
 (prove
   :source Tree.prop_Flatten3
   (par (a) (forall ((p (Tree a))) (= (flatten3 p) (flatten0 p)))))

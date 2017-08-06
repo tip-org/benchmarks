@@ -26,17 +26,16 @@
     ((x A2)) (list Tok)
     (match x
       (case (SA a)
-        (++ (cons X (as nil (list Tok)))
-          (++ (linA a) (cons Y (as nil (list Tok))))))
-      (case ZA (cons X (cons Z (cons Y (as nil (list Tok))))))))
+        (++ (cons X (_ nil Tok)) (++ (linA a) (cons Y (_ nil Tok)))))
+      (case ZA (cons X (cons Z (cons Y (_ nil Tok)))))))
 (define-fun-rec
   linB :source Packrat.linB
     ((x B2)) (list Tok)
     (match x
       (case (SB b)
-        (++ (cons X (as nil (list Tok)))
-          (++ (linB b) (cons Y (cons Y (as nil (list Tok)))))))
-      (case ZB (cons X (cons Z (cons Y (cons Y (as nil (list Tok)))))))))
+        (++ (cons X (_ nil Tok))
+          (++ (linB b) (cons Y (cons Y (_ nil Tok))))))
+      (case ZB (cons X (cons Z (cons Y (cons Y (_ nil Tok))))))))
 (define-fun
   linS :source Packrat.linS
     ((x S)) (list Tok)

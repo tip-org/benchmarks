@@ -27,7 +27,7 @@
   listInsert :source Sort_HeapSort.listInsert
     ((x Nat) (y (list Nat))) (list Nat)
     (match y
-      (case nil (cons x (as nil (list Nat))))
+      (case nil (cons x (_ nil Nat)))
       (case (cons z ys)
         (ite (le x z) (cons x y) (cons z (listInsert x ys))))))
 (define-fun-rec
@@ -45,11 +45,11 @@
   |toList'| :source |Sort_HeapSort.toList'|
     ((x Nat) (y Heap)) (list Nat)
     (match x
-      (case Z (as nil (list Nat)))
+      (case Z (_ nil Nat))
       (case (S z)
         (match y
           (case (Node q z2 r) (cons z2 (|toList'| z (merge q r))))
-          (case Nil (as nil (list Nat)))))))
+          (case Nil (_ nil Nat))))))
 (define-fun
   insert :source Sort_HeapSort.insert
     ((x Nat) (y Heap)) Heap (merge (Node Nil x Nil) y))

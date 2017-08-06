@@ -12,7 +12,7 @@
     (mirror :source Definitions.mirror
        ((x (Tree a))) (Tree a)
        (match x
-         (case Leaf (as Leaf (Tree a)))
+         (case Leaf (_ Leaf a))
          (case (Node l y r) (Node (mirror r) y (mirror l)))))))
 (define-fun-rec
   max :source Definitions.max

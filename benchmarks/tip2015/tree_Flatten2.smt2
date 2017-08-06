@@ -26,10 +26,9 @@
        ((x (Tree a))) (list a)
        (match x
          (case (Node p y q)
-           (++ (flatten0 p) (++ (cons y (as nil (list a))) (flatten0 q))))
-         (case Nil (as nil (list a)))))))
+           (++ (flatten0 p) (++ (cons y (_ nil a)) (flatten0 q))))
+         (case Nil (_ nil a))))))
 (prove
   :source Tree.prop_Flatten2
   (par (a)
-    (forall ((p (Tree a)))
-      (= (flatten2 p (as nil (list a))) (flatten0 p)))))
+    (forall ((p (Tree a))) (= (flatten2 p (_ nil a)) (flatten0 p)))))

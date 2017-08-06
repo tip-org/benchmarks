@@ -22,7 +22,7 @@
     ((x Heap)) (Maybe Nat)
     (match x
       (case (Node y z x2) (Just z))
-      (case Nil (as Nothing (Maybe Nat)))))
+      (case Nil (_ Nothing Nat))))
 (define-fun-rec
   le
     ((x Nat) (y Nat)) Bool
@@ -47,11 +47,11 @@
   |toList'| :source |Sort_HeapSort.toList'|
     ((x Nat) (y Heap)) (list Nat)
     (match x
-      (case Z (as nil (list Nat)))
+      (case Z (_ nil Nat))
       (case (S z)
         (match y
           (case (Node q z2 r) (cons z2 (|toList'| z (merge q r))))
-          (case Nil (as nil (list Nat)))))))
+          (case Nil (_ nil Nat))))))
 (define-fun-rec
   heapSize :source Sort_HeapSort.heapSize
     ((x Heap)) Nat
@@ -79,6 +79,6 @@
     (=> (heap h)
       (=
         (match (toList h)
-          (case nil (as Nothing (Maybe Nat)))
+          (case nil (_ Nothing Nat))
           (case (cons x y) (Just x)))
         (minimum h)))))

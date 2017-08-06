@@ -11,7 +11,7 @@
     (map :source Definitions.map
        ((x (=> a b)) (y (list a))) (list b)
        (match y
-         (case nil (as nil (list b)))
+         (case nil (_ nil b))
          (case (cons z xs) (cons (@ x z) (map x xs)))))))
 (define-fun-rec
   (par (a)
@@ -21,7 +21,7 @@
          (case Z y)
          (case (S z)
            (match y
-             (case nil (as nil (list a)))
+             (case nil (_ nil a))
              (case (cons x2 x3) (drop z x3))))))))
 (prove
   :source Properties.prop_12

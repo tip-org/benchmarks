@@ -28,7 +28,7 @@
     (deleteBy :source Data.List.deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y2 ys)
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
@@ -51,17 +51,16 @@
     (match y
       (case (Node p z q)
         (ite (<= x z) (Node (add x p) z q) (Node p z (add x q))))
-      (case Nil (Node (as Nil (Tree Int)) x (as Nil (Tree Int))))))
+      (case Nil (Node (_ Nil Int) x (_ Nil Int)))))
 (define-fun-rec
   toTree :source Sort_TreeSort.toTree
     ((x (list Int))) (Tree Int)
     (match x
-      (case nil (as Nil (Tree Int)))
+      (case nil (_ Nil Int))
       (case (cons y xs) (add y (toTree xs)))))
 (define-fun
   tsort :source Sort_TreeSort.tsort
-    ((x (list Int))) (list Int)
-    (flatten (toTree x) (as nil (list Int))))
+    ((x (list Int))) (list Int) (flatten (toTree x) (_ nil Int)))
 (prove
   :source |Sort_TreeSort.prop_SortPermutes'|
   (forall ((x (list Int))) (isPermutation (tsort x) x)))

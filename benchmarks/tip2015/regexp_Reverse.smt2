@@ -94,8 +94,8 @@
     (reverse :let :source Prelude.reverse
        ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
-         (case (cons y xs) (++ (reverse xs) (cons y (as nil (list a)))))))))
+         (case nil (_ nil a))
+         (case (cons y xs) (++ (reverse xs) (cons y (_ nil a))))))))
 (prove
   :source RegExp.prop_Reverse
   (forall ((r R) (s (list A)))

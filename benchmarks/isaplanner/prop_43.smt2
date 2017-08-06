@@ -8,15 +8,15 @@
     (takeWhile :source Definitions.takeWhile
        ((x (=> a Bool)) (y (list a))) (list a)
        (match y
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons z xs)
-           (ite (@ x z) (cons z (takeWhile x xs)) (as nil (list a))))))))
+           (ite (@ x z) (cons z (takeWhile x xs)) (_ nil a)))))))
 (define-fun-rec
   (par (a)
     (dropWhile :source Definitions.dropWhile
        ((x (=> a Bool)) (y (list a))) (list a)
        (match y
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons z xs) (ite (@ x z) (dropWhile x xs) y))))))
 (define-fun-rec
   (par (a)

@@ -30,9 +30,9 @@
     (match y
       (case (Node p z q)
         (ite (<= x z) (Node (add x p) z q) (Node p z (add x q))))
-      (case Nil (Node (as Nil (Tree Int)) x (as Nil (Tree Int))))))
+      (case Nil (Node (_ Nil Int) x (_ Nil Int)))))
 (prove
   :source Sort_TreeSort.prop_AddSame
   (forall ((x Int) (t (Tree Int)))
-    (= (count x (flatten (add x t) (as nil (list Int))))
-      (+ 1 (count x (flatten t (as nil (list Int))))))))
+    (= (count x (flatten (add x t) (_ nil Int)))
+      (+ 1 (count x (flatten t (_ nil Int)))))))

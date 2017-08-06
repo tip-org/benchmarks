@@ -17,8 +17,8 @@
   linTerm :source SimpleExpr5.linTerm
     ((x T)) (list Tok)
     (match x
-      (case TX (cons X (as nil (list Tok))))
-      (case TY (cons Y (as nil (list Tok))))))
+      (case TX (cons X (_ nil Tok)))
+      (case TY (cons Y (_ nil Tok)))))
 (define-fun-rec
   (par (a)
     (++ :source Prelude.++
@@ -31,7 +31,7 @@
     ((x E)) (list Tok)
     (match x
       (case (Plus a b)
-        (++ (linTerm a) (++ (cons Pl (as nil (list Tok))) (lin b))))
+        (++ (linTerm a) (++ (cons Pl (_ nil Tok)) (lin b))))
       (case (Term t) (linTerm t))))
 (prove
   :source SimpleExpr5.prop_unambig5

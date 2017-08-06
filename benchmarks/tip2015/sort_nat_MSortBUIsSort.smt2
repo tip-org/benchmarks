@@ -8,61 +8,62 @@
     (map :let :source Prelude.map
        ((f (=> a b)) (x (list a))) (list b)
        (match x
-         (case nil (as nil (list b)))
+         (case nil (_ nil b))
          (case (cons y xs) (cons (@ f y) (map f xs)))))))
 (define-fun-rec
-  (par (a)
-    (lmerge :source Sort.lmerge
-       ((x (list a)) (y (list a))) (list a)
-       (match x
-         (case nil y)
-         (case (cons z x2)
-           (match y
-             (case nil x)
-             (case (cons x3 x4)
-               (ite
-                 (<= z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))))
+  le
+    ((x Nat) (y Nat)) Bool
+    (match x
+      (case Z true)
+      (case (S z)
+        (match y
+          (case Z false)
+          (case (S x2) (le z x2))))))
 (define-fun-rec
-  (par (a)
-    (pairwise-pairwise1 :let :source Sort.pairwise
-       ((x (list (list a)))) (list (list a))
-       (match x
-         (case nil (as nil (list (list a))))
-         (case (cons xs y)
-           (match y
-             (case nil (cons xs (as nil (list (list a)))))
-             (case (cons ys xss)
-               (cons (lmerge xs ys) (pairwise-pairwise1 xss)))))))))
+  lmerge :source Sort.lmerge
+    ((x (list Nat)) (y (list Nat))) (list Nat)
+    (match x
+      (case nil y)
+      (case (cons z x2)
+        (match y
+          (case nil x)
+          (case (cons x3 x4)
+            (ite (le z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
 (define-fun-rec
-  (par (a)
-    (mergingbu :source Sort.mergingbu
-       ((x (list (list a)))) (list a)
-       (match x
-         (case nil (as nil (list a)))
-         (case (cons xs y)
-           (match y
-             (case nil xs)
-             (case (cons z x2) (mergingbu (pairwise-pairwise1 x)))))))))
+  pairwise :source Sort.pairwise
+    ((x (list (list Nat)))) (list (list Nat))
+    (match x
+      (case nil (_ nil (list Nat)))
+      (case (cons xs y)
+        (match y
+          (case nil (cons xs (_ nil (list Nat))))
+          (case (cons ys xss) (cons (lmerge xs ys) (pairwise xss)))))))
+(define-fun-rec
+  mergingbu :source Sort.mergingbu
+    ((x (list (list Nat)))) (list Nat)
+    (match x
+      (case nil (_ nil Nat))
+      (case (cons xs y)
+        (match y
+          (case nil xs)
+          (case (cons z x2) (mergingbu (pairwise x)))))))
 (define-fun
-  (par (a)
-    (msortbu :source Sort.msortbu
-       ((x (list a))) (list a)
-       (mergingbu (map (lambda ((y a)) (cons y (as nil (list a)))) x)))))
+  msortbu :source Sort.msortbu
+    ((x (list Nat))) (list Nat)
+    (mergingbu (map (lambda ((y Nat)) (cons y (_ nil Nat))) x)))
 (define-fun-rec
-  (par (a)
-    (insert :source Sort.insert
-       ((x a) (y (list a))) (list a)
-       (match y
-         (case nil (cons x (as nil (list a))))
-         (case (cons z xs)
-           (ite (<= x z) (cons x y) (cons z (insert x xs))))))))
+  insert :source Sort.insert
+    ((x Nat) (y (list Nat))) (list Nat)
+    (match y
+      (case nil (cons x (_ nil Nat)))
+      (case (cons z xs)
+        (ite (le x z) (cons x y) (cons z (insert x xs))))))
 (define-fun-rec
-  (par (a)
-    (isort :source Sort.sort
-       ((x (list a))) (list a)
-       (match x
-         (case nil (as nil (list a)))
-         (case (cons y xs) (insert y (isort xs)))))))
+  isort :source Sort.sort
+    ((x (list Nat))) (list Nat)
+    (match x
+      (case nil (_ nil Nat))
+      (case (cons y xs) (insert y (isort xs)))))
 (prove
   :source Sort.prop_MSortBUIsSort
-  (forall ((x (list Nat))) (= (msortbu x) (isort x))))
+  (forall ((xs (list Nat))) (= (msortbu xs) (isort xs))))

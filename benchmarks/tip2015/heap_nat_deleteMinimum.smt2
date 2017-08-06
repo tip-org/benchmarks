@@ -41,11 +41,11 @@
   |toList'| :source |Sort_HeapSort.toList'|
     ((x Nat) (y Heap)) (list Nat)
     (match x
-      (case Z (as nil (list Nat)))
+      (case Z (_ nil Nat))
       (case (S z)
         (match y
           (case (Node q z2 r) (cons z2 (|toList'| z (merge q r))))
-          (case Nil (as nil (list Nat)))))))
+          (case Nil (_ nil Nat))))))
 (define-fun-rec
   heapSize :source Sort_HeapSort.heapSize
     ((x Heap)) Nat
@@ -59,7 +59,7 @@
   maybeToList :source Sort_HeapSort.maybeToList
     ((x (Maybe Heap))) (Maybe (list Nat))
     (match x
-      (case Nothing (as Nothing (Maybe (list Nat))))
+      (case Nothing (_ Nothing (list Nat)))
       (case (Just y) (Just (toList y)))))
 (define-fun-rec
   heap1 :source Sort_HeapSort.heap1
@@ -78,13 +78,13 @@
     ((x Heap)) (Maybe Heap)
     (match x
       (case (Node l y r) (Just (merge l r)))
-      (case Nil (as Nothing (Maybe Heap)))))
+      (case Nil (_ Nothing Heap))))
 (prove
   :source Sort_HeapSort.prop_deleteMinimum
   (forall ((h Heap))
     (=> (heap h)
       (=
         (match (toList h)
-          (case nil (as Nothing (Maybe (list Nat))))
+          (case nil (_ Nothing (list Nat)))
           (case (cons x xs) (Just xs)))
         (maybeToList (deleteMinimum h))))))

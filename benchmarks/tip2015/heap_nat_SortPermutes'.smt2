@@ -40,11 +40,11 @@
   |toList'| :source |Sort_HeapSort.toList'|
     ((x Nat) (y Heap)) (list Nat)
     (match x
-      (case Z (as nil (list Nat)))
+      (case Z (_ nil Nat))
       (case (S z)
         (match y
           (case (Node q z2 r) (cons z2 (|toList'| z (merge q r))))
-          (case Nil (as nil (list Nat)))))))
+          (case Nil (_ nil Nat))))))
 (define-fun
   insert :source Sort_HeapSort.insert
     ((x Nat) (y Heap)) Heap (merge (Node Nil x Nil) y))
@@ -78,7 +78,7 @@
     (deleteBy :source Data.List.deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
-         (case nil (as nil (list a)))
+         (case nil (_ nil a))
          (case (cons y2 ys)
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec

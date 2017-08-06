@@ -12,13 +12,13 @@
   removeOne :let
     ((x It) (y (list (list It)))) (list (list It))
     (match y
-      (case nil (as nil (list (list It))))
+      (case nil (_ nil (list It)))
       (case (cons z x2) (cons (cons x z) (removeOne x x2)))))
 (define-fun-rec
   removeOne2 :source RelaxedPrefix.removeOne
     ((x (list It))) (list (list It))
     (match x
-      (case nil (as nil (list (list It))))
+      (case nil (_ nil (list It)))
       (case (cons y xs) (cons xs (removeOne y (removeOne2 xs))))))
 (define-fun-rec
   or2 :let :source Prelude.or
@@ -52,7 +52,7 @@
   spec :let
     ((ys (list It)) (x (list (list It)))) (list Bool)
     (match x
-      (case nil (as nil (list Bool)))
+      (case nil (_ nil Bool))
       (case (cons y z) (cons (isPrefix y ys) (spec ys z)))))
 (define-fun
   spec2 :source RelaxedPrefix.spec

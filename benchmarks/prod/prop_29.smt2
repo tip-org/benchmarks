@@ -22,9 +22,8 @@
     (rev :source Definitions.rev
        ((x (list a))) (list a)
        (match x
-         (case nil (as nil (list a)))
-         (case (cons y xs) (++ (rev xs) (cons y (as nil (list a)))))))))
+         (case nil (_ nil a))
+         (case (cons y xs) (++ (rev xs) (cons y (_ nil a))))))))
 (prove
   :source Properties.prop_T29
-  (par (a)
-    (forall ((x (list a))) (= (rev (qrev x (as nil (list a)))) x))))
+  (par (a) (forall ((x (list a))) (= (rev (qrev x (_ nil a))) x))))
