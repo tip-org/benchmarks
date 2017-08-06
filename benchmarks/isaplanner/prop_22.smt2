@@ -1,16 +1,18 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
-(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+(declare-datatypes ()
+  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
+     (S :source Definitions.S (proj1-S Nat)))))
 (define-fun-rec
-  max2
+  max :source Definitions.max
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z y)
       (case (S z)
         (match y
           (case Z x)
-          (case (S x2) (S (max2 z x2)))))))
-(assert-not
+          (case (S x2) (S (max z x2)))))))
+(prove
+  :source Properties.prop_22
   (forall ((a Nat) (b Nat) (c Nat))
-    (= (max2 (max2 a b) c) (max2 a (max2 b c)))))
-(check-sat)
+    (= (max (max a b) c) (max a (max b c)))))

@@ -1,15 +1,17 @@
 ; Property about natural numbers with binary presentation
 (declare-datatypes ()
-  ((Bin (One)
-     (ZeroAnd (proj1-ZeroAnd Bin)) (OneAnd (proj1-OneAnd Bin)))))
+  ((Bin :source BinLists.Bin (One :source BinLists.One)
+     (ZeroAnd :source BinLists.ZeroAnd (proj1-ZeroAnd Bin))
+     (OneAnd :source BinLists.OneAnd (proj1-OneAnd Bin)))))
 (define-fun-rec
-  s ((x Bin)) Bin
+  s :source BinLists.s
+    ((x Bin)) Bin
     (match x
       (case One (ZeroAnd One))
       (case (ZeroAnd xs) (OneAnd xs))
       (case (OneAnd ys) (ZeroAnd (s ys)))))
 (define-fun-rec
-  plus
+  plus :source BinLists.plus
     ((x Bin) (y Bin)) Bin
     (match x
       (case One (s y))
@@ -23,5 +25,6 @@
           (case One (s x))
           (case (ZeroAnd zs) (OneAnd (plus x2 zs)))
           (case (OneAnd ys2) (ZeroAnd (s (plus x2 ys2))))))))
-(assert-not (forall ((x Bin) (y Bin)) (= (plus x y) (plus y x))))
-(check-sat)
+(prove
+  :source BinLists.prop_plus_comm
+  (forall ((x Bin) (y Bin)) (= (plus x y) (plus y x))))

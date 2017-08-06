@@ -2,13 +2,16 @@
 ;
 ; The sort function returns a sorted list.
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes ()
-  ((Heap (Node (proj1-Node Heap) (proj2-Node Int) (proj3-Node Heap))
-     (Nil))))
+  ((Heap :source Sort_HeapSort.Heap
+     (Node :source Sort_HeapSort.Node (proj1-Node Heap)
+       (proj2-Node Int) (proj3-Node Heap))
+     (Nil :source Sort_HeapSort.Nil))))
 (define-fun-rec
   (par (a)
-    (ordered-ordered1
+    (ordered-ordered1 :let :source SortUtils.ordered
        ((x (list a))) Bool
        (match x
          (case nil true)
@@ -17,7 +20,7 @@
              (case nil true)
              (case (cons y2 xs) (and (<= y y2) (ordered-ordered1 z)))))))))
 (define-fun-rec
-  merge
+  merge :source Sort_HeapSort.merge
     ((x Heap) (y Heap)) Heap
     (match x
       (case (Node z x2 x3)
@@ -28,28 +31,34 @@
           (case Nil x)))
       (case Nil y)))
 (define-fun-rec
-  toList2
+  |toList'| :source |Sort_HeapSort.toList'|
     ((x Int) (y Heap)) (list Int)
     (ite
       (= x 0) (as nil (list Int))
       (match y
-        (case (Node p z q) (cons z (toList2 (- x 1) (merge p q))))
+        (case (Node p z q) (cons z (|toList'| (- x 1) (merge p q))))
         (case Nil (as nil (list Int))))))
 (define-fun
-  insert2 ((x Int) (y Heap)) Heap (merge (Node Nil x Nil) y))
+  insert :source Sort_HeapSort.insert
+    ((x Int) (y Heap)) Heap (merge (Node Nil x Nil) y))
 (define-fun-rec
-  toHeap
+  toHeap :source Sort_HeapSort.toHeap
     ((x (list Int))) Heap
     (match x
       (case nil Nil)
-      (case (cons y xs) (insert2 y (toHeap xs)))))
+      (case (cons y xs) (insert y (toHeap xs)))))
 (define-fun-rec
-  heapSize
+  heapSize :source Sort_HeapSort.heapSize
     ((x Heap)) Int
     (match x
       (case (Node l y r) (+ (+ 1 (heapSize l)) (heapSize r)))
       (case Nil 0)))
-(define-fun toList ((x Heap)) (list Int) (toList2 (heapSize x) x))
-(define-fun hsort ((x (list Int))) (list Int) (toList (toHeap x)))
-(assert-not (forall ((x (list Int))) (ordered-ordered1 (hsort x))))
-(check-sat)
+(define-fun
+  toList :source Sort_HeapSort.toList
+    ((x Heap)) (list Int) (|toList'| (heapSize x) x))
+(define-fun
+  hsort :source Sort_HeapSort.hsort
+    ((x (list Int))) (list Int) (toList (toHeap x)))
+(prove
+  :source Sort_HeapSort.prop_SortSorts
+  (forall ((x (list Int))) (ordered-ordered1 (hsort x))))

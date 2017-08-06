@@ -11,7 +11,7 @@
       (case Z y)
       (case (S z) (S (plus z y)))))
 (define-fun-rec
-  add3
+  add3 :source WeirdInt.add3
     ((x Nat) (y Nat) (z Nat)) Nat
     (match x
       (case Z
@@ -20,7 +20,7 @@
           (case (S x3) (plus (S Z) (add3 Z x3 z)))))
       (case (S x2) (plus (S Z) (add3 x2 y z)))))
 (define-fun-rec
-  mul3
+  mul3 :source WeirdInt.mul3
     ((x Nat) (y Nat) (z Nat)) Nat
     (match x
       (case Z Z)
@@ -40,7 +40,7 @@
                   (ite
                     (= x2 Z) (ite (= x3 Z) (ite (= x4 Z) (S Z) fail) fail)
                     fail)))))))))
-(assert-not
+(prove
+  :source WeirdInt.prop_mul3_assoc3
   (forall ((x1 Nat) (x2 Nat) (x3 Nat) (x4 Nat) (x5 Nat))
     (= (mul3 x1 (mul3 x2 x3 x4) x5) (mul3 x1 x2 (mul3 x3 x4 x5)))))
-(check-sat)

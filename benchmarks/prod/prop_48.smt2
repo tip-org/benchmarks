@@ -3,17 +3,20 @@
 ;
 ; This property is the same as isaplanner #20
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
+(declare-datatypes ()
+  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
+     (S :source Definitions.S (proj1-S Nat)))))
 (define-fun-rec
   (par (a)
-    (length
+    (length :source Definitions.length
        ((x (list a))) Nat
        (match x
          (case nil Z)
          (case (cons y xs) (S (length xs)))))))
 (define-fun-rec
-  <=2
+  <=2 :source Definitions.<=
     ((x Nat) (y Nat)) Bool
     (match x
       (case Z true)
@@ -22,18 +25,18 @@
           (case Z false)
           (case (S x2) (<=2 z x2))))))
 (define-fun-rec
-  insert2
+  insert :source Definitions.insert
     ((x Nat) (y (list Nat))) (list Nat)
     (match y
       (case nil (cons x (as nil (list Nat))))
       (case (cons z xs)
-        (ite (<=2 x z) (cons x y) (cons z (insert2 x xs))))))
+        (ite (<=2 x z) (cons x y) (cons z (insert x xs))))))
 (define-fun-rec
-  isort
+  isort :source Definitions.isort
     ((x (list Nat))) (list Nat)
     (match x
       (case nil (as nil (list Nat)))
-      (case (cons y xs) (insert2 y (isort xs)))))
-(assert-not
+      (case (cons y xs) (insert y (isort xs)))))
+(prove
+  :source Properties.prop_T48
   (forall ((x (list Nat))) (= (length (isort x)) (length x))))
-(check-sat)

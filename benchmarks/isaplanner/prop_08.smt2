@@ -1,22 +1,24 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
-(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+(declare-datatypes ()
+  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
+     (S :source Definitions.S (proj1-S Nat)))))
 (define-fun-rec
-  x-
+  |-2| :source Definitions.-
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z Z)
       (case (S z)
         (match y
           (case Z x)
-          (case (S x2) (x- z x2))))))
+          (case (S x2) (|-2| z x2))))))
 (define-fun-rec
-  +2
+  +2 :source Definitions.+
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z y)
       (case (S z) (S (+2 z y)))))
-(assert-not
+(prove
+  :source Properties.prop_08
   (forall ((k Nat) (m Nat) (n Nat))
-    (= (x- (+2 k m) (+2 k n)) (x- m n))))
-(check-sat)
+    (= (|-2| (+2 k m) (+2 k n)) (|-2| m n))))

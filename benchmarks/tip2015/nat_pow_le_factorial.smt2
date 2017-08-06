@@ -22,19 +22,19 @@
           (case Z true)
           (case (S n) (lt n z))))))
 (define-fun-rec
-  formula-pow
+  formula-pow :let
     ((x Nat) (y Nat)) Nat
     (match y
       (case Z (S Z))
       (case (S z) (times x (formula-pow x z)))))
 (define-fun-rec
-  factorial
+  factorial :source Int.factorial
     ((x Nat)) Nat
     (match x
       (case Z (S Z))
       (case (S y) (times x (factorial y)))))
-(assert-not
+(prove
+  :source Int.prop_pow_le_factorial
   (forall ((n Nat))
     (lt (formula-pow (S (S Z)) (plus (S (S (S (S Z)))) n))
       (factorial (plus (S (S (S (S Z)))) n)))))
-(check-sat)

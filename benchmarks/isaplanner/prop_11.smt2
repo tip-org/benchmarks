@@ -1,11 +1,14 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
+(declare-datatypes ()
+  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
+     (S :source Definitions.S (proj1-S Nat)))))
 (define-fun-rec
   (par (a)
-    (drop
+    (drop :source Definitions.drop
        ((x Nat) (y (list a))) (list a)
        (match x
          (case Z y)
@@ -13,5 +16,6 @@
            (match y
              (case nil (as nil (list a)))
              (case (cons x2 x3) (drop z x3))))))))
-(assert-not (par (a) (forall ((xs (list a))) (= (drop Z xs) xs))))
-(check-sat)
+(prove
+  :source Properties.prop_11
+  (par (a) (forall ((xs (list a))) (= (drop Z xs) xs))))

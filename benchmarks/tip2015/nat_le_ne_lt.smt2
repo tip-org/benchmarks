@@ -17,7 +17,7 @@
         (match y
           (case Z false)
           (case (S x2) (le z x2))))))
-(assert-not
+(prove
+  :source Int.prop_le_ne_lt
   (forall ((x Nat) (y Nat))
     (=> (le x y) (=> (distinct x y) (lt x y)))))
-(check-sat)

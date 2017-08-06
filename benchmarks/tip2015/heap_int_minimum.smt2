@@ -1,18 +1,23 @@
 ; Skew heaps
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes (a) ((Maybe (Nothing) (Just (proj1-Just a)))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
+(declare-datatypes (a)
+  ((Maybe :source Prelude.Maybe (Nothing :source Prelude.Nothing)
+     (Just :source Prelude.Just (proj1-Just a)))))
 (declare-datatypes ()
-  ((Heap (Node (proj1-Node Heap) (proj2-Node Int) (proj3-Node Heap))
-     (Nil))))
+  ((Heap :source Sort_HeapSort.Heap
+     (Node :source Sort_HeapSort.Node (proj1-Node Heap)
+       (proj2-Node Int) (proj3-Node Heap))
+     (Nil :source Sort_HeapSort.Nil))))
 (define-fun
-  minimum
+  minimum :source Sort_HeapSort.minimum
     ((x Heap)) (Maybe Int)
     (match x
       (case (Node y z x2) (Just z))
       (case Nil (as Nothing (Maybe Int)))))
 (define-fun-rec
-  merge
+  merge :source Sort_HeapSort.merge
     ((x Heap) (y Heap)) Heap
     (match x
       (case (Node z x2 x3)
@@ -23,33 +28,36 @@
           (case Nil x)))
       (case Nil y)))
 (define-fun-rec
-  toList2
+  |toList'| :source |Sort_HeapSort.toList'|
     ((x Int) (y Heap)) (list Int)
     (ite
       (= x 0) (as nil (list Int))
       (match y
-        (case (Node p z q) (cons z (toList2 (- x 1) (merge p q))))
+        (case (Node p z q) (cons z (|toList'| (- x 1) (merge p q))))
         (case Nil (as nil (list Int))))))
 (define-fun-rec
-  heapSize
+  heapSize :source Sort_HeapSort.heapSize
     ((x Heap)) Int
     (match x
       (case (Node l y r) (+ (+ 1 (heapSize l)) (heapSize r)))
       (case Nil 0)))
-(define-fun toList ((x Heap)) (list Int) (toList2 (heapSize x) x))
+(define-fun
+  toList :source Sort_HeapSort.toList
+    ((x Heap)) (list Int) (|toList'| (heapSize x) x))
 (define-fun-rec
-  heap1
+  heap1 :source Sort_HeapSort.heap1
     ((x Int) (y Heap)) Bool
     (match y
       (case (Node l z r) (and (<= x z) (and (heap1 z l) (heap1 z r))))
       (case Nil true)))
 (define-fun
-  heap
+  heap :source Sort_HeapSort.heap
     ((x Heap)) Bool
     (match x
       (case (Node l y r) (and (heap1 y l) (heap1 y r)))
       (case Nil true)))
-(assert-not
+(prove
+  :source Sort_HeapSort.prop_minimum
   (forall ((h Heap))
     (=> (heap h)
       (=
@@ -57,4 +65,3 @@
           (case nil (as Nothing (Maybe Int)))
           (case (cons x y) (Just x)))
         (minimum h)))))
-(check-sat)

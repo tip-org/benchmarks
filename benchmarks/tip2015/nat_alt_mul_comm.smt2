@@ -8,7 +8,7 @@
       (case Z y)
       (case (S z) (S (plus z y)))))
 (define-fun-rec
-  alt_mul
+  alt_mul :source Int.alt_mul
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z Z)
@@ -16,6 +16,6 @@
         (match y
           (case Z Z)
           (case (S x2) (plus (plus (plus (S Z) (alt_mul z x2)) z) x2))))))
-(assert-not
+(prove
+  :source Int.prop_alt_mul_comm
   (forall ((x Nat) (y Nat)) (= (alt_mul x y) (alt_mul y x))))
-(check-sat)

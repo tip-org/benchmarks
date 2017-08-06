@@ -8,5 +8,6 @@
         (match x
           (case Z true)
           (case (S n) (lt n z))))))
-(assert-not (forall ((x Nat)) (not (lt x x))))
-(check-sat)
+(prove
+  :source Int.prop_lt_irreflexive
+  (forall ((x Nat)) (not (lt x x))))

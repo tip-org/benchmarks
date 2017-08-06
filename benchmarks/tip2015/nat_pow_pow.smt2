@@ -13,25 +13,25 @@
       (case Z Z)
       (case (S z) (plus y (times z y)))))
 (define-fun-rec
-  formula-pow3
+  formula-pow3 :let
     ((x Nat) (y Nat)) Nat
     (match y
       (case Z (S Z))
       (case (S z) (times x (formula-pow3 x z)))))
 (define-fun-rec
-  formula-pow2
+  formula-pow2 :let
     ((x Nat) (y Nat)) Nat
     (match y
       (case Z (S Z))
       (case (S z) (times x (formula-pow2 x z)))))
 (define-fun-rec
-  formula-pow
+  formula-pow :let
     ((x Nat) (y Nat)) Nat
     (match y
       (case Z (S Z))
       (case (S z) (times x (formula-pow x z)))))
-(assert-not
+(prove
+  :source Int.prop_pow_pow
   (forall ((x Nat) (y Nat) (z Nat))
     (= (formula-pow x (times y z))
       (formula-pow2 (formula-pow3 x y) z))))
-(check-sat)

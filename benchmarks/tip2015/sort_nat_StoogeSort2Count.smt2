@@ -1,12 +1,14 @@
 ; Stooge sort
 (declare-datatypes (a b)
-  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
+  ((pair :source |Prelude.(,)|
+     (pair2 :source |Prelude.(,)| (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun
   (par (a)
-    (sort2
+    (sort2 :source Sort.sort2
        ((x a) (y a)) (list a)
        (ite
          (<= x y) (cons x (cons y (as nil (list a))))
@@ -40,7 +42,7 @@
           (case (S n) (lt n z))))))
 (define-fun-rec
   (par (a)
-    (length
+    (length :source Prelude.length
        ((x (list a))) Nat
        (match x
          (case nil Z)
@@ -56,7 +58,7 @@
           (case (S x2) (le z x2))))))
 (define-fun-rec
   (par (a)
-    (take
+    (take :source Prelude.take
        ((x Nat) (y (list a))) (list a)
        (ite
          (le x Z) (as nil (list a))
@@ -69,7 +71,7 @@
     ((x Nat) (y Nat)) Nat (ite (lt x y) Z (S (idiv (minus x y) y))))
 (define-fun-rec
   (par (a)
-    (drop
+    (drop :source Prelude.drop
        ((x Nat) (y (list a))) (list a)
        (ite
          (le x Z) y
@@ -78,12 +80,12 @@
            (case (cons z xs1) (match x (case (S x2) (drop x2 xs1)))))))))
 (define-fun
   (par (a)
-    (splitAt
+    (splitAt :source Prelude.splitAt
        ((x Nat) (y (list a))) (pair (list a) (list a))
        (pair2 (take x y) (drop x y)))))
 (define-fun-rec
   (par (a)
-    (count
+    (count :source SortUtils.count
        ((x a) (y (list a))) Nat
        (match y
          (case nil Z)
@@ -91,15 +93,17 @@
            (ite (= x z) (plus (S Z) (count x ys)) (count x ys)))))))
 (define-fun-rec
   (par (a)
-    (++
+    (++ :source Prelude.++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-funs-rec
-  ((stooge2sort2 ((x (list Nat))) (list Nat))
-   (stoogesort2 ((x (list Nat))) (list Nat))
-   (stooge2sort1 ((x (list Nat))) (list Nat)))
+  ((stooge2sort2 :source Sort.stooge2sort2
+      ((x (list Nat))) (list Nat))
+   (stoogesort2 :source Sort.stoogesort2 ((x (list Nat))) (list Nat))
+   (stooge2sort1 :source Sort.stooge2sort1
+      ((x (list Nat))) (list Nat)))
   ((match
      (splitAt (idiv (S (times (S (S Z)) (length x))) (S (S (S Z)))) x)
      (case (pair2 ys2 zs1) (++ (stoogesort2 ys2) zs1)))
@@ -115,7 +119,7 @@
                (stooge2sort2 (stooge2sort1 (stooge2sort2 x)))))))))
    (match (splitAt (idiv (length x) (S (S (S Z)))) x)
      (case (pair2 ys2 zs1) (++ ys2 (stoogesort2 zs1))))))
-(assert-not
+(prove
+  :source Sort.prop_StoogeSort2Count
   (forall ((x Nat) (y (list Nat)))
     (= (count x (stoogesort2 y)) (count x y))))
-(check-sat)

@@ -4,7 +4,7 @@
 ; op a b c d = a * b + c + d
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
-  op
+  op :source WeirdInt.op
     ((x Nat) (y Nat) (z Nat) (x2 Nat)) Nat
     (let
       ((fail
@@ -17,7 +17,7 @@
             (case Z x2)
             (case (S x6) fail)))
         (case (S x5) fail))))
-(assert-not
+(prove
+  :source WeirdInt.prop_op_comm_comm
   (forall ((a Nat) (b Nat) (c Nat) (d Nat))
     (= (op a b c d) (op b a d c))))
-(check-sat)

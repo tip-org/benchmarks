@@ -8,5 +8,6 @@
         (match y
           (case Z false)
           (case (S x2) (le z x2))))))
-(assert-not (forall ((x Nat)) (le x x)))
-(check-sat)
+(prove
+  :source Int.prop_le_reflexive
+  (forall ((x Nat)) (le x x)))

@@ -9,7 +9,7 @@
       (case Z y)
       (case (S z) (S (plus z y)))))
 (define-fun-rec
-  add3
+  add3 :source WeirdInt.add3
     ((x Nat) (y Nat) (z Nat)) Nat
     (match x
       (case Z
@@ -17,6 +17,6 @@
           (case Z z)
           (case (S x3) (plus (S Z) (add3 Z x3 z)))))
       (case (S x2) (plus (S Z) (add3 x2 y z)))))
-(assert-not
+(prove
+  :source WeirdInt.prop_add3_comm13
   (forall ((x Nat) (y Nat) (z Nat)) (= (add3 x y z) (add3 z y x))))
-(check-sat)

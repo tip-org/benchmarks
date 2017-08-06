@@ -1,38 +1,43 @@
 ; Property from "Productive Use of Failure in Inductive Proof",
 ; Andrew Ireland and Alan Bundy, JAR 1996
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
-(define-fun x ((y Bool) (z Bool)) Bool (ite y true z))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
+(declare-datatypes ()
+  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
+     (S :source Definitions.S (proj1-S Nat)))))
+(define-fun
+  |\|\|| :source |Definitions.\|\||
+    ((x Bool) (y Bool)) Bool (ite x true y))
 (define-fun-rec
   (par (a)
-    (drop
-       ((y Nat) (z (list a))) (list a)
-       (match y
-         (case Z z)
-         (case (S x2)
-           (match z
+    (drop :source Definitions.drop
+       ((x Nat) (y (list a))) (list a)
+       (match x
+         (case Z y)
+         (case (S z)
+           (match y
              (case nil (as nil (list a)))
-             (case (cons x3 x4) (drop x2 x4))))))))
+             (case (cons x2 x3) (drop z x3))))))))
 (define-fun-rec
-  ==
-    ((y Nat) (z Nat)) Bool
-    (match y
+  == :source Definitions.==
+    ((x Nat) (y Nat)) Bool
+    (match x
       (case Z
-        (match z
+        (match y
           (case Z true)
-          (case (S x2) false)))
-      (case (S x3)
-        (match z
+          (case (S z) false)))
+      (case (S x2)
+        (match y
           (case Z false)
-          (case (S y2) (== x3 y2))))))
+          (case (S y2) (== x2 y2))))))
 (define-fun-rec
-  elem
-    ((y Nat) (z (list Nat))) Bool
-    (match z
+  elem :source Definitions.elem
+    ((x Nat) (y (list Nat))) Bool
+    (match y
       (case nil false)
-      (case (cons x2 xs) (x (== y x2) (elem y xs)))))
-(assert-not
-  (forall ((y Nat) (z Nat) (z2 (list Nat)))
-    (=> (elem y (drop z z2)) (elem y z2))))
-(check-sat)
+      (case (cons z xs) (|\|\|| (== x z) (elem x xs)))))
+(prove
+  :source Properties.prop_T39
+  (forall ((x Nat) (y Nat) (z (list Nat)))
+    (=> (elem x (drop y z)) (elem x z))))

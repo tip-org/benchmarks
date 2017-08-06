@@ -1,14 +1,18 @@
 ; Regular expressions using Brzozowski derivatives (see the step function)
 ; The plus and seq functions are smart constructors.
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((A (X) (Y))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes ()
-  ((R (Nil)
-     (Eps) (Atom (proj1-Atom A)) (Plus (proj1-Plus R) (proj2-Plus R))
-     (Seq (proj1-Seq R) (proj2-Seq R)) (Star (proj1-Star R)))))
+  ((A :source RegExp.A (X :source RegExp.X) (Y :source RegExp.Y))))
+(declare-datatypes ()
+  ((R :source RegExp.R (Nil :source RegExp.Nil)
+     (Eps :source RegExp.Eps) (Atom :source RegExp.Atom (proj1-Atom A))
+     (Plus :source RegExp.Plus (proj1-Plus R) (proj2-Plus R))
+     (Seq :source RegExp.Seq (proj1-Seq R) (proj2-Seq R))
+     (Star :source RegExp.Star (proj1-Star R)))))
 (define-fun
-  seq
+  seq :source RegExp.seq
     ((x R) (y R)) R
     (match x
       (case default
@@ -23,7 +27,7 @@
           (case Nil Nil)))
       (case Nil Nil)))
 (define-fun-rec
-  rev
+  rev :source RegExp.rev
     ((x R)) R
     (match x
       (case default x)
@@ -31,7 +35,7 @@
       (case (Seq c b2) (Seq (rev b2) (rev c)))
       (case (Star a2) (Star (rev a2)))))
 (define-fun
-  plus
+  plus :source RegExp.plus
     ((x R) (y R)) R
     (match x
       (case default
@@ -40,7 +44,7 @@
           (case Nil x)))
       (case Nil y)))
 (define-fun
-  eqA
+  eqA :source RegExp.eqA
     ((x A) (y A)) Bool
     (match x
       (case X
@@ -52,7 +56,7 @@
           (case X false)
           (case Y true)))))
 (define-fun-rec
-  eps
+  eps :source RegExp.eps
     ((x R)) Bool
     (match x
       (case default false)
@@ -60,9 +64,10 @@
       (case (Plus p q) (or (eps p) (eps q)))
       (case (Seq r q2) (and (eps r) (eps q2)))
       (case (Star y) true)))
-(define-fun epsR ((x R)) R (ite (eps x) Eps Nil))
+(define-fun
+  epsR :source RegExp.epsR ((x R)) R (ite (eps x) Eps Nil))
 (define-fun-rec
-  step
+  step :source RegExp.step
     ((x R) (y A)) R
     (match x
       (case default Nil)
@@ -72,26 +77,26 @@
         (plus (seq (step r y) q2) (seq (epsR r) (step q2 y))))
       (case (Star p2) (seq (step p2 y) x))))
 (define-fun-rec
-  recognise
+  recognise :source RegExp.recognise
     ((x R) (y (list A))) Bool
     (match y
       (case nil (eps x))
       (case (cons z xs) (recognise (step x z) xs))))
 (define-fun-rec
   (par (a)
-    (++
+    (++ :source Prelude.++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a)
-    (reverse
+    (reverse :let :source Prelude.reverse
        ((x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
          (case (cons y xs) (++ (reverse xs) (cons y (as nil (list a)))))))))
-(assert-not
+(prove
+  :source RegExp.prop_Reverse
   (forall ((r R) (s (list A)))
     (= (recognise (rev r) s) (recognise r (reverse s)))))
-(check-sat)

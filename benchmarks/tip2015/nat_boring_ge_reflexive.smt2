@@ -9,5 +9,6 @@
           (case Z false)
           (case (S x2) (le z x2))))))
 (define-fun ge ((x Nat) (y Nat)) Bool (le y x))
-(assert-not (forall ((x Nat)) (ge x x)))
-(check-sat)
+(prove
+  :source Int.prop_boring_ge_reflexive
+  (forall ((x Nat)) (ge x x)))

@@ -8,7 +8,7 @@
         (match y
           (case Z false)
           (case (S x2) (le z x2))))))
-(assert-not
+(prove
+  :source Int.prop_boring_max_min_abs
   (forall ((x Nat) (y Nat))
     (= (let ((z (ite (le x y) x y))) (ite (le x z) z x)) x)))
-(check-sat)

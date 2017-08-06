@@ -8,5 +8,6 @@
         (match y
           (case Z false)
           (case (S x2) (le z x2))))))
-(assert-not (forall ((x Nat)) (= (ite (le x x) x x) x)))
-(check-sat)
+(prove
+  :source Int.prop_boring_min_idem
+  (forall ((x Nat)) (= (ite (le x x) x x) x)))

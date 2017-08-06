@@ -8,6 +8,6 @@
         (match y
           (case Z false)
           (case (S x2) (le z x2))))))
-(assert-not
+(prove
+  :source Int.prop_le_antisym
   (forall ((x Nat) (y Nat)) (=> (le x y) (=> (le y x) (= x y)))))
-(check-sat)

@@ -8,7 +8,7 @@
         (match y
           (case Z false)
           (case (S x2) (le z x2))))))
-(assert-not
+(prove
+  :source Int.prop_le_trans
   (forall ((x Nat) (y Nat) (z Nat))
     (=> (le x y) (=> (le y z) (le x z)))))
-(check-sat)

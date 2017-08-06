@@ -3,10 +3,13 @@
 ;
 ; A way to specify the relaxed prefix function
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((It (A) (B) (C))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
+(declare-datatypes ()
+  ((It :source RelaxedPrefix.It (A :source RelaxedPrefix.A)
+     (B :source RelaxedPrefix.B) (C :source RelaxedPrefix.C))))
 (define-fun-rec
-  isPrefix
+  isPrefix :source RelaxedPrefix.isPrefix
     ((x (list It)) (y (list It))) Bool
     (match x
       (case nil true)
@@ -15,7 +18,7 @@
           (case nil false)
           (case (cons x3 x4) (and (= z x3) (isPrefix x2 x4)))))))
 (define-fun-rec
-  isRelaxedPrefix
+  isRelaxedPrefix :source RelaxedPrefix.isRelaxedPrefix
     ((x (list It)) (y (list It))) Bool
     (match x
       (case nil true)
@@ -29,12 +32,12 @@
                 (ite (= z x5) (isRelaxedPrefix x2 x6) (isPrefix x2 y)))))))))
 (define-fun-rec
   (par (a)
-    (++
+    (++ :source Prelude.++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
-(assert-not
+(prove
+  :source RelaxedPrefix.prop_is_prefix_1
   (forall ((xs (list It)) (ys (list It)))
     (isRelaxedPrefix xs (++ xs ys))))
-(check-sat)

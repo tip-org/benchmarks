@@ -16,13 +16,13 @@
           (case Z true)
           (case (S n) (lt n z))))))
 (define-fun-rec
-  mod2
+  mod2 :source Mod.mod
     ((x Nat) (y Nat)) Nat
     (match y
       (case Z Z)
       (case (S z) (ite (lt x y) x (mod2 (minus x y) y)))))
 (define-fun-rec
-  go
+  go :source Mod.go
     ((x Nat) (y Nat) (z Nat)) Nat
     (match z
       (case Z Z)
@@ -36,7 +36,9 @@
             (match y
               (case Z (go x3 x2 z))
               (case (S x4) (go x3 x4 z))))))))
-(define-fun mod_structural ((x Nat) (y Nat)) Nat (go x Z y))
-(assert-not
+(define-fun
+  mod_structural :source Mod.mod_structural
+    ((x Nat) (y Nat)) Nat (go x Z y))
+(prove
+  :source Mod.prop_same
   (forall ((m Nat) (n Nat)) (= (mod2 m n) (mod_structural m n))))
-(check-sat)

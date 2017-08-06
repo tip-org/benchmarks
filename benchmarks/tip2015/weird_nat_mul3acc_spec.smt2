@@ -17,7 +17,7 @@
       (case Z Z)
       (case (S z) (plus y (times z y)))))
 (define-fun-rec
-  add3acc
+  add3acc :source WeirdInt.add3acc
     ((x Nat) (y Nat) (z Nat)) Nat
     (match x
       (case Z
@@ -26,7 +26,7 @@
           (case (S x3) (add3acc Z x3 (S z)))))
       (case (S x2) (add3acc x2 (S y) z))))
 (define-fun-rec
-  mul3acc
+  mul3acc :source WeirdInt.mul3acc
     ((x Nat) (y Nat) (z Nat)) Nat
     (match x
       (case Z Z)
@@ -47,7 +47,7 @@
                   (ite
                     (= x2 Z) (ite (= x3 Z) (ite (= x4 Z) (S Z) fail) fail)
                     fail)))))))))
-(assert-not
+(prove
+  :source WeirdInt.prop_mul3acc_spec
   (forall ((x Nat) (y Nat) (z Nat))
     (= (mul3acc x y z) (times (times x y) z))))
-(check-sat)

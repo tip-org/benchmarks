@@ -8,6 +8,6 @@
         (match x
           (case Z true)
           (case (S n) (lt n z))))))
-(assert-not
+(prove
+  :source Int.prop_lt_ne
   (forall ((x Nat) (y Nat)) (=> (lt y x) (distinct x y))))
-(check-sat)

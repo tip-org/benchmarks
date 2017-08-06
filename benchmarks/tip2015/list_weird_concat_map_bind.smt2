@@ -3,10 +3,11 @@
 ; Here, weird_concat is a somewhat sensible concatenation function,
 ; and has a somewhat strange recursion pattern.
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (define-fun-rec
   (par (a)
-    (weird_concat
+    (weird_concat :source ListMonad.weird_concat
        ((x (list (list a)))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -16,27 +17,27 @@
              (case (cons z xs) (cons z (weird_concat (cons xs xss))))))))))
 (define-fun-rec
   (par (a b)
-    (map2
+    (map :let :source Prelude.map
        ((f (=> a b)) (x (list a))) (list b)
        (match x
          (case nil (as nil (list b)))
-         (case (cons y xs) (cons (@ f y) (map2 f xs)))))))
+         (case (cons y xs) (cons (@ f y) (map f xs)))))))
 (define-fun-rec
   (par (a)
-    (++
+    (++ :source Prelude.++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a b)
-    (>>=
+    (>>= :source ListMonad.>>=
        ((x (list a)) (y (=> a (list b)))) (list b)
        (match x
          (case nil (as nil (list b)))
          (case (cons z xs) (++ (@ y z) (>>= xs y)))))))
-(assert-not
+(prove
+  :source ListMonad.prop_weird_concat_map_bind
   (par (a b)
     (forall ((f (=> a (list b))) (xs (list a)))
-      (= (weird_concat (map2 f xs)) (>>= xs f)))))
-(check-sat)
+      (= (weird_concat (map f xs)) (>>= xs f)))))

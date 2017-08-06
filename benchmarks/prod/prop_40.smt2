@@ -1,42 +1,48 @@
 ; Property from "Productive Use of Failure in Inductive Proof",
 ; Andrew Ireland and Alan Bundy, JAR 1996
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
-(define-fun x ((y Bool) (z Bool)) Bool (ite y true z))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
+(declare-datatypes ()
+  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
+     (S :source Definitions.S (proj1-S Nat)))))
+(define-fun
+  |\|\|| :source |Definitions.\|\||
+    ((x Bool) (y Bool)) Bool (ite x true y))
 (define-fun-rec
-  ==
-    ((y Nat) (z Nat)) Bool
-    (match y
+  == :source Definitions.==
+    ((x Nat) (y Nat)) Bool
+    (match x
       (case Z
-        (match z
+        (match y
           (case Z true)
-          (case (S x2) false)))
-      (case (S x3)
-        (match z
+          (case (S z) false)))
+      (case (S x2)
+        (match y
           (case Z false)
-          (case (S y2) (== x3 y2))))))
+          (case (S y2) (== x2 y2))))))
 (define-fun-rec
-  elem
-    ((y Nat) (z (list Nat))) Bool
-    (match z
+  elem :source Definitions.elem
+    ((x Nat) (y (list Nat))) Bool
+    (match y
       (case nil false)
-      (case (cons x2 xs) (x (== y x2) (elem y xs)))))
+      (case (cons z xs) (|\|\|| (== x z) (elem x xs)))))
 (define-fun-rec
-  union2
-    ((y (list Nat)) (z (list Nat))) (list Nat)
-    (match y
-      (case nil z)
-      (case (cons x2 xs)
-        (ite (elem x2 z) (union2 xs z) (cons x2 (union2 xs z))))))
-(define-fun && ((y Bool) (z Bool)) Bool (ite y z false))
+  union :source Definitions.union
+    ((x (list Nat)) (y (list Nat))) (list Nat)
+    (match x
+      (case nil y)
+      (case (cons z xs)
+        (ite (elem z y) (union xs y) (cons z (union xs y))))))
+(define-fun
+  && :source Definitions.&& ((x Bool) (y Bool)) Bool (ite x y false))
 (define-fun-rec
-  subset2
-    ((y (list Nat)) (z (list Nat))) Bool
-    (match y
+  subset :source Definitions.subset
+    ((x (list Nat)) (y (list Nat))) Bool
+    (match x
       (case nil true)
-      (case (cons x2 xs) (&& (elem x2 z) (subset2 xs z)))))
-(assert-not
-  (forall ((y (list Nat)) (z (list Nat)))
-    (=> (subset2 y z) (= (union2 y z) z))))
-(check-sat)
+      (case (cons z xs) (&& (elem z y) (subset xs y)))))
+(prove
+  :source Properties.prop_T40
+  (forall ((x (list Nat)) (y (list Nat)))
+    (=> (subset x y) (= (union x y) y))))

@@ -1,17 +1,22 @@
 ; Regular expressions using Brzozowski derivatives (see the step function)
 ; The plus and seq functions are smart constructors.
 (declare-datatypes (a b)
-  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
+  ((pair :source |Prelude.(,)|
+     (pair2 :source |Prelude.(,)| (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((A (X) (Y))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes ()
-  ((R (Nil)
-     (Eps) (Atom (proj1-Atom A)) (Plus (proj1-Plus R) (proj2-Plus R))
-     (Seq (proj1-Seq R) (proj2-Seq R)) (Star (proj1-Star R)))))
+  ((A :source RegExp.A (X :source RegExp.X) (Y :source RegExp.Y))))
+(declare-datatypes ()
+  ((R :source RegExp.R (Nil :source RegExp.Nil)
+     (Eps :source RegExp.Eps) (Atom :source RegExp.Atom (proj1-Atom A))
+     (Plus :source RegExp.Plus (proj1-Plus R) (proj2-Plus R))
+     (Seq :source RegExp.Seq (proj1-Seq R) (proj2-Seq R))
+     (Star :source RegExp.Star (proj1-Star R)))))
 (define-fun-rec
   (par (a)
-    (split
+    (split :let
        ((x a) (y (list (pair (list a) (list a)))))
        (list (pair (list a) (list a)))
        (match y
@@ -22,7 +27,7 @@
                (cons (pair2 (cons x xs) ys) (split x x2)))))))))
 (define-fun-rec
   (par (a)
-    (split2
+    (split2 :source RegExp.split
        ((x (list a))) (list (pair (list a) (list a)))
        (match x
          (case nil
@@ -31,7 +36,7 @@
          (case (cons y s)
            (cons (pair2 (as nil (list a)) x) (split y (split2 s))))))))
 (define-fun
-  seq
+  seq :source RegExp.seq
     ((x R) (y R)) R
     (match x
       (case default
@@ -46,7 +51,7 @@
           (case Nil Nil)))
       (case Nil Nil)))
 (define-fun
-  plus
+  plus :source RegExp.plus
     ((x R) (y R)) R
     (match x
       (case default
@@ -55,13 +60,13 @@
           (case Nil x)))
       (case Nil y)))
 (define-fun-rec
-  or2
+  or2 :let :source Prelude.or
     ((x (list Bool))) Bool
     (match x
       (case nil false)
       (case (cons y xs) (or y (or2 xs)))))
 (define-fun
-  eqA
+  eqA :source RegExp.eqA
     ((x A) (y A)) Bool
     (match x
       (case X
@@ -73,7 +78,7 @@
           (case X false)
           (case Y true)))))
 (define-fun-rec
-  eps
+  eps :source RegExp.eps
     ((x R)) Bool
     (match x
       (case default false)
@@ -81,9 +86,10 @@
       (case (Plus p q) (or (eps p) (eps q)))
       (case (Seq r q2) (and (eps r) (eps q2)))
       (case (Star y) true)))
-(define-fun epsR ((x R)) R (ite (eps x) Eps Nil))
+(define-fun
+  epsR :source RegExp.epsR ((x R)) R (ite (eps x) Eps Nil))
 (define-fun-rec
-  step
+  step :source RegExp.step
     ((x R) (y A)) R
     (match x
       (case default Nil)
@@ -93,13 +99,13 @@
         (plus (seq (step r y) q2) (seq (epsR r) (step q2 y))))
       (case (Star p2) (seq (step p2 y) x))))
 (define-fun-rec
-  recognise
+  recognise :source RegExp.recognise
     ((x R) (y (list A))) Bool
     (match y
       (case nil (eps x))
       (case (cons z xs) (recognise (step x z) xs))))
 (define-fun-rec
-  formula
+  formula :let
     ((p R) (q R) (x (list (pair (list A) (list A))))) (list Bool)
     (match x
       (case nil (as nil (list Bool)))
@@ -107,7 +113,7 @@
         (match y
           (case (pair2 s1 s2)
             (cons (and (recognise p s1) (recognise q s2)) (formula p q z)))))))
-(assert-not
+(prove
+  :source RegExp.prop_RecSeq
   (forall ((p R) (q R) (s (list A)))
     (= (recognise (Seq p q) s) (or2 (formula p q (split2 s))))))
-(check-sat)

@@ -1,29 +1,30 @@
 ; Tree sort
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes (a)
-  ((Tree
-     (TNode (proj1-TNode (Tree a))
+  ((Tree :source Sort.Tree
+     (TNode :source Sort.TNode (proj1-TNode (Tree a))
        (proj2-TNode a) (proj3-TNode (Tree a)))
-     (TNil))))
+     (TNil :source Sort.TNil))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
   (par (a)
-    (flatten
+    (flatten :source Sort.flatten
        ((x (Tree a)) (y (list a))) (list a)
        (match x
          (case (TNode q z r) (flatten q (cons z (flatten r y))))
          (case TNil y)))))
 (define-fun-rec
   (par (a)
-    (elem
+    (elem :let :source Prelude.elem
        ((x a) (y (list a))) Bool
        (match y
          (case nil false)
          (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
   (par (a)
-    (deleteBy
+    (deleteBy :source Data.List.deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (as nil (list a)))
@@ -31,7 +32,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (isPermutation
+    (isPermutation :source SortUtils.isPermutation
        ((x (list a)) (y (list a))) Bool
        (match x
          (case nil
@@ -45,7 +46,7 @@
                  x3 y))))))))
 (define-fun-rec
   (par (a)
-    (add
+    (add :source Sort.add
        ((x a) (y (Tree a))) (Tree a)
        (match y
          (case (TNode q z r)
@@ -53,14 +54,15 @@
          (case TNil (TNode (as TNil (Tree a)) x (as TNil (Tree a))))))))
 (define-fun-rec
   (par (a)
-    (toTree
+    (toTree :source Sort.toTree
        ((x (list a))) (Tree a)
        (match x
          (case nil (as TNil (Tree a)))
          (case (cons y xs) (add y (toTree xs)))))))
 (define-fun
   (par (a)
-    (tsort
+    (tsort :source Sort.tsort
        ((x (list a))) (list a) (flatten (toTree x) (as nil (list a))))))
-(assert-not (forall ((x (list Nat))) (isPermutation (tsort x) x)))
-(check-sat)
+(prove
+  :source Sort.prop_TSortPermutes
+  (forall ((x (list Nat))) (isPermutation (tsort x) x)))

@@ -9,6 +9,6 @@
           (case Z true)
           (case (S n) (lt n z))))))
 (define-fun gt ((x Nat) (y Nat)) Bool (lt y x))
-(assert-not
+(prove
+  :source Int.prop_boring_gt_asymmetric
   (forall ((x Nat) (y Nat)) (=> (gt x y) (not (gt y x)))))
-(check-sat)

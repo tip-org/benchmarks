@@ -4,10 +4,11 @@
 ; and has a somewhat strange recursion pattern.
 (declare-sort Any 0)
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (define-fun-rec
   (par (a)
-    (weird_concat
+    (weird_concat :source ListMonad.weird_concat
        ((x (list (list a)))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -17,19 +18,19 @@
              (case (cons z xs) (cons z (weird_concat (cons xs xss))))))))))
 (define-fun-rec
   (par (a)
-    (++
+    (++ :source Prelude.++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a)
-    (concat2
+    (concat :let :source Prelude.concat
        ((x (list (list a)))) (list a)
        (match x
          (case nil (as nil (list a)))
-         (case (cons y xs) (++ y (concat2 xs)))))))
-(assert-not
+         (case (cons y xs) (++ y (concat xs)))))))
+(prove
+  :source ListMonad.prop_weird_is_normal
   (par (a)
-    (forall ((x (list (list Any)))) (= (concat2 x) (weird_concat x)))))
-(check-sat)
+    (forall ((x (list (list Any)))) (= (concat x) (weird_concat x)))))

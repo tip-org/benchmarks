@@ -9,6 +9,6 @@
           (case Z false)
           (case (S x2) (le z x2))))))
 (define-fun ge ((x Nat) (y Nat)) Bool (le y x))
-(assert-not
+(prove
+  :source Int.prop_le_ge_eq
   (forall ((x Nat) (y Nat)) (=> (ge x y) (=> (le x y) (= x y)))))
-(check-sat)

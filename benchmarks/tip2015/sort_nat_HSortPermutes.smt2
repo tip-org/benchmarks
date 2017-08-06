@@ -1,14 +1,16 @@
 ; Heap sort (using skew heaps)
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (declare-datatypes (a)
-  ((Heap
-     (Node (proj1-Node (Heap a)) (proj2-Node a) (proj3-Node (Heap a)))
-     (Nil))))
+  ((Heap :source Sort.Heap
+     (Node :source Sort.Node (proj1-Node (Heap a))
+       (proj2-Node a) (proj3-Node (Heap a)))
+     (Nil :source Sort.Nil))))
 (define-fun-rec
   (par (a)
-    (toHeap
+    (toHeap :let
        ((x (list a))) (list (Heap a))
        (match x
          (case nil (as nil (list (Heap a))))
@@ -16,7 +18,7 @@
            (cons (Node (as Nil (Heap a)) y (as Nil (Heap a))) (toHeap z)))))))
 (define-fun-rec
   (par (a)
-    (hmerge
+    (hmerge :source Sort.hmerge
        ((x (Heap a)) (y (Heap a))) (Heap a)
        (match x
          (case (Node z x2 x3)
@@ -28,7 +30,7 @@
          (case Nil y)))))
 (define-fun-rec
   (par (a)
-    (hpairwise
+    (hpairwise :source Sort.hpairwise
        ((x (list (Heap a)))) (list (Heap a))
        (match x
          (case nil (as nil (list (Heap a))))
@@ -38,7 +40,7 @@
              (case (cons r qs) (cons (hmerge q r) (hpairwise qs)))))))))
 (define-fun-rec
   (par (a)
-    (hmerging
+    (hmerging :source Sort.hmerging
        ((x (list (Heap a)))) (Heap a)
        (match x
          (case nil (as Nil (Heap a)))
@@ -47,26 +49,30 @@
              (case nil q)
              (case (cons z x2) (hmerging (hpairwise x)))))))))
 (define-fun
-  (par (a) (toHeap2 ((x (list a))) (Heap a) (hmerging (toHeap x)))))
+  (par (a)
+    (toHeap2 :source Sort.toHeap
+       ((x (list a))) (Heap a) (hmerging (toHeap x)))))
 (define-fun-rec
   (par (a)
-    (toList
+    (toList :source Sort.toList
        ((x (Heap a))) (list a)
        (match x
          (case (Node q y r) (cons y (toList (hmerge q r))))
          (case Nil (as nil (list a)))))))
 (define-fun
-  (par (a) (hsort ((x (list a))) (list a) (toList (toHeap2 x)))))
+  (par (a)
+    (hsort :source Sort.hsort
+       ((x (list a))) (list a) (toList (toHeap2 x)))))
 (define-fun-rec
   (par (a)
-    (elem
+    (elem :let :source Prelude.elem
        ((x a) (y (list a))) Bool
        (match y
          (case nil false)
          (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
   (par (a)
-    (deleteBy
+    (deleteBy :source Data.List.deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (as nil (list a)))
@@ -74,7 +80,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (isPermutation
+    (isPermutation :source SortUtils.isPermutation
        ((x (list a)) (y (list a))) Bool
        (match x
          (case nil
@@ -86,5 +92,6 @@
              (isPermutation xs
                (deleteBy (lambda ((x4 a)) (lambda ((x5 a)) (= x4 x5)))
                  x3 y))))))))
-(assert-not (forall ((x (list Nat))) (isPermutation (hsort x) x)))
-(check-sat)
+(prove
+  :source Sort.prop_HSortPermutes
+  (forall ((x (list Nat))) (isPermutation (hsort x) x)))

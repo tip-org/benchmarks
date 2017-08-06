@@ -1,16 +1,17 @@
 ; Bitonic sort
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (define-fun
   (par (a)
-    (sort2
+    (sort2 :source Sort.sort2
        ((x a) (y a)) (list a)
        (ite
          (<= x y) (cons x (cons y (as nil (list a))))
          (cons y (cons x (as nil (list a))))))))
 (define-funs-rec
-  ((par (a) (evens ((x (list a))) (list a)))
-   (par (a) (odds ((x (list a))) (list a))))
+  ((par (a) (evens :source Sort.evens ((x (list a))) (list a)))
+   (par (a) (odds :source Sort.odds ((x (list a))) (list a))))
   ((match x
      (case nil (as nil (list a)))
      (case (cons y xs) (cons y (odds xs))))
@@ -19,7 +20,7 @@
      (case (cons y xs) (evens xs)))))
 (define-fun-rec
   (par (a)
-    (count
+    (count :source SortUtils.count
        ((x a) (y (list a))) Int
        (match y
          (case nil 0)
@@ -27,14 +28,14 @@
            (ite (= x z) (+ 1 (count x ys)) (count x ys)))))))
 (define-fun-rec
   (par (a)
-    (++
+    (++ :source Prelude.++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a)
-    (pairs
+    (pairs :source Sort.pairs
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
@@ -44,14 +45,14 @@
              (case (cons x3 x4) (++ (sort2 z x3) (pairs x2 x4)))))))))
 (define-fun
   (par (a)
-    (stitch
+    (stitch :source Sort.stitch
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (pairs xs y)))))))
 (define-fun-rec
   (par (a)
-    (bmerge
+    (bmerge :source Sort.bmerge
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -70,7 +71,7 @@
                    (case (cons x7 x8) fail))))))))))
 (define-fun-rec
   (par (a)
-    (bsort
+    (bsort :source Sort.bsort
        ((x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -79,7 +80,7 @@
              (case nil (cons y (as nil (list a))))
              (case (cons x2 x3)
                (bmerge (bsort (evens x)) (bsort (odds x))))))))))
-(assert-not
+(prove
+  :source Sort.prop_BSortCount
   (forall ((x Int) (y (list Int)))
     (= (count x (bsort y)) (count x y))))
-(check-sat)

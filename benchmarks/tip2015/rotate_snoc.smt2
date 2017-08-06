@@ -1,17 +1,18 @@
 ; Rotate expressed using a snoc instead of append
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
   (par (a)
-    (snoc
+    (snoc :source SnocRotate.snoc
        ((x a) (y (list a))) (list a)
        (match y
          (case nil (cons x (as nil (list a))))
          (case (cons z ys) (cons z (snoc x ys)))))))
 (define-fun-rec
   (par (a)
-    (rotate
+    (rotate :source SnocRotate.rotate
        ((x Nat) (y (list a))) (list a)
        (match x
          (case Z y)
@@ -27,11 +28,11 @@
       (case (S z) (S (plus z y)))))
 (define-fun-rec
   (par (a)
-    (length
+    (length :source Prelude.length
        ((x (list a))) Nat
        (match x
          (case nil Z)
          (case (cons y l) (plus (S Z) (length l)))))))
-(assert-not
+(prove
+  :source SnocRotate.prop_snoc
   (par (a) (forall ((xs (list a))) (= (rotate (length xs) xs) xs))))
-(check-sat)

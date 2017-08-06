@@ -1,10 +1,11 @@
 ; QuickSort
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
   (par (a)
-    (ordered-ordered1
+    (ordered-ordered1 :let :source SortUtils.ordered
        ((x (list a))) Bool
        (match x
          (case nil true)
@@ -14,7 +15,7 @@
              (case (cons y2 xs) (and (<= y y2) (ordered-ordered1 z)))))))))
 (define-fun-rec
   (par (a)
-    (filter
+    (filter :let :source Prelude.filter
        ((q (=> a Bool)) (x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -22,14 +23,14 @@
            (ite (@ q y) (cons y (filter q xs)) (filter q xs)))))))
 (define-fun-rec
   (par (a)
-    (++
+    (++ :source Prelude.++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a)
-    (qsort
+    (qsort :source Sort.qsort
        ((x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -37,5 +38,6 @@
            (++ (qsort (filter (lambda ((z a)) (<= z y)) xs))
              (++ (cons y (as nil (list a)))
                (qsort (filter (lambda ((x2 a)) (> x2 y)) xs)))))))))
-(assert-not (forall ((x (list Nat))) (ordered-ordered1 (qsort x))))
-(check-sat)
+(prove
+  :source Sort.prop_QSortSorts
+  (forall ((x (list Nat))) (ordered-ordered1 (qsort x))))

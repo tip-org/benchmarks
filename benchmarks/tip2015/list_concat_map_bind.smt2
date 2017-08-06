@@ -1,36 +1,37 @@
 ; List monad laws
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (define-fun-rec
   (par (a b)
-    (map2
+    (map :let :source Prelude.map
        ((f (=> a b)) (x (list a))) (list b)
        (match x
          (case nil (as nil (list b)))
-         (case (cons y xs) (cons (@ f y) (map2 f xs)))))))
+         (case (cons y xs) (cons (@ f y) (map f xs)))))))
 (define-fun-rec
   (par (a)
-    (++
+    (++ :source Prelude.++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a b)
-    (>>=
+    (>>= :source ListMonad.>>=
        ((x (list a)) (y (=> a (list b)))) (list b)
        (match x
          (case nil (as nil (list b)))
          (case (cons z xs) (++ (@ y z) (>>= xs y)))))))
 (define-fun-rec
   (par (a)
-    (concat2
+    (concat :let :source Prelude.concat
        ((x (list (list a)))) (list a)
        (match x
          (case nil (as nil (list a)))
-         (case (cons y xs) (++ y (concat2 xs)))))))
-(assert-not
+         (case (cons y xs) (++ y (concat xs)))))))
+(prove
+  :source ListMonad.prop_concat_map_bind
   (par (a b)
     (forall ((f (=> a (list b))) (xs (list a)))
-      (= (concat2 (map2 f xs)) (>>= xs f)))))
-(check-sat)
+      (= (concat (map f xs)) (>>= xs f)))))

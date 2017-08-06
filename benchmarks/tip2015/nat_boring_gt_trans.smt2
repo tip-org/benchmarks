@@ -9,7 +9,7 @@
           (case Z true)
           (case (S n) (lt n z))))))
 (define-fun gt ((x Nat) (y Nat)) Bool (lt y x))
-(assert-not
+(prove
+  :source Int.prop_boring_gt_trans
   (forall ((x Nat) (y Nat) (z Nat))
     (=> (gt x y) (=> (gt y z) (gt x z)))))
-(check-sat)

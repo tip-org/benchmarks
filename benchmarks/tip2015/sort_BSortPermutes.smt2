@@ -1,16 +1,17 @@
 ; Bitonic sort
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (define-fun
   (par (a)
-    (sort2
+    (sort2 :source Sort.sort2
        ((x a) (y a)) (list a)
        (ite
          (<= x y) (cons x (cons y (as nil (list a))))
          (cons y (cons x (as nil (list a))))))))
 (define-funs-rec
-  ((par (a) (evens ((x (list a))) (list a)))
-   (par (a) (odds ((x (list a))) (list a))))
+  ((par (a) (evens :source Sort.evens ((x (list a))) (list a)))
+   (par (a) (odds :source Sort.odds ((x (list a))) (list a))))
   ((match x
      (case nil (as nil (list a)))
      (case (cons y xs) (cons y (odds xs))))
@@ -19,14 +20,14 @@
      (case (cons y xs) (evens xs)))))
 (define-fun-rec
   (par (a)
-    (elem
+    (elem :let :source Prelude.elem
        ((x a) (y (list a))) Bool
        (match y
          (case nil false)
          (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
   (par (a)
-    (deleteBy
+    (deleteBy :source Data.List.deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (as nil (list a)))
@@ -34,7 +35,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (isPermutation
+    (isPermutation :source SortUtils.isPermutation
        ((x (list a)) (y (list a))) Bool
        (match x
          (case nil
@@ -48,14 +49,14 @@
                  x3 y))))))))
 (define-fun-rec
   (par (a)
-    (++
+    (++ :source Prelude.++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a)
-    (pairs
+    (pairs :source Sort.pairs
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
@@ -65,14 +66,14 @@
              (case (cons x3 x4) (++ (sort2 z x3) (pairs x2 x4)))))))))
 (define-fun
   (par (a)
-    (stitch
+    (stitch :source Sort.stitch
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (pairs xs y)))))))
 (define-fun-rec
   (par (a)
-    (bmerge
+    (bmerge :source Sort.bmerge
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -91,7 +92,7 @@
                    (case (cons x7 x8) fail))))))))))
 (define-fun-rec
   (par (a)
-    (bsort
+    (bsort :source Sort.bsort
        ((x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -100,5 +101,6 @@
              (case nil (cons y (as nil (list a))))
              (case (cons x2 x3)
                (bmerge (bsort (evens x)) (bsort (odds x))))))))))
-(assert-not (forall ((x (list Int))) (isPermutation (bsort x) x)))
-(check-sat)
+(prove
+  :source Sort.prop_BSortPermutes
+  (forall ((x (list Int))) (isPermutation (bsort x) x)))

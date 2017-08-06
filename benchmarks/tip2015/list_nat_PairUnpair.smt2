@@ -1,11 +1,13 @@
 (declare-datatypes (a b)
-  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
+  ((pair :source |Prelude.(,)|
+     (pair2 :source |Prelude.(,)| (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
   (par (t)
-    (unpair
+    (unpair :source List.unpair
        ((x (list (pair t t)))) (list t)
        (match x
          (case nil (as nil (list t)))
@@ -19,7 +21,7 @@
       (case (S z) (S (plus z y)))))
 (define-fun-rec
   (par (t)
-    (pairs
+    (pairs :source List.pairs
        ((x (list t))) (list (pair t t))
        (match x
          (case nil (as nil (list (pair t t))))
@@ -44,7 +46,7 @@
           (case (S n) (lt n z))))))
 (define-fun-rec
   (par (a)
-    (length
+    (length :source Prelude.length
        ((x (list a))) Nat
        (match x
          (case nil Z)
@@ -60,25 +62,24 @@
           (case (S x2) (le z x2))))))
 (define-fun-rec
   imod ((x Nat) (y Nat)) Nat (ite (lt x y) x (imod (minus x y) y)))
-(assert-not
+(prove
+  :source List.prop_PairUnpair
   (par (t)
     (forall ((xs (list t)))
       (=>
-        (=
-          (let
-            ((n1 (length xs))
-             (md (imod n1 (S (S Z)))))
-            (ite
-              (and
-                (=
-                  (match n1
-                    (case Z Z)
-                    (case (S x) (ite (le n1 Z) (match Z (case (S y) (p Z))) (S Z))))
-                  (ite
-                    (le (S (S Z)) Z) (match Z (case (S z) (minus Z (p Z))))
-                    (match Z (case (S x2) (p Z)))))
-                (distinct md Z))
-              (minus md (S (S Z))) md))
-          Z)
+        (let ((eta (length xs)))
+          (=
+            (let ((md (imod eta (S (S Z)))))
+              (ite
+                (and
+                  (=
+                    (match eta
+                      (case Z Z)
+                      (case (S x) (ite (le eta Z) (match Z (case (S y) (p Z))) (S Z))))
+                    (ite
+                      (le (S (S Z)) Z) (match Z (case (S z) (minus Z (p Z))))
+                      (match Z (case (S x2) (p Z)))))
+                  (distinct md Z))
+                (minus md (S (S Z))) md))
+            Z))
         (= (unpair (pairs xs)) xs)))))
-(check-sat)

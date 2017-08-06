@@ -12,10 +12,11 @@
       (case Z Z)
       (case (S z) (plus y (times z y)))))
 (define-fun-rec
-  formula-pow
+  formula-pow :let
     ((x Nat) (y Nat)) Nat
     (match y
       (case Z (S Z))
       (case (S z) (times x (formula-pow x z)))))
-(assert-not (forall ((x Nat)) (= (formula-pow (S Z) x) (S Z))))
-(check-sat)
+(prove
+  :source Int.prop_pow_one
+  (forall ((x Nat)) (= (formula-pow (S Z) x) (S Z))))

@@ -3,17 +3,20 @@
 ;
 ; This property is the same as prod #48
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
+(declare-datatypes ()
+  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
+     (S :source Definitions.S (proj1-S Nat)))))
 (define-fun-rec
   (par (a)
-    (len
+    (len :source Definitions.len
        ((x (list a))) Nat
        (match x
          (case nil Z)
          (case (cons y xs) (S (len xs)))))))
 (define-fun-rec
-  <=2
+  <=2 :source Definitions.<=
     ((x Nat) (y Nat)) Bool
     (match x
       (case Z true)
@@ -22,18 +25,18 @@
           (case Z false)
           (case (S x2) (<=2 z x2))))))
 (define-fun-rec
-  insort
+  insort :source Definitions.insort
     ((x Nat) (y (list Nat))) (list Nat)
     (match y
       (case nil (cons x (as nil (list Nat))))
       (case (cons z xs)
         (ite (<=2 x z) (cons x y) (cons z (insort x xs))))))
 (define-fun-rec
-  sort
+  sort :source Definitions.sort
     ((x (list Nat))) (list Nat)
     (match x
       (case nil (as nil (list Nat)))
       (case (cons y xs) (insort y (sort xs)))))
-(assert-not
+(prove
+  :source Properties.prop_20
   (forall ((xs (list Nat))) (= (len (sort xs)) (len xs))))
-(check-sat)

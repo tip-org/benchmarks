@@ -1,15 +1,16 @@
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (define-fun-rec
   (par (a)
-    (elem
+    (elem :let :source Prelude.elem
        ((x a) (y (list a))) Bool
        (match y
          (case nil false)
          (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
   (par (a)
-    (deleteBy
+    (deleteBy :source Data.List.deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (as nil (list a)))
@@ -17,7 +18,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (isPermutation
+    (isPermutation :source SortUtils.isPermutation
        ((x (list a)) (y (list a))) Bool
        (match x
          (case nil
@@ -29,8 +30,8 @@
              (isPermutation xs
                (deleteBy (lambda ((x4 a)) (lambda ((x5 a)) (= x4 x5)))
                  x3 y))))))))
-(assert-not
+(prove
+  :source List.prop_perm_elem
   (par (a)
     (forall ((x a) (xs (list a)) (ys (list a)))
       (=> (elem x xs) (=> (isPermutation xs ys) (elem x ys))))))
-(check-sat)

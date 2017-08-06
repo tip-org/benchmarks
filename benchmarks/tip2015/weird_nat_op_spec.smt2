@@ -16,7 +16,7 @@
       (case Z Z)
       (case (S z) (plus y (times z y)))))
 (define-fun-rec
-  op
+  op :source WeirdInt.op
     ((x Nat) (y Nat) (z Nat) (x2 Nat)) Nat
     (let
       ((fail
@@ -29,7 +29,7 @@
             (case Z x2)
             (case (S x6) fail)))
         (case (S x5) fail))))
-(assert-not
+(prove
+  :source WeirdInt.prop_op_spec
   (forall ((a Nat) (b Nat) (c Nat) (d Nat))
     (= (op a b c d) (plus (plus (times a b) c) d))))
-(check-sat)

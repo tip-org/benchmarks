@@ -1,16 +1,18 @@
 ; Property about natural numbers with binary presentation
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (declare-datatypes ()
-  ((Bin (One)
-     (ZeroAnd (proj1-ZeroAnd Bin)) (OneAnd (proj1-OneAnd Bin)))))
+  ((Bin :source BinLists.Bin (One :source BinLists.One)
+     (ZeroAnd :source BinLists.ZeroAnd (proj1-ZeroAnd Bin))
+     (OneAnd :source BinLists.OneAnd (proj1-OneAnd Bin)))))
 (define-fun-rec
-  s ((x Bin)) Bin
+  s :source BinLists.s
+    ((x Bin)) Bin
     (match x
       (case One (ZeroAnd One))
       (case (ZeroAnd xs) (OneAnd xs))
       (case (OneAnd ys) (ZeroAnd (s ys)))))
 (define-fun-rec
-  plus2
+  plus2 :source BinLists.plus
     ((x Bin) (y Bin)) Bin
     (match x
       (case One (s y))
@@ -25,7 +27,7 @@
           (case (ZeroAnd zs) (OneAnd (plus2 x2 zs)))
           (case (OneAnd ys2) (ZeroAnd (s (plus2 x2 ys2))))))))
 (define-fun-rec
-  times
+  times :source BinLists.times
     ((x Bin) (y Bin)) Bin
     (match x
       (case One y)
@@ -44,13 +46,13 @@
       (case Z Z)
       (case (S z) (plus y (times2 z y)))))
 (define-fun-rec
-  toNat
+  toNat :source BinLists.toNat
     ((x Bin)) Nat
     (match x
       (case One (S Z))
       (case (ZeroAnd xs) (plus (toNat xs) (toNat xs)))
       (case (OneAnd ys) (plus (plus (S Z) (toNat ys)) (toNat ys)))))
-(assert-not
+(prove
+  :source BinLists.prop_times
   (forall ((x Bin) (y Bin))
     (= (toNat (times x y)) (times2 (toNat x) (toNat y)))))
-(check-sat)

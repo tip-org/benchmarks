@@ -1,10 +1,11 @@
 ; QuickSort
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
   (par (a)
-    (filter
+    (filter :let :source Prelude.filter
        ((q (=> a Bool)) (x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -12,14 +13,14 @@
            (ite (@ q y) (cons y (filter q xs)) (filter q xs)))))))
 (define-fun-rec
   (par (a)
-    (elem
+    (elem :let :source Prelude.elem
        ((x a) (y (list a))) Bool
        (match y
          (case nil false)
          (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
   (par (a)
-    (deleteBy
+    (deleteBy :source Data.List.deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (as nil (list a)))
@@ -27,7 +28,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (isPermutation
+    (isPermutation :source SortUtils.isPermutation
        ((x (list a)) (y (list a))) Bool
        (match x
          (case nil
@@ -41,14 +42,14 @@
                  x3 y))))))))
 (define-fun-rec
   (par (a)
-    (++
+    (++ :source Prelude.++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a)
-    (qsort
+    (qsort :source Sort.qsort
        ((x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -56,5 +57,6 @@
            (++ (qsort (filter (lambda ((z a)) (<= z y)) xs))
              (++ (cons y (as nil (list a)))
                (qsort (filter (lambda ((x2 a)) (> x2 y)) xs)))))))))
-(assert-not (forall ((x (list Nat))) (isPermutation (qsort x) x)))
-(check-sat)
+(prove
+  :source Sort.prop_QSortPermutes
+  (forall ((x (list Nat))) (isPermutation (qsort x) x)))

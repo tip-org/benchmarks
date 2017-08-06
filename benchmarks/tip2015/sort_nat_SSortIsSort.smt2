@@ -1,10 +1,11 @@
 ; Selection sort, using a total minimum function
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (Z) (S (p Nat)))))
 (define-fun-rec
   (par (a)
-    (ssort-minimum1
+    (ssort-minimum1 :let
        ((x a) (y (list a))) a
        (match y
          (case nil x)
@@ -12,22 +13,22 @@
            (ite (<= y1 x) (ssort-minimum1 y1 ys1) (ssort-minimum1 x ys1)))))))
 (define-fun-rec
   (par (a)
-    (insert2
+    (insert :source Sort.insert
        ((x a) (y (list a))) (list a)
        (match y
          (case nil (cons x (as nil (list a))))
          (case (cons z xs)
-           (ite (<= x z) (cons x y) (cons z (insert2 x xs))))))))
+           (ite (<= x z) (cons x y) (cons z (insert x xs))))))))
 (define-fun-rec
   (par (a)
-    (isort
+    (isort :source Sort.sort
        ((x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
-         (case (cons y xs) (insert2 y (isort xs)))))))
+         (case (cons y xs) (insert y (isort xs)))))))
 (define-fun-rec
   (par (a)
-    (deleteBy
+    (deleteBy :source Data.List.deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (as nil (list a)))
@@ -35,7 +36,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (ssort
+    (ssort :source Sort.ssort
        ((x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -44,5 +45,6 @@
              (cons m
                (ssort
                  (deleteBy (lambda ((z a)) (lambda ((x2 a)) (= z x2))) m x)))))))))
-(assert-not (forall ((x (list Nat))) (= (ssort x) (isort x))))
-(check-sat)
+(prove
+  :source Sort.prop_SSortIsSort
+  (forall ((x (list Nat))) (= (ssort x) (isort x))))

@@ -1,20 +1,14 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
-(define-fun-rec
-  x-
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case Z Z)
-      (case (S z)
-        (match y
-          (case Z x)
-          (case (S x2) (x- z x2))))))
+  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
+     (cons :source |Prelude.:| (head a) (tail (list a))))))
+(declare-datatypes ()
+  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
+     (S :source Definitions.S (proj1-S Nat)))))
 (define-fun-rec
   (par (a)
-    (take
+    (take :source Definitions.take
        ((x Nat) (y (list a))) (list a)
        (match x
          (case Z (as nil (list a)))
@@ -24,14 +18,14 @@
              (case (cons x2 x3) (cons x2 (take z x3)))))))))
 (define-fun-rec
   (par (a)
-    (len
+    (len :source Definitions.len
        ((x (list a))) Nat
        (match x
          (case nil Z)
          (case (cons y xs) (S (len xs)))))))
 (define-fun-rec
   (par (a)
-    (butlast
+    (butlast :source Definitions.butlast
        ((x (list a))) (list a)
        (match x
          (case nil (as nil (list a)))
@@ -39,8 +33,17 @@
            (match z
              (case nil (as nil (list a)))
              (case (cons x2 x3) (cons y (butlast z)))))))))
-(assert-not
+(define-fun-rec
+  |-2| :source Definitions.-
+    ((x Nat) (y Nat)) Nat
+    (match x
+      (case Z Z)
+      (case (S z)
+        (match y
+          (case Z x)
+          (case (S x2) (|-2| z x2))))))
+(prove
+  :source Properties.prop_50
   (par (a)
     (forall ((xs (list a)))
-      (= (butlast xs) (take (x- (len xs) (S Z)) xs)))))
-(check-sat)
+      (= (butlast xs) (take (|-2| (len xs) (S Z)) xs)))))

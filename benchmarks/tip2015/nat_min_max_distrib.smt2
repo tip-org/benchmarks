@@ -8,7 +8,8 @@
         (match y
           (case Z false)
           (case (S x2) (le z x2))))))
-(assert-not
+(prove
+  :source Int.prop_min_max_distrib
   (forall ((x Nat) (y Nat) (z Nat))
     (= (let ((y2 (ite (le y z) y z))) (ite (le x y2) y2 x))
       (ite
@@ -21,4 +22,3 @@
           (let ((x2 (ite (le x y) y x)))
             (lambda ((y3 Nat)) (ite (le x2 y3) x2 y3)))
           x)))))
-(check-sat)
