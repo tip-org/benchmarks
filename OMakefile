@@ -17,7 +17,7 @@ clean:
 find-props(prop, file) =
 	props[] =
 	lex-search($(file))
-	case "$(prop)[^ ]*"
+	case $"$(prop)[^ ]*"
 		props[] += $0
 		export
 	return $(set $(props))
