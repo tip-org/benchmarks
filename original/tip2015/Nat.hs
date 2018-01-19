@@ -3,13 +3,13 @@ module Int where
 import Tip
 
 -- Property about the power function over naturals.
-prop_pow_pow :: Int -> Int -> Int -> Prop
+prop_pow_pow :: Int -> Int -> Int -> Property
 prop_pow_pow   x y z = x ^ (y * z) === (x ^ y) ^ z
 
-prop_pow_times :: Int -> Int -> Int -> Prop
+prop_pow_times :: Int -> Int -> Int -> Property
 prop_pow_times x y z = x ^ (y + z) === (x ^ y) * (x ^ z)
 
-prop_pow_one :: Int -> Prop
+prop_pow_one :: Int -> Property
 prop_pow_one x = (1 :: Int) ^ x === 1
 
 factorial :: Int -> Int
@@ -51,63 +51,63 @@ prop_acc_alt_mul_comm x y = x `acc_alt_mul` y === y `acc_alt_mul` x
 prop_acc_alt_mul_same = acc_alt_mul === (*)
 prop_acc_alt_mul_assoc x y z = x `acc_alt_mul` (y `acc_alt_mul` z) === (x `acc_alt_mul` y) `acc_alt_mul` z
 
-prop_max_idem :: Int -> Prop
+prop_max_idem :: Int -> Property
 prop_max_idem  x     = x `max` x === x
-prop_max_assoc :: Int -> Int -> Int -> Prop
+prop_max_assoc :: Int -> Int -> Int -> Property
 prop_max_assoc x y z = x `max` (y `max` z) === (x `max` y) `max` z
-prop_max_comm :: Int -> Int -> Prop
+prop_max_comm :: Int -> Int -> Property
 prop_max_comm x y    = x `max` y === y `max` x
 
-prop_boring_min_idem :: Int -> Prop
+prop_boring_min_idem :: Int -> Property
 prop_boring_min_idem  x     = x `min` x === x
-prop_boring_min_assoc :: Int -> Int -> Int -> Prop
+prop_boring_min_assoc :: Int -> Int -> Int -> Property
 prop_boring_min_assoc x y z = x `min` (y `min` z) === (x `min` y) `min` z
-prop_boring_min_comm :: Int -> Int -> Prop
+prop_boring_min_comm :: Int -> Int -> Property
 prop_boring_min_comm x y    = x `min` y === y `min` x
 
-prop_min_max_abs :: Int -> Int -> Prop
+prop_min_max_abs :: Int -> Int -> Property
 prop_min_max_abs x y = x `min` (x `max` y) === x
-prop_boring_max_min_abs :: Int -> Int -> Prop
+prop_boring_max_min_abs :: Int -> Int -> Property
 prop_boring_max_min_abs x y = x `max` (x `min` y) === x
 
-prop_min_max_distrib :: Int -> Int -> Int -> Prop
+prop_min_max_distrib :: Int -> Int -> Int -> Property
 prop_min_max_distrib x y z = x `max` (y `min` z) === (x `max` y) `min` (x `max` z)
-prop_boring_max_min_distrib :: Int -> Int -> Int -> Prop
+prop_boring_max_min_distrib :: Int -> Int -> Int -> Property
 prop_boring_max_min_distrib x y z = x `min` (y `max` z) === (x `min` y) `max` (x `min` z)
 
-prop_lt_trans :: Int -> Int -> Int -> Prop
+prop_lt_trans :: Int -> Int -> Int -> Property
 prop_lt_trans x y z = x < y ==> y < z ==> x < z
-prop_lt_asymmetric :: Int -> Int -> Prop
+prop_lt_asymmetric :: Int -> Int -> Property
 prop_lt_asymmetric x y = x < y ==> neg (y < x)
-prop_lt_irreflexive :: Int -> Prop
+prop_lt_irreflexive :: Int -> Property
 prop_lt_irreflexive x = neg (x < x)
 
-prop_boring_gt_trans :: Int -> Int -> Int -> Prop
+prop_boring_gt_trans :: Int -> Int -> Int -> Property
 prop_boring_gt_trans x y z = x > y ==> y > z ==> x > z
-prop_boring_gt_asymmetric :: Int -> Int -> Prop
+prop_boring_gt_asymmetric :: Int -> Int -> Property
 prop_boring_gt_asymmetric x y = x > y ==> neg (y > x)
-prop_boring_gt_irreflexive :: Int -> Prop
+prop_boring_gt_irreflexive :: Int -> Property
 prop_boring_gt_irreflexive x = neg (x > x)
 
-prop_le_trans :: Int -> Int -> Int -> Prop
+prop_le_trans :: Int -> Int -> Int -> Property
 prop_le_trans x y z = x <= y ==> y <= z ==> x <= z
-prop_le_antisym :: Int -> Int -> Prop
+prop_le_antisym :: Int -> Int -> Property
 prop_le_antisym x y = x <= y ==> y <= x ==> x === y
-prop_le_reflexive :: Int -> Prop
+prop_le_reflexive :: Int -> Property
 prop_le_reflexive x = x <= x === True
 
-prop_boring_ge_trans :: Int -> Int -> Int -> Prop
+prop_boring_ge_trans :: Int -> Int -> Int -> Property
 prop_boring_ge_trans x y z = x >= y ==> y >= z ==> x >= z
-prop_boring_ge_antisym :: Int -> Int -> Prop
+prop_boring_ge_antisym :: Int -> Int -> Property
 prop_boring_ge_antisym x y = x >= y ==> y >= x ==> x === y
-prop_boring_ge_reflexive :: Int -> Prop
+prop_boring_ge_reflexive :: Int -> Property
 prop_boring_ge_reflexive x = x >= x === True
 
-prop_le_ge_eq :: Int -> Int -> Prop
+prop_le_ge_eq :: Int -> Int -> Property
 prop_le_ge_eq x y = x >= y ==> x <= y ==> x == y
-prop_le_ne_lt :: Int -> Int -> Prop
+prop_le_ne_lt :: Int -> Int -> Property
 prop_le_ne_lt x y = x <= y ==> x /= y ==> x < y
 
-prop_lt_ne :: Int -> Int -> Prop
+prop_lt_ne :: Int -> Int -> Property
 prop_lt_ne x y = y < x ==> x /= y
 
