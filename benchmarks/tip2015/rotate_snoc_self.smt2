@@ -2,7 +2,7 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
   (par (a)
     (snoc :source SnocRotate.snoc
@@ -15,8 +15,8 @@
     (rotate :source SnocRotate.rotate
        ((x Nat) (y (list a))) (list a)
        (match x
-         (case Z y)
-         (case (S z)
+         (case zero y)
+         (case (succ z)
            (match y
              (case nil (_ nil a))
              (case (cons z2 xs1) (rotate z (snoc z2 xs1)))))))))

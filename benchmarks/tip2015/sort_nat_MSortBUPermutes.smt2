@@ -2,7 +2,7 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
   (par (a b)
     (map :let :source Prelude.map
@@ -11,14 +11,14 @@
          (case nil (_ nil b))
          (case (cons y xs) (cons (@ f y) (map f xs)))))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (define-fun-rec
   lmerge :source Sort.lmerge
     ((x (list Nat)) (y (list Nat))) (list Nat)
@@ -28,7 +28,8 @@
         (match y
           (case nil x)
           (case (cons x3 x4)
-            (ite (le z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
+            (ite
+              (leq z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
 (define-fun-rec
   pairwise :source Sort.pairwise
     ((x (list (list Nat)))) (list (list Nat))

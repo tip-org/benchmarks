@@ -2,32 +2,45 @@
 ;
 ; Binary multiplication function with an interesting recursion structure,
 ; which calls an accumulative trinary addition function.
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  plus
+  plus :definition :source |+|
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z y)
-      (case (S z) (S (plus z y)))))
+      (case zero y)
+      (case (succ z) (succ (plus z y)))))
 (define-fun-rec
   add3acc :source WeirdInt.add3acc
     ((x Nat) (y Nat) (z Nat)) Nat
     (match x
-      (case Z
+      (case zero
         (match y
-          (case Z z)
-          (case (S x3) (add3acc Z x3 (S z)))))
-      (case (S x2) (add3acc x2 (S y) z))))
+          (case zero z)
+          (case (succ x3) (add3acc zero x3 (succ z)))))
+      (case (succ x2) (add3acc x2 (succ y) z))))
 (define-fun-rec
   mul2 :source WeirdInt.mul2
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z Z)
-      (case (S z)
+      (case zero zero)
+      (case (succ z)
         (match y
-          (case Z Z)
-          (case (S x2) (plus (S Z) (add3acc z x2 (mul2 z x2))))))))
+          (case zero zero)
+          (case (succ x2) (plus (succ zero) (add3acc z x2 (mul2 z x2))))))))
 (prove
   :source WeirdInt.prop_mul2_assoc
   (forall ((x Nat) (y Nat) (z Nat))
     (= (mul2 x (mul2 y z)) (mul2 (mul2 x y) z))))
+(assert
+  :axiom |associativity of +|
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (plus x (plus y z)) (plus (plus x y) z))))
+(assert
+  :axiom |commutativity of +|
+  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus x zero) x)))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus zero x) x)))

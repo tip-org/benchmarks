@@ -1,14 +1,14 @@
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (prove
   :source Int.prop_le_trans
   (forall ((x Nat) (y Nat) (z Nat))
-    (=> (le x y) (=> (le y z) (le x z)))))
+    (=> (leq x y) (=> (leq y z) (leq x z)))))

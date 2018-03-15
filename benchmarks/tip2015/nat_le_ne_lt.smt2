@@ -1,23 +1,23 @@
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  lt
+  lt :definition :source |<|
     ((x Nat) (y Nat)) Bool
     (match y
-      (case Z false)
-      (case (S z)
+      (case zero false)
+      (case (succ z)
         (match x
-          (case Z true)
-          (case (S n) (lt n z))))))
+          (case zero true)
+          (case (succ n) (lt n z))))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (prove
   :source Int.prop_le_ne_lt
   (forall ((x Nat) (y Nat))
-    (=> (le x y) (=> (distinct x y) (lt x y)))))
+    (=> (leq x y) (=> (distinct x y) (lt x y)))))

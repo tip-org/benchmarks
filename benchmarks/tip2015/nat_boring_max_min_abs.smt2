@@ -1,14 +1,14 @@
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (prove
   :source Int.prop_boring_max_min_abs
   (forall ((x Nat) (y Nat))
-    (= (let ((z (ite (le x y) x y))) (ite (le x z) z x)) x)))
+    (= (let ((z (ite (leq x y) x y))) (ite (leq x z) z x)) x)))

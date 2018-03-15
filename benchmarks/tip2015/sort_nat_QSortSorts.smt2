@@ -2,25 +2,25 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  lt
+  lt :definition :source |<|
     ((x Nat) (y Nat)) Bool
     (match y
-      (case Z false)
-      (case (S z)
+      (case zero false)
+      (case (succ z)
         (match x
-          (case Z true)
-          (case (S n) (lt n z))))))
+          (case zero true)
+          (case (succ n) (lt n z))))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (define-fun-rec
   ordered :source SortUtils.ordered
     ((x (list Nat))) Bool
@@ -29,8 +29,9 @@
       (case (cons y z)
         (match z
           (case nil true)
-          (case (cons y2 xs) (and (le y y2) (ordered z)))))))
-(define-fun gt ((x Nat) (y Nat)) Bool (lt y x))
+          (case (cons y2 xs) (and (leq y y2) (ordered z)))))))
+(define-fun
+  gt :definition :source |>| ((x Nat) (y Nat)) Bool (lt y x))
 (define-fun-rec
   (par (a)
     (filter :let :source Prelude.filter
@@ -52,7 +53,7 @@
     (match x
       (case nil (_ nil Nat))
       (case (cons y xs)
-        (++ (qsort (filter (lambda ((z Nat)) (le z y)) xs))
+        (++ (qsort (filter (lambda ((z Nat)) (leq z y)) xs))
           (++ (cons y (_ nil Nat))
             (qsort (filter (lambda ((x2 Nat)) (gt x2 y)) xs)))))))
 (prove

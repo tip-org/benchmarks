@@ -2,22 +2,22 @@
 ;
 ; Property about a 4-adic operation over natural numbers
 ; op a b c d = a * b + c + d
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
   op :source WeirdInt.op
     ((x Nat) (y Nat) (z Nat) (x2 Nat)) Nat
     (let
       ((fail
           (match z
-            (case Z (match x (case (S x4) (op x4 y y x2))))
-            (case (S x3) (op x y x3 (S x2))))))
+            (case zero (match x (case (succ x4) (op x4 y y x2))))
+            (case (succ x3) (op x y x3 (succ x2))))))
       (match x
-        (case Z
+        (case zero
           (match z
-            (case Z x2)
-            (case (S x6) fail)))
-        (case (S x5) fail))))
+            (case zero x2)
+            (case (succ x6) fail)))
+        (case (succ x5) fail))))
 (prove
   :source WeirdInt.prop_op_assoc
   (forall ((a Nat) (b Nat) (c Nat) (d Nat) (e Nat))
-    (= (op (op a b Z Z) c d e) (op a (op b c Z Z) d e))))
+    (= (op (op a b zero zero) c d e) (op a (op b c zero zero) d e))))

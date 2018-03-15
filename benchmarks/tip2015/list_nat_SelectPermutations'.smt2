@@ -4,7 +4,7 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
   (par (a)
     (select :let
@@ -23,11 +23,11 @@
          (case nil (_ nil (pair a (list a))))
          (case (cons y xs) (cons (pair2 y xs) (select y (select2 xs))))))))
 (define-fun-rec
-  plus
+  plus :definition :source |+|
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z y)
-      (case (S z) (S (plus z y)))))
+      (case zero y)
+      (case (succ z) (succ (plus z y)))))
 (define-fun-rec
   (par (a)
     (formula :let
@@ -41,9 +41,9 @@
     (count :source SortUtils.count
        ((x a) (y (list a))) Nat
        (match y
-         (case nil Z)
+         (case nil zero)
          (case (cons z ys)
-           (ite (= x z) (plus (S Z) (count x ys)) (count x ys)))))))
+           (ite (= x z) (plus (succ zero) (count x ys)) (count x ys)))))))
 (define-fun-rec
   (par (a)
     (all :let :source Prelude.all
@@ -57,3 +57,16 @@
     (forall ((xs (list a)) (z a))
       (all (lambda ((x (list a))) (= (count z xs) (count z x)))
         (formula (select2 xs))))))
+(assert
+  :axiom |associativity of +|
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (plus x (plus y z)) (plus (plus x y) z))))
+(assert
+  :axiom |commutativity of +|
+  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus x zero) x)))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus zero x) x)))

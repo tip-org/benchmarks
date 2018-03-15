@@ -1,14 +1,15 @@
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  lt
+  lt :definition :source |<|
     ((x Nat) (y Nat)) Bool
     (match y
-      (case Z false)
-      (case (S z)
+      (case zero false)
+      (case (succ z)
         (match x
-          (case Z true)
-          (case (S n) (lt n z))))))
-(define-fun gt ((x Nat) (y Nat)) Bool (lt y x))
+          (case zero true)
+          (case (succ n) (lt n z))))))
+(define-fun
+  gt :definition :source |>| ((x Nat) (y Nat)) Bool (lt y x))
 (prove
   :source Int.prop_boring_gt_asymmetric
   (forall ((x Nat) (y Nat)) (=> (gt x y) (not (gt y x)))))

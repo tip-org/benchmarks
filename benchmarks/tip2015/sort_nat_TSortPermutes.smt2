@@ -2,21 +2,21 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (declare-datatypes ()
   ((Tree :source Sort.Tree
      (TNode :source Sort.TNode (proj1-TNode Tree)
        (proj2-TNode Nat) (proj3-TNode Tree))
      (TNil :source Sort.TNil))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (define-fun-rec
   flatten :source Sort.flatten
     ((x Tree) (y (list Nat))) (list Nat)
@@ -57,7 +57,7 @@
     ((x Nat) (y Tree)) Tree
     (match y
       (case (TNode q z r)
-        (ite (le x z) (TNode (add x q) z r) (TNode q z (add x r))))
+        (ite (leq x z) (TNode (add x q) z r) (TNode q z (add x r))))
       (case TNil (TNode TNil x TNil))))
 (define-fun-rec
   toTree :source Sort.toTree

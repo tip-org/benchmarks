@@ -2,27 +2,27 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  plus
+  plus :definition :source |+|
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z y)
-      (case (S z) (S (plus z y)))))
+      (case zero y)
+      (case (succ z) (succ (plus z y)))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (define-fun
   sort2 :source Sort.sort2
     ((x Nat) (y Nat)) (list Nat)
     (ite
-      (le x y) (cons x (cons y (_ nil Nat)))
+      (leq x y) (cons x (cons y (_ nil Nat)))
       (cons y (cons x (_ nil Nat)))))
 (define-funs-rec
   ((par (a) (evens :source Sort.evens ((x (list a))) (list a)))
@@ -38,9 +38,9 @@
     (count :source SortUtils.count
        ((x a) (y (list a))) Nat
        (match y
-         (case nil Z)
+         (case nil zero)
          (case (cons z ys)
-           (ite (= x z) (plus (S Z) (count x ys)) (count x ys)))))))
+           (ite (= x z) (plus (succ zero) (count x ys)) (count x ys)))))))
 (define-fun-rec
   (par (a)
     (++ :source Prelude.++
@@ -94,3 +94,16 @@
   :source Sort.prop_BSortCount
   (forall ((x Nat) (xs (list Nat)))
     (= (count x (bsort xs)) (count x xs))))
+(assert
+  :axiom |associativity of +|
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (plus x (plus y z)) (plus (plus x y) z))))
+(assert
+  :axiom |commutativity of +|
+  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus x zero) x)))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus zero x) x)))

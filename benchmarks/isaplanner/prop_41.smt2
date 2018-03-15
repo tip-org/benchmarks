@@ -25,6 +25,6 @@
          (case (cons z xs) (cons (@ x z) (map x xs)))))))
 (prove
   :source Properties.prop_41
-  (par (b a)
+  (par (a b)
     (forall ((n Nat) (f (=> a b)) (xs (list a)))
       (= (take n (map f xs)) (map f (take n xs))))))

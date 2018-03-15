@@ -5,22 +5,22 @@
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
 (define-fun-rec
-  (par (t)
+  (par (a)
     (unpair :source List.unpair
-       ((x (list (pair t t)))) (list t)
+       ((x (list (pair a a)))) (list a)
        (match x
-         (case nil (_ nil t))
+         (case nil (_ nil a))
          (case (cons y xys)
            (match y (case (pair2 z y2) (cons z (cons y2 (unpair xys))))))))))
 (define-fun-rec
-  (par (t)
+  (par (b)
     (pairs :source List.pairs
-       ((x (list t))) (list (pair t t))
+       ((x (list b))) (list (pair b b))
        (match x
-         (case nil (_ nil (pair t t)))
+         (case nil (_ nil (pair b b)))
          (case (cons y z)
            (match z
-             (case nil (_ nil (pair t t)))
+             (case nil (_ nil (pair b b)))
              (case (cons y2 xs) (cons (pair2 y y2) (pairs xs)))))))))
 (define-fun-rec
   (par (a)
@@ -31,8 +31,8 @@
          (case (cons y l) (+ 1 (length l)))))))
 (prove
   :source List.prop_PairUnpair
-  (par (t)
-    (forall ((xs (list t)))
+  (par (a)
+    (forall ((xs (list a)))
       (=>
         (let ((eta (length xs)))
           (=

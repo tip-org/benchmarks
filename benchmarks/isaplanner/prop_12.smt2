@@ -25,6 +25,6 @@
              (case (cons x2 x3) (drop z x3))))))))
 (prove
   :source Properties.prop_12
-  (par (b a)
+  (par (a b)
     (forall ((n Nat) (f (=> a b)) (xs (list a)))
       (= (drop n (map f xs)) (map f (drop n xs))))))

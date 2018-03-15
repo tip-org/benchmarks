@@ -1,7 +1,7 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
   (par (a)
     (elem :let :source Prelude.elem
@@ -16,8 +16,8 @@
        (match x
          (case (cons z x2)
            (match y
-             (case Z z)
-             (case (S x3) (!! x2 x3))))))))
+             (case zero z)
+             (case (succ x3) (!! x2 x3))))))))
 (prove
   :source List.prop_elem
   (par (a)

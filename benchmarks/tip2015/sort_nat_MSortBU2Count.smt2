@@ -2,22 +2,22 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  plus
+  plus :definition :source |+|
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z y)
-      (case (S z) (S (plus z y)))))
+      (case zero y)
+      (case (succ z) (succ (plus z y)))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (define-fun-rec
   lmerge :source Sort.lmerge
     ((x (list Nat)) (y (list Nat))) (list Nat)
@@ -27,7 +27,8 @@
         (match y
           (case nil x)
           (case (cons x3 x4)
-            (ite (le z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
+            (ite
+              (leq z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
 (define-fun-rec
   pairwise :source Sort.pairwise
     ((x (list (list Nat)))) (list (list Nat))
@@ -56,7 +57,7 @@
           (case nil (cons (cons y (_ nil Nat)) (_ nil (list Nat))))
           (case (cons y2 xs)
             (ite
-              (le y y2)
+              (leq y y2)
               (match (risers z)
                 (case nil (_ nil (list Nat)))
                 (case (cons ys yss) (cons (cons y ys) yss)))
@@ -69,10 +70,23 @@
     (count :source SortUtils.count
        ((x a) (y (list a))) Nat
        (match y
-         (case nil Z)
+         (case nil zero)
          (case (cons z ys)
-           (ite (= x z) (plus (S Z) (count x ys)) (count x ys)))))))
+           (ite (= x z) (plus (succ zero) (count x ys)) (count x ys)))))))
 (prove
   :source Sort.prop_MSortBU2Count
   (forall ((x Nat) (xs (list Nat)))
     (= (count x (msortbu2 xs)) (count x xs))))
+(assert
+  :axiom |associativity of +|
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (plus x (plus y z)) (plus (plus x y) z))))
+(assert
+  :axiom |commutativity of +|
+  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus x zero) x)))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus zero x) x)))

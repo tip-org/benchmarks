@@ -2,16 +2,16 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (define-fun-rec
   ordered :source SortUtils.ordered
     ((x (list Nat))) Bool
@@ -20,14 +20,14 @@
       (case (cons y z)
         (match z
           (case nil true)
-          (case (cons y2 xs) (and (le y y2) (ordered z)))))))
+          (case (cons y2 xs) (and (leq y y2) (ordered z)))))))
 (define-fun-rec
   insert :source Sort.insert
     ((x Nat) (y (list Nat))) (list Nat)
     (match y
       (case nil (cons x (_ nil Nat)))
       (case (cons z xs)
-        (ite (le x z) (cons x y) (cons z (insert x xs))))))
+        (ite (leq x z) (cons x y) (cons z (insert x xs))))))
 (define-fun-rec
   isort :source Sort.isort
     ((x (list Nat))) (list Nat)

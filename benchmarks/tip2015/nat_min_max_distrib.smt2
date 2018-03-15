@@ -1,24 +1,24 @@
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (prove
   :source Int.prop_min_max_distrib
   (forall ((x Nat) (y Nat) (z Nat))
-    (= (let ((y2 (ite (le y z) y z))) (ite (le x y2) y2 x))
+    (= (let ((y2 (ite (leq y z) y z))) (ite (leq x y2) y2 x))
       (ite
-        (le x z)
+        (leq x z)
         (@
-          (let ((x3 (ite (le x y) y x)))
-            (lambda ((y4 Nat)) (ite (le x3 y4) x3 y4)))
+          (let ((x3 (ite (leq x y) y x)))
+            (lambda ((y4 Nat)) (ite (leq x3 y4) x3 y4)))
           z)
         (@
-          (let ((x2 (ite (le x y) y x)))
-            (lambda ((y3 Nat)) (ite (le x2 y3) x2 y3)))
+          (let ((x2 (ite (leq x y) y x)))
+            (lambda ((y3 Nat)) (ite (leq x2 y3) x2 y3)))
           x)))))

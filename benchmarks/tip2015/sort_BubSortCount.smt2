@@ -25,13 +25,13 @@
             (ite
               (<= y y2)
               (match (bubble z)
-                (case (pair2 b22 ys22) (pair2 b22 (cons y ys22))))
+                (case (pair2 b12 ys12) (pair2 b12 (cons y ys12))))
               (match (bubble (cons y xs))
-                (case (pair2 b2 ys2) (pair2 true (cons y2 ys2))))))))))
+                (case (pair2 b1 ys1) (pair2 true (cons y2 ys1))))))))))
 (define-fun-rec
   bubsort :source Sort.bubsort
     ((x (list Int))) (list Int)
-    (match (bubble x) (case (pair2 b1 ys) (ite b1 (bubsort ys) x))))
+    (match (bubble x) (case (pair2 c ys1) (ite c (bubsort ys1) x))))
 (prove
   :source Sort.prop_BubSortCount
   (forall ((x Int) (xs (list Int)))

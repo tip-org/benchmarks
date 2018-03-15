@@ -2,21 +2,21 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (define-fun
   sort2 :source Sort.sort2
     ((x Nat) (y Nat)) (list Nat)
     (ite
-      (le x y) (cons x (cons y (_ nil Nat)))
+      (leq x y) (cons x (cons y (_ nil Nat)))
       (cons y (cons x (_ nil Nat)))))
 (define-funs-rec
   ((par (a) (evens :source Sort.evens ((x (list a))) (list a)))

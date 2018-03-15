@@ -2,7 +2,7 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (declare-datatypes ()
   ((Heap :source Sort.Heap
      (Node :source Sort.Node (proj1-Node Heap)
@@ -15,21 +15,21 @@
       (case nil (_ nil Heap))
       (case (cons y z) (cons (Node Nil y Nil) (toHeap z)))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
 (define-fun-rec
   insert :source Sort.insert
     ((x Nat) (y (list Nat))) (list Nat)
     (match y
       (case nil (cons x (_ nil Nat)))
       (case (cons z xs)
-        (ite (le x z) (cons x y) (cons z (insert x xs))))))
+        (ite (leq x z) (cons x y) (cons z (insert x xs))))))
 (define-fun-rec
   isort :source Sort.sort
     ((x (list Nat))) (list Nat)
@@ -44,7 +44,7 @@
         (match y
           (case (Node x4 x5 x6)
             (ite
-              (le x2 x5) (Node (hmerge x3 y) x2 z) (Node (hmerge x x6) x5 x4)))
+              (leq x2 x5) (Node (hmerge x3 y) x2 z) (Node (hmerge x x6) x5 x4)))
           (case Nil x)))
       (case Nil y)))
 (define-fun-rec

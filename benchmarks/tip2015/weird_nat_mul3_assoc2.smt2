@@ -3,44 +3,59 @@
 ; Property about a trinary multiplication function, defined in terms of an
 ; trinary addition function
 ; mul3 x y z = xyz + (xy + xz + yz) + (x + y + z) + 1
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  plus
+  plus :definition :source |+|
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z y)
-      (case (S z) (S (plus z y)))))
+      (case zero y)
+      (case (succ z) (succ (plus z y)))))
 (define-fun-rec
   add3 :source WeirdInt.add3
     ((x Nat) (y Nat) (z Nat)) Nat
     (match x
-      (case Z
+      (case zero
         (match y
-          (case Z z)
-          (case (S x3) (plus (S Z) (add3 Z x3 z)))))
-      (case (S x2) (plus (S Z) (add3 x2 y z)))))
+          (case zero z)
+          (case (succ x3) (plus (succ zero) (add3 zero x3 z)))))
+      (case (succ x2) (plus (succ zero) (add3 x2 y z)))))
 (define-fun-rec
   mul3 :source WeirdInt.mul3
     ((x Nat) (y Nat) (z Nat)) Nat
     (match x
-      (case Z Z)
-      (case (S x2)
+      (case zero zero)
+      (case (succ x2)
         (match y
-          (case Z Z)
-          (case (S x3)
+          (case zero zero)
+          (case (succ x3)
             (match z
-              (case Z Z)
-              (case (S x4)
+              (case zero zero)
+              (case (succ x4)
                 (let
                   ((fail
-                      (plus (S Z)
+                      (plus (succ zero)
                         (add3 (mul3 x2 x3 x4)
-                          (add3 (mul3 (S Z) x3 x4) (mul3 x2 (S Z) x4) (mul3 x2 x3 (S Z)))
+                          (add3 (mul3 (succ zero) x3 x4)
+                            (mul3 x2 (succ zero) x4) (mul3 x2 x3 (succ zero)))
                           (add3 x2 x3 x4)))))
                   (ite
-                    (= x2 Z) (ite (= x3 Z) (ite (= x4 Z) (S Z) fail) fail)
+                    (= x2 zero)
+                    (ite (= x3 zero) (ite (= x4 zero) (succ zero) fail) fail)
                     fail)))))))))
 (prove
   :source WeirdInt.prop_mul3_assoc2
   (forall ((x1 Nat) (x2 Nat) (x3 Nat) (x4 Nat) (x5 Nat))
     (= (mul3 (mul3 x1 x2 x3) x4 x5) (mul3 x1 (mul3 x2 x3 x4) x5))))
+(assert
+  :axiom |associativity of +|
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (plus x (plus y z)) (plus (plus x y) z))))
+(assert
+  :axiom |commutativity of +|
+  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus x zero) x)))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus zero x) x)))

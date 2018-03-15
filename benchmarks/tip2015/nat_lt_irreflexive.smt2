@@ -1,13 +1,13 @@
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  lt
+  lt :definition :source |<|
     ((x Nat) (y Nat)) Bool
     (match y
-      (case Z false)
-      (case (S z)
+      (case zero false)
+      (case (succ z)
         (match x
-          (case Z true)
-          (case (S n) (lt n z))))))
+          (case zero true)
+          (case (succ n) (lt n z))))))
 (prove
   :source Int.prop_lt_irreflexive
   (forall ((x Nat)) (not (lt x x))))

@@ -1,5 +1,5 @@
 ; Property about natural numbers with binary presentation
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (declare-datatypes ()
   ((Bin :source BinLists.Bin (One :source BinLists.One)
      (ZeroAnd :source BinLists.ZeroAnd (proj1-ZeroAnd Bin))
@@ -27,19 +27,33 @@
           (case (ZeroAnd zs) (OneAnd (plus2 x2 zs)))
           (case (OneAnd ys2) (ZeroAnd (s (plus2 x2 ys2))))))))
 (define-fun-rec
-  plus
+  plus :definition :source |+|
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z y)
-      (case (S z) (S (plus z y)))))
+      (case zero y)
+      (case (succ z) (succ (plus z y)))))
 (define-fun-rec
   toNat :source BinLists.toNat
     ((x Bin)) Nat
     (match x
-      (case One (S Z))
+      (case One (succ zero))
       (case (ZeroAnd xs) (plus (toNat xs) (toNat xs)))
-      (case (OneAnd ys) (plus (plus (S Z) (toNat ys)) (toNat ys)))))
+      (case (OneAnd ys)
+        (plus (plus (succ zero) (toNat ys)) (toNat ys)))))
 (prove
   :source BinLists.prop_plus
   (forall ((x Bin) (y Bin))
     (= (toNat (plus2 x y)) (plus (toNat x) (toNat y)))))
+(assert
+  :axiom |associativity of +|
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (plus x (plus y z)) (plus (plus x y) z))))
+(assert
+  :axiom |commutativity of +|
+  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus x zero) x)))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus zero x) x)))

@@ -2,7 +2,7 @@
 (declare-datatypes (a)
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
   (par (a)
     (snoc :source SnocRotate.snoc
@@ -15,24 +15,37 @@
     (rotate :source SnocRotate.rotate
        ((x Nat) (y (list a))) (list a)
        (match x
-         (case Z y)
-         (case (S z)
+         (case zero y)
+         (case (succ z)
            (match y
              (case nil (_ nil a))
              (case (cons z2 xs1) (rotate z (snoc z2 xs1)))))))))
 (define-fun-rec
-  plus
+  plus :definition :source |+|
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z y)
-      (case (S z) (S (plus z y)))))
+      (case zero y)
+      (case (succ z) (succ (plus z y)))))
 (define-fun-rec
   (par (a)
     (length :source Prelude.length
        ((x (list a))) Nat
        (match x
-         (case nil Z)
-         (case (cons y l) (plus (S Z) (length l)))))))
+         (case nil zero)
+         (case (cons y l) (plus (succ zero) (length l)))))))
 (prove
   :source SnocRotate.prop_snoc
   (par (a) (forall ((xs (list a))) (= (rotate (length xs) xs) xs))))
+(assert
+  :axiom |associativity of +|
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (plus x (plus y z)) (plus (plus x y) z))))
+(assert
+  :axiom |commutativity of +|
+  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus x zero) x)))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus zero x) x)))

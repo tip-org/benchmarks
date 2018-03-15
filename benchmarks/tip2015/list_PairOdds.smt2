@@ -5,14 +5,14 @@
   ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
      (cons :source |Prelude.:| (head a) (tail (list a))))))
 (define-fun-rec
-  (par (t)
+  (par (b)
     (pairs :source List.pairs
-       ((x (list t))) (list (pair t t))
+       ((x (list b))) (list (pair b b))
        (match x
-         (case nil (_ nil (pair t t)))
+         (case nil (_ nil (pair b b)))
          (case (cons y z)
            (match z
-             (case nil (_ nil (pair t t)))
+             (case nil (_ nil (pair b b)))
              (case (cons y2 xs) (cons (pair2 y y2) (pairs xs)))))))))
 (define-fun-rec
   (par (a b)

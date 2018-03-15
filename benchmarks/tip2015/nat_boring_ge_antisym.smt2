@@ -1,14 +1,15 @@
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  le
+  leq :definition :source |<=|
     ((x Nat) (y Nat)) Bool
     (match x
-      (case Z true)
-      (case (S z)
+      (case zero true)
+      (case (succ z)
         (match y
-          (case Z false)
-          (case (S x2) (le z x2))))))
-(define-fun ge ((x Nat) (y Nat)) Bool (le y x))
+          (case zero false)
+          (case (succ x2) (leq z x2))))))
+(define-fun
+  geq :definition :source |>=| ((x Nat) (y Nat)) Bool (leq y x))
 (prove
   :source Int.prop_boring_ge_antisym
-  (forall ((x Nat) (y Nat)) (=> (ge x y) (=> (ge y x) (= x y)))))
+  (forall ((x Nat) (y Nat)) (=> (geq x y) (=> (geq y x) (= x y)))))

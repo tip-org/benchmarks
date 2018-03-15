@@ -3,46 +3,60 @@
 ; Property about a trinary multiplication function, defined in terms of an
 ; accumulative trinary addition function
 ; mul3acc x y z = xyz + (xy + xz + yz) + (x + y + z) + 1
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  plus
+  plus :definition :source |+|
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z y)
-      (case (S z) (S (plus z y)))))
+      (case zero y)
+      (case (succ z) (succ (plus z y)))))
 (define-fun-rec
   add3acc :source WeirdInt.add3acc
     ((x Nat) (y Nat) (z Nat)) Nat
     (match x
-      (case Z
+      (case zero
         (match y
-          (case Z z)
-          (case (S x3) (add3acc Z x3 (S z)))))
-      (case (S x2) (add3acc x2 (S y) z))))
+          (case zero z)
+          (case (succ x3) (add3acc zero x3 (succ z)))))
+      (case (succ x2) (add3acc x2 (succ y) z))))
 (define-fun-rec
   mul3acc :source WeirdInt.mul3acc
     ((x Nat) (y Nat) (z Nat)) Nat
     (match x
-      (case Z Z)
-      (case (S x2)
+      (case zero zero)
+      (case (succ x2)
         (match y
-          (case Z Z)
-          (case (S x3)
+          (case zero zero)
+          (case (succ x3)
             (match z
-              (case Z Z)
-              (case (S x4)
+              (case zero zero)
+              (case (succ x4)
                 (let
                   ((fail
-                      (plus (S Z)
+                      (plus (succ zero)
                         (add3acc (mul3acc x2 x3 x4)
-                          (add3acc (mul3acc (S Z) x3 x4)
-                            (mul3acc x2 (S Z) x4) (mul3acc x2 x3 (S Z)))
+                          (add3acc (mul3acc (succ zero) x3 x4)
+                            (mul3acc x2 (succ zero) x4) (mul3acc x2 x3 (succ zero)))
                           (add3acc x y z)))))
                   (ite
-                    (= x2 Z) (ite (= x3 Z) (ite (= x4 Z) (S Z) fail) fail)
+                    (= x2 zero)
+                    (ite (= x3 zero) (ite (= x4 zero) (succ zero) fail) fail)
                     fail)))))))))
 (prove
   :source WeirdInt.prop_mul3acc_assoc3
   (forall ((x1 Nat) (x2 Nat) (x3acc Nat) (x4 Nat) (x5 Nat))
     (= (mul3acc x1 (mul3acc x2 x3acc x4) x5)
       (mul3acc x1 x2 (mul3acc x3acc x4 x5)))))
+(assert
+  :axiom |associativity of +|
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (plus x (plus y z)) (plus (plus x y) z))))
+(assert
+  :axiom |commutativity of +|
+  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus x zero) x)))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus zero x) x)))

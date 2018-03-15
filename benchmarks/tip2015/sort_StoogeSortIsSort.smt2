@@ -75,7 +75,7 @@
    (stooge1sort1 :source Sort.stooge1sort1
       ((x (list Int))) (list Int)))
   ((match (splitAt (div (length x) 3) (reverse x))
-     (case (pair2 ys2 zs2) (++ (stoogesort zs2) (reverse ys2))))
+     (case (pair2 ys1 zs1) (++ (stoogesort zs1) (reverse ys1))))
    (match x
      (case nil (_ nil Int))
      (case (cons y z)
@@ -87,7 +87,7 @@
              (case (cons x3 x4)
                (stooge1sort2 (stooge1sort1 (stooge1sort2 x)))))))))
    (match (splitAt (div (length x) 3) x)
-     (case (pair2 ys2 zs1) (++ ys2 (stoogesort zs1))))))
+     (case (pair2 ys1 zs) (++ ys1 (stoogesort zs))))))
 (prove
   :source Sort.prop_StoogeSortIsSort
   (forall ((xs (list Int))) (= (stoogesort xs) (isort xs))))

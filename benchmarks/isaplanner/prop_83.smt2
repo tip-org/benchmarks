@@ -55,7 +55,7 @@
          (case (cons z xs) (cons z (++ xs y)))))))
 (prove
   :source Properties.prop_83
-  (par (b a)
+  (par (a b)
     (forall ((xs (list a)) (ys (list a)) (zs (list b)))
       (= (zip (++ xs ys) zs)
         (++ (zip xs (take (len xs) zs)) (zip ys (drop (len xs) zs)))))))

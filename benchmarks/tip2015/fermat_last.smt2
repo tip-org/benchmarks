@@ -1,38 +1,82 @@
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  plus
+  plus :definition :source |+|
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z y)
-      (case (S z) (S (plus z y)))))
+      (case zero y)
+      (case (succ z) (succ (plus z y)))))
 (define-fun-rec
-  times
+  times :definition :source |*|
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z Z)
-      (case (S z) (plus y (times z y)))))
+      (case zero zero)
+      (case (succ z) (plus y (times z y)))))
 (define-fun-rec
   formula-pow3 :let
     ((x Nat) (y Nat)) Nat
     (match y
-      (case Z (S Z))
-      (case (S z) (times x (formula-pow3 x z)))))
+      (case zero (succ zero))
+      (case (succ z) (times x (formula-pow3 x z)))))
 (define-fun-rec
   formula-pow2 :let
     ((x Nat) (y Nat)) Nat
     (match y
-      (case Z (S Z))
-      (case (S z) (times x (formula-pow2 x z)))))
+      (case zero (succ zero))
+      (case (succ z) (times x (formula-pow2 x z)))))
 (define-fun-rec
   formula-pow :let
     ((x Nat) (y Nat)) Nat
     (match y
-      (case Z (S Z))
-      (case (S z) (times x (formula-pow x z)))))
+      (case zero (succ zero))
+      (case (succ z) (times x (formula-pow x z)))))
 (prove
   :source Fermat.prop_last
   (forall ((n Nat) (x Nat) (y Nat) (z Nat))
     (distinct
-      (plus (formula-pow (plus (S Z) x) (plus (S (S (S Z))) n))
-        (formula-pow2 (plus (S Z) y) (plus (S (S (S Z))) n)))
-      (formula-pow3 (plus (S Z) z) (plus (S (S (S Z))) n)))))
+      (plus
+        (formula-pow (plus (succ zero) x)
+          (plus (succ (succ (succ zero))) n))
+        (formula-pow2 (plus (succ zero) y)
+          (plus (succ (succ (succ zero))) n)))
+      (formula-pow3 (plus (succ zero) z)
+        (plus (succ (succ (succ zero))) n)))))
+(assert
+  :axiom |associativity of *|
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (times x (times y z)) (times (times x y) z))))
+(assert
+  :axiom |associativity of +|
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (plus x (plus y z)) (plus (plus x y) z))))
+(assert
+  :axiom |commutativity of *|
+  (forall ((x Nat) (y Nat)) (= (times x y) (times y x))))
+(assert
+  :axiom |commutativity of +|
+  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert
+  :axiom distributivity
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (times x (plus y z)) (plus (times x y) (times x z)))))
+(assert
+  :axiom distributivity
+  (forall ((x Nat) (y Nat) (z Nat))
+    (= (times (plus x y) z) (plus (times x z) (times y z)))))
+(assert
+  :axiom |identity for *|
+  (forall ((x Nat)) (= (times x (succ zero)) x)))
+(assert
+  :axiom |identity for *|
+  (forall ((x Nat)) (= (times (succ zero) x) x)))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus x zero) x)))
+(assert
+  :axiom |identity for +|
+  (forall ((x Nat)) (= (plus zero x) x)))
+(assert
+  :axiom |zero for *|
+  (forall ((x Nat)) (= (times x zero) zero)))
+(assert
+  :axiom |zero for *|
+  (forall ((x Nat)) (= (times zero x) zero)))

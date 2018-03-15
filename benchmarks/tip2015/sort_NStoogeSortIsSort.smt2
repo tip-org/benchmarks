@@ -80,7 +80,7 @@
    (nstooge1sort1 :source Sort.nstooge1sort1
       ((x (list Int))) (list Int)))
   ((match (splitAt (third (length x)) (reverse x))
-     (case (pair2 ys2 zs2) (++ (nstoogesort zs2) (reverse ys2))))
+     (case (pair2 ys1 zs1) (++ (nstoogesort zs1) (reverse ys1))))
    (match x
      (case nil (_ nil Int))
      (case (cons y z)
@@ -92,7 +92,7 @@
              (case (cons x3 x4)
                (nstooge1sort2 (nstooge1sort1 (nstooge1sort2 x)))))))))
    (match (splitAt (third (length x)) x)
-     (case (pair2 ys2 zs1) (++ ys2 (nstoogesort zs1))))))
+     (case (pair2 ys1 zs) (++ ys1 (nstoogesort zs))))))
 (prove
   :source Sort.prop_NStoogeSortIsSort
   (forall ((xs (list Int))) (= (nstoogesort xs) (isort xs))))

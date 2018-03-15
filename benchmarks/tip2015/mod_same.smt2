@@ -1,44 +1,44 @@
 ; Modulus, structurally recursive and straightforward implementation
-(declare-datatypes () ((Nat (Z) (S (p Nat)))))
+(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  minus
+  minus :definition :source |-|
     ((x Nat) (y Nat)) Nat
     (match x
-      (case Z Z)
-      (case (S z) (match y (case (S y2) (minus z y2))))))
+      (case zero zero)
+      (case (succ z) (match y (case (succ y2) (minus z y2))))))
 (define-fun-rec
-  lt
+  lt :definition :source |<|
     ((x Nat) (y Nat)) Bool
     (match y
-      (case Z false)
-      (case (S z)
+      (case zero false)
+      (case (succ z)
         (match x
-          (case Z true)
-          (case (S n) (lt n z))))))
+          (case zero true)
+          (case (succ n) (lt n z))))))
 (define-fun-rec
   mod2 :source Mod.mod
     ((x Nat) (y Nat)) Nat
     (match y
-      (case Z Z)
-      (case (S z) (ite (lt x y) x (mod2 (minus x y) y)))))
+      (case zero zero)
+      (case (succ z) (ite (lt x y) x (mod2 (minus x y) y)))))
 (define-fun-rec
   go :source Mod.go
     ((x Nat) (y Nat) (z Nat)) Nat
     (match z
-      (case Z Z)
-      (case (S x2)
+      (case zero zero)
+      (case (succ x2)
         (match x
-          (case Z
+          (case zero
             (match y
-              (case Z Z)
-              (case (S x5) (minus z y))))
-          (case (S x3)
+              (case zero zero)
+              (case (succ x5) (minus z y))))
+          (case (succ x3)
             (match y
-              (case Z (go x3 x2 z))
-              (case (S x4) (go x3 x4 z))))))))
+              (case zero (go x3 x2 z))
+              (case (succ x4) (go x3 x4 z))))))))
 (define-fun
   mod_structural :source Mod.mod_structural
-    ((x Nat) (y Nat)) Nat (go x Z y))
+    ((x Nat) (y Nat)) Nat (go x zero y))
 (prove
   :source Mod.prop_same
   (forall ((m Nat) (n Nat)) (= (mod2 m n) (mod_structural m n))))

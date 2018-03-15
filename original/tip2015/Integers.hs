@@ -15,9 +15,6 @@ m - 0 = P m
 0 - n = N n
 m - n = pred m - pred n
 
-pred :: Int -> Int
-pred x = x P.- 1
-
 {-# NOINLINE neg #-}
 neg :: Integer -> Integer
 neg (P 0) = P 0
