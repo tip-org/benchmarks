@@ -17,7 +17,7 @@ clean:
 find-props(prop, file) =
 	props[] =
 	lex-search($(file))
-	case $"$(prop)[^ ]*"
+	case $"^$(prop)[^ ]*"
 		props[] += $0
 		export
 	return $(set $(props))
@@ -93,3 +93,29 @@ create(prop_,  koen,       tip2015,    Propositional.hs,        propositional)
 create(prop_,  koen,       tip2015,    Sort.hs,                 sort)
 create(prop_,  koen,       tip2015,    Subst.hs,                subst)
 create(prop_,  koen,       tip2015,    Tree.hs,                 tree)
+
+create(prop_,  false,      false,      CFG5.hs,                 cfg5)
+create(prop_,  false,      false,      Definitions.hs,          productive_use_of_failure)
+create(prop_,  false,      false,      Deriv.hs,                derivative)
+create(prop_,  false,      false,      EditDistance.hs,         edit_distance)
+create(prop_,  false,      false,      Expr.hs,                 expr)
+create(prop_,  false,      false,      Graph.hs,                graph)
+create(prop_,  false,      false,      HotelKey_ReachAsDatatype.hs, hotel_key)
+create(prop_,  false,      false,      Imp.hs,                  imperative)
+create(prop_,  false,      false,      Kaleidoscope.hs,         kaleidoscope)
+create(prop_,  false,      false,      Mergesort.hs,            mergesort)
+create(prop_,  false,      false,      Nat.hs,                  nat)
+create(prop_,  false,      false,      Palin.hs,                palindrome)
+create(prop_,  false,      false,      Parse.hs,                parse)
+create(prop_,  false,      false,      Queue1.hs,               queue1)
+create(prop_,  false,      false,      Queue2.hs,               queue2)
+create(prop_,  false,      false,      Queue3.hs,               queue3)
+create(prop_,  false,      false,      Rec.hs,                  rec)
+create(prop_,  false,      false,      RegExpDeluxe.hs,         regexp_deluxe)
+create(prop_,  false,      false,      RegExp.hs,               regexp)
+create(prop_,  false,      false,      Scale.hs,                scale)
+create(prop_,  false,      false,      ShowBinLists.hs,         show_bin_lists)
+create(prop_,  false,      false,      Sudoku.hs,               sudoku)
+create(prop_,  false,      false,      Turing.hs,               turing)
+create(prop_,  false,      false,      Type.hs,                 type)
+create(prop_,  false,      false,      Untyped.hs,              untyped)
