@@ -241,10 +241,7 @@ number = (S (S (S (S (S Z)))))
 -- sort_inj     xs ys = sort xs === sort ys ==> (number + number + number + number) < length xs === True ==> xs === ys
 -- sort_inj_nub xs ys = sort xs === sort ys ==> number < length xs === True ==> nub xs === xs ==> xs === ys
 
--- prop_rot_bogus  n xs = xs === rotate n (xs :: [Nat])
-
--- prop_drop_idem   n xs      = drop n (drop n (xs :: [Nat])) === drop n xs
--- prop_drop_invol  n xs      = drop n (drop n (xs :: [Nat])) === xs
+prop_rot_bogus  n xs = xs === rotate n (xs :: [Nat])
 
 prop_len_bs   xs ys      = length (xs ++ ys) === length (xs ::[Nat])
 prop_app_inj1 xs ys zs   = xs ++ ys === xs ++ zs ==> ys === (zs ::[Nat])
@@ -261,7 +258,6 @@ prop_union_idem xs    = xs `union` xs === xs
 
 prop_union_comm xs ys = xs `union` ys === ys `union` xs
 
-prop_rot_bogus  n xs = xs === rotate n (xs :: [Nat])
 prop_rot_inj0'  n m ys xs = n < length xs === True ==> m < length ys === True ==> xs === ys ==> rotate (S Z) xs =/= xs ==> rotate n (xs :: [Nat]) === rotate m ys ==> n === m
 prop_rot_inj0   n m ys xs = rotate n (xs :: [Nat]) === rotate m ys ==> n === m
 prop_rot_inj1   n   ys xs = rotate n (xs :: [Nat]) === rotate n ys ==> xs === ys

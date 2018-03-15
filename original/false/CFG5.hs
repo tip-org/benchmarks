@@ -19,9 +19,7 @@ linTerm :: E -> [Tok]
 linTerm (a :*: b) = [C] ++ lin (a :+: b) ++ [D]
 linTerm e         = lin e
 
-unambig u v = lin u === lin v ==> assoc u === assoc v
-
--- prop_unambig u v = lift (lin u == lin v) *=>* lift (assoc u == assoc v)
+prop_unambig u v = lin u === lin v ==> assoc u === assoc v
 
 -- FLAGS: cassoc
 assoc :: E -> E
