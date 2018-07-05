@@ -1,25 +1,23 @@
 ; Bubble sort
 (declare-datatypes (a b)
-  ((pair :source |Prelude.(,)|
-     (pair2 :source |Prelude.(,)| (proj1-pair a) (proj2-pair b)))))
+  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
-  insert :source Sort.insert
+  insert
     ((x Int) (y (list Int))) (list Int)
     (match y
       (case nil (cons x (_ nil Int)))
       (case (cons z xs)
         (ite (<= x z) (cons x y) (cons z (insert x xs))))))
 (define-fun-rec
-  isort :source Sort.sort
+  isort
     ((x (list Int))) (list Int)
     (match x
       (case nil (_ nil Int))
       (case (cons y xs) (insert y (isort xs)))))
 (define-fun-rec
-  bubble :source Sort.bubble
+  bubble
     ((x (list Int))) (pair Bool (list Int))
     (match x
       (case nil (pair2 false (_ nil Int)))
@@ -34,9 +32,7 @@
               (match (bubble (cons y xs))
                 (case (pair2 b1 ys1) (pair2 true (cons y2 ys1))))))))))
 (define-fun-rec
-  bubsort :source Sort.bubsort
+  bubsort
     ((x (list Int))) (list Int)
     (match (bubble x) (case (pair2 c ys1) (ite c (bubsort ys1) x))))
-(prove
-  :source Sort.prop_BubSortIsSort
-  (forall ((xs (list Int))) (= (bubsort xs) (isort xs))))
+(prove (forall ((xs (list Int))) (= (bubsort xs) (isort xs))))

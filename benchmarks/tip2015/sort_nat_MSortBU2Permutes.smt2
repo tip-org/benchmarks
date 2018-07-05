@@ -1,10 +1,9 @@
 ; Bottom-up merge sort, using a total risers function
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  leq :definition :source |<=|
+  leq
     ((x Nat) (y Nat)) Bool
     (match x
       (case zero true)
@@ -13,7 +12,7 @@
           (case zero false)
           (case (succ x2) (leq z x2))))))
 (define-fun-rec
-  lmerge :source Sort.lmerge
+  lmerge
     ((x (list Nat)) (y (list Nat))) (list Nat)
     (match x
       (case nil y)
@@ -24,7 +23,7 @@
             (ite
               (leq z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
 (define-fun-rec
-  pairwise :source Sort.pairwise
+  pairwise
     ((x (list (list Nat)))) (list (list Nat))
     (match x
       (case nil (_ nil (list Nat)))
@@ -33,7 +32,7 @@
           (case nil (cons xs (_ nil (list Nat))))
           (case (cons ys xss) (cons (lmerge xs ys) (pairwise xss)))))))
 (define-fun-rec
-  mergingbu2 :source Sort.mergingbu2
+  mergingbu2
     ((x (list (list Nat)))) (list Nat)
     (match x
       (case nil (_ nil Nat))
@@ -42,7 +41,7 @@
           (case nil xs)
           (case (cons z x2) (mergingbu2 (pairwise x)))))))
 (define-fun-rec
-  risers :source Sort.risers
+  risers
     ((x (list Nat))) (list (list Nat))
     (match x
       (case nil (_ nil (list Nat)))
@@ -57,18 +56,17 @@
                 (case (cons ys yss) (cons (cons y ys) yss)))
               (cons (cons y (_ nil Nat)) (risers z))))))))
 (define-fun
-  msortbu2 :source Sort.msortbu2
-    ((x (list Nat))) (list Nat) (mergingbu2 (risers x)))
+  msortbu2 ((x (list Nat))) (list Nat) (mergingbu2 (risers x)))
 (define-fun-rec
   (par (a)
-    (elem :let :source Prelude.elem
+    (elem
        ((x a) (y (list a))) Bool
        (match y
          (case nil false)
          (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
   (par (a)
-    (deleteBy :source Data.List.deleteBy
+    (deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (_ nil a))
@@ -76,7 +74,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (isPermutation :source SortUtils.isPermutation
+    (isPermutation
        ((x (list a)) (y (list a))) Bool
        (match x
          (case nil
@@ -88,6 +86,4 @@
              (isPermutation xs
                (deleteBy (lambda ((x4 a)) (lambda ((x5 a)) (= x4 x5)))
                  x3 y))))))))
-(prove
-  :source Sort.prop_MSortBU2Permutes
-  (forall ((xs (list Nat))) (isPermutation (msortbu2 xs) xs)))
+(prove (forall ((xs (list Nat))) (isPermutation (msortbu2 xs) xs)))

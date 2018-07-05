@@ -1,10 +1,8 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
-(declare-datatypes ()
-  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
-     (S :source Definitions.S (proj1-S Nat)))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
 (define-fun-rec
-  |-2| :source Definitions.-
+  |-2|
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z Z)
@@ -13,12 +11,11 @@
           (case Z x)
           (case (S x2) (|-2| z x2))))))
 (define-fun-rec
-  +2 :source Definitions.+
+  +2
     ((x Nat) (y Nat)) Nat
     (match x
       (case Z y)
       (case (S z) (S (+2 z y)))))
 (prove
-  :source Properties.prop_08
   (forall ((k Nat) (m Nat) (n Nat))
     (= (|-2| (+2 k m) (+2 k n)) (|-2| m n))))

@@ -1,6 +1,6 @@
 (declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  lt :definition :source |<|
+  lt
     ((x Nat) (y Nat)) Bool
     (match y
       (case zero false)
@@ -8,6 +8,4 @@
         (match x
           (case zero true)
           (case (succ n) (lt n z))))))
-(prove
-  :source Int.prop_lt_asymmetric
-  (forall ((x Nat) (y Nat)) (=> (lt x y) (not (lt y x)))))
+(prove (forall ((x Nat) (y Nat)) (=> (lt x y) (not (lt y x)))))

@@ -1,29 +1,28 @@
 ; Bitonic sort
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun
-  sort2 :source Sort.sort2
+  sort2
     ((x Int) (y Int)) (list Int)
     (ite
       (<= x y) (cons x (cons y (_ nil Int)))
       (cons y (cons x (_ nil Int)))))
 (define-fun-rec
-  insert :source Sort.insert
+  insert
     ((x Int) (y (list Int))) (list Int)
     (match y
       (case nil (cons x (_ nil Int)))
       (case (cons z xs)
         (ite (<= x z) (cons x y) (cons z (insert x xs))))))
 (define-fun-rec
-  isort :source Sort.sort
+  isort
     ((x (list Int))) (list Int)
     (match x
       (case nil (_ nil Int))
       (case (cons y xs) (insert y (isort xs)))))
 (define-funs-rec
-  ((par (a) (evens :source Sort.evens ((x (list a))) (list a)))
-   (par (a) (odds :source Sort.odds ((x (list a))) (list a))))
+  ((par (a) (evens ((x (list a))) (list a)))
+   (par (a) (odds ((x (list a))) (list a))))
   ((match x
      (case nil (_ nil a))
      (case (cons y xs) (cons y (odds xs))))
@@ -32,13 +31,13 @@
      (case (cons y xs) (evens xs)))))
 (define-fun-rec
   (par (a)
-    (++ :source Prelude.++
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
-  pairs :source Sort.pairs
+  pairs
     ((x (list Int)) (y (list Int))) (list Int)
     (match x
       (case nil y)
@@ -47,13 +46,13 @@
           (case nil x)
           (case (cons x3 x4) (++ (sort2 z x3) (pairs x2 x4)))))))
 (define-fun
-  stitch :source Sort.stitch
+  stitch
     ((x (list Int)) (y (list Int))) (list Int)
     (match x
       (case nil y)
       (case (cons z xs) (cons z (pairs xs y)))))
 (define-fun-rec
-  bmerge :source Sort.bmerge
+  bmerge
     ((x (list Int)) (y (list Int))) (list Int)
     (match x
       (case nil (_ nil Int))
@@ -71,7 +70,7 @@
                     (case (cons x5 x6) fail)))
                 (case (cons x7 x8) fail))))))))
 (define-fun-rec
-  bsort :source Sort.bsort
+  bsort
     ((x (list Int))) (list Int)
     (match x
       (case nil (_ nil Int))
@@ -79,6 +78,4 @@
         (match z
           (case nil (cons y (_ nil Int)))
           (case (cons x2 x3) (bmerge (bsort (evens x)) (bsort (odds x))))))))
-(prove
-  :source Sort.prop_BSortIsSort
-  (forall ((xs (list Int))) (= (bsort xs) (isort xs))))
+(prove (forall ((xs (list Int))) (= (bsort xs) (isort xs))))

@@ -1,22 +1,15 @@
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes ()
-  ((T :source RegExpDeluxe.T (A :source RegExpDeluxe.A)
-     (B :source RegExpDeluxe.B) (C :source RegExpDeluxe.C))))
+  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes () ((T (A) (B) (C))))
 (declare-datatypes (a)
-  ((R :source RegExpDeluxe.R (Nil :source RegExpDeluxe.Nil)
-     (Eps :source RegExpDeluxe.Eps)
-     (Atom :source RegExpDeluxe.Atom (proj1-Atom a))
-     (|:+:| :source |RegExpDeluxe.:+:| (|proj1-:+:| (R a))
-       (|proj2-:+:| (R a)))
-     (|:&:| :source |RegExpDeluxe.:&:| (|proj1-:&:| (R a))
-       (|proj2-:&:| (R a)))
-     (|:>:| :source |RegExpDeluxe.:>:| (|proj1-:>:| (R a))
-       (|proj2-:>:| (R a)))
-     (Star :source RegExpDeluxe.Star (proj1-Star (R a))))))
+  ((R (Nil)
+     (Eps) (Atom (proj1-Atom a))
+     (|:+:| (|proj1-:+:| (R a)) (|proj2-:+:| (R a)))
+     (|:&:| (|proj1-:&:| (R a)) (|proj2-:&:| (R a)))
+     (|:>:| (|proj1-:>:| (R a)) (|proj2-:>:| (R a)))
+     (Star (proj1-Star (R a))))))
 (define-fun-rec
-  eps :source RegExpDeluxe.eps
+  eps
     ((x (R T))) Bool
     (match x
       (case default false)
@@ -26,7 +19,7 @@
       (case (|:>:| p2 q3) (and (eps p2) (eps q3)))
       (case (Star y) true)))
 (define-fun
-  .>. :source RegExpDeluxe..>.
+  .>.
     ((x (R T)) (y (R T))) (R T)
     (match x
       (case default
@@ -41,7 +34,7 @@
           (case Nil (_ Nil T))))
       (case Nil (_ Nil T))))
 (define-fun
-  .+. :source RegExpDeluxe..+.
+  .+.
     ((x (R T)) (y (R T))) (R T)
     (match x
       (case default
@@ -50,7 +43,7 @@
           (case Nil x)))
       (case Nil y)))
 (define-fun-rec
-  step :source RegExpDeluxe.step
+  step
     ((x (R T)) (y T)) (R T)
     (match x
       (case default (_ Nil T))
@@ -71,12 +64,11 @@
           (.+. (.>. (step p2 y) q3) (_ Nil T))))
       (case (Star p3) (.>. (step p3 y) x))))
 (define-fun-rec
-  rec :source RegExpDeluxe.rec
+  rec
     ((x (R T)) (y (list T))) Bool
     (match y
       (case nil (eps x))
       (case (cons z xs) (rec (step x z) xs))))
 (prove
-  :source RegExpDeluxe.prop_bad_assoc
   (forall ((p (R T)) (q (R T)) (r (R T)) (s (list T)))
     (= (rec (|:+:| p (|:>:| q r)) s) (rec (|:>:| (|:+:| p q) r) s))))

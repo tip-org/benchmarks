@@ -1,24 +1,22 @@
 ; Stooge sort, using thirds on natural numbers
 (declare-datatypes (a b)
-  ((pair :source |Prelude.(,)|
-     (pair2 :source |Prelude.(,)| (proj1-pair a) (proj2-pair b)))))
+  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
-  twoThirds :source Sort.twoThirds
+  twoThirds
     ((x Int)) Int
     (ite
       (= x 2) 1
       (ite (= x 1) 1 (ite (= x 0) 0 (+ 2 (twoThirds (- x 3)))))))
 (define-fun-rec
-  third :source Sort.third
+  third
     ((x Int)) Int
     (ite
       (= x 2) 0 (ite (= x 1) 0 (ite (= x 0) 0 (+ 1 (third (- x 3)))))))
 (define-fun-rec
   (par (a)
-    (take :source Prelude.take
+    (take
        ((x Int) (y (list a))) (list a)
        (ite
          (<= x 0) (_ nil a)
@@ -26,34 +24,34 @@
            (case nil (_ nil a))
            (case (cons z xs) (cons z (take (- x 1) xs))))))))
 (define-fun
-  sort2 :source Sort.sort2
+  sort2
     ((x Int) (y Int)) (list Int)
     (ite
       (<= x y) (cons x (cons y (_ nil Int)))
       (cons y (cons x (_ nil Int)))))
 (define-fun-rec
   (par (a)
-    (length :source Prelude.length
+    (length
        ((x (list a))) Int
        (match x
          (case nil 0)
          (case (cons y l) (+ 1 (length l)))))))
 (define-fun-rec
-  insert :source Sort.insert
+  insert
     ((x Int) (y (list Int))) (list Int)
     (match y
       (case nil (cons x (_ nil Int)))
       (case (cons z xs)
         (ite (<= x z) (cons x y) (cons z (insert x xs))))))
 (define-fun-rec
-  isort :source Sort.sort
+  isort
     ((x (list Int))) (list Int)
     (match x
       (case nil (_ nil Int))
       (case (cons y xs) (insert y (isort xs)))))
 (define-fun-rec
   (par (a)
-    (drop :source Prelude.drop
+    (drop
        ((x Int) (y (list a))) (list a)
        (ite
          (<= x 0) y
@@ -62,23 +60,20 @@
            (case (cons z xs1) (drop (- x 1) xs1)))))))
 (define-fun
   (par (a)
-    (splitAt :source Prelude.splitAt
+    (splitAt
        ((x Int) (y (list a))) (pair (list a) (list a))
        (pair2 (take x y) (drop x y)))))
 (define-fun-rec
   (par (a)
-    (++ :source Prelude.++
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-funs-rec
-  ((nstooge2sort2 :source Sort.nstooge2sort2
-      ((x (list Int))) (list Int))
-   (nstoogesort2 :source Sort.nstoogesort2
-      ((x (list Int))) (list Int))
-   (nstooge2sort1 :source Sort.nstooge2sort1
-      ((x (list Int))) (list Int)))
+  ((nstooge2sort2 ((x (list Int))) (list Int))
+   (nstoogesort2 ((x (list Int))) (list Int))
+   (nstooge2sort1 ((x (list Int))) (list Int)))
   ((match (splitAt (twoThirds (length x)) x)
      (case (pair2 ys1 zs) (++ (nstoogesort2 ys1) zs)))
    (match x
@@ -93,6 +88,4 @@
                (nstooge2sort2 (nstooge2sort1 (nstooge2sort2 x)))))))))
    (match (splitAt (third (length x)) x)
      (case (pair2 ys1 zs) (++ ys1 (nstoogesort2 zs))))))
-(prove
-  :source Sort.prop_NStoogeSort2IsSort
-  (forall ((xs (list Int))) (= (nstoogesort2 xs) (isort xs))))
+(prove (forall ((xs (list Int))) (= (nstoogesort2 xs) (isort xs))))

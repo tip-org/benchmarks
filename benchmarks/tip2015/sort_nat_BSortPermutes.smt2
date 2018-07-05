@@ -1,10 +1,9 @@
 ; Bitonic sort
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  leq :definition :source |<=|
+  leq
     ((x Nat) (y Nat)) Bool
     (match x
       (case zero true)
@@ -13,14 +12,14 @@
           (case zero false)
           (case (succ x2) (leq z x2))))))
 (define-fun
-  sort2 :source Sort.sort2
+  sort2
     ((x Nat) (y Nat)) (list Nat)
     (ite
       (leq x y) (cons x (cons y (_ nil Nat)))
       (cons y (cons x (_ nil Nat)))))
 (define-funs-rec
-  ((par (a) (evens :source Sort.evens ((x (list a))) (list a)))
-   (par (a) (odds :source Sort.odds ((x (list a))) (list a))))
+  ((par (a) (evens ((x (list a))) (list a)))
+   (par (a) (odds ((x (list a))) (list a))))
   ((match x
      (case nil (_ nil a))
      (case (cons y xs) (cons y (odds xs))))
@@ -29,14 +28,14 @@
      (case (cons y xs) (evens xs)))))
 (define-fun-rec
   (par (a)
-    (elem :let :source Prelude.elem
+    (elem
        ((x a) (y (list a))) Bool
        (match y
          (case nil false)
          (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
   (par (a)
-    (deleteBy :source Data.List.deleteBy
+    (deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (_ nil a))
@@ -44,7 +43,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (isPermutation :source SortUtils.isPermutation
+    (isPermutation
        ((x (list a)) (y (list a))) Bool
        (match x
          (case nil
@@ -58,13 +57,13 @@
                  x3 y))))))))
 (define-fun-rec
   (par (a)
-    (++ :source Prelude.++
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
-  pairs :source Sort.pairs
+  pairs
     ((x (list Nat)) (y (list Nat))) (list Nat)
     (match x
       (case nil y)
@@ -73,13 +72,13 @@
           (case nil x)
           (case (cons x3 x4) (++ (sort2 z x3) (pairs x2 x4)))))))
 (define-fun
-  stitch :source Sort.stitch
+  stitch
     ((x (list Nat)) (y (list Nat))) (list Nat)
     (match x
       (case nil y)
       (case (cons z xs) (cons z (pairs xs y)))))
 (define-fun-rec
-  bmerge :source Sort.bmerge
+  bmerge
     ((x (list Nat)) (y (list Nat))) (list Nat)
     (match x
       (case nil (_ nil Nat))
@@ -97,7 +96,7 @@
                     (case (cons x5 x6) fail)))
                 (case (cons x7 x8) fail))))))))
 (define-fun-rec
-  bsort :source Sort.bsort
+  bsort
     ((x (list Nat))) (list Nat)
     (match x
       (case nil (_ nil Nat))
@@ -105,6 +104,4 @@
         (match z
           (case nil (cons y (_ nil Nat)))
           (case (cons x2 x3) (bmerge (bsort (evens x)) (bsort (odds x))))))))
-(prove
-  :source Sort.prop_BSortPermutes
-  (forall ((xs (list Nat))) (isPermutation (bsort xs) xs)))
+(prove (forall ((xs (list Nat))) (isPermutation (bsort xs) xs)))

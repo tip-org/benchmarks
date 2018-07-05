@@ -1,25 +1,23 @@
 ; Stooge sort defined using reverse
 (declare-datatypes (a b)
-  ((pair :source |Prelude.(,)|
-     (pair2 :source |Prelude.(,)| (proj1-pair a) (proj2-pair b)))))
+  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  plus :definition :source |+|
+  plus
     ((x Nat) (y Nat)) Nat
     (match x
       (case zero y)
       (case (succ z) (succ (plus z y)))))
 (define-fun-rec
-  minus :definition :source |-|
+  minus
     ((x Nat) (y Nat)) Nat
     (match x
       (case zero zero)
       (case (succ z) (match y (case (succ y2) (minus z y2))))))
 (define-fun-rec
-  lt :definition :source |<|
+  lt
     ((x Nat) (y Nat)) Bool
     (match y
       (case zero false)
@@ -28,7 +26,7 @@
           (case zero true)
           (case (succ n) (lt n z))))))
 (define-fun-rec
-  leq :definition :source |<=|
+  leq
     ((x Nat) (y Nat)) Bool
     (match x
       (case zero true)
@@ -37,14 +35,14 @@
           (case zero false)
           (case (succ x2) (leq z x2))))))
 (define-fun
-  sort2 :source Sort.sort2
+  sort2
     ((x Nat) (y Nat)) (list Nat)
     (ite
       (leq x y) (cons x (cons y (_ nil Nat)))
       (cons y (cons x (_ nil Nat)))))
 (define-fun-rec
   (par (a)
-    (take :source Prelude.take
+    (take
        ((x Nat) (y (list a))) (list a)
        (ite
          (leq x zero) (_ nil a)
@@ -54,18 +52,18 @@
              (match x (case (succ x2) (cons z (take x2 xs))))))))))
 (define-fun-rec
   (par (a)
-    (length :source Prelude.length
+    (length
        ((x (list a))) Nat
        (match x
          (case nil zero)
          (case (cons y l) (plus (succ zero) (length l)))))))
 (define-fun-rec
-  idiv :definition :source |div|
+  idiv
     ((x Nat) (y Nat)) Nat
     (ite (lt x y) zero (succ (idiv (minus x y) y))))
 (define-fun-rec
   (par (a)
-    (drop :source Prelude.drop
+    (drop
        ((x Nat) (y (list a))) (list a)
        (ite
          (leq x zero) y
@@ -74,12 +72,12 @@
            (case (cons z xs1) (match x (case (succ x2) (drop x2 xs1)))))))))
 (define-fun
   (par (a)
-    (splitAt :source Prelude.splitAt
+    (splitAt
        ((x Nat) (y (list a))) (pair (list a) (list a))
        (pair2 (take x y) (drop x y)))))
 (define-fun-rec
   (par (a)
-    (count :source SortUtils.count
+    (count
        ((x a) (y (list a))) Nat
        (match y
          (case nil zero)
@@ -87,24 +85,22 @@
            (ite (= x z) (plus (succ zero) (count x ys)) (count x ys)))))))
 (define-fun-rec
   (par (a)
-    (++ :source Prelude.++
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-fun-rec
   (par (a)
-    (reverse :let :source Prelude.reverse
+    (reverse
        ((x (list a))) (list a)
        (match x
          (case nil (_ nil a))
          (case (cons y xs) (++ (reverse xs) (cons y (_ nil a))))))))
 (define-funs-rec
-  ((stooge1sort2 :source Sort.stooge1sort2
-      ((x (list Nat))) (list Nat))
-   (stoogesort :source Sort.stoogesort ((x (list Nat))) (list Nat))
-   (stooge1sort1 :source Sort.stooge1sort1
-      ((x (list Nat))) (list Nat)))
+  ((stooge1sort2 ((x (list Nat))) (list Nat))
+   (stoogesort ((x (list Nat))) (list Nat))
+   (stooge1sort1 ((x (list Nat))) (list Nat)))
   ((match
      (splitAt (idiv (length x) (succ (succ (succ zero)))) (reverse x))
      (case (pair2 ys1 zs1) (++ (stoogesort zs1) (reverse ys1))))
@@ -121,19 +117,11 @@
    (match (splitAt (idiv (length x) (succ (succ (succ zero)))) x)
      (case (pair2 ys1 zs) (++ ys1 (stoogesort zs))))))
 (prove
-  :source Sort.prop_StoogeSortCount
   (forall ((x Nat) (xs (list Nat)))
     (= (count x (stoogesort xs)) (count x xs))))
 (assert
-  :axiom |associativity of +|
   (forall ((x Nat) (y Nat) (z Nat))
     (= (plus x (plus y z)) (plus (plus x y) z))))
-(assert
-  :axiom |commutativity of +|
-  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
-(assert
-  :axiom |identity for +|
-  (forall ((x Nat)) (= (plus x zero) x)))
-(assert
-  :axiom |identity for +|
-  (forall ((x Nat)) (= (plus zero x) x)))
+(assert (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert (forall ((x Nat)) (= (plus x zero) x)))
+(assert (forall ((x Nat)) (= (plus zero x) x)))

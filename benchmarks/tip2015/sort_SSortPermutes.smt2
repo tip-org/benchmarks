@@ -1,9 +1,8 @@
 ; Selection sort, using a total minimum function
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
-  ssort-minimum1 :let
+  ssort-minimum1
     ((x Int) (y (list Int))) Int
     (match y
       (case nil x)
@@ -11,14 +10,14 @@
         (ite (<= y1 x) (ssort-minimum1 y1 ys1) (ssort-minimum1 x ys1)))))
 (define-fun-rec
   (par (a)
-    (elem :let :source Prelude.elem
+    (elem
        ((x a) (y (list a))) Bool
        (match y
          (case nil false)
          (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
   (par (a)
-    (deleteBy :source Data.List.deleteBy
+    (deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (_ nil a))
@@ -26,7 +25,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (isPermutation :source SortUtils.isPermutation
+    (isPermutation
        ((x (list a)) (y (list a))) Bool
        (match x
          (case nil
@@ -39,7 +38,7 @@
                (deleteBy (lambda ((x4 a)) (lambda ((x5 a)) (= x4 x5)))
                  x3 y))))))))
 (define-fun-rec
-  ssort :source Sort.ssort
+  ssort
     ((x (list Int))) (list Int)
     (match x
       (case nil (_ nil Int))
@@ -49,6 +48,4 @@
             (ssort
               (deleteBy (lambda ((z Int)) (lambda ((x2 Int)) (= z x2)))
                 m x)))))))
-(prove
-  :source Sort.prop_SSortPermutes
-  (forall ((xs (list Int))) (isPermutation (ssort xs) xs)))
+(prove (forall ((xs (list Int))) (isPermutation (ssort xs) xs)))

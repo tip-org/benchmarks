@@ -1,17 +1,11 @@
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes () ((Tok (C) (D) (X) (Y) (Plus) (Mul))))
 (declare-datatypes ()
-  ((Tok :source CFG5.Tok (C :source CFG5.C)
-     (D :source CFG5.D) (X :source CFG5.X) (Y :source CFG5.Y)
-     (Plus :source CFG5.Plus) (Mul :source CFG5.Mul))))
-(declare-datatypes ()
-  ((E :source CFG5.E
-     (|:+:| :source |CFG5.:+:| (|proj1-:+:| E) (|proj2-:+:| E))
-     (|:*:| :source |CFG5.:*:| (|proj1-:*:| E) (|proj2-:*:| E))
-     (EX :source CFG5.EX) (EY :source CFG5.EY))))
+  ((E (|:+:| (|proj1-:+:| E) (|proj2-:+:| E))
+     (|:*:| (|proj1-:*:| E) (|proj2-:*:| E)) (EX) (EY))))
 (define-fun-rec
-  assoc :source CFG5.assoc
+  assoc
     ((x E)) E
     (match x
       (case default x)
@@ -22,14 +16,14 @@
       (case (|:*:| a2 b2) (|:*:| (assoc a2) (assoc b2)))))
 (define-fun-rec
   (par (a)
-    (++ :source Prelude.++
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (define-funs-rec
-  ((linTerm :source CFG5.linTerm ((x E)) (list Tok))
-   (lin :source CFG5.lin ((x E)) (list Tok)))
+  ((linTerm ((x E)) (list Tok))
+   (lin ((x E)) (list Tok)))
   ((match x
      (case default (lin x))
      (case (|:*:| a b)
@@ -43,6 +37,5 @@
      (case EX (cons X (_ nil Tok)))
      (case EY (cons Y (_ nil Tok))))))
 (prove
-  :source CFG5.prop_unambig
   (forall ((u E) (v E))
     (=> (= (lin u) (lin v)) (= (assoc u) (assoc v)))))

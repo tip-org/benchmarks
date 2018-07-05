@@ -1,51 +1,46 @@
 (declare-datatypes (a b)
-  ((pair :source |Prelude.(,)|
-     (pair2 :source |Prelude.(,)| (proj1-pair a) (proj2-pair b)))))
+  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
+(declare-datatypes (a) ((Maybe (Nothing) (Just (proj1-Just a)))))
 (declare-datatypes (a)
-  ((Maybe :source Prelude.Maybe (Nothing :source Prelude.Nothing)
-     (Just :source Prelude.Just (proj1-Just a)))))
-(declare-datatypes (a)
-  ((Map :source HotelKey.Map
-     (Rest :source HotelKey.Rest (proj1-Rest a))
-     (Slot :source HotelKey.Slot (proj1-Slot a) (proj2-Slot (Map a))))))
+  ((Map (Rest (proj1-Rest a))
+     (Slot (proj1-Slot a) (proj2-Slot (Map a))))))
 (declare-datatypes ()
-  ((Reach :source HotelKey.Reach
-     (Init :source HotelKey.Init (proj1-Init (Map Int)))
-     (CheckIn :source HotelKey.CheckIn (proj1-CheckIn Int)
+  ((Reach (Init (proj1-Init (Map Int)))
+     (CheckIn (proj1-CheckIn Int)
        (proj2-CheckIn Int) (proj3-CheckIn Int) (proj4-CheckIn Reach))
-     (EnterRoom :source HotelKey.EnterRoom (proj1-EnterRoom Int)
+     (EnterRoom (proj1-EnterRoom Int)
        (proj2-EnterRoom Int) (proj3-EnterRoom (pair Int Int))
        (proj4-EnterRoom Reach))
-     (ExitRoom :source HotelKey.ExitRoom (proj1-ExitRoom Int)
+     (ExitRoom (proj1-ExitRoom Int)
        (proj2-ExitRoom Int) (proj3-ExitRoom Reach)))))
 (declare-datatypes ()
-  ((State :source HotelKey.State
-     (State2 :source HotelKey.State (proj1-State (Map (Maybe Int)))
+  ((State
+     (State2 (proj1-State (Map (Maybe Int)))
        (proj2-State (Map Int)) (proj3-State (Map Bool))
        (proj4-State (Map (Map (Map Bool)))) (proj5-State (Map Int))
        (proj6-State (Map (Map Bool))) (proj7-State (Map Bool))))))
 (define-fun
-  safe :source HotelKey.safe
+  safe
     ((x State)) (Map Bool)
     (match x (case (State2 y z x2 x3 x4 x5 x6) x6)))
 (define-fun
-  roomk :source HotelKey.roomk
+  roomk
     ((x State)) (Map Int)
     (match x (case (State2 y z x2 x3 x4 x5 x6) x4)))
 (define-fun
-  owns :source HotelKey.owns
+  owns
     ((x State)) (Map (Maybe Int))
     (match x (case (State2 y z x2 x3 x4 x5 x6) y)))
 (define-fun
-  issued :source HotelKey.issued
+  issued
     ((x State)) (Map Bool)
     (match x (case (State2 y z x2 x3 x4 x5 x6) x2)))
 (define-fun
-  isin :source HotelKey.isin
+  isin
     ((x State)) (Map (Map Bool))
     (match x (case (State2 y z x2 x3 x4 x5 x6) x5)))
 (define-fun-rec
-  inj-upto1 :let
+  inj-upto1
     ((x Int) (y Int) (z (Map Int))) Bool
     (ite
       (= x 0) true
@@ -54,28 +49,25 @@
         (case (Slot y3 m1)
           (and (distinct y y3) (inj-upto1 (- x 1) y m1))))))
 (define-fun-rec
-  inj :source HotelKey.inj
+  inj
     ((x Int) (y (Map Int))) Bool
     (ite
       (= x 0) true
       (match y
         (case (Rest z) false)
         (case (Slot x2 m) (and (inj (- x 1) m) (inj-upto1 x x2 m))))))
+(define-fun empty2 () (Map (Map Bool)) (Rest (Rest false)))
+(define-fun empty () (Map Bool) (Rest false))
 (define-fun
-  empty2 :source HotelKey.empty2
-    () (Map (Map Bool)) (Rest (Rest false)))
-(define-fun
-  empty :source HotelKey.empty () (Map Bool) (Rest false))
-(define-fun
-  currk :source HotelKey.currk
+  currk
     ((x State)) (Map Int)
     (match x (case (State2 y z x2 x3 x4 x5 x6) z)))
 (define-fun
-  cards :source HotelKey.cards
+  cards
     ((x State)) (Map (Map (Map Bool)))
     (match x (case (State2 y z x2 x3 x4 x5 x6) x3)))
 (define-fun-rec
-  <=> :source HotelKey.<=>
+  <=>
     ((x (Map Bool)) (y (Map Bool))) Bool
     (match x
       (case (Rest z)
@@ -88,7 +80,7 @@
           (case (Slot y5 r) (and (= x2 y5) (<=> p r)))))))
 (define-fun-rec
   (par (a)
-    (!= :source HotelKey.!=
+    (!=
        ((x (Map a)) (y (pair Int a))) (Map a)
        (match x
          (case (Rest z)
@@ -101,30 +93,28 @@
                (ite
                  (= x4 0) (Slot y3 m1) (Slot x3 (!= m1 (pair2 (- x4 1) y3)))))))))))
 (define-fun
-  add :source HotelKey.add
-    ((x Int) (y (Map Bool))) (Map Bool) (!= y (pair2 x true)))
+  add ((x Int) (y (Map Bool))) (Map Bool) (!= y (pair2 x true)))
 (define-fun-rec
-  range :source HotelKey.range
+  range
     ((x (Map Int))) (Map Bool)
     (match x
       (case (Rest y) (add y empty))
       (case (Slot z m) (add z (range m)))))
 (define-fun
-  rem :source HotelKey.rem
-    ((x Int) (y (Map Bool))) (Map Bool) (!= y (pair2 x false)))
+  rem ((x Int) (y (Map Bool))) (Map Bool) (!= y (pair2 x false)))
 (define-fun-rec
   (par (a)
-    (!2 :source HotelKey.!
+    (!2
        ((x (Map a)) (y Int)) a
        (match x
          (case (Rest z) z)
          (case (Slot x2 m) (ite (= y 0) x2 (!2 m (- y 1))))))))
 (define-fun
-  add2 :source HotelKey.add2
+  add2
     ((x (pair Int Int)) (y (Map (Map Bool)))) (Map (Map Bool))
     (match x (case (pair2 z y2) (!= y (pair2 z (add y2 (!2 y z)))))))
 (define-fun-rec
-  reach :source HotelKey.reach
+  reach
     ((x Int) (y Reach)) (Maybe State)
     (match y
       (case (Init initk)
@@ -182,7 +172,7 @@
                       x17 x18 x19 x20 (!= x21 (pair2 r2 (rem h (!2 x21 r2)))) x22))))
               (_ Nothing State)))))))
 (define-fun
-  psafe :source HotelKey.psafe
+  psafe
     ((x Int) (y Int) (z Int) (x2 Reach)) Bool
     (match (reach x x2)
       (case Nothing true)
@@ -191,9 +181,8 @@
           (and (<= y x) (and (!2 (safe s) y) (!2 (!2 (isin s) y) z)))
           (= (!2 (owns s) y) (Just z)) true))))
 (define-fun
-  !! :source HotelKey.!!
+  !!
     ((x (Map (Map Bool))) (y (pair Int Int))) Bool
     (match y (case (pair2 z y2) (!2 (!2 x z) y2))))
 (prove
-  :source HotelKey.prop_safe2
   (forall ((dom Int) (r Int) (g Int) (q Reach)) (psafe dom r g q)))

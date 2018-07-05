@@ -1,10 +1,9 @@
 ; Top-down merge sort
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
   (par (a)
-    (take :source Prelude.take
+    (take
        ((x Int) (y (list a))) (list a)
        (ite
          (<= x 0) (_ nil a)
@@ -12,7 +11,7 @@
            (case nil (_ nil a))
            (case (cons z xs) (cons z (take (- x 1) xs))))))))
 (define-fun-rec
-  lmerge :source Sort.lmerge
+  lmerge
     ((x (list Int)) (y (list Int))) (list Int)
     (match x
       (case nil y)
@@ -23,21 +22,21 @@
             (ite (<= z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
 (define-fun-rec
   (par (a)
-    (length :source Prelude.length
+    (length
        ((x (list a))) Int
        (match x
          (case nil 0)
          (case (cons y l) (+ 1 (length l)))))))
 (define-fun-rec
   (par (a)
-    (elem :let :source Prelude.elem
+    (elem
        ((x a) (y (list a))) Bool
        (match y
          (case nil false)
          (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
   (par (a)
-    (drop :source Prelude.drop
+    (drop
        ((x Int) (y (list a))) (list a)
        (ite
          (<= x 0) y
@@ -45,7 +44,7 @@
            (case nil (_ nil a))
            (case (cons z xs1) (drop (- x 1) xs1)))))))
 (define-fun-rec
-  msorttd :source Sort.msorttd
+  msorttd
     ((x (list Int))) (list Int)
     (match x
       (case nil (_ nil Int))
@@ -57,7 +56,7 @@
               (lmerge (msorttd (take k x)) (msorttd (drop k x)))))))))
 (define-fun-rec
   (par (a)
-    (deleteBy :source Data.List.deleteBy
+    (deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (_ nil a))
@@ -65,7 +64,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (isPermutation :source SortUtils.isPermutation
+    (isPermutation
        ((x (list a)) (y (list a))) Bool
        (match x
          (case nil
@@ -77,6 +76,4 @@
              (isPermutation xs
                (deleteBy (lambda ((x4 a)) (lambda ((x5 a)) (= x4 x5)))
                  x3 y))))))))
-(prove
-  :source Sort.prop_MSortTDPermutes
-  (forall ((xs (list Int))) (isPermutation (msorttd xs) xs)))
+(prove (forall ((xs (list Int))) (isPermutation (msorttd xs) xs)))

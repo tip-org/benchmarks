@@ -1,20 +1,18 @@
 ; Bubble sort
 (declare-datatypes (a b)
-  ((pair :source |Prelude.(,)|
-     (pair2 :source |Prelude.(,)| (proj1-pair a) (proj2-pair b)))))
+  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
   (par (a)
-    (elem :let :source Prelude.elem
+    (elem
        ((x a) (y (list a))) Bool
        (match y
          (case nil false)
          (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
   (par (a)
-    (deleteBy :source Data.List.deleteBy
+    (deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (_ nil a))
@@ -22,7 +20,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (isPermutation :source SortUtils.isPermutation
+    (isPermutation
        ((x (list a)) (y (list a))) Bool
        (match x
          (case nil
@@ -35,7 +33,7 @@
                (deleteBy (lambda ((x4 a)) (lambda ((x5 a)) (= x4 x5)))
                  x3 y))))))))
 (define-fun-rec
-  bubble :source Sort.bubble
+  bubble
     ((x (list Int))) (pair Bool (list Int))
     (match x
       (case nil (pair2 false (_ nil Int)))
@@ -50,9 +48,7 @@
               (match (bubble (cons y xs))
                 (case (pair2 b1 ys1) (pair2 true (cons y2 ys1))))))))))
 (define-fun-rec
-  bubsort :source Sort.bubsort
+  bubsort
     ((x (list Int))) (list Int)
     (match (bubble x) (case (pair2 c ys1) (ite c (bubsort ys1) x))))
-(prove
-  :source Sort.prop_BubSortPermutes
-  (forall ((xs (list Int))) (isPermutation (bubsort xs) xs)))
+(prove (forall ((xs (list Int))) (isPermutation (bubsort xs) xs)))

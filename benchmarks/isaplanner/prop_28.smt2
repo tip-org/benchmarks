@@ -1,13 +1,10 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes ()
-  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
-     (S :source Definitions.S (proj1-S Nat)))))
+  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
 (define-fun-rec
-  == :source Definitions.==
+  ==
     ((x Nat) (y Nat)) Bool
     (match x
       (case Z
@@ -19,19 +16,18 @@
           (case Z false)
           (case (S y2) (== x2 y2))))))
 (define-fun-rec
-  elem :source Definitions.elem
+  elem
     ((x Nat) (y (list Nat))) Bool
     (match y
       (case nil false)
       (case (cons z xs) (ite (== x z) true (elem x xs)))))
 (define-fun-rec
   (par (a)
-    (++ :source Definitions.++
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (prove
-  :source Properties.prop_28
   (forall ((x Nat) (xs (list Nat)))
     (elem x (++ xs (cons x (_ nil Nat))))))

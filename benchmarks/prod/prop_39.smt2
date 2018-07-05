@@ -1,17 +1,12 @@
 ; Property from "Productive Use of Failure in Inductive Proof",
 ; Andrew Ireland and Alan Bundy, JAR 1996
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes ()
-  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
-     (S :source Definitions.S (proj1-S Nat)))))
-(define-fun
-  |\|\|| :source |Definitions.\|\||
-    ((x Bool) (y Bool)) Bool (ite x true y))
+  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+(define-fun |\|\|| ((x Bool) (y Bool)) Bool (ite x true y))
 (define-fun-rec
   (par (a)
-    (drop :source Definitions.drop
+    (drop
        ((x Nat) (y (list a))) (list a)
        (match x
          (case Z y)
@@ -20,7 +15,7 @@
              (case nil (_ nil a))
              (case (cons x2 x3) (drop z x3))))))))
 (define-fun-rec
-  == :source Definitions.==
+  ==
     ((x Nat) (y Nat)) Bool
     (match x
       (case Z
@@ -32,12 +27,11 @@
           (case Z false)
           (case (S y2) (== x2 y2))))))
 (define-fun-rec
-  elem :source Definitions.elem
+  elem
     ((x Nat) (y (list Nat))) Bool
     (match y
       (case nil false)
       (case (cons z xs) (|\|\|| (== x z) (elem x xs)))))
 (prove
-  :source Properties.prop_T39
   (forall ((x Nat) (y Nat) (z (list Nat)))
     (=> (elem x (drop y z)) (elem x z))))

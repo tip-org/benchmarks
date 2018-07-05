@@ -1,20 +1,17 @@
 ; Heap sort (using skew heaps, efficient list-to-heap conversion)
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes ()
-  ((Heap :source Sort.Heap
-     (Node :source Sort.Node (proj1-Node Heap)
-       (proj2-Node Int) (proj3-Node Heap))
-     (Nil :source Sort.Nil))))
+  ((Heap (Node (proj1-Node Heap) (proj2-Node Int) (proj3-Node Heap))
+     (Nil))))
 (define-fun-rec
-  toHeap :let
+  toHeap
     ((x (list Int))) (list Heap)
     (match x
       (case nil (_ nil Heap))
       (case (cons y z) (cons (Node Nil y Nil) (toHeap z)))))
 (define-fun-rec
-  hmerge :source Sort.hmerge
+  hmerge
     ((x Heap) (y Heap)) Heap
     (match x
       (case (Node z x2 x3)
@@ -25,7 +22,7 @@
           (case Nil x)))
       (case Nil y)))
 (define-fun-rec
-  hpairwise :source Sort.hpairwise
+  hpairwise
     ((x (list Heap))) (list Heap)
     (match x
       (case nil (_ nil Heap))
@@ -34,7 +31,7 @@
           (case nil (cons p (_ nil Heap)))
           (case (cons q qs) (cons (hmerge p q) (hpairwise qs)))))))
 (define-fun-rec
-  hmerging :source Sort.hmerging
+  hmerging
     ((x (list Heap))) Heap
     (match x
       (case nil Nil)
@@ -42,27 +39,22 @@
         (match y
           (case nil p)
           (case (cons z x2) (hmerging (hpairwise x)))))))
-(define-fun
-  toHeap2 :source Sort.toHeap
-    ((x (list Int))) Heap (hmerging (toHeap x)))
+(define-fun toHeap2 ((x (list Int))) Heap (hmerging (toHeap x)))
 (define-fun-rec
-  toList :source Sort.toList
+  toList
     ((x Heap)) (list Int)
     (match x
       (case (Node p y q) (cons y (toList (hmerge p q))))
       (case Nil (_ nil Int))))
-(define-fun
-  hsort :source Sort.hsort
-    ((x (list Int))) (list Int) (toList (toHeap2 x)))
+(define-fun hsort ((x (list Int))) (list Int) (toList (toHeap2 x)))
 (define-fun-rec
   (par (a)
-    (count :source SortUtils.count
+    (count
        ((x a) (y (list a))) Int
        (match y
          (case nil 0)
          (case (cons z ys)
            (ite (= x z) (+ 1 (count x ys)) (count x ys)))))))
 (prove
-  :source Sort.prop_HSortCount
   (forall ((x Int) (xs (list Int)))
     (= (count x (hsort xs)) (count x xs))))

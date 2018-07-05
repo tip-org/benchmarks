@@ -1,22 +1,21 @@
 ; Top-down merge sort
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  plus :definition :source |+|
+  plus
     ((x Nat) (y Nat)) Nat
     (match x
       (case zero y)
       (case (succ z) (succ (plus z y)))))
 (define-fun-rec
-  minus :definition :source |-|
+  minus
     ((x Nat) (y Nat)) Nat
     (match x
       (case zero zero)
       (case (succ z) (match y (case (succ y2) (minus z y2))))))
 (define-fun-rec
-  lt :definition :source |<|
+  lt
     ((x Nat) (y Nat)) Bool
     (match y
       (case zero false)
@@ -25,7 +24,7 @@
           (case zero true)
           (case (succ n) (lt n z))))))
 (define-fun-rec
-  leq :definition :source |<=|
+  leq
     ((x Nat) (y Nat)) Bool
     (match x
       (case zero true)
@@ -34,7 +33,7 @@
           (case zero false)
           (case (succ x2) (leq z x2))))))
 (define-fun-rec
-  lmerge :source Sort.lmerge
+  lmerge
     ((x (list Nat)) (y (list Nat))) (list Nat)
     (match x
       (case nil y)
@@ -46,7 +45,7 @@
               (leq z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
 (define-fun-rec
   (par (a)
-    (take :source Prelude.take
+    (take
        ((x Nat) (y (list a))) (list a)
        (ite
          (leq x zero) (_ nil a)
@@ -56,25 +55,25 @@
              (match x (case (succ x2) (cons z (take x2 xs))))))))))
 (define-fun-rec
   (par (a)
-    (length :source Prelude.length
+    (length
        ((x (list a))) Nat
        (match x
          (case nil zero)
          (case (cons y l) (plus (succ zero) (length l)))))))
 (define-fun-rec
-  idiv :definition :source |div|
+  idiv
     ((x Nat) (y Nat)) Nat
     (ite (lt x y) zero (succ (idiv (minus x y) y))))
 (define-fun-rec
   (par (a)
-    (elem :let :source Prelude.elem
+    (elem
        ((x a) (y (list a))) Bool
        (match y
          (case nil false)
          (case (cons z xs) (or (= z x) (elem x xs)))))))
 (define-fun-rec
   (par (a)
-    (drop :source Prelude.drop
+    (drop
        ((x Nat) (y (list a))) (list a)
        (ite
          (leq x zero) y
@@ -82,7 +81,7 @@
            (case nil (_ nil a))
            (case (cons z xs1) (match x (case (succ x2) (drop x2 xs1)))))))))
 (define-fun-rec
-  msorttd :source Sort.msorttd
+  msorttd
     ((x (list Nat))) (list Nat)
     (match x
       (case nil (_ nil Nat))
@@ -94,7 +93,7 @@
               (lmerge (msorttd (take k x)) (msorttd (drop k x)))))))))
 (define-fun-rec
   (par (a)
-    (deleteBy :source Data.List.deleteBy
+    (deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (_ nil a))
@@ -102,7 +101,7 @@
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
   (par (a)
-    (isPermutation :source SortUtils.isPermutation
+    (isPermutation
        ((x (list a)) (y (list a))) Bool
        (match x
          (case nil
@@ -114,19 +113,10 @@
              (isPermutation xs
                (deleteBy (lambda ((x4 a)) (lambda ((x5 a)) (= x4 x5)))
                  x3 y))))))))
-(prove
-  :source Sort.prop_MSortTDPermutes
-  (forall ((xs (list Nat))) (isPermutation (msorttd xs) xs)))
+(prove (forall ((xs (list Nat))) (isPermutation (msorttd xs) xs)))
 (assert
-  :axiom |associativity of +|
   (forall ((x Nat) (y Nat) (z Nat))
     (= (plus x (plus y z)) (plus (plus x y) z))))
-(assert
-  :axiom |commutativity of +|
-  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
-(assert
-  :axiom |identity for +|
-  (forall ((x Nat)) (= (plus x zero) x)))
-(assert
-  :axiom |identity for +|
-  (forall ((x Nat)) (= (plus zero x) x)))
+(assert (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert (forall ((x Nat)) (= (plus x zero) x)))
+(assert (forall ((x Nat)) (= (plus zero x) x)))

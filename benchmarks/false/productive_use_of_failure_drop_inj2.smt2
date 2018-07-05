@@ -1,13 +1,9 @@
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes ()
-  ((Nat :source Definitions.Nat
-     (S :source Definitions.S (proj1-S Nat))
-     (Z :source Definitions.Z))))
+  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes () ((Nat (S (proj1-S Nat)) (Z))))
 (define-fun-rec
   (par (a)
-    (drop :source Definitions.drop
+    (drop
        ((x Nat) (y (list a))) (list a)
        (match x
          (case (S z)
@@ -16,6 +12,5 @@
              (case (cons x2 x3) (drop z x3))))
          (case Z y)))))
 (prove
-  :source Definitions.prop_drop_inj2
   (forall ((n Nat) (xs (list Nat)) (ys (list Nat)))
     (=> (= (drop n xs) (drop n ys)) (= xs ys))))

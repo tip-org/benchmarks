@@ -1,13 +1,10 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
-(declare-datatypes ()
-  ((Nat :source Definitions.Nat (Z :source Definitions.Z)
-     (S :source Definitions.S (proj1-S Nat)))))
+  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
 (define-fun-rec
-  == :source Definitions.==
+  ==
     ((x Nat) (y Nat)) Bool
     (match x
       (case Z
@@ -19,13 +16,13 @@
           (case Z false)
           (case (S y2) (== x2 y2))))))
 (define-fun-rec
-  elem :source Definitions.elem
+  elem
     ((x Nat) (y (list Nat))) Bool
     (match y
       (case nil false)
       (case (cons z xs) (ite (== x z) true (elem x xs)))))
 (define-fun-rec
-  <2 :source Definitions.<
+  <2
     ((x Nat) (y Nat)) Bool
     (match y
       (case Z false)
@@ -34,12 +31,11 @@
           (case Z true)
           (case (S x2) (<2 x2 z))))))
 (define-fun-rec
-  ins :source Definitions.ins
+  ins
     ((x Nat) (y (list Nat))) (list Nat)
     (match y
       (case nil (cons x (_ nil Nat)))
       (case (cons z xs) (ite (<2 x z) (cons x y) (cons z (ins x xs))))))
 (prove
-  :source Properties.prop_86
   (forall ((x Nat) (y Nat) (xs (list Nat)))
     (=> (<2 x y) (= (elem x (ins y xs)) (elem x xs)))))

@@ -1,6 +1,6 @@
 (declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  leq :definition :source |<=|
+  leq
     ((x Nat) (y Nat)) Bool
     (match x
       (case zero true)
@@ -8,8 +8,5 @@
         (match y
           (case zero false)
           (case (succ x2) (leq z x2))))))
-(define-fun
-  geq :definition :source |>=| ((x Nat) (y Nat)) Bool (leq y x))
-(prove
-  :source Int.prop_boring_ge_reflexive
-  (forall ((x Nat)) (geq x x)))
+(define-fun geq ((x Nat) (y Nat)) Bool (leq y x))
+(prove (forall ((x Nat)) (geq x x)))

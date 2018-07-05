@@ -1,11 +1,10 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
   (par (a)
-    (takeWhile :source Definitions.takeWhile
+    (takeWhile
        ((x (=> a Bool)) (y (list a))) (list a)
        (match y
          (case nil (_ nil a))
@@ -13,20 +12,19 @@
            (ite (@ x z) (cons z (takeWhile x xs)) (_ nil a)))))))
 (define-fun-rec
   (par (a)
-    (dropWhile :source Definitions.dropWhile
+    (dropWhile
        ((x (=> a Bool)) (y (list a))) (list a)
        (match y
          (case nil (_ nil a))
          (case (cons z xs) (ite (@ x z) (dropWhile x xs) y))))))
 (define-fun-rec
   (par (a)
-    (++ :source Definitions.++
+    (++
        ((x (list a)) (y (list a))) (list a)
        (match x
          (case nil y)
          (case (cons z xs) (cons z (++ xs y)))))))
 (prove
-  :source Properties.prop_43
   (par (a)
     (forall ((p (=> a Bool)) (xs (list a)))
       (= (++ (takeWhile p xs) (dropWhile p xs)) xs))))

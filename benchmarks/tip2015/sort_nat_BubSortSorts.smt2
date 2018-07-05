@@ -1,13 +1,11 @@
 ; Bubble sort
 (declare-datatypes (a b)
-  ((pair :source |Prelude.(,)|
-     (pair2 :source |Prelude.(,)| (proj1-pair a) (proj2-pair b)))))
+  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  leq :definition :source |<=|
+  leq
     ((x Nat) (y Nat)) Bool
     (match x
       (case zero true)
@@ -16,7 +14,7 @@
           (case zero false)
           (case (succ x2) (leq z x2))))))
 (define-fun-rec
-  ordered :source SortUtils.ordered
+  ordered
     ((x (list Nat))) Bool
     (match x
       (case nil true)
@@ -25,7 +23,7 @@
           (case nil true)
           (case (cons y2 xs) (and (leq y y2) (ordered z)))))))
 (define-fun-rec
-  bubble :source Sort.bubble
+  bubble
     ((x (list Nat))) (pair Bool (list Nat))
     (match x
       (case nil (pair2 false (_ nil Nat)))
@@ -40,9 +38,7 @@
               (match (bubble (cons y xs))
                 (case (pair2 b1 ys1) (pair2 true (cons y2 ys1))))))))))
 (define-fun-rec
-  bubsort :source Sort.bubsort
+  bubsort
     ((x (list Nat))) (list Nat)
     (match (bubble x) (case (pair2 c ys1) (ite c (bubsort ys1) x))))
-(prove
-  :source Sort.prop_BubSortSorts
-  (forall ((xs (list Nat))) (ordered (bubsort xs))))
+(prove (forall ((xs (list Nat))) (ordered (bubsort xs))))

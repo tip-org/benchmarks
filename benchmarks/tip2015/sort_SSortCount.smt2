@@ -1,9 +1,8 @@
 ; Selection sort, using a total minimum function
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
-  ssort-minimum1 :let
+  ssort-minimum1
     ((x Int) (y (list Int))) Int
     (match y
       (case nil x)
@@ -11,14 +10,14 @@
         (ite (<= y1 x) (ssort-minimum1 y1 ys1) (ssort-minimum1 x ys1)))))
 (define-fun-rec
   (par (a)
-    (deleteBy :source Data.List.deleteBy
+    (deleteBy
        ((x (=> a (=> a Bool))) (y a) (z (list a))) (list a)
        (match z
          (case nil (_ nil a))
          (case (cons y2 ys)
            (ite (@ (@ x y) y2) ys (cons y2 (deleteBy x y ys))))))))
 (define-fun-rec
-  ssort :source Sort.ssort
+  ssort
     ((x (list Int))) (list Int)
     (match x
       (case nil (_ nil Int))
@@ -30,13 +29,12 @@
                 m x)))))))
 (define-fun-rec
   (par (a)
-    (count :source SortUtils.count
+    (count
        ((x a) (y (list a))) Int
        (match y
          (case nil 0)
          (case (cons z ys)
            (ite (= x z) (+ 1 (count x ys)) (count x ys)))))))
 (prove
-  :source Sort.prop_SSortCount
   (forall ((x Int) (xs (list Int)))
     (= (count x (ssort xs)) (count x xs))))

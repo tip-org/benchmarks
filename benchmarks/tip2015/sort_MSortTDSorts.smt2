@@ -1,10 +1,9 @@
 ; Top-down merge sort
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
   (par (a)
-    (take :source Prelude.take
+    (take
        ((x Int) (y (list a))) (list a)
        (ite
          (<= x 0) (_ nil a)
@@ -12,7 +11,7 @@
            (case nil (_ nil a))
            (case (cons z xs) (cons z (take (- x 1) xs))))))))
 (define-fun-rec
-  ordered :source SortUtils.ordered
+  ordered
     ((x (list Int))) Bool
     (match x
       (case nil true)
@@ -21,7 +20,7 @@
           (case nil true)
           (case (cons y2 xs) (and (<= y y2) (ordered z)))))))
 (define-fun-rec
-  lmerge :source Sort.lmerge
+  lmerge
     ((x (list Int)) (y (list Int))) (list Int)
     (match x
       (case nil y)
@@ -32,14 +31,14 @@
             (ite (<= z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
 (define-fun-rec
   (par (a)
-    (length :source Prelude.length
+    (length
        ((x (list a))) Int
        (match x
          (case nil 0)
          (case (cons y l) (+ 1 (length l)))))))
 (define-fun-rec
   (par (a)
-    (drop :source Prelude.drop
+    (drop
        ((x Int) (y (list a))) (list a)
        (ite
          (<= x 0) y
@@ -47,7 +46,7 @@
            (case nil (_ nil a))
            (case (cons z xs1) (drop (- x 1) xs1)))))))
 (define-fun-rec
-  msorttd :source Sort.msorttd
+  msorttd
     ((x (list Int))) (list Int)
     (match x
       (case nil (_ nil Int))
@@ -57,6 +56,4 @@
           (case (cons x2 x3)
             (let ((k (div (length x) 2)))
               (lmerge (msorttd (take k x)) (msorttd (drop k x)))))))))
-(prove
-  :source Sort.prop_MSortTDSorts
-  (forall ((xs (list Int))) (ordered (msorttd xs))))
+(prove (forall ((xs (list Int))) (ordered (msorttd xs))))

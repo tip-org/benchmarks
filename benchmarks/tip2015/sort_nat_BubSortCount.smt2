@@ -1,19 +1,17 @@
 ; Bubble sort
 (declare-datatypes (a b)
-  ((pair :source |Prelude.(,)|
-     (pair2 :source |Prelude.(,)| (proj1-pair a) (proj2-pair b)))))
+  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
 (declare-datatypes (a)
-  ((list :source |Prelude.[]| (nil :source |Prelude.[]|)
-     (cons :source |Prelude.:| (head a) (tail (list a))))))
+  ((list (nil) (cons (head a) (tail (list a))))))
 (declare-datatypes () ((Nat (zero) (succ (p Nat)))))
 (define-fun-rec
-  plus :definition :source |+|
+  plus
     ((x Nat) (y Nat)) Nat
     (match x
       (case zero y)
       (case (succ z) (succ (plus z y)))))
 (define-fun-rec
-  leq :definition :source |<=|
+  leq
     ((x Nat) (y Nat)) Bool
     (match x
       (case zero true)
@@ -23,14 +21,14 @@
           (case (succ x2) (leq z x2))))))
 (define-fun-rec
   (par (a)
-    (count :source SortUtils.count
+    (count
        ((x a) (y (list a))) Nat
        (match y
          (case nil zero)
          (case (cons z ys)
            (ite (= x z) (plus (succ zero) (count x ys)) (count x ys)))))))
 (define-fun-rec
-  bubble :source Sort.bubble
+  bubble
     ((x (list Nat))) (pair Bool (list Nat))
     (match x
       (case nil (pair2 false (_ nil Nat)))
@@ -45,23 +43,15 @@
               (match (bubble (cons y xs))
                 (case (pair2 b1 ys1) (pair2 true (cons y2 ys1))))))))))
 (define-fun-rec
-  bubsort :source Sort.bubsort
+  bubsort
     ((x (list Nat))) (list Nat)
     (match (bubble x) (case (pair2 c ys1) (ite c (bubsort ys1) x))))
 (prove
-  :source Sort.prop_BubSortCount
   (forall ((x Nat) (xs (list Nat)))
     (= (count x (bubsort xs)) (count x xs))))
 (assert
-  :axiom |associativity of +|
   (forall ((x Nat) (y Nat) (z Nat))
     (= (plus x (plus y z)) (plus (plus x y) z))))
-(assert
-  :axiom |commutativity of +|
-  (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
-(assert
-  :axiom |identity for +|
-  (forall ((x Nat)) (= (plus x zero) x)))
-(assert
-  :axiom |identity for +|
-  (forall ((x Nat)) (= (plus zero x) x)))
+(assert (forall ((x Nat) (y Nat)) (= (plus x y) (plus y x))))
+(assert (forall ((x Nat)) (= (plus x zero) x)))
+(assert (forall ((x Nat)) (= (plus zero x) x)))
