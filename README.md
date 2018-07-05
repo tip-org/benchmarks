@@ -5,6 +5,11 @@ theorem provers. The benchmarks are written in a superset of SMTLIB
 under the [`benchmarks/`](https://github.com/tip-org/benchmarks/tree/master/benchmarks)
 directory and its subdirectories.  Each file contains exactly one problem.
 
+The benchmarks under the
+[`false/`](https://github.com/tip-org/benchmarks/tree/master/benchmarks/false)
+subdirectory are _false_ properties, meant as benchmarks for
+counterexample-finding tools.
+
 The `original` directory contains the original Haskell source
 files for many of the problems.
 
@@ -20,7 +25,7 @@ CVC4-compatible version of SMTLIB:
 After installing the
 [TIP tools](http://github.com/tip-org/tools) you can generate the
 whole problem set in TIP, Why3 and CVC4 format yourself from the
-Haskell sources. To do this run [`omake`](http://omake.metaprl.org/index.html).
+Haskell sources. To do this run [`omake`](http://projects.camlcity.org/projects/omake.html).
 This may be useful if you want to add your own problems,
 but it is not a requirement that they come from a Haskell source file.
 
@@ -31,18 +36,17 @@ big or small, simple or difficult is welcome.
 
 The simplest method to add new benchmarks is via a github
 [pull request](https://help.github.com/articles/using-pull-requests/)
-to this git repo.
+to this git repo, adding the problems to the `originals/` directory
+in either Haskell or TIP format. We can take care of updating the build scripts
+to include your new problems.
 
 We're also looking for non-theorem benchmarks to evaluate
 tools that find counterexamples to false properties.
-They can be expressed in the same format, but should be
-under another directory, to be able to keep them apart.
 
 You are also free to email the maintainers with new problems (or questions):
 
-* Dan Rosén [`danr@chalmers.se`](mailto:danr@chalmers.se)
-* Moa Johansson [`jomoa@chalmers.se`](mailto:jomoa@chalmers.se)
 * Nick Smallbone [`nicsma@chalmers.se`](mailto:nicsma@chalmers.se)
+* Moa Johansson [`jomoa@chalmers.se`](mailto:jomoa@chalmers.se)
 
 <!--
 
