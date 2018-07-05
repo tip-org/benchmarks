@@ -1,9 +1,43 @@
 VERSION = 0.2
 
 all: all-benchmarks
-	tar vczf tip-benchmarks-$(VERSION).tar.gz LICENSE benchmarks/**/*.smt2
-	tar vczf tip-benchmarks-$(VERSION)-why3.tar.gz LICENSE benchmarks-why3/**/*.mlw
-	tar vczf tip-benchmarks-$(VERSION)-cvc4.tar.gz LICENSE benchmarks-cvc4/**/*.smt2
+	tar vczf tip-benchmarks-$(VERSION).tar.gz benchmarks/*
+	tar vczf tip-benchmarks-$(VERSION)-why3.tar.gz benchmarks-why3/*
+	tar vczf tip-benchmarks-$(VERSION)-cvc4.tar.gz benchmarks-cvc4/*
+
+benchmarks_readme[] =
+	This archive contains the TIP benchmarks.
+
+cvc4_readme[] =
+	This archive contains the TIP benchmarks, converted into SMTLIB format.
+	The dialect of SMTLIB is compatible with CVC4, and uses declare-datatypes
+	and define-fun-rec. All polymorphism has been eliminated from the problems.
+
+why3_readme[] =
+	This archive contains the TIP benchmarks, converted into WhyML format.
+
+common_readme[]=
+	The benchmarks are organised into the following subdirectories:
+	
+	* prod - from Productive Use of Failure in Inductive Proof, Ireland & Bundy
+	* isaplanner - test problems from the IsaPlanner project
+	* tip2015 - the new TIP benchmarks
+	* grammars - proving unambiguity of context-free grammars
+	* false - false properties for benchmarking of counterexample-finding tools
+
+write_readme(dir, prelude) =
+	f=$(fopen $(dir)/README, w)
+	foreach(line => ..., $(prelude))
+		fprintln($f, $(line))
+	fprintln($f, $(EMPTY))
+	foreach(line => ..., $(common_readme))
+		fprintln($f, $(line))
+	close($f)
+	shell(cp LICENSE $(dir))
+
+write_readme(benchmarks, $(benchmarks_readme))
+write_readme(benchmarks-cvc4, $(cvc4_readme))
+write_readme(benchmarks-why3, $(why3_readme))
 
 commentify = $(file Commentify)
 Commentify: Commentify.hs
@@ -22,7 +56,7 @@ find-props(prop, file) =
 		export
 	return $(set $(props))
 
-options=
+options=--drop-attribute source --drop-attribute let --drop-attribute tuple --drop-attribute keep --drop-attribute definition --drop-attribute axiom
 create(prop_base, orig_dir, dest_dir, source, target_base) =
 	source=$(file original/$(orig_dir)/$(source))
 
@@ -52,7 +86,7 @@ create(prop_base, orig_dir, dest_dir, source, target_base) =
 			why3 prove $< > /dev/null || true
 
 section
-	options=--int-to-nat --simplify-gently --commute-match --simplify-gently
+	options=--int-to-nat --simplify-gently --commute-match --simplify-gently $(options)
 	create(prop_,  tip2015,    tip2015,    Nat.hs,                  nat)
 	create(prop_,  tip2015,    tip2015,    WeirdNat.hs,             weird_nat)
 	create(prop_,  tip2015,    tip2015,    Fermat.hs,               fermat)

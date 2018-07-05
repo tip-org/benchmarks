@@ -1,4 +1,6 @@
 *tar*
 benchmarks-cvc4/
 benchmarks-why3/
+benchmarks/README
+benchmarks/LICENSE
 Commentify
