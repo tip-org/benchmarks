@@ -26,6 +26,7 @@ common_readme[]=
 	* false - false properties for benchmarking of counterexample-finding tools
 
 write_readme(dir, prelude) =
+	mkdir -p $(dir)
 	f=$(fopen $(dir)/README, w)
 	foreach(line => ..., $(prelude))
 		fprintln($f, $(line))
