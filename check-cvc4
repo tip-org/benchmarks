@@ -1,0 +1,8 @@
+#!/bin/bash
+for i in $(find benchmarks -name '*.smt2'); do
+  (echo '(set-logic ALL)'; tip --smtlib $i | sed 's/(check-sat)//') | cvc4 --lang smt2 --incremental >& /tmp/out.cvc4
+  if [[ $? != 0 ]]; then
+    echo -n "$i: "
+    cat /tmp/out.cvc4
+  fi
+done
