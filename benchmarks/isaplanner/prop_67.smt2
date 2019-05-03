@@ -1,34 +1,32 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
-(declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+(declare-datatype
+  list (par (a) ((nil) (cons (head a) (tail (list a))))))
+(declare-datatype Nat ((Z) (S (proj1-S Nat))))
 (define-fun-rec
-  (par (a)
-    (len
-       ((x (list a))) Nat
-       (match x
-         (case nil Z)
-         (case (cons y xs) (S (len xs)))))))
+  len
+  (par (a) (((x (list a))) Nat))
+  (match x
+    ((nil Z)
+     ((cons y xs) (S (len xs))))))
 (define-fun-rec
-  (par (a)
-    (butlast
-       ((x (list a))) (list a)
-       (match x
-         (case nil (_ nil a))
-         (case (cons y z)
-           (match z
-             (case nil (_ nil a))
-             (case (cons x2 x3) (cons y (butlast z)))))))))
+  butlast
+  (par (a) (((x (list a))) (list a)))
+  (match x
+    ((nil (_ nil a))
+     ((cons y z)
+      (match z
+        ((nil (_ nil a))
+         ((cons x2 x3) (cons y (butlast z)))))))))
 (define-fun-rec
   |-2|
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case Z Z)
-      (case (S z)
-        (match y
-          (case Z x)
-          (case (S x2) (|-2| z x2))))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((Z Z)
+     ((S z)
+      (match y
+        ((Z x)
+         ((S x2) (|-2| z x2))))))))
 (prove
   (par (a)
     (forall ((xs (list a)))

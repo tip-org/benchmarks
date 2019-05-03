@@ -1,22 +1,22 @@
 ; Property about an alternative multiplication function which exhibits an
 ; interesting recursion structure.
-(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
+(declare-datatype Nat ((zero) (succ (p Nat))))
 (define-fun-rec
   plus
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero y)
-      (case (succ z) (succ (plus z y)))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero y)
+     ((succ z) (succ (plus z y))))))
 (define-fun-rec
   alt_mul
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero zero)
-      (case (succ z)
-        (match y
-          (case zero zero)
-          (case (succ x2)
-            (plus (plus (plus (succ zero) (alt_mul z x2)) z) x2))))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero zero)
+     ((succ z)
+      (match y
+        ((zero zero)
+         ((succ x2)
+          (plus (plus (plus (succ zero) (alt_mul z x2)) z) x2))))))))
 (prove
   (forall ((x Nat) (y Nat) (z Nat))
     (= (alt_mul x (alt_mul y z)) (alt_mul (alt_mul x y) z))))

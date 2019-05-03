@@ -1,19 +1,17 @@
-(declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatype
+  list (par (a) ((nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
-  (par (a)
-    (elem
-       ((x a) (y (list a))) Bool
-       (match y
-         (case nil false)
-         (case (cons z xs) (or (= z x) (elem x xs)))))))
+  elem
+  (par (a) (((x a) (y (list a))) Bool))
+  (match y
+    ((nil false)
+     ((cons z xs) (or (= z x) (elem x xs))))))
 (define-fun-rec
-  (par (a)
-    (!!
-       ((x (list a)) (y Int)) a
-       (match (< y 0)
-         (case false
-           (match x (case (cons z x2) (ite (= y 0) z (!! x2 (- y 1))))))))))
+  !!
+  (par (a) (((x (list a)) (y Int)) a))
+  (match (< y 0)
+    ((false
+      (match x (((cons z x2) (ite (= y 0) z (!! x2 (- y 1))))))))))
 (prove
   (par (a)
     (forall ((x a) (xs (list a)))

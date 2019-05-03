@@ -1,13 +1,13 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
-(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+(declare-datatype Nat ((Z) (S (proj1-S Nat))))
 (define-fun-rec
   max
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case Z y)
-      (case (S z)
-        (match y
-          (case Z x)
-          (case (S x2) (S (max z x2)))))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((Z y)
+     ((S z)
+      (match y
+        ((Z x)
+         ((S x2) (S (max z x2)))))))))
 (prove (forall ((a Nat) (b Nat)) (= (max a b) (max b a))))

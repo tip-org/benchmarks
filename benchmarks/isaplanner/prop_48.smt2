@@ -1,39 +1,37 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
-(declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (Z) (S (proj1-S Nat)))))
+(declare-datatype
+  list (par (a) ((nil) (cons (head a) (tail (list a))))))
+(declare-datatype Nat ((Z) (S (proj1-S Nat))))
 (define-fun-rec
   last
-    ((x (list Nat))) Nat
-    (match x
-      (case nil Z)
-      (case (cons y z)
-        (match z
-          (case nil y)
-          (case (cons x2 x3) (last z))))))
+  ((x (list Nat))) Nat
+  (match x
+    ((nil Z)
+     ((cons y z)
+      (match z
+        ((nil y)
+         ((cons x2 x3) (last z))))))))
 (define-fun-rec
-  (par (a)
-    (butlast
-       ((x (list a))) (list a)
-       (match x
-         (case nil (_ nil a))
-         (case (cons y z)
-           (match z
-             (case nil (_ nil a))
-             (case (cons x2 x3) (cons y (butlast z)))))))))
+  butlast
+  (par (a) (((x (list a))) (list a)))
+  (match x
+    ((nil (_ nil a))
+     ((cons y z)
+      (match z
+        ((nil (_ nil a))
+         ((cons x2 x3) (cons y (butlast z)))))))))
 (define-fun-rec
-  (par (a)
-    (++
-       ((x (list a)) (y (list a))) (list a)
-       (match x
-         (case nil y)
-         (case (cons z xs) (cons z (++ xs y)))))))
+  ++
+  (par (a) (((x (list a)) (y (list a))) (list a)))
+  (match x
+    ((nil y)
+     ((cons z xs) (cons z (++ xs y))))))
 (prove
   (forall ((xs (list Nat)))
     (=>
       (not
         (match xs
-          (case nil true)
-          (case (cons x y) false)))
+          ((nil true)
+           ((cons x y) false))))
       (= (++ (butlast xs) (cons (last xs) (_ nil Nat))) xs))))

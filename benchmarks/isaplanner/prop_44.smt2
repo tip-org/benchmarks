@@ -1,26 +1,24 @@
 ; Property from "Case-Analysis for Rippling and Inductive Proof",
 ; Moa Johansson, Lucas Dixon and Alan Bundy, ITP 2010
-(declare-datatypes (a b)
-  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
-(declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
+(declare-datatype
+  pair (par (a b) ((pair2 (proj1-pair a) (proj2-pair b)))))
+(declare-datatype
+  list (par (a) ((nil) (cons (head a) (tail (list a))))))
 (define-fun-rec
-  (par (a b)
-    (zip
-       ((x (list a)) (y (list b))) (list (pair a b))
-       (match x
-         (case nil (_ nil (pair a b)))
-         (case (cons z x2)
-           (match y
-             (case nil (_ nil (pair a b)))
-             (case (cons x3 x4) (cons (pair2 z x3) (zip x2 x4)))))))))
+  zip
+  (par (a b) (((x (list a)) (y (list b))) (list (pair a b))))
+  (match x
+    ((nil (_ nil (pair a b)))
+     ((cons z x2)
+      (match y
+        ((nil (_ nil (pair a b)))
+         ((cons x3 x4) (cons (pair2 z x3) (zip x2 x4)))))))))
 (define-fun
-  (par (a b)
-    (zipConcat
-       ((x a) (y (list a)) (z (list b))) (list (pair a b))
-       (match z
-         (case nil (_ nil (pair a b)))
-         (case (cons y2 ys) (cons (pair2 x y2) (zip y ys)))))))
+  zipConcat
+  (par (a b) (((x a) (y (list a)) (z (list b))) (list (pair a b))))
+  (match z
+    ((nil (_ nil (pair a b)))
+     ((cons y2 ys) (cons (pair2 x y2) (zip y ys))))))
 (prove
   (par (a b)
     (forall ((x a) (xs (list a)) (ys (list b)))

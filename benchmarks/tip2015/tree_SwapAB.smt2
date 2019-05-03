@@ -1,42 +1,40 @@
-(declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes (a)
-  ((Tree
-     (Node (proj1-Node (Tree a)) (proj2-Node a) (proj3-Node (Tree a)))
+(declare-datatype
+  list (par (a) ((nil) (cons (head a) (tail (list a))))))
+(declare-datatype
+  Tree
+  (par (a)
+    ((Node (proj1-Node (Tree a)) (proj2-Node a) (proj3-Node (Tree a)))
      (Nil))))
 (define-fun-rec
   swap
-    ((x Int) (y Int) (z (Tree Int))) (Tree Int)
-    (match z
-      (case (Node p x2 q)
+  ((x Int) (y Int) (z (Tree Int))) (Tree Int)
+  (match z
+    (((Node p x2 q)
+      (ite
+        (= x2 x) (Node (swap x y p) y (swap x y q))
         (ite
-          (= x2 x) (Node (swap x y p) y (swap x y q))
-          (ite
-            (= x2 y) (Node (swap x y p) x (swap x y q))
-            (Node (swap x y p) x2 (swap x y q)))))
-      (case Nil (_ Nil Int))))
+          (= x2 y) (Node (swap x y p) x (swap x y q))
+          (Node (swap x y p) x2 (swap x y q)))))
+     (Nil (_ Nil Int)))))
 (define-fun-rec
-  (par (a)
-    (elem
-       ((x a) (y (list a))) Bool
-       (match y
-         (case nil false)
-         (case (cons z xs) (or (= z x) (elem x xs)))))))
+  elem
+  (par (a) (((x a) (y (list a))) Bool))
+  (match y
+    ((nil false)
+     ((cons z xs) (or (= z x) (elem x xs))))))
 (define-fun-rec
-  (par (a)
-    (++
-       ((x (list a)) (y (list a))) (list a)
-       (match x
-         (case nil y)
-         (case (cons z xs) (cons z (++ xs y)))))))
+  ++
+  (par (a) (((x (list a)) (y (list a))) (list a)))
+  (match x
+    ((nil y)
+     ((cons z xs) (cons z (++ xs y))))))
 (define-fun-rec
-  (par (a)
-    (flatten0
-       ((x (Tree a))) (list a)
-       (match x
-         (case (Node p y q)
-           (++ (flatten0 p) (++ (cons y (_ nil a)) (flatten0 q))))
-         (case Nil (_ nil a))))))
+  flatten0
+  (par (a) (((x (Tree a))) (list a)))
+  (match x
+    (((Node p y q)
+      (++ (flatten0 p) (++ (cons y (_ nil a)) (flatten0 q))))
+     (Nil (_ nil a)))))
 (prove
   (forall ((p (Tree Int)) (a Int) (b Int))
     (=> (elem a (flatten0 p))

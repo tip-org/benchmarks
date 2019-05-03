@@ -1,128 +1,128 @@
 ; Stooge sort, using thirds on natural numbers
-(declare-datatypes (a b)
-  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
-(declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
+(declare-datatype
+  pair (par (a b) ((pair2 (proj1-pair a) (proj2-pair b)))))
+(declare-datatype
+  list (par (a) ((nil) (cons (head a) (tail (list a))))))
+(declare-datatype Nat ((zero) (succ (p Nat))))
 (define-fun-rec
   plus
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero y)
-      (case (succ z) (succ (plus z y)))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero y)
+     ((succ z) (succ (plus z y))))))
 (define-fun-rec
   minus
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero zero)
-      (case (succ z) (match y (case (succ y2) (minus z y2))))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero zero)
+     ((succ z)
+      (match y
+        ((zero zero)
+         ((succ y2) (minus z y2))))))))
 (define-fun-rec
   third
-    ((x Nat)) Nat
+  ((x Nat)) Nat
+  (ite
+    (= x (succ (succ zero))) zero
     (ite
-      (= x (succ (succ zero))) zero
-      (ite
-        (= x (succ zero)) zero
-        (match x
-          (case zero zero)
-          (case (succ y)
-            (plus (succ zero) (third (minus x (succ (succ (succ zero)))))))))))
+      (= x (succ zero)) zero
+      (match x
+        ((zero zero)
+         ((succ y)
+          (plus (succ zero)
+            (third (minus x (succ (succ (succ zero))))))))))))
 (define-fun-rec
   twoThirds
-    ((x Nat)) Nat
+  ((x Nat)) Nat
+  (ite
+    (= x (succ (succ zero))) (succ zero)
     (ite
-      (= x (succ (succ zero))) (succ zero)
-      (ite
-        (= x (succ zero)) (succ zero)
-        (match x
-          (case zero zero)
-          (case (succ y)
-            (plus (succ (succ zero))
-              (twoThirds (minus x (succ (succ (succ zero)))))))))))
+      (= x (succ zero)) (succ zero)
+      (match x
+        ((zero zero)
+         ((succ y)
+          (plus (succ (succ zero))
+            (twoThirds (minus x (succ (succ (succ zero))))))))))))
 (define-fun-rec
   leq
-    ((x Nat) (y Nat)) Bool
-    (match x
-      (case zero true)
-      (case (succ z)
-        (match y
-          (case zero false)
-          (case (succ x2) (leq z x2))))))
+  ((x Nat) (y Nat)) Bool
+  (match x
+    ((zero true)
+     ((succ z)
+      (match y
+        ((zero false)
+         ((succ x2) (leq z x2))))))))
 (define-fun
   sort2
-    ((x Nat) (y Nat)) (list Nat)
-    (ite
-      (leq x y) (cons x (cons y (_ nil Nat)))
-      (cons y (cons x (_ nil Nat)))))
+  ((x Nat) (y Nat)) (list Nat)
+  (ite
+    (leq x y) (cons x (cons y (_ nil Nat)))
+    (cons y (cons x (_ nil Nat)))))
 (define-fun-rec
-  (par (a)
-    (take
-       ((x Nat) (y (list a))) (list a)
-       (ite
-         (leq x zero) (_ nil a)
-         (match y
-           (case nil (_ nil a))
-           (case (cons z xs)
-             (match x (case (succ x2) (cons z (take x2 xs))))))))))
+  take
+  (par (a) (((x Nat) (y (list a))) (list a)))
+  (ite
+    (leq x zero) (_ nil a)
+    (match y
+      ((nil (_ nil a))
+       ((cons z xs) (match x (((succ x2) (cons z (take x2 xs))))))))))
 (define-fun-rec
-  (par (a)
-    (length
-       ((x (list a))) Nat
-       (match x
-         (case nil zero)
-         (case (cons y l) (plus (succ zero) (length l)))))))
+  length
+  (par (a) (((x (list a))) Nat))
+  (match x
+    ((nil zero)
+     ((cons y l) (plus (succ zero) (length l))))))
 (define-fun-rec
   insert
-    ((x Nat) (y (list Nat))) (list Nat)
-    (match y
-      (case nil (cons x (_ nil Nat)))
-      (case (cons z xs)
-        (ite (leq x z) (cons x y) (cons z (insert x xs))))))
+  ((x Nat) (y (list Nat))) (list Nat)
+  (match y
+    ((nil (cons x (_ nil Nat)))
+     ((cons z xs) (ite (leq x z) (cons x y) (cons z (insert x xs)))))))
 (define-fun-rec
   isort
-    ((x (list Nat))) (list Nat)
-    (match x
-      (case nil (_ nil Nat))
-      (case (cons y xs) (insert y (isort xs)))))
+  ((x (list Nat))) (list Nat)
+  (match x
+    ((nil (_ nil Nat))
+     ((cons y xs) (insert y (isort xs))))))
 (define-fun-rec
-  (par (a)
-    (drop
-       ((x Nat) (y (list a))) (list a)
-       (ite
-         (leq x zero) y
-         (match y
-           (case nil (_ nil a))
-           (case (cons z xs1) (match x (case (succ x2) (drop x2 xs1)))))))))
+  drop
+  (par (a) (((x Nat) (y (list a))) (list a)))
+  (ite
+    (leq x zero) y
+    (match y
+      ((nil (_ nil a))
+       ((cons z xs1) (match x (((succ x2) (drop x2 xs1)))))))))
 (define-fun
-  (par (a)
-    (splitAt
-       ((x Nat) (y (list a))) (pair (list a) (list a))
-       (pair2 (take x y) (drop x y)))))
+  splitAt
+  (par (a) (((x Nat) (y (list a))) (pair (list a) (list a))))
+  (pair2 (take x y) (drop x y)))
 (define-fun-rec
-  (par (a)
-    (++
-       ((x (list a)) (y (list a))) (list a)
-       (match x
-         (case nil y)
-         (case (cons z xs) (cons z (++ xs y)))))))
+  ++
+  (par (a) (((x (list a)) (y (list a))) (list a)))
+  (match x
+    ((nil y)
+     ((cons z xs) (cons z (++ xs y))))))
 (define-funs-rec
-  ((nstooge2sort2 ((x (list Nat))) (list Nat))
-   (nstoogesort2 ((x (list Nat))) (list Nat))
-   (nstooge2sort1 ((x (list Nat))) (list Nat)))
+  ((nstooge2sort2
+    ((x (list Nat))) (list Nat))
+   (nstoogesort2
+    ((x (list Nat))) (list Nat))
+   (nstooge2sort1
+    ((x (list Nat))) (list Nat)))
   ((match (splitAt (twoThirds (length x)) x)
-     (case (pair2 ys1 zs) (++ (nstoogesort2 ys1) zs)))
+     (((pair2 ys1 zs) (++ (nstoogesort2 ys1) zs))))
    (match x
-     (case nil (_ nil Nat))
-     (case (cons y z)
+     ((nil (_ nil Nat))
+      ((cons y z)
        (match z
-         (case nil (cons y (_ nil Nat)))
-         (case (cons y2 x2)
+         ((nil (cons y (_ nil Nat)))
+          ((cons y2 x2)
            (match x2
-             (case nil (sort2 y y2))
-             (case (cons x3 x4)
-               (nstooge2sort2 (nstooge2sort1 (nstooge2sort2 x)))))))))
+             ((nil (sort2 y y2))
+              ((cons x3 x4)
+               (nstooge2sort2 (nstooge2sort1 (nstooge2sort2 x))))))))))))
    (match (splitAt (third (length x)) x)
-     (case (pair2 ys1 zs) (++ ys1 (nstoogesort2 zs))))))
+     (((pair2 ys1 zs) (++ ys1 (nstoogesort2 zs)))))))
 (prove (forall ((xs (list Nat))) (= (nstoogesort2 xs) (isort xs))))
 (assert
   (forall ((x Nat) (y Nat) (z Nat))

@@ -1,54 +1,49 @@
-(declare-datatypes (a b)
-  ((pair (pair2 (proj1-pair a) (proj2-pair b)))))
-(declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
+(declare-datatype
+  pair (par (a b) ((pair2 (proj1-pair a) (proj2-pair b)))))
+(declare-datatype
+  list (par (a) ((nil) (cons (head a) (tail (list a))))))
+(declare-datatype Nat ((zero) (succ (p Nat))))
 (define-fun-rec
+  select
   (par (a)
-    (select
-       ((x a) (y (list (pair a (list a))))) (list (pair a (list a)))
-       (match y
-         (case nil (_ nil (pair a (list a))))
-         (case (cons z x2)
-           (match z
-             (case (pair2 y2 ys)
-               (cons (pair2 y2 (cons x ys)) (select x x2)))))))))
+    (((x a) (y (list (pair a (list a))))) (list (pair a (list a)))))
+  (match y
+    ((nil (_ nil (pair a (list a))))
+     ((cons z x2)
+      (match z
+        (((pair2 y2 ys) (cons (pair2 y2 (cons x ys)) (select x x2)))))))))
 (define-fun-rec
-  (par (a)
-    (select2
-       ((x (list a))) (list (pair a (list a)))
-       (match x
-         (case nil (_ nil (pair a (list a))))
-         (case (cons y xs) (cons (pair2 y xs) (select y (select2 xs))))))))
+  select2
+  (par (a) (((x (list a))) (list (pair a (list a)))))
+  (match x
+    ((nil (_ nil (pair a (list a))))
+     ((cons y xs) (cons (pair2 y xs) (select y (select2 xs)))))))
 (define-fun-rec
   plus
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero y)
-      (case (succ z) (succ (plus z y)))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero y)
+     ((succ z) (succ (plus z y))))))
 (define-fun-rec
-  (par (a)
-    (formula
-       ((x (list (pair a (list a))))) (list (list a))
-       (match x
-         (case nil (_ nil (list a)))
-         (case (cons y z)
-           (match y (case (pair2 y2 ys) (cons (cons y2 ys) (formula z)))))))))
+  formula
+  (par (a) (((x (list (pair a (list a))))) (list (list a))))
+  (match x
+    ((nil (_ nil (list a)))
+     ((cons y z)
+      (match y (((pair2 y2 ys) (cons (cons y2 ys) (formula z)))))))))
 (define-fun-rec
-  (par (a)
-    (count
-       ((x a) (y (list a))) Nat
-       (match y
-         (case nil zero)
-         (case (cons z ys)
-           (ite (= x z) (plus (succ zero) (count x ys)) (count x ys)))))))
+  count
+  (par (a) (((x a) (y (list a))) Nat))
+  (match y
+    ((nil zero)
+     ((cons z ys)
+      (ite (= x z) (plus (succ zero) (count x ys)) (count x ys))))))
 (define-fun-rec
-  (par (a)
-    (all
-       ((q (=> a Bool)) (x (list a))) Bool
-       (match x
-         (case nil true)
-         (case (cons y xs) (and (@ q y) (all q xs)))))))
+  all
+  (par (a) (((q (=> a Bool)) (x (list a))) Bool))
+  (match x
+    ((nil true)
+     ((cons y xs) (and (@ q y) (all q xs))))))
 (prove
   (par (a)
     (forall ((xs (list a)) (z a))

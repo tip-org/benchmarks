@@ -1,94 +1,92 @@
 ; Top-down merge sort, using division by two on natural numbers
-(declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
+(declare-datatype
+  list (par (a) ((nil) (cons (head a) (tail (list a))))))
+(declare-datatype Nat ((zero) (succ (p Nat))))
 (define-fun-rec
   plus
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero y)
-      (case (succ z) (succ (plus z y)))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero y)
+     ((succ z) (succ (plus z y))))))
 (define-fun-rec
   minus
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero zero)
-      (case (succ z) (match y (case (succ y2) (minus z y2))))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero zero)
+     ((succ z)
+      (match y
+        ((zero zero)
+         ((succ y2) (minus z y2))))))))
 (define-fun-rec
   nmsorttd-half1
-    ((x Nat)) Nat
-    (ite
-      (= x (succ zero)) zero
-      (match x
-        (case zero zero)
-        (case (succ y)
-          (plus (succ zero)
-            (nmsorttd-half1 (minus x (succ (succ zero)))))))))
+  ((x Nat)) Nat
+  (ite
+    (= x (succ zero)) zero
+    (match x
+      ((zero zero)
+       ((succ y)
+        (plus (succ zero)
+          (nmsorttd-half1 (minus x (succ (succ zero))))))))))
 (define-fun-rec
   leq
-    ((x Nat) (y Nat)) Bool
-    (match x
-      (case zero true)
-      (case (succ z)
-        (match y
-          (case zero false)
-          (case (succ x2) (leq z x2))))))
+  ((x Nat) (y Nat)) Bool
+  (match x
+    ((zero true)
+     ((succ z)
+      (match y
+        ((zero false)
+         ((succ x2) (leq z x2))))))))
 (define-fun-rec
   lmerge
-    ((x (list Nat)) (y (list Nat))) (list Nat)
-    (match x
-      (case nil y)
-      (case (cons z x2)
-        (match y
-          (case nil x)
-          (case (cons x3 x4)
-            (ite
-              (leq z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))
+  ((x (list Nat)) (y (list Nat))) (list Nat)
+  (match x
+    ((nil y)
+     ((cons z x2)
+      (match y
+        ((nil x)
+         ((cons x3 x4)
+          (ite
+            (leq z x3) (cons z (lmerge x2 y)) (cons x3 (lmerge x x4))))))))))
 (define-fun-rec
-  (par (a)
-    (take
-       ((x Nat) (y (list a))) (list a)
-       (ite
-         (leq x zero) (_ nil a)
-         (match y
-           (case nil (_ nil a))
-           (case (cons z xs)
-             (match x (case (succ x2) (cons z (take x2 xs))))))))))
+  take
+  (par (a) (((x Nat) (y (list a))) (list a)))
+  (ite
+    (leq x zero) (_ nil a)
+    (match y
+      ((nil (_ nil a))
+       ((cons z xs) (match x (((succ x2) (cons z (take x2 xs))))))))))
 (define-fun-rec
-  (par (a)
-    (length
-       ((x (list a))) Nat
-       (match x
-         (case nil zero)
-         (case (cons y l) (plus (succ zero) (length l)))))))
+  length
+  (par (a) (((x (list a))) Nat))
+  (match x
+    ((nil zero)
+     ((cons y l) (plus (succ zero) (length l))))))
 (define-fun-rec
-  (par (a)
-    (drop
-       ((x Nat) (y (list a))) (list a)
-       (ite
-         (leq x zero) y
-         (match y
-           (case nil (_ nil a))
-           (case (cons z xs1) (match x (case (succ x2) (drop x2 xs1)))))))))
+  drop
+  (par (a) (((x Nat) (y (list a))) (list a)))
+  (ite
+    (leq x zero) y
+    (match y
+      ((nil (_ nil a))
+       ((cons z xs1) (match x (((succ x2) (drop x2 xs1)))))))))
 (define-fun-rec
   nmsorttd
-    ((x (list Nat))) (list Nat)
-    (match x
-      (case nil (_ nil Nat))
-      (case (cons y z)
-        (match z
-          (case nil (cons y (_ nil Nat)))
-          (case (cons x2 x3)
-            (let ((k (nmsorttd-half1 (length x))))
-              (lmerge (nmsorttd (take k x)) (nmsorttd (drop k x)))))))))
+  ((x (list Nat))) (list Nat)
+  (match x
+    ((nil (_ nil Nat))
+     ((cons y z)
+      (match z
+        ((nil (cons y (_ nil Nat)))
+         ((cons x2 x3)
+          (let ((k (nmsorttd-half1 (length x))))
+            (lmerge (nmsorttd (take k x)) (nmsorttd (drop k x)))))))))))
 (define-fun-rec
-  (par (a)
-    (count
-       ((x a) (y (list a))) Nat
-       (match y
-         (case nil zero)
-         (case (cons z ys)
-           (ite (= x z) (plus (succ zero) (count x ys)) (count x ys)))))))
+  count
+  (par (a) (((x a) (y (list a))) Nat))
+  (match y
+    ((nil zero)
+     ((cons z ys)
+      (ite (= x z) (plus (succ zero) (count x ys)) (count x ys))))))
 (prove
   (forall ((x Nat) (xs (list Nat)))
     (= (count x (nmsorttd xs)) (count x xs))))

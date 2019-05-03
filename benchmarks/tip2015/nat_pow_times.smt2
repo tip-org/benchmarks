@@ -1,34 +1,34 @@
-(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
+(declare-datatype Nat ((zero) (succ (p Nat))))
 (define-fun-rec
   plus
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero y)
-      (case (succ z) (succ (plus z y)))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero y)
+     ((succ z) (succ (plus z y))))))
 (define-fun-rec
   times
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero zero)
-      (case (succ z) (plus y (times z y)))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero zero)
+     ((succ z) (plus y (times z y))))))
 (define-fun-rec
   formula-pow3
-    ((x Nat) (y Nat)) Nat
-    (match y
-      (case zero (succ zero))
-      (case (succ z) (times x (formula-pow3 x z)))))
+  ((x Nat) (y Nat)) Nat
+  (match y
+    ((zero (succ zero))
+     ((succ z) (times x (formula-pow3 x z))))))
 (define-fun-rec
   formula-pow2
-    ((x Nat) (y Nat)) Nat
-    (match y
-      (case zero (succ zero))
-      (case (succ z) (times x (formula-pow2 x z)))))
+  ((x Nat) (y Nat)) Nat
+  (match y
+    ((zero (succ zero))
+     ((succ z) (times x (formula-pow2 x z))))))
 (define-fun-rec
   formula-pow
-    ((x Nat) (y Nat)) Nat
-    (match y
-      (case zero (succ zero))
-      (case (succ z) (times x (formula-pow x z)))))
+  ((x Nat) (y Nat)) Nat
+  (match y
+    ((zero (succ zero))
+     ((succ z) (times x (formula-pow x z))))))
 (prove
   (forall ((x Nat) (y Nat) (z Nat))
     (= (formula-pow x (plus y z))

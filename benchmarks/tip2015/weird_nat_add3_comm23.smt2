@@ -1,22 +1,22 @@
 ; Weird functions over natural numbers
 ;
 ; Property about trinary addition function
-(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
+(declare-datatype Nat ((zero) (succ (p Nat))))
 (define-fun-rec
   plus
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero y)
-      (case (succ z) (succ (plus z y)))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero y)
+     ((succ z) (succ (plus z y))))))
 (define-fun-rec
   add3
-    ((x Nat) (y Nat) (z Nat)) Nat
-    (match x
-      (case zero
-        (match y
-          (case zero z)
-          (case (succ x3) (plus (succ zero) (add3 zero x3 z)))))
-      (case (succ x2) (plus (succ zero) (add3 x2 y z)))))
+  ((x Nat) (y Nat) (z Nat)) Nat
+  (match x
+    ((zero
+      (match y
+        ((zero z)
+         ((succ x3) (plus (succ zero) (add3 zero x3 z))))))
+     ((succ x2) (plus (succ zero) (add3 x2 y z))))))
 (prove
   (forall ((x Nat) (y Nat) (z Nat)) (= (add3 x y z) (add3 x z y))))
 (assert

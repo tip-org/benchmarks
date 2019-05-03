@@ -1,86 +1,83 @@
 ; Property about rotate and mod
-(declare-datatypes (a)
-  ((list (nil) (cons (head a) (tail (list a))))))
-(declare-datatypes () ((Nat (zero) (succ (p Nat)))))
+(declare-datatype
+  list (par (a) ((nil) (cons (head a) (tail (list a))))))
+(declare-datatype Nat ((zero) (succ (p Nat))))
 (define-fun-rec
   plus
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero y)
-      (case (succ z) (succ (plus z y)))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero y)
+     ((succ z) (succ (plus z y))))))
 (define-fun-rec
   minus
-    ((x Nat) (y Nat)) Nat
-    (match x
-      (case zero zero)
-      (case (succ z) (match y (case (succ y2) (minus z y2))))))
+  ((x Nat) (y Nat)) Nat
+  (match x
+    ((zero zero)
+     ((succ z)
+      (match y
+        ((zero zero)
+         ((succ y2) (minus z y2))))))))
 (define-fun-rec
   lt
-    ((x Nat) (y Nat)) Bool
-    (match y
-      (case zero false)
-      (case (succ z)
-        (match x
-          (case zero true)
-          (case (succ n) (lt n z))))))
+  ((x Nat) (y Nat)) Bool
+  (match y
+    ((zero false)
+     ((succ z)
+      (match x
+        ((zero true)
+         ((succ n) (lt n z))))))))
 (define-fun-rec
   mod2
-    ((x Nat) (y Nat)) Nat
-    (match y
-      (case zero zero)
-      (case (succ z) (ite (lt x y) x (mod2 (minus x y) y)))))
+  ((x Nat) (y Nat)) Nat
+  (match y
+    ((zero zero)
+     ((succ z) (ite (lt x y) x (mod2 (minus x y) y))))))
 (define-fun-rec
   leq
-    ((x Nat) (y Nat)) Bool
-    (match x
-      (case zero true)
-      (case (succ z)
-        (match y
-          (case zero false)
-          (case (succ x2) (leq z x2))))))
+  ((x Nat) (y Nat)) Bool
+  (match x
+    ((zero true)
+     ((succ z)
+      (match y
+        ((zero false)
+         ((succ x2) (leq z x2))))))))
 (define-fun-rec
-  (par (a)
-    (take
-       ((x Nat) (y (list a))) (list a)
-       (ite
-         (leq x zero) (_ nil a)
-         (match y
-           (case nil (_ nil a))
-           (case (cons z xs)
-             (match x (case (succ x2) (cons z (take x2 xs))))))))))
+  take
+  (par (a) (((x Nat) (y (list a))) (list a)))
+  (ite
+    (leq x zero) (_ nil a)
+    (match y
+      ((nil (_ nil a))
+       ((cons z xs) (match x (((succ x2) (cons z (take x2 xs))))))))))
 (define-fun-rec
-  (par (a)
-    (length
-       ((x (list a))) Nat
-       (match x
-         (case nil zero)
-         (case (cons y l) (plus (succ zero) (length l)))))))
+  length
+  (par (a) (((x (list a))) Nat))
+  (match x
+    ((nil zero)
+     ((cons y l) (plus (succ zero) (length l))))))
 (define-fun-rec
-  (par (a)
-    (drop
-       ((x Nat) (y (list a))) (list a)
-       (ite
-         (leq x zero) y
-         (match y
-           (case nil (_ nil a))
-           (case (cons z xs1) (match x (case (succ x2) (drop x2 xs1)))))))))
+  drop
+  (par (a) (((x Nat) (y (list a))) (list a)))
+  (ite
+    (leq x zero) y
+    (match y
+      ((nil (_ nil a))
+       ((cons z xs1) (match x (((succ x2) (drop x2 xs1)))))))))
 (define-fun-rec
-  (par (a)
-    (++
-       ((x (list a)) (y (list a))) (list a)
-       (match x
-         (case nil y)
-         (case (cons z xs) (cons z (++ xs y)))))))
+  ++
+  (par (a) (((x (list a)) (y (list a))) (list a)))
+  (match x
+    ((nil y)
+     ((cons z xs) (cons z (++ xs y))))))
 (define-fun-rec
-  (par (a)
-    (rotate
-       ((x Nat) (y (list a))) (list a)
-       (match x
-         (case zero y)
-         (case (succ z)
-           (match y
-             (case nil (_ nil a))
-             (case (cons z2 xs1) (rotate z (++ xs1 (cons z2 (_ nil a)))))))))))
+  rotate
+  (par (a) (((x Nat) (y (list a))) (list a)))
+  (match x
+    ((zero y)
+     ((succ z)
+      (match y
+        ((nil (_ nil a))
+         ((cons z2 xs1) (rotate z (++ xs1 (cons z2 (_ nil a)))))))))))
 (prove
   (par (a)
     (forall ((n Nat) (xs (list a)))
