@@ -38,8 +38,10 @@ prop_add3_same x y z = add3 x y z === add3acc x y z
 
 -- a * b + c + d
 op :: Int -> Int -> Int -> Int -> Int
-op 0 b 0 d = d
-op a b 0 d = op (a-1) b b d
+op a b 0 d =
+  case a of
+    0 -> d
+    _ -> op (a-1) b b d
 op a b c d = op a b (c-1) (d+1)
 
 -- Property about a 4-adic operation over natural numbers
