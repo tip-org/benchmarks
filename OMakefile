@@ -3,18 +3,19 @@ VERSION = 0.2
 all: all-benchmarks
 	tar vczf tip-benchmarks-$(VERSION).tar.gz benchmarks/*
 	tar vczf tip-benchmarks-$(VERSION)-why3.tar.gz benchmarks-why3/*
-	tar vczf tip-benchmarks-$(VERSION)-cvc4.tar.gz benchmarks-cvc4/*
+	tar vczf tip-benchmarks-$(VERSION)-smtlib.tar.gz benchmarks-smtlib/*
 
 benchmarks_readme[] =
 	This archive contains the TIP benchmarks.
 
-cvc4_readme[] =
-	This archive contains the TIP benchmarks, converted into SMTLIB format.
-	The dialect of SMTLIB is compatible with CVC4, and uses declare-datatypes
-	and define-fun-rec. All polymorphism has been eliminated from the problems.
+smtlib_readme[] =
+	This archive contains the TIP benchmarks, converted into SMTLIB format
+	version 2.6. All polymorphism has been eliminated from the problems,
+	in a possibly incomplete manner.
 
 why3_readme[] =
 	This archive contains the TIP benchmarks, converted into WhyML format.
+	Some benchmarks fail the Why3 termination checker.
 
 common_readme[]=
 	The benchmarks are organised into the following subdirectories:
@@ -37,17 +38,17 @@ write_readme(dir, prelude) =
 	shell(cp LICENSE $(dir))
 
 write_readme(benchmarks, $(benchmarks_readme))
-write_readme(benchmarks-cvc4, $(cvc4_readme))
+write_readme(benchmarks-smtlib, $(smtlib_readme))
 write_readme(benchmarks-why3, $(why3_readme))
 
 commentify = $(file Commentify)
 Commentify: Commentify.hs
-	ghc --make -O $@
+	stack exec -- ghc --make -O $@
 
 tip-tools = $(file $(which tip-ghc)) $(file $(which tip))
 
 clean:
-	rm -r benchmarks benchmarks-why3 benchmarks-cvc4
+	rm -r benchmarks benchmarks-why3 benchmarks-smtlib
 
 find-props(prop, file) =
 	props[] =
@@ -64,7 +65,7 @@ create(prop_base, orig_dir, dest_dir, source, target_base) =
 	foreach(prop => ..., $(find-props $(prop_base), $(source)))
 		name=$(dest_dir)/$(target_base)_$(removeprefix $(prop_base), $(prop))
 		tip=$(file benchmarks/$(name).smt2)
-		smt2=$(file benchmarks-cvc4/$(name).smt2)
+		smt2=$(file benchmarks-smtlib/$(name).smt2)
 		why3=$(file benchmarks-why3/$(name).mlw)
 
 		all-benchmarks: $(tip) $(smt2) $(why3)

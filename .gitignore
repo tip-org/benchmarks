@@ -1,5 +1,5 @@
 *tar*
-benchmarks-cvc4/
+benchmarks-smtlib/
 benchmarks-why3/
 benchmarks/README
 benchmarks/LICENSE
