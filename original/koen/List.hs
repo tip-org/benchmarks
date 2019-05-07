@@ -33,6 +33,12 @@ odds []     = []
 interleave (x:xs) ys = x : interleave ys xs
 interleave []     ys = ys
 
+-- Like !!, but using undefined instead of error in failing case
+at :: [a] -> Int -> a
+(x:_)  `at` 0 = x
+(_:xs) `at` n | n > 0 = xs `at` (n-1)
+_ `at` _ = undefined
+
 --------------------------------------------------------------------------------
 
 prop_Select xs =
@@ -79,5 +85,5 @@ prop_perm_elem x xs ys   = x `elem` xs ==> xs `isPermutation` ys ==> x `elem` ys
 
 prop_deleteAll_count x xs = deleteAll x xs === delete x xs ==> count x xs <= 1
 
-prop_elem x xs = x `elem` xs ==> exists (\ i -> x == xs !! i)
+prop_elem x xs = x `elem` xs ==> exists (\ i -> x == xs `at` i)
 prop_elem_map y f xs = y `elem` map f xs ==> exists (\ x -> f x === y .&&. y `elem` xs)
