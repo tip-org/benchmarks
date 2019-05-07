@@ -27,15 +27,4 @@
 (prove
   (par (a)
     (forall ((xs (list a)))
-      (let ((eta (length xs)))
-        (let ((md (mod eta 2)))
-          (=>
-            (=
-              (ite
-                (and
-                  (= (ite (= eta 0) 0 (ite (<= eta 0) (- 0 1) 1))
-                    (ite (<= 2 0) (- 0 (- 0 1)) (- 0 1)))
-                  (distinct md 0))
-                (- md 2) md)
-              0)
-            (= (unpair (pairs xs)) xs)))))))
+      (=> (= (mod (length xs) 2) 0) (= (unpair (pairs xs)) xs)))))

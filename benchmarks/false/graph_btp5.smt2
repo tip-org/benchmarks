@@ -65,16 +65,9 @@
   ((x Int)) (list B)
   (ite
     (= x 0) (_ nil B)
-    (let ((md (mod x 2)))
-      (ite
-        (and
-          (= (ite (= x 0) 0 (ite (<= x 0) (- 0 1) 1))
-            (ite (<= 2 0) (- 0 (- 0 1)) (- 0 1)))
-          (distinct md 0))
-        (ite
-          (= (- md 2) 0) (cons O (bin (div x 2))) (cons I (bin (div x 2))))
-        (ite
-          (= md 0) (cons O (bin (div x 2))) (cons I (bin (div x 2))))))))
+    (ite
+      (= (mod x 2) 0) (cons O (bin (div x 2)))
+      (cons I (bin (div x 2))))))
 (define-fun-rec
   bgraph
   ((x (list (pair Int Int)))) (list (pair (list B) (list B)))

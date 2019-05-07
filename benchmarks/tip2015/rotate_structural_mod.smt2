@@ -3,6 +3,15 @@
   list (par (a) ((nil) (cons (head a) (tail (list a))))))
 (declare-datatype Nat ((zero) (succ (p Nat))))
 (define-fun-rec
+  take
+  (par (a) (((x Nat) (y (list a))) (list a)))
+  (match x
+    ((zero (_ nil a))
+     ((succ z)
+      (match y
+        ((nil (_ nil a))
+         ((cons z2 xs) (cons z2 (take z xs)))))))))
+(define-fun-rec
   plus
   ((x Nat) (y Nat)) Nat
   (match x
@@ -17,23 +26,6 @@
       (match y
         ((zero zero)
          ((succ y2) (minus z y2))))))))
-(define-fun-rec
-  leq
-  ((x Nat) (y Nat)) Bool
-  (match x
-    ((zero true)
-     ((succ z)
-      (match y
-        ((zero false)
-         ((succ x2) (leq z x2))))))))
-(define-fun-rec
-  take
-  (par (a) (((x Nat) (y (list a))) (list a)))
-  (ite
-    (leq x zero) (_ nil a)
-    (match y
-      ((nil (_ nil a))
-       ((cons z xs) (match x (((succ x2) (cons z (take x2 xs))))))))))
 (define-fun-rec
   length
   (par (a) (((x (list a))) Nat))
@@ -61,11 +53,12 @@
 (define-fun-rec
   drop
   (par (a) (((x Nat) (y (list a))) (list a)))
-  (ite
-    (leq x zero) y
-    (match y
-      ((nil (_ nil a))
-       ((cons z xs1) (match x (((succ x2) (drop x2 xs1)))))))))
+  (match x
+    ((zero y)
+     ((succ z)
+      (match y
+        ((nil (_ nil a))
+         ((cons z2 xs1) (drop z xs1))))))))
 (define-fun-rec
   ++
   (par (a) (((x (list a)) (y (list a))) (list a)))

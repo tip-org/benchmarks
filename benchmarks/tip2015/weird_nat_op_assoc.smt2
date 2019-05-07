@@ -6,17 +6,12 @@
 (define-fun-rec
   op
   ((x Nat) (y Nat) (z Nat) (x2 Nat)) Nat
-  (let
-    ((fail
-        (match z
-          ((zero (match x (((succ x4) (op x4 y y x2)))))
-           ((succ x3) (op x y x3 (succ x2)))))))
-    (match x
-      ((zero
-        (match z
-          ((zero x2)
-           ((succ x6) fail))))
-       ((succ x5) fail)))))
+  (match z
+    ((zero
+      (match x
+        ((zero x2)
+         ((succ x4) (op x4 y y x2)))))
+     ((succ x3) (op x y x3 (succ x2))))))
 (prove
   (forall ((a Nat) (b Nat) (c Nat) (d Nat) (e Nat))
     (= (op (op a b zero zero) c d e) (op a (op b c zero zero) d e))))
