@@ -12,7 +12,7 @@ data Integer = P Int | N Int
 (-) :: Int -> Int -> Integer
 0 - 0 = P 0
 m - 0 = P m
-0 - n = N n
+0 - n = N (pred n)
 m - n = pred m - pred n
 
 {-# NOINLINE neg #-}
