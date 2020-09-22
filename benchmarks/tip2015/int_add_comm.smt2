@@ -17,7 +17,7 @@
           ((zero (P x))
            ((succ z)
             (match x
-              ((zero (N y))
+              ((zero (N z))
                ((succ x2) (|-2| x2 z)))))))))
     (match x
       ((zero

@@ -51,13 +51,14 @@
      ((Atom b) (ite (= b y) (_ Eps T) (_ Nil T)))
      ((|:+:| p q) (x.+. (step p y) (step q y)))
      ((|:&:| r q2)
-      (let ((wild1 (step r y)))
-        (match wild1
+      (let
+        ((z (step r y))
+         (q1 (step q2 y)))
+        (match z
           ((_
-            (let ((wild2 (step q2 y)))
-              (match wild2
-                ((_ (|:&:| wild1 wild2))
-                 (Nil (_ Nil T))))))
+            (match q1
+              ((_ (|:&:| z q1))
+               (Nil (_ Nil T)))))
            (Nil (_ Nil T))))))
      ((|:>:| p2 q3)
       (ite

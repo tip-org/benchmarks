@@ -55,13 +55,14 @@
      ((Atom b) (ite (= b y) (_ Eps T) (_ Nil T)))
      ((|:+:| p q) (x.+. (step p y) (step q y)))
      ((|:&:| r q2)
-      (let ((wild1 (step r y)))
-        (match wild1
+      (let
+        ((z (step r y))
+         (q1 (step q2 y)))
+        (match z
           ((_
-            (let ((wild2 (step q2 y)))
-              (match wild2
-                ((_ (|:&:| wild1 wild2))
-                 (Nil (_ Nil T))))))
+            (match q1
+              ((_ (|:&:| z q1))
+               (Nil (_ Nil T)))))
            (Nil (_ Nil T))))))
      ((|:>:| p2 q3)
       (ite
@@ -76,16 +77,15 @@
      ((cons z xs) (rec (step x z) xs)))))
 (prove
   (forall ((i1 Int) (j1 Int) (p (R T)) (s (list T)))
-    (let ((wild (iter i1 p)))
+    (let
+      ((x (iter i1 p))
+       (q (iter j1 p)))
       (=> (distinct i1 j1)
         (=> (not (eps p))
           (not
-            (match wild
+            (match x
               ((_
-                (let ((wild1 (iter j1 p)))
-                  (rec
-                    (match wild1
-                      ((_ (|:&:| wild wild1))
-                       (Nil (_ Nil T))))
-                    s)))
+                (match q
+                  ((_ (rec (|:&:| x q) s))
+                   (Nil (rec (_ Nil T) s)))))
                (Nil (rec (_ Nil T) s))))))))))
