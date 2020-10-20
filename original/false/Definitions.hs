@@ -244,25 +244,17 @@ number = (S (S (S (S (S Z)))))
 prop_rot_bogus  n xs = xs === rotate n (xs :: [Nat])
 
 prop_len_bs   xs ys      = length (xs ++ ys) === length (xs ::[Nat])
-prop_app_inj1 xs ys zs   = xs ++ ys === xs ++ zs ==> ys === (zs ::[Nat])
-prop_app_inj2 xs ys zs   = xs ++ ys === zs ++ ys ==> xs === (zs ::[Nat])
 
-prop_drop_comm   n m xs    = drop n (drop m (xs :: [Nat])) === drop m (drop n xs)
 prop_drop_idem   n xs      = drop n (drop n (xs :: [Nat])) === drop n xs
 prop_drop_invol  n xs      = drop n (drop n (xs :: [Nat])) === xs
 
 prop_drop_inj1 n m xs    = drop n xs === drop m (xs :: [Nat]) ==> n  === m
 prop_drop_inj2 n xs ys   = drop n xs === drop n (ys :: [Nat]) ==> xs === ys
 
-prop_union_idem xs    = xs `union` xs === xs
-
 prop_union_comm xs ys = xs `union` ys === ys `union` xs
 
 prop_rot_inj0'  n m ys xs = n < length xs === True ==> m < length ys === True ==> xs === ys ==> rotate (S Z) xs =/= xs ==> rotate n (xs :: [Nat]) === rotate m ys ==> n === m
 prop_rot_inj0   n m ys xs = rotate n (xs :: [Nat]) === rotate m ys ==> n === m
-prop_rot_inj1   n   ys xs = rotate n (xs :: [Nat]) === rotate n ys ==> xs === ys
-prop_rot_comm   n m xs    = rotate n (rotate m (xs :: [Nat])) === rotate m (rotate n xs)
 
-prop_rot_uhhh   xs ys = length (xs :: [Nat]) === length ys ==> rotate (length xs) (xs ++ ys) === xs ++ ys ==> xs === ys
 prop_rot_uhhhw1 xs ys =                             rotate (length (xs :: [Nat])) (xs ++ ys) === xs ++ ys ==> xs === ys
 prop_rot_uhhhw2 xs ys = length (xs :: [Nat]) === length ys ==>                                                xs === ys
