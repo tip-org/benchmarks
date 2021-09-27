@@ -121,9 +121,8 @@ prop_T36 x y z = x `elem` y ==> x `elem` (y ++ z)
 prop_T37 :: Nat -> [Nat] -> [Nat] -> Bool :=>: Bool
 prop_T37 x y z = x `elem` z ==>  x `elem` (y ++ z)
 
-prop_T38 :: Nat -> [Nat] -> [Nat] -> Bool :=>: Bool :=>: Bool
-prop_T38 x y z = x `elem` y ==>
-                 x `elem` z ==>
+prop_T38 :: Nat -> [Nat] -> [Nat] -> Bool :=>: Bool
+prop_T38 x y z = ((x `elem` y) || (x `elem` z)) ==>
                  x `elem` (y ++ z)
 
 prop_T39 :: Nat -> Nat -> [Nat] -> Bool :=>: Bool
