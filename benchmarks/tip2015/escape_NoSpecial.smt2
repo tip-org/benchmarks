@@ -6,18 +6,18 @@
   isSpecial
   ((x Token)) Bool
   (match x
-    ((_ false)
-     (ESC true)
+    ((ESC true)
      (P true)
      (Q true)
-     (R true))))
+     (R true)
+     (_ false))))
 (define-fun
   ok
   ((x Token)) Bool
   (or (not (isSpecial x))
     (match x
-      ((_ false)
-       (ESC true)))))
+      ((ESC true)
+       (_ false)))))
 (define-fun-rec
   formula
   ((x (list Token))) Bool
@@ -28,11 +28,11 @@
   code
   ((x Token)) Token
   (match x
-    ((_ x)
-     (ESC ESC)
+    ((ESC ESC)
      (P A)
      (Q B)
-     (R C))))
+     (R C)
+     (_ x))))
 (define-fun-rec
   escape
   ((x (list Token))) (list Token)
