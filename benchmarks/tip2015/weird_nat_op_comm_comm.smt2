@@ -10,8 +10,8 @@
     ((zero
       (match x
         ((zero x2)
-         ((succ x4) (op x4 y y x2)))))
-     ((succ x3) (op x y x3 (succ x2))))))
+         ((succ x3) (op x3 y y x2)))))
+     ((succ x4) (op x y x4 (succ x2))))))
 (prove
   (forall ((a Nat) (b Nat) (c Nat) (d Nat))
     (= (op a b c d) (op b a d c))))

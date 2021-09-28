@@ -68,8 +68,8 @@
       ((zero
         (match y
           ((zero (P zero))
-           ((succ x4) fail))))
-       ((succ x3) fail)))))
+           ((succ x3) fail))))
+       ((succ x4) fail)))))
 (define-fun
   plus2
   ((x Integer) (y Integer)) Integer

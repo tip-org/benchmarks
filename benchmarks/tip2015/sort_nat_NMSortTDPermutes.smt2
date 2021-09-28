@@ -24,16 +24,16 @@
     ((zero zero)
      ((succ z)
       (match y
-        ((zero zero)
-         ((succ y2) (minus z y2))))))))
+        (((succ y2) (minus z y2))
+         (zero zero)))))))
 (define-fun-rec
   nmsorttd-half1
   ((x Nat)) Nat
-  (ite
-    (= x (succ zero)) zero
-    (match x
-      ((zero zero)
-       ((succ y)
+  (match x
+    ((zero zero)
+     ((succ y)
+      (ite
+        (= y zero) zero
         (plus (succ zero)
           (nmsorttd-half1 (minus x (succ (succ zero))))))))))
 (define-fun-rec

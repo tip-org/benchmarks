@@ -23,8 +23,8 @@
     ((zero
       (match y
         ((zero z)
-         ((succ x3) (add3acc zero x3 (succ z))))))
-     ((succ x2) (add3acc x2 (succ y) z)))))
+         ((succ x2) (add3acc zero x2 (succ z))))))
+     ((succ x3) (add3acc x3 (succ y) z)))))
 (define-fun-rec
   mul3acc
   ((x Nat) (y Nat) (z Nat)) Nat

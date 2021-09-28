@@ -15,8 +15,8 @@
     ((zero
       (match y
         ((zero z)
-         ((succ x3) (plus (succ zero) (add3 zero x3 z))))))
-     ((succ x2) (plus (succ zero) (add3 x2 y z))))))
+         ((succ x2) (plus (succ zero) (add3 zero x2 z))))))
+     ((succ x3) (plus (succ zero) (add3 x3 y z))))))
 (prove
   (forall ((x1 Nat) (x2 Nat) (x3 Nat) (x4 Nat) (x5 Nat))
     (= (add3 (add3 x1 x2 x3) x4 x5) (add3 x1 (add3 x2 x3 x4) x5))))
