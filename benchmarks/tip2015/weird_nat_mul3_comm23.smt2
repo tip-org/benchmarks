@@ -38,10 +38,15 @@
                         (add3 (mul3 (succ zero) x3 x4)
                           (mul3 x2 (succ zero) x4) (mul3 x2 x3 (succ zero)))
                         (add3 x2 x3 x4)))))
-                (ite
-                  (= x2 zero)
-                  (ite (= x3 zero) (ite (= x4 zero) (succ zero) fail) fail)
-                  fail))))))))))))
+                (match x2
+                  ((zero
+                    (match x3
+                      ((zero
+                        (match x4
+                          ((zero (succ zero))
+                           ((succ x5) fail))))
+                       ((succ x6) fail))))
+                   ((succ x7) fail))))))))))))))
 (prove
   (forall ((x Nat) (y Nat) (z Nat)) (= (mul3 x y z) (mul3 x z y))))
 (assert

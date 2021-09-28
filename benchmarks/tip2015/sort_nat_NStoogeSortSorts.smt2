@@ -34,12 +34,14 @@
   (match x
     ((zero zero)
      ((succ y)
-      (ite
-        (= y zero) zero
-        (ite
-          (= y (succ zero)) zero
-          (plus (succ zero)
-            (third (minus x (succ (succ (succ zero))))))))))))
+      (match y
+        ((zero zero)
+         ((succ z)
+          (match z
+            ((zero zero)
+             ((succ x2)
+              (plus (succ zero)
+                (third (minus x (succ (succ (succ zero))))))))))))))))
 (define-fun-rec
   leq
   ((x Nat) (y Nat)) Bool

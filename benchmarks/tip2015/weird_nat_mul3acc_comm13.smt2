@@ -38,10 +38,15 @@
                         (add3acc (mul3acc (succ zero) x3 x4)
                           (mul3acc x2 (succ zero) x4) (mul3acc x2 x3 (succ zero)))
                         (add3acc x y z)))))
-                (ite
-                  (= x2 zero)
-                  (ite (= x3 zero) (ite (= x4 zero) (succ zero) fail) fail)
-                  fail))))))))))))
+                (match x2
+                  ((zero
+                    (match x3
+                      ((zero
+                        (match x4
+                          ((zero (succ zero))
+                           ((succ x5) fail))))
+                       ((succ x6) fail))))
+                   ((succ x7) fail))))))))))))))
 (prove
   (forall ((x Nat) (y Nat) (z Nat))
     (= (mul3acc x y z) (mul3acc z y x))))

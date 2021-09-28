@@ -32,10 +32,11 @@
   (match x
     ((zero zero)
      ((succ y)
-      (ite
-        (= y zero) zero
-        (plus (succ zero)
-          (nmsorttd-half1 (minus x (succ (succ zero))))))))))
+      (match y
+        ((zero zero)
+         ((succ z)
+          (plus (succ zero)
+            (nmsorttd-half1 (minus x (succ (succ zero))))))))))))
 (define-fun-rec
   leq
   ((x Nat) (y Nat)) Bool
