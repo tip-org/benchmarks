@@ -19,7 +19,7 @@ why3_readme[] =
 
 common_readme[]=
 	The benchmarks are organised into the following subdirectories:
-	
+
 	* prod - from Productive Use of Failure in Inductive Proof, Ireland & Bundy
 	* isaplanner - test problems from the IsaPlanner project
 	* tip2015 - the new TIP benchmarks
@@ -114,6 +114,7 @@ create(prop_,  tip2015,    tip2015,    RelaxedPrefix.hs,        relaxedprefix)
 create(prop_,  tip2015,    tip2015,    Seq.hs,                  polyrec_seq)
 
 create(prop_T, prod,       prod,       Properties.hs,           prop)
+create(prop_L, prod,       prod,       Lemmas.hs,               lemma)
 create(prop_,  isaplanner, isaplanner, Properties.hs,           prop)
 
 create(prop_,  grammars,   grammars,   SimpleExpr1.hs,          simp_expr)
