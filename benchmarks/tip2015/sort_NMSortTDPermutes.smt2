@@ -12,7 +12,7 @@
 (define-fun-rec
   nmsorttd-half1
   ((x Int)) Int
-  (ite (= x 1) 0 (ite (= x 0) 0 (+ 1 (nmsorttd-half1 (- x 2))))))
+  (ite (= x 0) 0 (ite (= x 1) 0 (+ 1 (nmsorttd-half1 (- x 2))))))
 (define-fun-rec
   lmerge
   ((x (list Int)) (y (list Int))) (list Int)

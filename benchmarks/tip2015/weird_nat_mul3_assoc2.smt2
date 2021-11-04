@@ -17,8 +17,8 @@
     ((zero
       (match y
         ((zero z)
-         ((succ x3) (plus (succ zero) (add3 zero x3 z))))))
-     ((succ x2) (plus (succ zero) (add3 x2 y z))))))
+         ((succ x2) (plus (succ zero) (add3 zero x2 z))))))
+     ((succ x3) (plus (succ zero) (add3 x3 y z))))))
 (define-fun-rec
   mul3
   ((x Nat) (y Nat) (z Nat)) Nat
@@ -38,10 +38,15 @@
                         (add3 (mul3 (succ zero) x3 x4)
                           (mul3 x2 (succ zero) x4) (mul3 x2 x3 (succ zero)))
                         (add3 x2 x3 x4)))))
-                (ite
-                  (= x2 zero)
-                  (ite (= x3 zero) (ite (= x4 zero) (succ zero) fail) fail)
-                  fail))))))))))))
+                (match x2
+                  ((zero
+                    (match x3
+                      ((zero
+                        (match x4
+                          ((zero (succ zero))
+                           ((succ x5) fail))))
+                       ((succ x6) fail))))
+                   ((succ x7) fail))))))))))))))
 (prove
   (forall ((x1 Nat) (x2 Nat) (x3 Nat) (x4 Nat) (x5 Nat))
     (= (mul3 (mul3 x1 x2 x3) x4 x5) (mul3 x1 (mul3 x2 x3 x4) x5))))

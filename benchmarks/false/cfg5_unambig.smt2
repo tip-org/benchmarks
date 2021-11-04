@@ -9,12 +9,12 @@
   assoc
   ((x E)) E
   (match x
-    ((_ x)
-     ((|:+:| y c)
+    (((|:+:| y c)
       (match y
-        ((_ (|:+:| (assoc y) (assoc c)))
-         ((|:+:| a b) (assoc (|:+:| a (|:+:| b c)))))))
-     ((|:*:| a2 b2) (|:*:| (assoc a2) (assoc b2))))))
+        (((|:+:| a b) (assoc (|:+:| a (|:+:| b c))))
+         (_ (|:+:| (assoc y) (assoc c))))))
+     ((|:*:| a2 b2) (|:*:| (assoc a2) (assoc b2)))
+     (_ x))))
 (define-fun-rec
   ++
   (par (a) (((x (list a)) (y (list a))) (list a)))
@@ -27,10 +27,10 @@
    (lin
     ((x E)) (list Tok)))
   ((match x
-     ((_ (lin x))
-      ((|:*:| a b)
+     (((|:*:| a b)
        (++ (cons C (_ nil Tok))
-         (++ (lin (|:+:| a b)) (cons D (_ nil Tok)))))))
+         (++ (lin (|:+:| a b)) (cons D (_ nil Tok)))))
+      (_ (lin x))))
    (match x
      (((|:+:| a b)
        (++ (linTerm a) (++ (cons Plus (_ nil Tok)) (linTerm b))))

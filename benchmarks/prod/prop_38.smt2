@@ -32,4 +32,4 @@
      ((cons z xs) (cons z (++ xs y))))))
 (prove
   (forall ((x Nat) (y (list Nat)) (z (list Nat)))
-    (=> (elem x y) (=> (elem x z) (elem x (++ y z))))))
+    (=> (barbar (elem x y) (elem x z)) (elem x (++ y z)))))

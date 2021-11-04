@@ -45,9 +45,9 @@
   opti
   ((x P)) P
   (match x
-    ((_ x)
-     ((While e p) (While e (++ p p)))
-     ((If c q r) (If c r q)))))
+    (((While e p) (While e (++ p p)))
+     ((If c q r) (If c r q))
+     (_ x))))
 (define-fun-rec
   run
   ((x (list Int)) (y (list P))) (list Int)

@@ -13,58 +13,58 @@
   x.>.
   ((x (R T)) (y (R T))) (R T)
   (match x
-    ((_
+    ((Nil (_ Nil T))
+     (_
       (match y
-        ((_
+        ((Nil (_ Nil T))
+         (_
           (match x
-            ((_
+            ((Eps y)
+             (_
               (match y
-                ((_ (|:>:| x y))
-                 (Eps x))))
-             (Eps y))))
-         (Nil (_ Nil T)))))
-     (Nil (_ Nil T)))))
+                ((Eps x)
+                 (_ (|:>:| x y))))))))))))))
 (define-fun
   x.+.
   ((x (R T)) (y (R T))) (R T)
   (match x
-    ((_
+    ((Nil y)
+     (_
       (match y
-        ((_ (|:+:| x y))
-         (Nil x))))
-     (Nil y))))
+        ((Nil x)
+         (_ (|:+:| x y))))))))
 (define-fun-rec
   eps
   ((x (R T))) Bool
   (match x
-    ((_ false)
-     (Eps true)
+    ((Eps true)
      ((|:+:| p q) (or (eps p) (eps q)))
      ((|:&:| r q2) (and (eps r) (eps q2)))
      ((|:>:| p2 q3) (and (eps p2) (eps q3)))
-     ((Star y) true))))
+     ((Star y) true)
+     (_ false))))
 (define-fun-rec
   step
   ((x (R T)) (y T)) (R T)
   (match x
-    ((_ (_ Nil T))
-     ((Atom b) (ite (= b y) (_ Eps T) (_ Nil T)))
+    (((Atom b) (ite (= b y) (_ Eps T) (_ Nil T)))
      ((|:+:| p q) (x.+. (step p y) (step q y)))
      ((|:&:| r q2)
       (let
         ((z (step r y))
          (q1 (step q2 y)))
         (match z
-          ((_
+          ((Nil (_ Nil T))
+           (_
             (match q1
-              ((_ (|:&:| z q1))
-               (Nil (_ Nil T)))))
-           (Nil (_ Nil T))))))
+              ((Nil (_ Nil T))
+               (_ (|:&:| z q1)))))))))
      ((|:>:| p2 q3)
       (ite
         (eps p2) (x.+. (x.>. (step p2 y) q3) (step q3 y))
         (x.+. (x.>. (step p2 y) q3) (_ Nil T))))
-     ((Star p3) (x.>. (step p3 y) x)))))
+     ((Star p3) (x.>. (step p3 y) x))
+     (_ (_ Nil T)))))
 (define-fun-rec
   rec
   ((x (R T)) (y (list T))) Bool

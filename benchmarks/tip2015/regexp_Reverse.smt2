@@ -12,34 +12,34 @@
   seq
   ((x R) (y R)) R
   (match x
-    ((_
+    ((Nil Nil)
+     (_
       (match y
-        ((_
+        ((Nil Nil)
+         (_
           (match x
-            ((_
+            ((Eps y)
+             (_
               (match y
-                ((_ (Seq x y))
-                 (Eps x))))
-             (Eps y))))
-         (Nil Nil))))
-     (Nil Nil))))
+                ((Eps x)
+                 (_ (Seq x y))))))))))))))
 (define-fun-rec
   rev
   ((x R)) R
   (match x
-    ((_ x)
-     ((Plus a b) (Plus (rev a) (rev b)))
+    (((Plus a b) (Plus (rev a) (rev b)))
      ((Seq c b2) (Seq (rev b2) (rev c)))
-     ((Star a2) (Star (rev a2))))))
+     ((Star a2) (Star (rev a2)))
+     (_ x))))
 (define-fun
   plus
   ((x R) (y R)) R
   (match x
-    ((_
+    ((Nil y)
+     (_
       (match y
-        ((_ (Plus x y))
-         (Nil x))))
-     (Nil y))))
+        ((Nil x)
+         (_ (Plus x y))))))))
 (define-fun
   eqA
   ((x A) (y A)) Bool
@@ -56,11 +56,11 @@
   eps
   ((x R)) Bool
   (match x
-    ((_ false)
-     (Eps true)
+    ((Eps true)
      ((Plus p q) (or (eps p) (eps q)))
      ((Seq r q2) (and (eps r) (eps q2)))
-     ((Star y) true))))
+     ((Star y) true)
+     (_ false))))
 (define-fun
   epsR
   ((x R)) R (ite (eps x) Eps Nil))
@@ -68,11 +68,11 @@
   step
   ((x R) (y A)) R
   (match x
-    ((_ Nil)
-     ((Atom a) (ite (eqA a y) Eps Nil))
+    (((Atom a) (ite (eqA a y) Eps Nil))
      ((Plus p q) (plus (step p y) (step q y)))
      ((Seq r q2) (plus (seq (step r y) q2) (seq (epsR r) (step q2 y))))
-     ((Star p2) (seq (step p2 y) x)))))
+     ((Star p2) (seq (step p2 y) x))
+     (_ Nil))))
 (define-fun-rec
   recognise
   ((x R) (y (list A))) Bool

@@ -38,31 +38,31 @@
   eps
   (par (a) (((x (R a))) Bool))
   (match x
-    ((_ false)
-     (Eps true)
+    ((Eps true)
      ((|:+:| p q) (or (eps p) (eps q)))
      ((|:>:| r q2) (and (eps r) (eps q2)))
-     ((Star y) true))))
+     ((Star y) true)
+     (_ false))))
 (define-fun-rec
   okay
   ((x (R T))) Bool
   (match x
-    ((_ true)
-     ((|:+:| p q) (and (okay p) (okay q)))
+    (((|:+:| p q) (and (okay p) (okay q)))
      ((|:>:| r q2) (and (okay r) (okay q2)))
-     ((Star p2) (and (okay p2) (not (eps p2)))))))
+     ((Star p2) (and (okay p2) (not (eps p2))))
+     (_ true))))
 (define-fun-rec
   step
   ((x (R T)) (y T)) (R T)
   (match x
-    ((_ (_ Nil T))
-     ((Atom b) (ite (= b y) (_ Eps T) (_ Nil T)))
+    (((Atom b) (ite (= b y) (_ Eps T) (_ Nil T)))
      ((|:+:| p q) (|:+:| (step p y) (step q y)))
      ((|:>:| r q2)
       (ite
         (eps r) (|:+:| (|:>:| (step r y) q2) (step q2 y))
         (|:+:| (|:>:| (step r y) q2) (_ Nil T))))
-     ((Star p2) (|:>:| (step p2 y) x)))))
+     ((Star p2) (|:>:| (step p2 y) x))
+     (_ (_ Nil T)))))
 (define-fun-rec
   rec
   ((x (R T)) (y (list T))) Bool

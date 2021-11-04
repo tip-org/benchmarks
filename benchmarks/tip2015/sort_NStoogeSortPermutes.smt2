@@ -7,7 +7,7 @@
   third
   ((x Int)) Int
   (ite
-    (= x 2) 0 (ite (= x 1) 0 (ite (= x 0) 0 (+ 1 (third (- x 3)))))))
+    (= x 0) 0 (ite (= x 1) 0 (ite (= x 2) 0 (+ 1 (third (- x 3)))))))
 (define-fun-rec
   take
   (par (a) (((x Int) (y (list a))) (list a)))

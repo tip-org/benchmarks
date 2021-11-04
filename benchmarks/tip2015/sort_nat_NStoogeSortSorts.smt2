@@ -26,20 +26,22 @@
     ((zero zero)
      ((succ z)
       (match y
-        ((zero zero)
-         ((succ y2) (minus z y2))))))))
+        (((succ y2) (minus z y2))
+         (zero zero)))))))
 (define-fun-rec
   third
   ((x Nat)) Nat
-  (ite
-    (= x (succ (succ zero))) zero
-    (ite
-      (= x (succ zero)) zero
-      (match x
+  (match x
+    ((zero zero)
+     ((succ y)
+      (match y
         ((zero zero)
-         ((succ y)
-          (plus (succ zero)
-            (third (minus x (succ (succ (succ zero))))))))))))
+         ((succ z)
+          (match z
+            ((zero zero)
+             ((succ x2)
+              (plus (succ zero)
+                (third (minus x (succ (succ (succ zero))))))))))))))))
 (define-fun-rec
   leq
   ((x Nat) (y Nat)) Bool

@@ -7,8 +7,8 @@
     ((zero zero)
      ((succ z)
       (match y
-        ((zero zero)
-         ((succ y2) (minus z y2))))))))
+        (((succ y2) (minus z y2))
+         (zero zero)))))))
 (define-fun-rec
   lt
   ((x Nat) (y Nat)) Bool
@@ -34,11 +34,11 @@
         ((zero
           (match y
             ((zero zero)
-             ((succ x5) (minus z y)))))
-         ((succ x3)
+             ((succ x3) (minus z y)))))
+         ((succ x4)
           (match y
-            ((zero (go x3 x2 z))
-             ((succ x4) (go x3 x4 z)))))))))))
+            ((zero (go x4 x2 z))
+             ((succ x5) (go x4 x5 z)))))))))))
 (define-fun
   mod_structural
   ((x Nat) (y Nat)) Nat (go x zero y))
