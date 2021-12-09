@@ -18,4 +18,4 @@
   (par (a)
     (forall ((x (list a)) (y (list a)) (z a))
       (= (rev (++ x (++ y (cons z (_ nil a)))))
-        (cons z (rev (++ x (_ nil a))))))))
+        (cons z (rev (++ x y)))))))

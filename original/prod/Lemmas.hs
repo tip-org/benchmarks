@@ -42,7 +42,7 @@ prop_L08 x y =
 
 prop_L09 :: [a] -> [a] -> a -> Equality [a]
 prop_L09 x y z =
-  rev (x ++ (y ++ (z : []))) === z : (rev (x ++ []))
+  rev (x ++ (y ++ (z : []))) === z : (rev (x ++ y))
 
 prop_L10 :: [a] -> a -> Equality [a]
 prop_L10 x y =
