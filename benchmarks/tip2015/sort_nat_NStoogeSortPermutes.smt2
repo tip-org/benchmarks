@@ -27,7 +27,7 @@
      ((succ z)
       (match y
         (((succ y2) (minus z y2))
-         (zero zero)))))))
+         (zero x)))))))
 (define-fun-rec
   third
   ((x Nat)) Nat

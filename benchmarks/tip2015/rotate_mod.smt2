@@ -25,7 +25,7 @@
      ((succ z)
       (match y
         (((succ y2) (minus z y2))
-         (zero zero)))))))
+         (zero x)))))))
 (define-fun-rec
   lt
   ((x Nat) (y Nat)) Bool
